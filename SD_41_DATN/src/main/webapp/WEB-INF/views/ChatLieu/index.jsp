@@ -12,14 +12,16 @@
 <div class="container">
     <h1>Chất liệu</h1>
     <div>
-        <h6 style="color:black;margin-top: 10px">Trạng thái</h6>
-        <select id="trangThai" style="width: 500px;height: 35px; border-radius: 5px 5px 5px">
-            <option value="" style="">Tất cả trạng thái </option>
-            <option value="1" style="">Đã kích hoạt </option>
-            <option value="0" style="">Chưa kích hoạt </option>
-        </select>
+        <form action="/chatLieu/filter">
+            <h6 style="color:black;margin-top: 10px">Trạng thái</h6>
+            <select id="trangThai" name="trangThai" style="width: 500px;height: 35px; border-radius: 5px 5px 5px">
+                <option value="2" style="">Tất cả trạng thái </option>
+                <option value="0" style="">Đã kích hoạt </option>
+                <option value="1" style="">Chưa kích hoạt </option>
+            </select>
 
-        <br>
+            <br> <br>
+            <button class="btn btn-success">Lọc</button>
         </form>
     </div>
     <br>

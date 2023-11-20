@@ -104,7 +104,7 @@
             var ten = document.getElementsByClassName('ten')[0].value.trim().length;
             var ghiChu = document.getElementsByClassName('ghiChu')[0].value.trim().length;
 
-            var confirmUpdate = confirm('Bạn chắc chắn muốn sửa không?');
+            var confirmUpdate = confirm('Bạn chắc chắn muốn thêm không?');
 
             if (!confirmUpdate) {
                 console.log('ten: ', ten);

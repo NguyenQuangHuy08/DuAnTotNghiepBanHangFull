@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +44,25 @@ public class FormController {
         model.addAttribute("list", searchResults);
         return "/Form/index";
     }
+    @GetMapping("/filter")
+    public String filter(@RequestParam("trangThai") int trangThai, Model model) {
+        List<Form> searchResults = formService.getAll();
+        List<Form> list = new ArrayList<>();
+        if(trangThai!=2){
+            for (Form kieu : searchResults) {
+                if(kieu.getTrangThai()==trangThai){
+                    list.add(kieu);
+                }
 
+            }
+        } else {
+            for (Form kieu : searchResults) {
+                list.add(kieu);
+            }
+        }
+        model.addAttribute("list", list);
+        return "/Form/index";
+    }
     @GetMapping("/view-add")
     public String viewadd(Model model){
         model.addAttribute("form",new Form());

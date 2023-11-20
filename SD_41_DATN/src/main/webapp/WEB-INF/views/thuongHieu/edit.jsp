@@ -6,7 +6,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Đế giày</title>
+    <title>Thương hiệu</title>
     <style>
         .label{
             margin-bottom: 10px;

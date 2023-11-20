@@ -85,7 +85,7 @@
                     <td>${th.ghiChu}</td>
                     <td>${th.ngayTao}</td>
                     <td>${th.ngaySua}</td>
-                    <td>${th.trangThai}</td>
+                    <td>${th.trangThai==1?"Đang kích hoạt":"Ngừng kích hoạt"}</td>
                     <td>
                         <a href="${pageContext.request.contextPath}/thuongHieu/edit/${th.id}" class="btn btn-primary">
                             Cập nhật

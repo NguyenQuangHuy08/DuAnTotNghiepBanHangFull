@@ -101,7 +101,7 @@
         </thead>
         <tbody>
         <c:forEach var="hdbq" items="${listPage}" varStatus="i">
-            <tr class="product-item hide-row" data-tenHuongDanBaoQuan="${hdbq.tenHuongDanBaoQuan}" data-trangThai="${hdbq.trangThai}">
+            <tr class="product-item " data-tenHuongDanBaoQuan="${hdbq.tenHuongDanBaoQuan}" data-trangThai="${hdbq.trangThai}">
                 <th style="padding-top: 40px" scope="row">${i.index+1}</th>
                 <td style="padding-top: 55px; text-align: center">${hdbq.tenHuongDanBaoQuan}</td>
                 <td style="padding-top: 55px; text-align: center">${hdbq.ghiChu}</td>

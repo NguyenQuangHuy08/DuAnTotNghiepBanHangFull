@@ -18,6 +18,6 @@ public interface HuongDanBaoQuanRepository extends JpaRepository<HuongDanBaoQuan
 
     Page<HuongDanBaoQuan> findByTrangThai(int trangThai, Pageable pageable);
 
-    List<HuongDanBaoQuan> findByTenHuongDanBaoQuan(String tenHuongDanBaoQuan);
+    List<HuongDanBaoQuan> findByTenHuongDanBaoQuanContaining(String tenHuongDanBaoQuan);
 
 }

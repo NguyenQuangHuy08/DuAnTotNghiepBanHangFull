@@ -18,6 +18,6 @@ public interface CoGiayRepository extends JpaRepository<CoGiay, UUID> {
 
     Page<CoGiay> findByTrangThai(int trangThai, Pageable pageable);
 
-    List<CoGiay> findByTenCoGiay(String tenCoGiay);
+    List<CoGiay> findByTenCoGiayContaining(String tenCoGiay);
 
 }

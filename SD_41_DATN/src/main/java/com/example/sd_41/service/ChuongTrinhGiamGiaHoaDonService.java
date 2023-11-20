@@ -46,8 +46,8 @@ public class ChuongTrinhGiamGiaHoaDonService implements ChuongTrinhGiamGiaHoaDon
             for (Row row : sheet) {
                 ChuongTrinhGiamGiaHoaDon ctgg = new ChuongTrinhGiamGiaHoaDon();
                 ctgg.setTenChuongTrinh(row.getCell(0).getStringCellValue());
-                ctgg.setPhanTramGiam(row.getCell(1).getStringCellValue());
-                ctgg.setSoLuongSanPham(row.getCell(2).getStringCellValue());
+                ctgg.setPhanTramGiam(String.valueOf(row.getCell(1).getNumericCellValue()));
+                ctgg.setSoLuongSanPham(String.valueOf(row.getCell(2).getNumericCellValue()));
                 ctgg.setSoTienHoaDon(new BigDecimal(row.getCell(3).getNumericCellValue()));
                 ctgg.setNgayBatDau(sdf.format(row.getCell(4).getDateCellValue()));
                 ctgg.setNgayKetThuc(sdf.format(row.getCell(5).getDateCellValue()));

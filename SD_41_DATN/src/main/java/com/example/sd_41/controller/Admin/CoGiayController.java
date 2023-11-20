@@ -141,9 +141,11 @@ public class CoGiayController {
         List<CoGiay> listPageFind;
         if (tenCoGiay != null) {
             listPageFind = coGiayService.findCoGiay(tenCoGiay);
-            model.addAttribute("listPageFind", listPageFind);
-            if (!listPageFind.isEmpty()) {
+
+            if (listPageFind.size()!=0) {
+                model.addAttribute("listPage", listPageFind);
                 model.addAttribute("messageFindDone", "Tìm thấy dữ liệu");
+                return "/CoGiay/list";
             } else {
                 model.addAttribute("messageFindError", "Không tìm thấy dữ liệu");
             }

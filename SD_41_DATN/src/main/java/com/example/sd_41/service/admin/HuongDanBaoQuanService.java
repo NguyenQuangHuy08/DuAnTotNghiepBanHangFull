@@ -15,7 +15,7 @@ public class HuongDanBaoQuanService {
 
     public List<HuongDanBaoQuan> findHuongDanBaoQuan(String tenHuongDanBaoQuan) {
         if (tenHuongDanBaoQuan != null) {
-            return huongDanBaoQuanRepository.findByTenHuongDanBaoQuan(tenHuongDanBaoQuan);
+            return huongDanBaoQuanRepository.findByTenHuongDanBaoQuanContaining(tenHuongDanBaoQuan);
         } else {
             return huongDanBaoQuanRepository.findAll();
         }

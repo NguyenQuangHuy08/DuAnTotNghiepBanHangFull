@@ -6,7 +6,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Đế giày</title>
+    <title>Thương hiệu</title>
     <style>
         .label{
             margin-bottom: 10px;
@@ -18,7 +18,7 @@
 <%@ include file="../templates/Admin/Layouts/GiayTheThao/_HeaderGiayTheThao.jsp" %>
 <div class="container">
     <h1 style="line-height: 100px; text-align: center; color: red">
-        Đế giày
+        Thương hiệu
     </h1>
     <div>
         <sf:form
@@ -106,7 +106,7 @@
             var ten = document.getElementsByClassName('ten')[0].value.trim().length;
             var ghiChu = document.getElementsByClassName('ghiChu')[0].value.trim().length;
 
-            var confirmUpdate = confirm('Bạn chắc chắn muốn sửa không?');
+            var confirmUpdate = confirm('Bạn chắc chắn muốn thêm không?');
 
             if (!confirmUpdate) {
                 console.log('ten: ', ten);

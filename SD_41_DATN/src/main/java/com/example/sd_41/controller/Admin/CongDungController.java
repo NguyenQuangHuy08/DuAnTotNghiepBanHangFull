@@ -1,5 +1,6 @@
 package com.example.sd_41.controller.Admin;
 
+
 import com.example.sd_41.model.CongDung;
 import com.example.sd_41.repository.SanPham.AllGiayTheThao.CongDungRepository;
 import com.example.sd_41.service.admin.CongDungService;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +45,25 @@ public class CongDungController {
         model.addAttribute("list", searchResults);
         return "/CongDung/index";
     }
+    @GetMapping("/filter")
+    public String filter(@RequestParam("trangThai") int trangThai, Model model) {
+        List<CongDung> searchResults = congDungService.getAll();
+        List<CongDung> list = new ArrayList<>();
+        if(trangThai!=2){
+            for (CongDung kieu : searchResults) {
+                if(kieu.getTrangThai()==trangThai){
+                    list.add(kieu);
+                }
 
+            }
+        } else {
+            for (CongDung kieu : searchResults) {
+                list.add(kieu);
+            }
+        }
+        model.addAttribute("list", list);
+        return "/CongDung/index";
+    }
     @GetMapping("/view-add")
     public String viewadd(Model model){
         model.addAttribute("congDung",new CongDung());

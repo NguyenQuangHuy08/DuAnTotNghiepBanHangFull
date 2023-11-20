@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,6 +43,26 @@ public class KieuBuocController {
     public String searchByName(@RequestParam("tenKieuBuoc") String tenKieuBuoc, Model model) {
         List<KieuBuoc> searchResults = kieuBuocService.searchByTen(tenKieuBuoc);
         model.addAttribute("list", searchResults);
+        return "/KieuBuoc/index";
+    }
+
+    @GetMapping("/filter")
+    public String filter(@RequestParam("trangThai") int trangThai, Model model) {
+        List<KieuBuoc> searchResults = kieuBuocService.getAll();
+        List<KieuBuoc> list = new ArrayList<>();
+        if(trangThai!=2){
+            for (KieuBuoc kieu : searchResults) {
+                if(kieu.getTrangThai()==trangThai){
+                    list.add(kieu);
+                }
+
+            }
+        } else {
+            for (KieuBuoc kieu : searchResults) {
+                    list.add(kieu);
+            }
+        }
+        model.addAttribute("list", list);
         return "/KieuBuoc/index";
     }
 

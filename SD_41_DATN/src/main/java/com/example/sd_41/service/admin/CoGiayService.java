@@ -15,7 +15,7 @@ public class CoGiayService {
 
     public List<CoGiay> findCoGiay(String tenCoGiay) {
         if (tenCoGiay != null) {
-            return coGiayRepository.findByTenCoGiay(tenCoGiay);
+            return coGiayRepository.findByTenCoGiayContaining(tenCoGiay);
         } else {
             return coGiayRepository.findAll();
         }

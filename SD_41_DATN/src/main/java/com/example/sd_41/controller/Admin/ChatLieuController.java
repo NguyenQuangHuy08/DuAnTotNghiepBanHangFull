@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +42,25 @@ public class ChatLieuController {
     public String searchByName(@RequestParam("tenChatLieu") String tenChatLieu, Model model) {
         List<ChatLieu> searchResults = chatLieuService.searchByTen(tenChatLieu);
         model.addAttribute("list", searchResults);
+        return "/ChatLieu/index";
+    }
+    @GetMapping("/filter")
+    public String filter(@RequestParam("trangThai") int trangThai, Model model) {
+        List<ChatLieu> searchResults = chatLieuService.getAll();
+        List<ChatLieu> list = new ArrayList<>();
+        if(trangThai!=2){
+            for (ChatLieu kieu : searchResults) {
+                if(kieu.getTrangThai()==trangThai){
+                    list.add(kieu);
+                }
+
+            }
+        } else {
+            for (ChatLieu kieu : searchResults) {
+                list.add(kieu);
+            }
+        }
+        model.addAttribute("list", list);
         return "/ChatLieu/index";
     }
 
