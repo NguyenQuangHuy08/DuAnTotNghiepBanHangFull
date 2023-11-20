@@ -41,16 +41,64 @@ public class WebMVCConfig implements WebMvcConfigurer {
 
 	    //Member
         registry.addInterceptor(logGinInterceptor)
-                .addPathPatterns("");
+                .addPathPatterns(
+                        "/CoGiay/list",
+                        "/CoGiay/view-create",
+                        "/kieuBuoc/hien-thi",
+                        "/kieuBuoc/view-add",
+                        "/chatLieu/hien-thi",
+                        "/chatLieu/view-add",
+                        "/congDung/hien-thi",
+                        "/congDung/view-add",
+                        "/dayGiay/hien-thi",
+                        "/dayGiay/view-add",
+                        "/deGiay",
+                        "/deGiay/create",
+                        "/dinhTanGiay/hien-thi",
+                        "/dinhTanGiay/view-add",
+                        "/thuongHieu",
+                        "/thuongHieu/create",
+                        "/trongLuong/hien-thi",
+                        "/trongLuong/view-add",
+                        "/form/hien-thi",
+                        "/form/view-add",
+                        "/HuongDanBaoQuan/list",
+                        "/HuongDanBaoQuan/create",
+                        "/KhachHang/list",
+                        "/KhachHang/view-create"
+                        );
 
 
         //Dành cho Admin
         registry.addInterceptor(adminInterceptor)
                 .addPathPatterns(
                         //Todo gắn link check phân quyền
-                        "/GiayTheThao/create"
-//                        "/khach-hang/edit/{maKH}"
-
+                        "/CoGiay/list",
+                        "/CoGiay/view-create",
+                        "/kieuBuoc/hien-thi",
+                        "/kieuBuoc/view-add",
+                        "/chatLieu/hien-thi",
+                        "/chatLieu/view-add",
+                        "/congDung/hien-thi",
+                        "/congDung/view-add",
+                        "/dayGiay/hien-thi",
+                        "/dayGiay/view-add",
+                        "/deGiay",
+                        "/deGiay/create",
+                        "/dinhTanGiay/hien-thi",
+                        "/dinhTanGiay/view-add",
+                        "/thuongHieu",
+                        "/thuongHieu/create",
+                        "/trongLuong/hien-thi",
+                        "/trongLuong/view-add",
+                        "/form/hien-thi",
+                        "/form/view-add",
+                        "/HuongDanBaoQuan/list",
+                        "/HuongDanBaoQuan/create",
+                        "/user/view-add",
+                        "/user/hien-thi",
+                        "/KhachHang/list",
+                        "/KhachHang/view-create"
 
                         );
 
