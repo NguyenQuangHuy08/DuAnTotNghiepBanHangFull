@@ -224,7 +224,7 @@
                         <button class="btn btn-primary">Xuất file PDF</button>
                     </a>
                     <a href="/GiayTheThao/exportExcal">
-                        <button class="btn btn-primary">Xuất file Excal</button>
+                        <button class="btn btn-primary">Xuất file Excel</button>
                     </a>
                 </div>
                 <br>

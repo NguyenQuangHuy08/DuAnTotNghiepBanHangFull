@@ -105,9 +105,7 @@
                     <a class="collapse-item" href="/thuongHieu">Thương hiệu</a>
                     <a class="collapse-item" href="/trongLuong/hien-thi">Trọng lượng</a>
                     <a class="collapse-item" href="/form/hien-thi">Form</a>
-                    <a class="collapse-item" href="#">Môn thể thao</a>
                     <a class="collapse-item" href="#">Chất liệu</a>
-                    <a class="collapse-item" href="#">Loại sản phẩm</a>
                     <a class="collapse-item" href="/HuongDanBaoQuan/list">Hướng dẫn bảo quản</a>
 
                 </div>
@@ -137,6 +135,7 @@
                     <a class="collapse-item" href="/MauSac/list">Màu sắc</a>
                     <a class="collapse-item" href="/Size/hien-thi">Size</a>
                     <a class="collapse-item" href="/chuongTrinhGiamGia/sanPham">Khuyến mại</a>
+                    <a class="collapse-item" href="/PhieuGiaoHang/listPhieuGiaoHang">Phiếu giao hàng</a>
 
 
                 <%--                    <a class="collapse-item" href="/404">Login</a>--%>

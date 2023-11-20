@@ -9,7 +9,8 @@
 </head>
 <body>
 <%@ include file="../templates/Admin/Layouts/GiayTheThao/_HeaderGiayTheThao.jsp" %>
-<form:form action="/dayGiay/update/${id}" modelAttribute="dayGiay" cssClass="container">
+<div class="container">
+    <form:form action="/dayGiay/update/${id}" modelAttribute="dayGiay" cssClass="container">
     <div class="form-group">
         <label>Tên dây giày</label>
         <form:input path="tenDayGiay" class="form-control"/>
@@ -34,22 +35,20 @@
     <div class="form-group">
         <label>Trạng thái</label>
         <div class="form-check">
-            <form:radiobutton cssClass="form-check-input" path="trangThai" value="0" checked="true" />
+            <form:radiobutton cssClass="form-check-input" path="trangThai" value="0" checked="true"/>
             <label class="form-check-label">Đang kích hoạt</label>
         </div>
         <div class="form-check">
-            <form:radiobutton cssClass="form-check-input" path="trangThai" value="1" />
+            <form:radiobutton cssClass="form-check-input" path="trangThai" value="1"/>
             <label class="form-check-label">Chưa kích hoạt</label>
         </div>
     </div>
 
     <button class="btn btn-success">update</button>
-    </div>
-    </div>
-
 
 
 </form:form>
+</div>
 <%@ include file="../templates/Admin/Layouts/GiayTheThao/_FooterGiayTheThao.jsp" %>
 </body>
 </html>

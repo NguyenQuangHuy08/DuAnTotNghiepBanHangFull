@@ -35,18 +35,18 @@
     <h3 style="text-align: center;">List hướng dẫn bảo quản</h3>
     <br>
     <br>
-    <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm kiếm:" aria-label="Search"
-           aria-describedby="basic-addon2">
+<%--    <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm kiếm:" aria-label="Search"--%>
+<%--           aria-describedby="basic-addon2">--%>
 
-    <form action="${pageContext.request.contextPath}/HuongDanBaoQuan/search" method="GET">
-        <%--        <label for="tenMauSac" style="margin-left: 30px">Tên màu sắc </label>--%>
-        <input style="width: 400px" type="text" id="tenHuongDanBaoQuan1" name="tenHuongDanBaoQuan">
-        <%--        <br>--%>
-        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
-        <h6 style="color: red; margin-top: 10px">${messageFindDone}</h6>
-        <h6 style="color: red; margin-top: 10px">${messageFindError}</h6>
-        <h6 style="color: red; margin-top: 10px">${messageFind}</h6>
-    </form>
+<%--    <form action="${pageContext.request.contextPath}/HuongDanBaoQuan/search" method="GET">--%>
+<%--        &lt;%&ndash;        <label for="tenMauSac" style="margin-left: 30px">Tên màu sắc </label>&ndash;%&gt;--%>
+<%--        <input style="width: 400px" type="text" id="tenHuongDanBaoQuan1" name="tenHuongDanBaoQuan">--%>
+<%--        &lt;%&ndash;        <br>&ndash;%&gt;--%>
+<%--        <button class="btn btn-primary" type="submit">Tìm kiếm</button>--%>
+<%--        <h6 style="color: red; margin-top: 10px">${messageFindDone}</h6>--%>
+<%--        <h6 style="color: red; margin-top: 10px">${messageFindError}</h6>--%>
+<%--        <h6 style="color: red; margin-top: 10px">${messageFind}</h6>--%>
+<%--    </form>--%>
     <br>
     <br>
     <div class="row">

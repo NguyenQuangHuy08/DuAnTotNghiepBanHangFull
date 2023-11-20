@@ -12,16 +12,14 @@
 <h1>Dây giày</h1>
 <div>
     <div>
-        <form action="/dayGiay/filter">
-            <h6 style="color:black;margin-top: 10px">Trạng thái</h6>
-            <select id="trangThai" name="trangThai" style="width: 500px;height: 35px; border-radius: 5px 5px 5px">
-                <option value="2" style="">Tất cả trạng thái </option>
-                <option value="0" style="">Đã kích hoạt </option>
-                <option value="1" style="">Chưa kích hoạt </option>
-            </select>
+        <h6 style="color:black;margin-top: 10px">Trạng thái</h6>
+        <select id="trangThai" style="width: 500px;height: 35px; border-radius: 5px 5px 5px">
+            <option value="" style="">Tất cả trạng thái </option>
+            <option value="1" style="">Đã kích hoạt </option>
+            <option value="0" style="">Chưa kích hoạt </option>
+        </select>
 
-            <br> <br>
-            <button class="btn btn-success">Lọc</button>
+        <br>
         </form>
     </div>
 </div>

@@ -27,7 +27,6 @@
     <br>
     <br>
     <form action="/trongLuong/search" method="get">
-        <label>Tìm kiếm:</label>
         <input type="text" style="width: 400px" name="tenTrongLuong">
         <button type="submit" class="btn btn-info btn-sm">Tìm kiếm</button>
     </form>

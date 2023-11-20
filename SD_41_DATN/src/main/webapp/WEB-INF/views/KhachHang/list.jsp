@@ -37,18 +37,16 @@
     <h3 style="text-align: center;">List Khách Hàng </h3>
     <br>
     <br>
-    <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm kiếm:" aria-label="Search"
-           aria-describedby="basic-addon2">
+<%--    <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm kiếm:" aria-label="Search"--%>
+<%--           aria-describedby="basic-addon2">--%>
 
-    <form action="${pageContext.request.contextPath}/KhachHang/search" method="GET">
-        <%--        <label for="tenMauSac" style="margin-left: 30px">Tên màu sắc </label>--%>
-        <input style="width: 400px" type="text" id="tenKhachHang1" name="tenKhachHang">
-        <%--        <br>--%>
-        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
-        <h6 style="color: red; margin-top: 10px">${messageFindDone}</h6>
-        <h6 style="color: red; margin-top: 10px">${messageFindError}</h6>
-        <h6 style="color: red; margin-top: 10px">${messageFind}</h6>
-    </form>
+<%--    <form action="${pageContext.request.contextPath}/KhachHang/search" method="GET">--%>
+<%--        <input style="width: 400px" type="text" name="tenKhachHang">--%>
+<%--        <button class="btn btn-primary" type="submit">Tìm kiếm</button>--%>
+<%--        <h6 style="color: red; margin-top: 10px">${messageFindDone}</h6>--%>
+<%--        <h6 style="color: red; margin-top: 10px">${messageFindError}</h6>--%>
+<%--        <h6 style="color: red; margin-top: 10px">${messageFind}</h6>--%>
+<%--    </form>--%>
     <br>
     <br>
     <div class="row">
@@ -66,6 +64,9 @@
                         <input style="width: 500px; height: 35px;border-radius: 5px 5px 5px" type="text" id="email"
                                placeholder="Email">
                     </div>
+                    <br>
+                    <br>
+                    <br>
                     <div class="col-6">
                         <h6 style="color:black">Số điện thoại</h6>
                         <input style="width: 500px; height: 35px;border-radius: 5px 5px 5px" type="text"

@@ -9,12 +9,13 @@
 </head>
 <body>
 <%@ include file="../templates/Admin/Layouts/GiayTheThao/_HeaderGiayTheThao.jsp" %>
-<form:form
-        modelAttribute="trongLuong"
-        action="${pageContext.request.contextPath}/trongLuong/add"
-        method="POST"
-        enctype="multipart/form-data"
->
+<div class="container">
+    <form:form
+            modelAttribute="trongLuong"
+            action="${pageContext.request.contextPath}/trongLuong/add"
+            method="POST"
+            enctype="multipart/form-data"
+    >
 
     <div class="form-group">
         <form:hidden path="id" value="${trongLuong.id}"/>
@@ -26,15 +27,15 @@
         <form:errors class="text-danger" element="span" path="tenTrongLuong"/>
     </div>
 
-<%--    <div class="form-group">--%>
-<%--        <form:hidden path="id" value="${Size.id}"/>--%>
-<%--    </div>--%>
+        <%--    <div class="form-group">--%>
+        <%--        <form:hidden path="id" value="${Size.id}"/>--%>
+        <%--    </div>--%>
 
-<%--    <div class="form-group">--%>
-<%--        <label>Size</label>--%>
-<%--        <form:input path="size" class="form-control"/>--%>
-<%--        <form:errors class="text-danger" element="span" path="size"/>--%>
-<%--    </div>--%>
+        <%--    <div class="form-group">--%>
+        <%--        <label>Size</label>--%>
+        <%--        <form:input path="size" class="form-control"/>--%>
+        <%--        <form:errors class="text-danger" element="span" path="size"/>--%>
+        <%--    </div>--%>
 
     <div class="form-group">
         <label>Ghi Chú</label>
@@ -64,12 +65,12 @@
     </div>
 
     <button class="btn btn-success">update</button>
-    </div>
-    </div>
+</div>
 
 
 
 </form:form>
+</div>
 <%@ include file="../templates/Admin/Layouts/GiayTheThao/_FooterGiayTheThao.jsp" %>
 </body>
 </html>

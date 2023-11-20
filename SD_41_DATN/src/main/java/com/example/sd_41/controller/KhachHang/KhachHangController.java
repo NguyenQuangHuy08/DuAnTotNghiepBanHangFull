@@ -279,6 +279,22 @@ public class KhachHangController {
     }
 
 
+    @GetMapping("KhachHang/search")
+    public String searchCoGiay(@RequestParam(value = "tenKhachHang", required = false) String tenKhachHang, Model model) {
+        List<KhachHang> searchResults;
+        if (tenKhachHang != null) {
+            searchResults  = khachHangService.findKhachHang(tenKhachHang);
+            model.addAttribute("searchResults ", searchResults );
+            if (!searchResults .isEmpty()) {
+                model.addAttribute("messageFindDone", "Tìm thấy dữ liệu");
+            } else {
+                model.addAttribute("messageFindError", "Không tìm thấy dữ liệu");
+            }
+        } else {
+            model.addAttribute("messageFind", "Bạn hãy nhập tên khách hàng muốn tìm kiếm!");
+        }
+        return "/KhachHang/list";
+    }
 
 
 }

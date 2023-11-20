@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.apache.poi.ss.formula.functions.Na;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.UUID;
 
@@ -42,6 +43,7 @@ public class KhachHang {
 
     @Column(name = "ngaySinh")
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private String ngaySinh;
 
     @Column(name = "soDienThoai")
