@@ -32,4 +32,9 @@ public interface GiayTheThaoChiTietRepository extends JpaRepository<GiayTheThaoC
     GiayTheThaoChiTiet findByGiayTheThaoAndSizeAndMauSac(UUID giayTheThaoId, UUID sizeId, UUID mauSacId);
 
 
+    //Todo code tổng số lượng sản phẩm có trong kho
+    @Query("SELECT SUM(sp.soLuong) FROM GiayTheThaoChiTiet sp")
+    Integer sumSoLuong();
+
+
 }

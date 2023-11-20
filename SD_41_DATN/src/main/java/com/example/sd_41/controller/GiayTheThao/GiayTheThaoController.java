@@ -6,6 +6,7 @@ import com.example.sd_41.repository.SanPham.AllGiayTheThao.*;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoChiTietRepository;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoRepository;
 import com.example.sd_41.service.GiayTheThao.GiayTheThaoService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lowagie.text.DocumentException;
 import com.sun.mail.imap.AppendUID;
 import jakarta.servlet.ServletContext;
@@ -736,6 +737,28 @@ public class GiayTheThaoController {
 
     }
 
+
+    //Todo code thống kê data cho giầy thể thao
+
+    @GetMapping("/thongke-data")
+    @ResponseBody
+    public String thongKeData() {
+        List<GiayTheThaoChiTiet> sanPhams = giayTheThaoChiTietRepository.findAll();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+
+            String jsonData = objectMapper.writeValueAsString(sanPhams);
+            return jsonData;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return "";
+
+        }
+    }
 
 
     //Todo code các model để lưu lại dữ liệu

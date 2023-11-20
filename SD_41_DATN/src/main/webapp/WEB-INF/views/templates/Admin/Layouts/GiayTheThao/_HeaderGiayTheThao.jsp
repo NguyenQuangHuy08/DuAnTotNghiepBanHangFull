@@ -144,12 +144,12 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="/403">
+            <a class="nav-link" href="/thongKeChuanData">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Charts</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/403">
+            <a class="nav-link" href="">
                 <i class="fas fa-fw fa-table"></i>
                 <span>Tables</span></a>
         </li>

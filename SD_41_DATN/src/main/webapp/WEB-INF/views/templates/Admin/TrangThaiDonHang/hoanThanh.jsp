@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đơn hàng chờ xác nhận của khách hàng</title>
+    <title>Đơn hàng đang giao cho khách hàng thành công</title>
     <style>
 
 
@@ -53,17 +53,16 @@
 
     <div style="margin-left: 100px; padding: 1px 16px;">
 
-        <h3 style="margin-top: 30px;margin-bottom: 30px">Các đơn hàng chờ xác nhận</h3>
+        <h3 style="margin-top: 30px;margin-bottom: 30px">Các đơn hàng giao thành công cho khách hàng</h3>
         <form method="post">
-            <input type="hidden" name="idKH" value="${idKH}">
-            <table class="table-sm" style="width: 1010px">
+            <table class="table">
                 <tr>
-                    <td scope="col" style="font-size: 15px">Mã</td>
-                    <td scope="col" style="font-size: 15px">Tên khách hàng</td>
-                    <td scope="col" style="font-size: 15px">Ngày thanh toán</td>
-                    <td scope="col" style="font-size: 15px">Tổng tiền</td>
-                    <td scope="col" style="font-size: 15px">Ghi chú</td>
-                    <td scope="col" style="font-size: 15px">Action</td>
+                    <td scope="col">Mã</td>
+                    <td scope="col">Khách hàng</td>
+                    <td scope="col">Ngày tạo</td>
+                    <td scope="col">Tổng tiền</td>
+                    <td scope="col">Ghi chú</td>
+<%--                    <td scope="col">Action</td>--%>
                 </tr>
                 <c:forEach items="${page.content}" var="list">
                     <tr>
@@ -81,15 +80,12 @@
                             <fmt:formatNumber type="" value="${list.thanhTien}" pattern="#,##0.###" />
                         </td>
                         <td>${list.ghiChu}</td>
-                        <td>
-                            <button formaction="/Admin/HoaDon/XacNhanHoaDonKhachHang" name="huy" value="${list.id}"
-                                    class="btn btn-primary me-2">Xác nhận
-                            </button>
-                        </td>
+<%--                        <td>--%>
+<%--                            <a href="/hoa-don/${list.id}">Mua lại</a>--%>
+<%--                        </td>--%>
                     </tr>
                 </c:forEach>
             </table>
-            <br>
             <ul class="pagination">
                 <c:if test="${not page.first}">
                     <li class="page-item">
@@ -108,6 +104,7 @@
                 </c:if>
             </ul>
         </form>
+
 
     </div>
 

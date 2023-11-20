@@ -513,6 +513,16 @@ public class HoaDonController {
 
     //Todo code xác nhân đơn hàng bên phía admin
 
+    //Todo code All xác nhận bên phía admin
+    @GetMapping("/Admin/xacNhanDonHangKhachHangAll")
+    public String showViewXacNhanDonHangAllKhachHang(){
+
+        return "/templates/Admin/TrangThaiDonHang/viewHoaDonTrangThaiAll";
+
+    }
+
+    //Todo code xác nhân đơn hàng bên phía admin
+
     @GetMapping("/Admin/xacNhanDonHangKhachHang")
     public ModelAndView adminXacNhanDonHangChoKhachHang(
             Model model,
@@ -523,7 +533,6 @@ public class HoaDonController {
 
         Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByTrangThai(pageNo,5,1);
         ModelAndView mav = new ModelAndView("/templates/Admin/TrangThaiDonHang/choXacNhan");
-
         mav.addObject("page",page);
         return mav;
 
@@ -546,10 +555,68 @@ public class HoaDonController {
         hd.setTrangThai(2);
         hoaDonServiceImpl.update(hoaDon.getId(),hd);
 
-        return "";
+        return "redirect:/Admin/xacNhanDonHangKhachHangAll";
 
     }
 
+    //Todo code xác nhận giao hàng thành công bên phía admin
+    @GetMapping("/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCong")
+    public ModelAndView showFormHoaDonXacNhanGiaoHangThanhCong(
+
+            @RequestParam(value = "pageNo",required = false, defaultValue = "0") Integer pageNo,
+            HttpServletRequest request,
+            Model model
+    ){
+
+        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByTrangThai(pageNo,5,2);
+        ModelAndView mav = new ModelAndView("/templates/Admin/TrangThaiDonHang/dangGiaoHang");
+        mav.addObject("page", page);
+        return mav;
+
+    }
+
+    //Todo code xác nhận giao hàng thành công bên phía Admin
+    @PostMapping("/Admin/HoaDon/XacNhanHoaDonKhachHangThanhCong")
+    public String adminGiaoHangThanhCong(
+            HttpServletRequest request
+    ){
+
+        String thanhCong = request.getParameter("thanhCong");
+
+        HoaDon hoaDon = hoaDonServiceImpl.findId(UUID.fromString(thanhCong));
+        HoaDon hd = new HoaDon();
+
+        hd.setMaHoaDon(hoaDon.getMaHoaDon());
+        hd.setThanhTien(hoaDon.getThanhTien());
+        hd.setNgayThanhToan(hoaDon.getNgayThanhToan());
+        hd.setNgayTao(hoaDon.getNgayTao());
+        hd.setKhachHang(hoaDon.getKhachHang());
+        hoaDon.setTrangThai(3);
+        hd.setGhiChu(hoaDon.getGhiChu());
+
+        hoaDonServiceImpl.update(hoaDon.getId(),hd);
+
+        return "redirect:/Admin/xacNhanDonHangKhachHangAll";
+
+    }
+
+
+    //Todo code hoàn thành giao hàng
+    @GetMapping("/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCongHoanThanh")
+    public ModelAndView showGiaoHangHoanThanh(
+
+            @RequestParam(value = "pageNo", required = false, defaultValue = "0") Integer pageNo,
+            HttpServletRequest request,
+            Model model
+
+    ){
+
+        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByTrangThai(pageNo,5,3);
+        ModelAndView mav = new ModelAndView("/templates/Admin/TrangThaiDonHang/hoanThanh");
+        mav.addObject("page", page);
+        return mav;
+
+    }
 
 
 }
