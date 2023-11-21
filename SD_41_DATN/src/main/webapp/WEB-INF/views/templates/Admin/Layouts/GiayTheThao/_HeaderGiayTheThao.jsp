@@ -146,7 +146,7 @@
         <li class="nav-item">
             <a class="nav-link" href="/thongKeChuanData">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>Charts</span></a>
+                <span>Thống kê</span></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="">

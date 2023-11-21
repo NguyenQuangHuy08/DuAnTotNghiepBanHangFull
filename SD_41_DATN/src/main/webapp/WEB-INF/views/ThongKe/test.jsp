@@ -5,7 +5,7 @@
 
 <html>
 <head>
-    <title>Thông kê dữ liệu</title>
+    <title>Thống kê dữ liệu</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link
             rel="stylesheet"
@@ -47,7 +47,8 @@
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                         Tổng đơn hàng đã bán
                                     </div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800" style="margin-top: 20px">${tongDonHang}</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                         style="margin-top: 20px">${tongDonHang}</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fa fa-shopping-cart fa-2x text-gray-300"></i>
@@ -57,24 +58,24 @@
                     </div>
                 </div>
 
-<%--                <div class="col-xl-3 col-md-6 mb-4">--%>
-<%--                    <div class="card border-left-success shadow h-100 py-2">--%>
-<%--                        <div class="card-body">--%>
-<%--                            <div class="row no-gutters align-items-center">--%>
-<%--                                <div class="col mr-2">--%>
-<%--                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">--%>
-<%--                                        Sản phẩm bán chạy nhất--%>
-<%--                                    </div>--%>
-<%--                                    <div class="h5 mb-0 font-weight-bold text-gray-800">${maSanPhamBanChayNhat}</div>--%>
-<%--                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Đã bán: ${soLuongDaBan}</div>--%>
-<%--                                </div>--%>
-<%--                                <div class="col-auto">--%>
-<%--                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>--%>
-<%--                                </div>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
+                <%--                <div class="col-xl-3 col-md-6 mb-4">--%>
+                <%--                    <div class="card border-left-success shadow h-100 py-2">--%>
+                <%--                        <div class="card-body">--%>
+                <%--                            <div class="row no-gutters align-items-center">--%>
+                <%--                                <div class="col mr-2">--%>
+                <%--                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">--%>
+                <%--                                        Sản phẩm bán chạy nhất--%>
+                <%--                                    </div>--%>
+                <%--                                    <div class="h5 mb-0 font-weight-bold text-gray-800">${maSanPhamBanChayNhat}</div>--%>
+                <%--                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Đã bán: ${soLuongDaBan}</div>--%>
+                <%--                                </div>--%>
+                <%--                                <div class="col-auto">--%>
+                <%--                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>--%>
+                <%--                                </div>--%>
+                <%--                            </div>--%>
+                <%--                        </div>--%>
+                <%--                    </div>--%>
+                <%--                </div>--%>
 
                 <div class="col-xl-3 col-md-6 mb-4">
                     <div class="card border-left-info shadow h-100 py-2">
@@ -86,7 +87,8 @@
                                     </div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" style="margin-top: 15px">${tongDonHang} / ${totalQuantity}</div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
+                                                 style="margin-top: 15px">${tongDonHang} / ${totalQuantity}</div>
                                         </div>
                                         <%--                                                    <div class="col">--%>
                                         <%--                                                        <div class="progress progress-sm mr-2">--%>
@@ -124,7 +126,6 @@
                     <canvas id="productChart" width="400" height="200"></canvas>
                 </div>
             </div>
-
             <div class="collapse" id="collapseExample1">
                 <div class="card card-body">
                     <div>
@@ -147,7 +148,7 @@
 
 <%--Done--%>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         var currentChart;
 
         function changeChartType(chartType) {
@@ -185,6 +186,26 @@
                             datalabels: {
                                 anchor: 'end',
                                 align: 'top',
+                            }
+                        },
+
+                        tooltips: {
+                            enabled: true,
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                title: function (tooltipItems, data) {
+                                    var index = tooltipItems[0].dataIndex;
+                                    return data.labels[index];
+                                },
+                                label: function (tooltipItem, data) {
+                                    var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
+                                    return datasetLabel + ': ' + tooltipItem.yLabel;
+                                },
+                                afterLabel: function (tooltipItem, data) {
+                                    var index = tooltipItem.index;
+                                    return 'Size: ' + size[index] + '\nMàu sắc: ' + mauSac[index];
+                                }
                             }
                         },
                         barPercentage: 0.5,
@@ -283,33 +304,39 @@
 
         var productNames = [];
         var productQuantities = [];
+        var size = [];
+        var mauSac = [];
 
-        $.getJSON('/thongke-data', function(data) {
 
-            data.forEach(function(product) {
+        $.getJSON('/thongke-data', function (data) {
+
+            data.forEach(function (product) {
 
                 //product đại diện cho giầy thể thao chi tiết
 
                 productNames.push(product.giayTheThao.tenGiayTheThao);
                 productQuantities.push(product.soLuong);
+                size.push(product.size.size);
+                mauSac.push(product.mauSac.tenMauSac);
 
             });
 
             changeChartType('bar'); // Hiển thị biểu đồ bar mặc định khi trang được tải
 
-            $('#barChartButton').click(function() {
+            $('#barChartButton').click(function () {
                 changeChartType('bar');
             });
 
-            $('#lineChartButton').click(function() {
+            $('#lineChartButton').click(function () {
                 changeChartType('line');
             });
 
-            $('#pieChartButton').click(function() {
+            $('#pieChartButton').click(function () {
                 changeChartType('pie');
             });
         });
     });
+
     function createSolidWaveBackgroundGradient(ctx) {
         const gradient = ctx.createLinearGradient(0, 0, 0, 300);
         gradient.addColorStop(0, 'rgba(0, 0, 255, 0.8)'); // Màu sắc ở đỉnh sóng
@@ -322,8 +349,11 @@
     currentChart.options.plugins.background = {
         color: createSolidWaveBackgroundGradient(ctx), // Sử dụng gradient màu nền sóng đặc
     };
+
 </script>
-<%----%>
+
+<%--Thống kê hóa đơn--%>
+
 <script>
     $(document).ready(function() {
         var currentChart;
@@ -483,13 +513,13 @@
             //
             // });
 
-             data.forEach(function(hoaDon) {
-                 if (hoaDon.trangThai === 3) {
-                            // Đại diện cho hóa đơn
-                            productNames.push(hoaDon.ngayThanhToan);
-                            productTongTien.push(hoaDon.thanhTien);
-                 }
-             });
+            data.forEach(function(hoaDon) {
+                if (hoaDon.trangThai === 3) {
+                    // Đại diện cho hóa đơn
+                    productNames.push(hoaDon.ngayThanhToan);
+                    productTongTien.push(hoaDon.thanhTien);
+                }
+            });
 
             changeChartType('bar'); // Hiển thị biểu đồ bar mặc định khi trang được tải
 
@@ -507,6 +537,7 @@
         });
     });
 </script>
+
 
 </body>
 </html>
