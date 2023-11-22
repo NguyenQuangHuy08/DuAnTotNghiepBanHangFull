@@ -132,7 +132,6 @@
                                 <label style="margin-left: 40px">Email <span style="color: red">*</span></label>
                                 <frm:input class="form-control" placeholder="Email"
                                            cssStyle="width: 250px; margin-left: 40px; margin-right: 30px" path="email"/>
-                                <frm:errors path="email" style="color: red;margin-left: 35px"></frm:errors>
                                 <label style="color: red;margin-left: 35px">${emailNotNull}</label>
                                 <label style="color: red;margin-left: 35px">${emailHopLe}</label>
                             </div>
@@ -140,8 +139,7 @@
                                 <label style="margin-left: 40px;">Mật khẩu <span style="color: red">*</span></label>
                                 <frm:input class="form-control" type="password" placeholder="Mật khẩu"
                                            cssStyle="width: 250px; margin-left: 30px" path="matKhau"/>
-                                <frm:errors path="matKhau"></frm:errors>
-                                <label class="">${matKhauNotNull}</label>
+                                <label style="color: red;margin-left: 40px">${matKhauNotNull}</label>
                             </div>
                         </div>
                         <div class="row">
@@ -151,7 +149,6 @@
                                 <frm:input class="form-control" placeholder="Tên khách hàng"
                                            cssStyle="width: 250px; margin-left: 40px; margin-right: 30px"
                                            path="tenKhachHang"/>
-                                <frm:errors path="tenKhachHang"></frm:errors>
                                 <label class="">${tenKhachHangNotNull}</label>
                                 <label>${tenKhachHangHopLe}</label>
                             </div>
@@ -176,7 +173,6 @@
                                         style="color: red">*</span></label>
                                 <frm:input class="form-control" placeholder="Số điện thoại"
                                            cssStyle="width: 250px; margin-left: 30px" path="soDienThoai"/>
-                                <frm:errors path="soDienThoai"></frm:errors>
                                 <label class="">${soDienThoaiNotNull}</label>
                                 <label>${soDienThoaiHopLe}</label>
                             </div>
@@ -185,8 +181,8 @@
                             <div class="col-6">
                                 <label style="margin-left: 40px; margin-top: 20px">Địa chỉ <span
                                         style="color: red">*</span></label>
-                                <frm:input class="form-control" placeholder="Địa chỉ"
-                                           cssStyle="width: 250px; margin-left: 40px" path="diaChi"/>
+                                <frm:input class="form-control" placeholder="Địa chỉ" cssStyle="width: 250px; margin-left: 40px" path="diaChi"/>
+                                <label style="color: red">${diaChiNotNull}</label>
                             </div>
                         </div>
                     </div>
@@ -196,10 +192,8 @@
                             Đăng kí
                         </button>
                     </div>
-
                 </div>
             </frm:form>
-
         </div>
     </div>
 </div>

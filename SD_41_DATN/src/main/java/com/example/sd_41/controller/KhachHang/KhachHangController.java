@@ -74,14 +74,28 @@ public class KhachHangController {
         return "/KhachHang/list";
     }
 
+    //Todo code check trùng email của khách hàng
+    private  boolean checkTrungEmailKhachHang(String emailKhachHang){
 
+            for(KhachHang khachHang : khachHangRepository.findAll()){
+
+                 if(khachHang.getEmail().equalsIgnoreCase(emailKhachHang)){
+
+                     return true;
+
+                 }
+
+            }
+
+            return false;
+
+    }
 
     //Todo code đăng ký tài khoản khách hàng
-    @RequestMapping(value = "/KhachHang/view-create")
+    @RequestMapping(value = "/KhachHang/view-createDanngKy")
     public String create(Model model){
 
         model.addAttribute("khachHang", new KhachHang());
-
         return "/templates/Users/Layouts/DangNhap/Register";
 
     }
@@ -101,17 +115,23 @@ public class KhachHangController {
 
         }
 
+        //Check trùng tên Email
+
+        if(checkTrungEmailKhachHang(khachHang.getEmail())){
+
+            model.addAttribute("erCheckTrungEmailKhachHang","Xin lỗi tên email này đã tồn tại trong hệ thống !");
+            return "/templates/Users/Layouts/DangNhap/Register";
+
+        }
 
         if (khachHang.getTenKhachHang() == null || khachHang.getTenKhachHang().isEmpty() || khachHang.getTenKhachHang().trim().length()==0){
             model.addAttribute("tenKhachHangNotNull", "Tên khách hàng không được để trống");
-
             return "/templates/Users/Layouts/DangNhap/Register";
 
         }
 
         if (khachHang.getTenKhachHang().matches("^\\d.*") || !khachHang.getTenKhachHang().matches(".*[a-zA-Z].*")){
             model.addAttribute("tenKhachHangHopLe", "Tên khách hàng không hợp lệ");
-
             return "/templates/Users/Layouts/DangNhap/Register";
 
         }
@@ -132,8 +152,8 @@ public class KhachHangController {
         }
 
         if (khachHang.getDiaChi() == null || khachHang.getDiaChi().isEmpty() || khachHang.getDiaChi().trim().length()==0){
-            model.addAttribute("diaChiNotNull", "Địa chỉ không được để trống");
 
+            model.addAttribute("diaChiNotNull", "Địa chỉ không được để trống");
             return "/templates/Users/Layouts/DangNhap/Register";
 
         }
@@ -226,39 +246,46 @@ public class KhachHangController {
                                       @ModelAttribute("khachHang")KhachHang khachHang,
                                       @Valid
                                       BindingResult result,
-                                      HttpSession session){
+                                      HttpSession session) {
 
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
 
             System.out.println("Đăng nhập thất bại !");
-            model.addAttribute("messErLogin","Đăng nhập thất bại");
-
+            model.addAttribute("messErLogin", "Đăng nhập thất bại");
             return "/templates/Users/Layouts/DangNhap/Login";
 
         }
 
-        KhachHang khachHangData =  khachHangRepository.findByEmailAndMatKhau(khachHang.getEmail(),khachHang.getMatKhau());
+        KhachHang khachHangData = khachHangRepository.findByEmailAndMatKhau(khachHang.getEmail(), khachHang.getMatKhau());
 
         //Đăng nhập thành công
 
-        if(khachHangData != null){
+        if (khachHangData != null) {
 
             UUID idKhachHang = khachHangData.getId(); //tìm kiếm mã khách hàng
             String maKH = khachHangData.getMaKhachHang();
 
-            session.setAttribute("khachHangLog",khachHangData);
-            session.setAttribute("maKH",maKH);
-            session.setAttribute("idKhachHang",idKhachHang);//Lưu lại mã trong quá trình làm việc
+            session.setAttribute("khachHangLog", khachHangData);
+            session.setAttribute("maKH", maKH);
+            session.setAttribute("idKhachHang", idKhachHang);//Lưu lại mã trong quá trình làm việc
 
 //            return "redirect:/TrangChu/listGiayTheThao";
             return "redirect:/KhachHang/showSweetAlertLoginSuccess";
 
 
+        } else if (khachHangData == null) {
+
+            session.setAttribute("KhachHangNull", "Xin lỗi tài khoản này không tồn tại !");
+            System.out.println("Xin lỗi tài khoản này không tồn tại !");
+            return "/templates/Users/Layouts/DangNhap/Login";
+
         }
 
-        model.addAttribute("erLogLogin","Email hoặc mật khẩu không đúng !");
+        model.addAttribute("erLogLogin", "Email hoặc mật khẩu không đúng !");
         System.out.println("Lỗi dữ liệu !");
         return "/templates/Users/Layouts/DangNhap/Login";
+
+
 
     }
 

@@ -42,8 +42,12 @@ public class WebMVCConfig implements WebMvcConfigurer {
 	    //Member
         registry.addInterceptor(logGinInterceptor)
                 .addPathPatterns(
+                        //Check home admin
+                        "/TrangChu/Admin/home",
+                        //Check bảng cổ giầy
                         "/CoGiay/list",
                         "/CoGiay/view-create",
+
                         "/kieuBuoc/hien-thi",
                         "/kieuBuoc/view-add",
                         "/chatLieu/hien-thi",

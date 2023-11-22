@@ -10,6 +10,7 @@ import com.example.sd_41.repository.KhachHangRepository;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoChiTietRepository;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoRepository;
 
+import com.example.sd_41.service.GioHang.GioHangChiTietImpl;
 import com.example.sd_41.service.GioHang.GioHangChiTietService;
 import com.example.sd_41.service.KhachHangService;
 import jakarta.servlet.ServletContext;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,21 +54,19 @@ public class TrangChuGiayTheThaoController {
      private GioHangChiTietRepository gioHangChiTietRepository;
 
      @Autowired
-     private GioHangChiTietService gioHangChiTietService;
-
-     @Autowired
-     private KhachHangRepository khachHangRepository;
-
-     @Autowired
-     private KhachHangService khachHangService;
-
-     @Autowired
      private HoaDonRepository hoaDonRepository;
 
      @Autowired
      private HoaDonChiTietRepository hoaDonChiTietRepository;
 
+     @Autowired
+     private GioHangChiTietImpl gioHangChiTietImpl;
 
+     @Autowired
+     private KhachHangRepository khachHangRepository;
+
+     @Autowired
+     private GioHangChiTietService gioHangChiTietService;
 
 
     //Todo code view giầy thể thao cho người dùng mua hàng phân trang cho người dùng ở luôn trang index by Giầy thể thao
@@ -236,6 +236,26 @@ public class TrangChuGiayTheThaoController {
         model.addAttribute("currentPage", currentPage);
     }
 
+    //Todo code lọc
+    @GetMapping("/GiayTheThao/find/{idGiayTheThao}/{idMauSac}/{idSize}")
+    public ResponseEntity<?> find(
+            @PathVariable UUID idGiayTheThao,
+            @PathVariable UUID idMauSac,
+            @PathVariable UUID idSize) {
+
+        System.out.println("Mã giầy thể thao :"+idGiayTheThao);
+        System.out.println("Mã màu sắc: "+idMauSac);
+        System.out.println("Mã size"+idSize);
+
+        GiayTheThaoChiTiet giayTheThaoChiTiet = giayTheThaoChiTietRepository.findIdByIdGiayTheThaoMsSize(idGiayTheThao, idMauSac, idSize);
+
+        return ResponseEntity.ok(giayTheThaoChiTiet.getSoLuong());
+
+    }
+
+
+
+    //Todo code detail giầy thể thao chi tiết
     @GetMapping("GiayTheThao/detailThongTinGiayTheThao/{id}")
     public String detailChiTietGiayTheThao(@PathVariable UUID id, Model model,//id là id của giầy thể thao
                                            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
@@ -447,37 +467,85 @@ public class TrangChuGiayTheThaoController {
 
         }
 
-
-//        List<GioHangChiTiet> listGioHangChiTiet = gioHangChiTietRepository.findAll();
-//        model.addAttribute("listGioHangChiTiet",listGioHangChiTiet);
-//
-//        return "/templates/Users/Layouts/Shop/gioHangView";
-
     }
+
+
+
+
+
+
+
+    //Todo code delete
+
+//    @GetMapping("delete/{id}")
+//    public String deleteProduct(@PathVariable("id") Integer id){
+//
+//        if(categoryRepository.existsById(id)){
+//
+//            categoryRepository.deleteById(id);
+//
+//        }
+//
+//        return "redirect:/category/list";
+//
+//    }
+
 
     //Todo code xóa giỏ hàng, id là của giỏ hàng chi tiết
+//
+//    @PostMapping("GiayTheThao/delete/{id}")
+//    public String deleteGioHang(Model model,
+//                                @PathVariable("id") UUID id //id của giỏ hàng chi tết,
+//    ){
+//
+//
+//            gioHangChiTietService.delete(id);
+//            model.addAttribute("viewDeleteGioHang", "Xóa sản phẩm trong giỏ hàng thành công !");
+//
+//            return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+//
+//    }
 
-    @GetMapping("GiayTheThao/delete/{id}")
-    public String deleteGioHang(Model model,
-                                @PathVariable("id") UUID id //id của giỏ hàng chi tết,
-    ){
 
+//    @PostMapping("/GiayTheThao/delete/*")
+//    public String deleteGioHang(Model model,HttpServletRequest request,HttpSession session
+//    ){
+//
+//        String url = request.getRequestURI();
+//        String[] parts = url.split("/GiayTheThao/delete/");
+//
+//        UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
+//        model.addAttribute("idKhachHang",idKhachHang);
+//
+//        String clear = request.getParameter("clear");
+//
+//        GioHangChiTiet gioHangChiTiet = gioHangChiTietImpl.findById(UUID.fromString(clear));
+//
+//        GioHangChiTiet gioHangChiTietNew = new GioHangChiTiet();
+//
+//        gioHangChiTietNew.setGioHang(gioHangChiTiet.getGioHang());
+//        gioHangChiTietNew.setGiayTheThaoChiTiet(gioHangChiTiet.getGiayTheThaoChiTiet());
+//        gioHangChiTietNew.setSoLuong(gioHangChiTiet.getSoLuong());
+//        gioHangChiTiet.setDonGia(gioHangChiTiet.getDonGia());
+//        gioHangChiTiet.setTrangThai(1);
+//
+//        gioHangChiTietImpl.update(gioHangChiTiet.getId(),gioHangChiTietNew);
+//
+//        return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+//
+//    }
 
-            gioHangChiTietService.delete(id);
-            model.addAttribute("viewDeleteGioHang", "Xóa sản phẩm trong giỏ hàng thành công !");
-
-            return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
-
-    }
 
 
     //Todo code người dùng add hóa đơn
     @PostMapping("/GiayTheThao/nguoiDung/addHoaDon")
     public String nguoiDungAddHoaDon(Model model,
+                                     @RequestParam(value = "action", required = false) String action,
                                      @RequestParam(value = "chon", required = false) List<UUID> chon,
                                      @RequestParam(value = "soLuong", required = false) List<String> soLuong,
                                      @RequestParam(value = "donGia", required = false) List<String> donGia,
                                      HttpSession session,
+                                     HttpServletRequest request,
                                      RedirectAttributes attributes) {
 
         //Đã lưu mã vào session

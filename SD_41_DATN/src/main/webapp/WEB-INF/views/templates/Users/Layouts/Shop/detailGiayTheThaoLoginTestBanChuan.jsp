@@ -111,7 +111,7 @@
 <body>
 
 <%--   Header--%>
-<%@ include file="../../Layouts/Index/_Header.jsp" %>
+<%@ include file="../../Layouts/Index/_Header_No_Register.jsp" %>
 
 <div class="container" style="margin-top: 100px">
 
@@ -141,10 +141,9 @@
 
                 <p style="color: black;margin-top: 30px;font-size: 18px">
                   Giá bán:  <span style="color: red">
-                                <fmt:formatNumber type=""  value="${giayTheThao.giaBan}" pattern="#,##0.###" />
+                                <fmt:formatNumber  type="" value="${giayTheThao.giaBan}" pattern="#,##0.###" />
                             </span>
                     VNĐ
-
                 </p>
 
                 <h6 style="color: gray">
@@ -152,7 +151,7 @@
                 </h6>
 
                 <h6 style="color: gray">
-                    Vận chuyển : ${khachHang.diaChi}
+                    Vận chuyển : ${khachHangView.diaChi}
                 </h6>
 
                 <form method="post" action="/GiayTheThao/NguoiDung/AddToCart/${giayTheThao.id}">
@@ -207,6 +206,8 @@
                         </div>
                         <div class="er" style="margin-top: 20px">
 <%--                            Check số lượng--%>
+                            <label id="soLuongLabel"></label>
+
                             <h6 style="color: red">${erCheckSoLuongAddToCart}</h6>
                             <h6 style="color: red">${erCheckNumberSoLuongAddToCart}</h6>
                             <h6 style="color: red">${erSoLuongAddToCartMin}</h6>
@@ -216,12 +217,14 @@
                             <h6 style="color: red">${erFailNotLoginKhachHang}</h6>
                         </div>
                     <input type="hidden" name="idGiayTheThao" value="${giayTheThao.id}">
+                    <input type="hidden" name="idKhachHang" value="${idKhachHang}">
+                    <input type="hidden" name="idGiayTheThaoChiTiet" value="${idGiayTheThaoChiTiet}">
                     <div class="button_MuaHang" style="margin-top: 80px; margin-left: 90px">
                         <a style="text-decoration: none">
                             <button style="margin-bottom: 10px; margin-right: 40px" type="submit" class="btn btn-primary">
-                                    <span style="color: black; font-size: 22px; font-weight: bold">
-                                        🛒
-                                    </span>
+                                <span style="color: black; font-size: 22px; font-weight: bold">
+                                    🛒
+                                </span>
                                 Thêm vào giỏ hàng
                             </button>
                         </a>
@@ -528,6 +531,49 @@ Vì vậy, anh/chị vui lòng đọc kỹ quy định đổi trả hàng ạ�
     window.onload = removeDuplicateSizes;
 </script>
 <%--Change or --%>
+<%--Mã js   Ajax cho số lượng size và màu sắc--%>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Sự kiện khi chọn kích thước
+        $('input[name=size]').click(function () {
+            updateQuantityLabel();
+        });
+
+        // Sự kiện khi chọn màu sắc
+        $('input[name=mauSac]').click(function () {
+            updateQuantityLabel();
+        });
+
+        function updateQuantityLabel() {
+            var selectedSize = $('input[name=size]:checked').val();
+            var selectedMauSac = $('input[name=mauSac]:checked').val();
+            var quantityLabel = $('#soLuongLabel');
+
+            // Kiểm tra nếu đã chọn cả kích thước và màu sắc
+            if (selectedSize && selectedMauSac) {
+                // Gửi yêu cầu Ajax để lấy số lượng từ API
+                $.ajax({
+                    url: '/GiayTheThao/find/' + selectedSize + '/' + selectedMauSac,
+                    type: 'GET',
+                    success: function (response) {
+                        // Cập nhật số lượng trong thẻ label
+                        quantityLabel.text('Số lượng: ' + response);
+
+                    },
+                    error: function () {
+                        console.log('Lỗi khi lấy số lượng từ API');
+                    }
+                });
+            } else {
+                // Nếu chưa chọn đủ thông tin, hiển thị label rỗng
+                quantityLabel.text('');
+            }
+        }
+    });
+</script>
 
 
 

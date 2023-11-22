@@ -57,16 +57,19 @@
 <%--                <div class="iamge">--%>
 <%--                    <h3>Bee Shoes</h3>--%>
 <%--                </div>--%>
-                <div class="row">
-                    <div class="col-5">
-                        <img src="../../../../../../resources/img/banner/banner-img.png" alt="" style="float:left;width: 80px; border: 1px solid white; border-radius: 1000px 1500px 700px;">
+                <a href="/TrangChu/listGiayTheThao">
+                    <div class="row">
+                        <div class="col-4">
+                            <img src="../../../../../../resources/img/banner/banner-img.png" alt="" style="float:left;width: 80px; border: 1px solid white; border-radius: 1000px 1500px 700px;">
+                        </div>
+                        <div class="col-7">
+                            <h3 style="margin-top: 10px">Bee Shoes</h3>
+                        </div>
                     </div>
-                    <div class="col-7">
-                        <h3 style="margin-top: 10px">Bee Shoes</h3>
-                    </div>
-                </div>
+                </a>
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                     <ul class="nav navbar-nav menu_nav ml-auto">
                         <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
@@ -123,7 +126,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <a href="/KhachHang/view-create">
+                        <a href="/KhachHang/view-createDanngKy">
                             <p style="margin-top: 17px;color: black;font-size: 15px;font-weight: bold">Đăng kí</p>
                         </a>
                     </div>

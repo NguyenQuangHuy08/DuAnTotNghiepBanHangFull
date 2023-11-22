@@ -88,7 +88,7 @@
     <br>
     <br>
 
-    <div><a href="${pageContext.request.contextPath}/KhachHang/view-create" class="btn btn-primary">Thêm sản phẩm</a>
+    <div><a href="${pageContext.request.contextPath}/KhachHang/view-createDanngKy" class="btn btn-primary">Thêm khách hàng</a>
     </div>
     <br>
     <br>

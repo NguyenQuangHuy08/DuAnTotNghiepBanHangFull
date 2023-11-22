@@ -51,9 +51,8 @@
 
     </div>
 
-    <div style="margin-left: 300px; padding: 1px 16px;">
-        <h2>Nội dung trang web của bạn</h2>
-        <p>Đây là nơi bạn có thể thêm các phần tử và nội dung trang web của mình.</p>
+    <div style="margin-left: 300px; padding: 1px 16px;margin-top: 50px">
+        <h3>Vui lòng theo dõi đơn hàng để có thể biết được chi tiết</h3>
     </div>
 
 </div>

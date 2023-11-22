@@ -78,9 +78,10 @@
 
                 <br>
                 <div class="label" style="color: red; font-size: 15px">
-                        ${erLogLogin}
+                        <span style="color: red">${erLogLogin}</span>
                         <span style="color: red">${messageTrangThai}</span>
                         <span style="color: red">${messageErol}</span>
+                        <span style="color: red">${erUserNoNull}</span>
                 </div>
 
                 <div class="container-login100-form-btn">

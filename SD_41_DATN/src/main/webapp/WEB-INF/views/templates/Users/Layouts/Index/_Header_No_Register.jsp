@@ -59,19 +59,21 @@
 <%--                <div class="iamge">--%>
 <%--                    <h3>Bee Shoes</h3>--%>
 <%--                </div>--%>
-                <div class="row">
-                    <div class="col-5">
-                        <img src="../../../../../../resources/img/banner/banner-img.png" alt="" style="float:left;width: 80px; border: 1px solid white; border-radius: 1000px 1500px 700px;">
-                    </div>
-                    <div class="col-7">
-                        <h3 style="margin-top: 10px">Bee Shoes</h3>
-                    </div>
+        <a href="/TrangChu/listGiayTheThao">
+            <div class="row">
+                        <div class="col-4">
+                            <img src="../../../../../../resources/img/banner/banner-img.png" alt="" style="float:left;width: 80px; border: 1px solid white; border-radius: 1000px 1500px 700px;">
+                        </div>
+                        <div class="col-7">
+                            <h3 style="margin-top: 10px;box-shadow: #10707f">Bee Shoes</h3>
+                        </div>
                 </div>
+        </a>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                     <ul class="nav navbar-nav menu_nav ml-auto">
-                        <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item active"><a class="nav-link" href="/TrangChu/listGiayTheThao">Home</a></li>
                         <li class="nav-item submenu dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                                aria-expanded="false">Shop</a>
@@ -109,14 +111,14 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-nav menu_nav ml-auto">
-                        <div class="row" style="margin-top: 10px">
+                        <div class="row" style="margin-top: 13px">
                             <div class="col-12">
                                 <a href="/GiayTheThao/NguoiDung/ViewGioHang">
                                     <span style="margin-left: 10px;margin-right: 40px;padding-top: 40px" class="cart-icon"></span>
                                 </a>
                             </div>
                         </div>
-                    <div class="row">
+                    <div class="row" style="margin-top: 4px">
                         <div class="col-8" style="margin-left: 0px;margin-right: 65px">
                             <li class="nav-item submenu dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -138,7 +140,7 @@
                     <div class="row">
                         <div class="col-12">
                             <a href="/KhachHang/dangXuat">
-                                <p style="margin-top: 17px;color: black;font-size: 15px;font-weight: bold">Đăng xuất</p>
+                                <p style="margin-top: 23px;color: black;font-size: 15px;font-weight: bold">Đăng xuất</p>
                             </a>
                         </div>
                     </div>

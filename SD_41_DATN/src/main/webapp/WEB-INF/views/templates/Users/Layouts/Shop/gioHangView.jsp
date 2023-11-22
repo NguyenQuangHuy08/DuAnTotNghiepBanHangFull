@@ -47,7 +47,7 @@
             <th scope="col" style="text-align: center;color: black">Giá bán</th>
             <th scope="col" style="text-align: center;color: black">Số lượng</th>
             <th scope="col" style="text-align: center;color: black">Đơn giá</th>
-<%--            <th scope="col" style="text-align: center;color: black">Functions</th>--%>
+            <th scope="col" style="text-align: center;color: black">Functions</th>
         </tr>
         </thead>
         <tbody>
@@ -86,13 +86,8 @@
 
                     </td>
 <%--                    Xóa riêng--%>
-<%--                    <td style="margin-bottom: 10px">--%>
-<%--                        <a class="col-sm-4" href="${pageContext.request.contextPath}/GiayTheThao/delete/${gioHangChiTiet.id}">--%>
-<%--                            <button class="btn btn-primary" style="text-align: center">--%>
-<%--                                    Xóa--%>
-<%--                            </button>--%>
-<%--                        </a>--%>
-<%--                    </td>--%>
+                    <td style="margin-bottom: 10px">
+
                 </tr>
         </c:forEach>
         </tbody>
@@ -102,17 +97,6 @@
             <span>${soLuongMax1}</span>
             <span style="color: red;font-size: 15px">${erCheckNun}</span>
         </div>
-
-<%--    <form action="${pageContext.request.contextPath}/GiayTheThao/nguoiDung/addHoaDon" method="post">--%>
-
-<%--    <div style="margin-top: 30px">--%>
-<%--&lt;%&ndash;        <a class="col-sm-4" href="${pageContext.request.contextPath}/GiayTheThao/nguoiDung/addHoaDon">&ndash;%&gt;--%>
-<%--            <button type="submit" class="btn btn-primary">--%>
-<%--                Mua hàng--%>
-<%--            </button>--%>
-<%--&lt;%&ndash;        </a>&ndash;%&gt;--%>
-<%--    </div>--%>
-<%--    </form>--%>
 
         <div style="margin-top: 30px">
             <button type="submit" class="btn btn-primary">
@@ -138,8 +122,6 @@
 
             })
         }
-
-
 
         //Code cho giỏ hàng chi tiết
            $(document).ready(function () {

@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Login khách hàng</title>
     <!--===============================================================================================-->
     <link rel="icon" type="/image/png" href="/images/icons/favicon.jpg"/>
     <!--===============================================================================================-->
@@ -51,7 +51,6 @@
 					<span class="login100-form-title" style="color: black; font-size: 30px; font-weight: bold" >
                         Đăng nhập
 					</span>
-
                 <div class="wrap-input100 validate-input" data-validate = "....@email.com">
                     <frm:input path="email" class="input100" type="text" name="email" placeholder="Email" style="font-weight: bold; font-size: 15px"/>
 
@@ -59,14 +58,6 @@
                     <span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
 					</span>
-                        <%--                    <div class="textTitle"><frm:errors class="errors" path="email" /></div>--%>
-                </div>
-                <div>
-                    <label>
-
-                        <h5></h5>
-
-                    </label>
                 </div>
                 <div class="wrap-input100 validate-input" data-validate = "Input type number or String">
                     <frm:input path="matKhau" class="input100" type="password" name="pass" placeholder="Password" style="font-weight: bold; font-size: 15px"/>
@@ -77,7 +68,10 @@
                 </div>
 
                 <br>
-                <div class="label" style="color: red; font-size: 15px">${erLogLogin}</div>
+                <div class="label" style="color: red; font-size: 15px">
+                        ${erLogLogin}
+                        ${KhachHangNull}
+                </div>
 
                 <div class="container-login100-form-btn">
                     <button type="submit" class="login100-form-btn">
@@ -94,7 +88,7 @@
                     </a>
                 </div>
                     <br>
-                    <a class="txt2" href="/KhachHang/view-create">
+                    <a class="txt2" href="/KhachHang/view-createDanngKy">
                         <span style="color: black;font-size: 15px">Đăng ký tài khoản</span>
                         <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
                     </a>

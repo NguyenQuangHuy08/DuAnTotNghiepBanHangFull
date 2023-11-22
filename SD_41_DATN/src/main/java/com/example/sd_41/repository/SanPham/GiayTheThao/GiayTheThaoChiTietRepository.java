@@ -36,5 +36,15 @@ public interface GiayTheThaoChiTietRepository extends JpaRepository<GiayTheThaoC
     @Query("SELECT SUM(sp.soLuong) FROM GiayTheThaoChiTiet sp")
     Integer sumSoLuong();
 
+    //Todo code
+
+
+    @Query("select p from GiayTheThaoChiTiet p where p.giayTheThao.id = ?1 and p.mauSac.id = ?2 and p.size.id = ?3")
+    GiayTheThaoChiTiet findIdByIdGiayTheThaoMsSize(UUID id, UUID idMauSac, UUID idSize);
+
+
+
+
+
 
 }

@@ -32,22 +32,6 @@ public class DangNhapUserController {
     @Autowired
     ServletContext context;
 
-    //Todo code check trùng email
-    private boolean emailCheckTrung(String email){
-
-        for (User user : userRepository.findAll()){
-
-            if(user.getEmail().equalsIgnoreCase(email)){
-
-                return true;//Email đã tồn tại
-
-            }
-
-        }
-
-        return false;
-
-    }
 
     //Todo code login cho user
     @GetMapping(value = "/login")
@@ -92,6 +76,12 @@ public class DangNhapUserController {
 
             System.out.println("Tài khoản này đã không còn hoạt động");
             model.addAttribute("messageTrangThai","Tài khoản này đã không còn hoạt động!");
+            return "/templates/Admin/Layouts/DangNhap/Login";
+
+        }else if(userData == null){
+
+            model.addAttribute("erUserNoNull","Xin lỗi tài khoản này không tồn tại !");
+            System.out.println("Xin lỗi tài khoản này không tồn tại !");
             return "/templates/Admin/Layouts/DangNhap/Login";
 
         }

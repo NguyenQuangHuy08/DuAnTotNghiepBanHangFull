@@ -1,5 +1,9 @@
 package com.example.sd_41.controller.KhachHang.BanHang;
 
+import com.example.sd_41.controller.Momo.MomoModel;
+import com.example.sd_41.controller.Momo.ResultMoMo;
+import com.example.sd_41.controller.Utils.Constant;
+import com.example.sd_41.controller.Utils.Decode;
 import com.example.sd_41.model.HoaDon;
 import com.example.sd_41.model.HoaDonChiTiet;
 import com.example.sd_41.model.KhachHang;
@@ -9,6 +13,8 @@ import com.example.sd_41.repository.KhachHangRepository;
 import com.example.sd_41.service.HoaDon.HoaDonChiTietServie;
 import com.example.sd_41.service.HoaDon.HoaDonService;
 import com.example.sd_41.service.HoaDon.HoaDonServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oracle.wls.shaded.org.apache.xpath.operations.Mod;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -23,7 +29,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -90,14 +102,75 @@ public class HoaDonController {
                                               @PathVariable String id,
                                               HttpSession session,
                                               HttpServletRequest request,
-                                              RedirectAttributes attributes) {
+                                              RedirectAttributes attributes) throws JsonProcessingException {
         UUID hoaDonId = UUID.fromString(id);
         String hinhThuc = request.getParameter("payment-method");
 
+
+
         if ("banking".equals(hinhThuc)) {
 
-            System.out.println("Bạn đã chọn thanh toán bằng banking");
-            return "Bạn đã chọn thanh toán bằng tiền mặt";
+            //Todo code
+
+            ObjectMapper mapper = new ObjectMapper();
+            int code = (int) Math.floor(((Math.random() * 89999999) + 10000000));
+            String orderId = Integer.toString(code);
+            MomoModel jsonRequest = new MomoModel();
+            jsonRequest.setPartnerCode(Constant.IDMOMO);
+            jsonRequest.setOrderId(orderId);
+            jsonRequest.setStoreId(orderId);
+            jsonRequest.setRedirectUrl(Constant.redirectUrl);
+            jsonRequest.setIpnUrl(Constant.ipnUrl);
+            jsonRequest.setAmount(String.valueOf(1000));
+            jsonRequest.setOrderInfo("Thanh toán Male Fashion.");
+            jsonRequest.setRequestId(orderId);
+            jsonRequest.setOrderType(Constant.orderType);
+            jsonRequest.setRequestType(Constant.requestType);
+            jsonRequest.setTransId("1");
+            jsonRequest.setResultCode("200");
+            jsonRequest.setMessage("");
+            jsonRequest.setPayType(Constant.payType);
+            jsonRequest.setResponseTime("300000");
+            jsonRequest.setExtraData("");
+
+            String decode = "accessKey=" + Constant.accessKey + "&amount=" + jsonRequest.amount + "&extraData="
+                    + jsonRequest.extraData + "&ipnUrl=" + Constant.ipnUrl + "&orderId=" + orderId + "&orderInfo="
+                    + jsonRequest.orderInfo + "&partnerCode=" + jsonRequest.getPartnerCode() + "&redirectUrl="
+                    + Constant.redirectUrl + "&requestId=" + jsonRequest.getRequestId() + "&requestType="
+                    + Constant.requestType;
+
+
+            String signature = Decode.encode(Constant.serectkey, decode);
+            jsonRequest.setSignature(signature);
+            String json = mapper.writeValueAsString(jsonRequest);
+            HttpClient client = HttpClient.newHttpClient();
+            ResultMoMo res = new ResultMoMo();
+
+            try {
+                HttpRequest requestMomo = HttpRequest.newBuilder().uri(new URI(Constant.Url))
+                        .POST(HttpRequest.BodyPublishers.ofString(json)).headers("Content-Type", "application/json")
+                        .build();
+                HttpResponse<String> response = client.send(requestMomo, HttpResponse.BodyHandlers.ofString());
+                res = mapper.readValue(response.body(), ResultMoMo.class);
+            } catch (InterruptedException | URISyntaxException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            if (res == null) {
+
+                session.setAttribute("error_momo", "Thanh toán thất bại");
+                return "redirect:/home";
+
+            } else {
+//					return "redirect:/shop";
+//				resp.sendRedirect(res.payUrl);
+                return "redirect:" + res.payUrl;
+
+            }
+
+
+//            System.out.println("Bạn đã chọn thanh toán bằng banking");
+//            return "Bạn đã chọn thanh toán bằng tiền mặt";
 
         } else if ("cash".equals(hinhThuc)) {
 

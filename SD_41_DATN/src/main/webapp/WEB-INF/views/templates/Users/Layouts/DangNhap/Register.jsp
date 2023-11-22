@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Đăng kí tài khoản</title>
+    <title>Đăng kí tài khoản khách hàng</title>
     <!--===============================================================================================-->
     <link rel="icon" type="/image/png" href="/images/icons/favicon.jpg"/>
     <!--===============================================================================================-->
@@ -110,18 +110,6 @@
                 <div class="row" style="width: 800px">
 
                     <div class="col-3" style="margin-top: 70px">
-<%--                        <label for="" class="custom-file-upload" style="width: 200px">--%>
-<%--                            <div class="icon">--%>
-<%--                                <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24"></svg>--%>
-<%--                            </div>--%>
-<%--                            <div class="text">--%>
-<%--                                <span style="font-size: 13px;color: black">Click to upload image</span>--%>
-<%--                            </div>--%>
-<%--                            <div style="border: 1px solid red">--%>
-<%--                                <input name="link" style="margin-left: 18px" value="" type="file"/>--%>
-<%--                            </div>--%>
-<%--                        </label>--%>
-<%--                     <input name="imageKhachHang" style="margin-left: 18px" value="" type="file"/>--%>
 
                     </div>
 
@@ -133,8 +121,9 @@
                                 <frm:input class="form-control" placeholder="Email"
                                            cssStyle="width: 250px; margin-left: 40px; margin-right: 30px" path="email"/>
                                 <frm:errors path="email" style="color: red;margin-left: 35px"></frm:errors>
-                                <label style="color: red;margin-left: 35px">${emailNotNull}</label>
-                                <label style="color: red;margin-left: 35px">${emailHopLe}</label>
+                                <label style="color: red;margin-left: 40px">${emailNotNull}</label>
+                                <label style="color: red;margin-left: 40px">${emailHopLe}</label>
+                                <label style="color: red;margin-left: 40px">${erCheckTrungEmailKhachHang}</label>
                             </div>
                             <div class="col-6">
                                 <label style="margin-left: 40px;">Mật khẩu <span style="color: red">*</span></label>
@@ -152,8 +141,8 @@
                                            cssStyle="width: 250px; margin-left: 40px; margin-right: 30px"
                                            path="tenKhachHang"/>
                                 <frm:errors path="tenKhachHang"></frm:errors>
-                                <label class="">${tenKhachHangNotNull}</label>
-                                <label>${tenKhachHangHopLe}</label>
+                                <label style="color: red;margin-left: 40px">${tenKhachHangNotNull}</label>
+                                <label style="color: red;margin-left: 40px">${tenKhachHangHopLe}</label>
                             </div>
                             <div class="col-6">
                                 <label style="margin-left: 50px; margin-top: 20px; margin-bottom: 20px">Giới
