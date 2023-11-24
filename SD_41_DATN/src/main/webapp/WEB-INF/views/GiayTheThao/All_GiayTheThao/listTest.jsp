@@ -15,7 +15,7 @@
     <link href="/css/ChuongTrinhGiamGia/HoaDon/list.css" rel="stylesheet">
 
     <style>
-        <%--        Dành cho tab--%>
+<%--        Dành cho tab--%>
         .nav-tabs{
             background-image: linear-gradient(
                     to bottom right, #25AEB8, #0DDB9F
@@ -86,7 +86,7 @@
                  transform: translateY(0);
              }
         }
-        <%--        Danh cho giá bán--%>
+<%--        Danh cho giá bán--%>
 
         #priceSlider {
             width: 300px;
@@ -107,7 +107,7 @@
             cursor: ew-resize;
         }
 
-        /*    Table */
+    /*    Table */
         td, th {
             padding: 10px; /* Khoảng cách nội dung bên trong ô */
             color: black; /* Màu chữ */
@@ -164,17 +164,17 @@
                                 <input style="width: 500px; height: 35px;border-radius: 5px 5px 5px" type="text" id="tenGiayTheThao" placeholder="Tên giầy thể thao">
                             </div>
                             <div class="col-6">
-                                <h6 style="color: black">Giá bán</h6>
-                                <div id="priceSlider" style="margin-top: 20px;margin-left: 0px">
-                                    <%--                                        Slide chỉ là nút--%>
-                                    <div id="giaBan" class="noUi-target noUi-ltr noUi-horizontal"></div>
+                                    <h6 style="color: black">Giá bán</h6>
+                                    <div id="priceSlider" style="margin-top: 20px;margin-left: 0px">
+<%--                                        Slide chỉ là nút--%>
+                                        <div id="giaBan" class="noUi-target noUi-ltr noUi-horizontal"></div>
 
-                                </div>
-                                <br>
-                                <div>
-                                    <p style="float: left;margin-right: 75px;color: black">Giá tối thiểu: <span id="minPrice">100.000</span></p>
-                                    <p style="color: black">Giá tối đa: <span id="maxPrice">300.000</span></p>
-                                </div>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <p style="float: left;margin-right: 75px;color: black">Giá tối thiểu: <span id="minPrice">100.000</span></p>
+                                        <p style="color: black">Giá tối đa: <span id="maxPrice">300.000</span></p>
+                                    </div>
                             </div>
                         </div>
                         <div class="row">
@@ -235,12 +235,12 @@
                             <th style="padding-top: 5px; text-align: center; color: black">STT</th>
                             <th style="padding-top: 5px; text-align: center; color: black">Tên giầy thể thao</th>
                             <th style="padding-top: 5px; text-align: center; color: black;width: 180px">Giá bán VNĐ
-                                <a href="${pageContext.request.contextPath}/GiayTheThao/listGiayTheThao?sort=desc">
-                                    <i class="fa fa-caret-down" style="font-size: 1.5em;"></i>
-                                </a>
-                                <a href="${pageContext.request.contextPath}/GiayTheThao/listGiayTheThao?sort=asc">
-                                    <i class="fa fa-caret-up" style="font-size: 1.5em;"></i>
-                                </a>
+                                    <a href="${pageContext.request.contextPath}/GiayTheThao/listGiayTheThao?sort=desc">
+                                        <i class="fa fa-caret-down" style="font-size: 1.5em;"></i>
+                                    </a>
+                                    <a href="${pageContext.request.contextPath}/GiayTheThao/listGiayTheThao?sort=asc">
+                                        <i class="fa fa-caret-up" style="font-size: 1.5em;"></i>
+                                    </a>
                             </th>
                             <th style="padding-top: 5px; text-align: center; color: black">Thương hiệu</th>
                             <th style="padding-top: 5px; text-align: center; color: black">Công dụng</th>
@@ -451,93 +451,99 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
 <script>
 
-    //Todo code giá bán
+       //Todo code giá bán
 
-    var giaBanSlider = document.getElementById('giaBan');
-    var minPrice = document.getElementById('minPrice');
-    var maxPrice = document.getElementById('maxPrice');
+         var giaBanSlider = document.getElementById('giaBan');
+         var minPrice = document.getElementById('minPrice');
+         var maxPrice = document.getElementById('maxPrice');
 
-    noUiSlider.create(giaBanSlider, {
-        start: [100000, 300000000],
-        connect: true,
-        range: {
-            'min': 100000,
-            'max': 300000000
+         noUiSlider.create(giaBanSlider, {
+             start: [100000, 300000000],
+             connect: true,
+             range: {
+                 'min': 100000,
+                 'max': 300000000
+             }
+         });
+
+         giaBanSlider.noUiSlider.on('update', function (values, handle) {
+             var selectedValues = giaBanSlider.noUiSlider.get();
+             minPrice.innerHTML = parseFloat(selectedValues[0]).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+             maxPrice.innerHTML = parseFloat(selectedValues[1]).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+             // Gọi hàm filterProducts ở đây để lọc dựa trên khoảng giá đã chọn.
+             filterProducts();
+         });
+
+
+
+
+        function filterProducts() {
+            // Lấy giá trị từ các trường input và select
+            var tenGiayTheThao = document.getElementById('tenGiayTheThao').value.toLowerCase();
+            var giaBanValues = giaBanSlider.noUiSlider.get();
+            var thuongHieu = document.getElementById('thuongHieu').value;
+            var congDung = document.getElementById('congDung').value;
+            var trangThai = document.getElementById('trangThai').value;
+
+            // Lấy danh sách sản phẩm
+            var products = document.getElementsByClassName('product-item');
+            var anyResults = false; // Biến kiểm tra có kết quả hay không
+
+            for (var i = 0; i < products.length; i++) {
+                    var product = products[i];
+                    var productTenGiayTheThao = product.getAttribute('data-tenGiayTheThao').toLowerCase();
+                    var productGiaBan = parseFloat(product.getAttribute('data-giaBan'));
+                    var productThuongHieu = product.getAttribute('data-thuongHieu');
+                    var productCongDung = product.getAttribute('data-congDung');
+                    var productTrangThai = product.getAttribute('data-trangThai');
+
+                // Kiểm tra xem sản phẩm phù hợp với bộ lọc hay không
+                    if (
+                        (trangThai === '' || productTrangThai === trangThai) &&
+                        productTenGiayTheThao.includes(tenGiayTheThao) &&
+                        (productGiaBan >= parseFloat(giaBanValues[0]) && productGiaBan <= parseFloat(giaBanValues[1])) &&
+                        (thuongHieu === '' || productThuongHieu === thuongHieu) &&
+                        (congDung === '' || productCongDung === congDung)
+                    ) {
+                        // Hiển thị sản phẩm nếu nó phù hợp với bộ lọc
+                        product.classList.remove('hide-row');
+                        anyResults = true;
+                    } else {
+                        // Ẩn sản phẩm nếu không phù hợp
+                        product.classList.add('hide-row');
+                    }
+                }
+
+            // Hiển thị hoặc ẩn thông báo không có kết quả
+                    var noResultsMessage = document.getElementById('noResults');
+                    if (anyResults) {
+
+                        noResultsMessage.style.display = 'none'; // Ẩn thông báo
+
+                    } else {
+
+                        noResultsMessage.style.display = 'block'; // Hiển thị thông báo
+                    }
         }
-    });
 
-    giaBanSlider.noUiSlider.on('update', function (values, handle) {
-        var selectedValues = giaBanSlider.noUiSlider.get();
-        minPrice.innerHTML = parseFloat(selectedValues[0]).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-        maxPrice.innerHTML = parseFloat(selectedValues[1]).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        // Thêm sự kiện người nghe đầu vào và thay đổi cho tất cả các trường bộ lọc
+        document.getElementById('tenGiayTheThao').addEventListener('input', filterProducts);
+        document.getElementById('thuongHieu').addEventListener('change', filterProducts);
+        document.getElementById('congDung').addEventListener('change', filterProducts);
+        document.getElementById('trangThai').addEventListener('change', filterProducts);
 
-        // Gọi hàm filterProducts ở đây để lọc dựa trên khoảng giá đã chọn.
+        // Áp dụng bộ lọc ban đầu
         filterProducts();
-    });
 
-    function filterProducts() {
-        // Lấy giá trị từ các trường input và select
-        var tenGiayTheThao = document.getElementById('tenGiayTheThao').value.toLowerCase();
-        var giaBanValues = giaBanSlider.noUiSlider.get();
-        var thuongHieu = document.getElementById('thuongHieu').value;
-        var congDung = document.getElementById('congDung').value;
-        var trangThai = document.getElementById('trangThai').value;
 
-        // Lấy danh sách sản phẩm
-        var products = document.getElementsByClassName('product-item');
-        var anyResults = false; // Biến kiểm tra có kết quả hay không
 
-        for (var i = 0; i < products.length; i++) {
-            var product = products[i];
-            var productTenGiayTheThao = product.getAttribute('data-tenGiayTheThao').toLowerCase();
-            var productGiaBan = parseFloat(product.getAttribute('data-giaBan'));
-            var productThuongHieu = product.getAttribute('data-thuongHieu');
-            var productCongDung = product.getAttribute('data-congDung');
-            var productTrangThai = product.getAttribute('data-trangThai');
-
-            // Kiểm tra xem sản phẩm phù hợp với bộ lọc hay không
-            if (
-                (trangThai === '' || productTrangThai === trangThai) &&
-                productTenGiayTheThao.includes(tenGiayTheThao) &&
-                (productGiaBan >= parseFloat(giaBanValues[0]) && productGiaBan <= parseFloat(giaBanValues[1])) &&
-                (thuongHieu === '' || productThuongHieu === thuongHieu) &&
-                (congDung === '' || productCongDung === congDung)
-            ) {
-                // Hiển thị sản phẩm nếu nó phù hợp với bộ lọc
-                product.classList.remove('hide-row');
-                anyResults = true;
-            } else {
-                // Ẩn sản phẩm nếu không phù hợp
-                product.classList.add('hide-row');
-            }
-        }
-
-        // Hiển thị hoặc ẩn thông báo không có kết quả
-        var noResultsMessage = document.getElementById('noResults');
-        if (anyResults) {
-
-            noResultsMessage.style.display = 'none'; // Ẩn thông báo
-
-        } else {
-
-            noResultsMessage.style.display = 'block'; // Hiển thị thông báo
-        }
-    }
-
-    // Thêm sự kiện người nghe đầu vào và thay đổi cho tất cả các trường bộ lọc
-    document.getElementById('tenGiayTheThao').addEventListener('input', filterProducts);
-    document.getElementById('thuongHieu').addEventListener('change', filterProducts);
-    document.getElementById('congDung').addEventListener('change', filterProducts);
-    document.getElementById('trangThai').addEventListener('change', filterProducts);
-
-    // Áp dụng bộ lọc ban đầu
-    filterProducts();
 
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 
 </body>
 </html>

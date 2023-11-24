@@ -7,12 +7,16 @@ import com.example.sd_41.repository.HoaDon.HoaDonChiTietRepository;
 import com.example.sd_41.repository.HoaDon.HoaDonRepository;
 import com.example.sd_41.repository.ImageRepository;
 import com.example.sd_41.repository.KhachHangRepository;
+import com.example.sd_41.repository.SanPham.AllGiayTheThao.MauSacRepository;
+import com.example.sd_41.repository.SanPham.AllGiayTheThao.SizeRepository;
+import com.example.sd_41.repository.SanPham.AllGiayTheThao.ThuongHieuRepository;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoChiTietRepository;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoRepository;
 
 import com.example.sd_41.service.GioHang.GioHangChiTietImpl;
 import com.example.sd_41.service.GioHang.GioHangChiTietService;
 import com.example.sd_41.service.KhachHangService;
+import com.oracle.wls.shaded.org.apache.xpath.operations.Mod;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -68,6 +72,15 @@ public class TrangChuGiayTheThaoController {
      @Autowired
      private GioHangChiTietService gioHangChiTietService;
 
+     @Autowired
+     private ThuongHieuRepository thuongHieuRepository;
+
+     @Autowired
+     private SizeRepository sizeRepository;
+
+     @Autowired
+     private MauSacRepository mauSacRepository;
+
 
     //Todo code view giầy thể thao cho người dùng mua hàng phân trang cho người dùng ở luôn trang index by Giầy thể thao
 
@@ -105,13 +118,19 @@ public class TrangChuGiayTheThaoController {
         }
 
         for (int i = startPage; i <= endPage; i++) {
+
             pageNumbers.add(i);
+
         }
+
+        //Todo code sử lý dữ liệu size và màu sắc để lọc thông tin
+
 
         model.addAttribute("pageNumbers", pageNumbers);
         model.addAttribute("currentPage", currentPage);
     }
 
+    //Todo code list giầy thể thao trang chủ
     @RequestMapping(value = "TrangChu/listGiayTheThao")
     public String showListViewGiayTheThao(Model model,
                                           HttpSession session,
@@ -135,6 +154,36 @@ public class TrangChuGiayTheThaoController {
         }
 
     }
+
+    //Todo code list giầy thể thao có bộ lọc
+    @RequestMapping(value = "TrangChu/listGiayTheThao/Details")
+    public String showListViewGiayTheThaoDetailsAndLoc(Model model,
+                                                       HttpSession session,
+                                                       @RequestParam(name = "pageNum",required = false,defaultValue = "1") Integer pageNum,
+                                                       @RequestParam(name = "pageSize",required = false,defaultValue = "9") Integer pageSize
+                                                       ){
+
+
+        if(session.getAttribute("khachHangLog") != null){
+
+            System.out.println("Tài khoản của khách hàng đã được đang nhập");
+            model.addAttribute("maKH",session.getAttribute("maKH"));
+            giaoDienTrangChuListGiayTheThao(model,pageNum,pageSize,giayTheThaoRepository);
+
+            return "/templates/Users/indexLoginDetails";
+
+        }else {
+
+            System.out.println("Khách hàng chưa đăng nhập tài khoản !");
+            giaoDienTrangChuListGiayTheThao(model,pageNum,pageSize,giayTheThaoRepository);
+
+            return "/templates/Users/index";
+
+        }
+
+    }
+
+
 
     //Todo code list giày thể thao Deals of the Week bên trang chủ
 
@@ -610,4 +659,28 @@ public class TrangChuGiayTheThaoController {
         }
 
 
+//Finall dữ liệu trả về
+
+    @ModelAttribute("thuongHieu")
+    public List<ThuongHieu> getListThuongHieu(){
+
+        return thuongHieuRepository.findAll();
+
+    }
+
+    @ModelAttribute("size")
+    public List<Size> getListSize(){
+
+        return sizeRepository.findAll();
+    }
+
+    @ModelAttribute("mauSac")
+    public List<MauSac> getListMauSac(){
+
+        return mauSacRepository.findAll();
+
+    }
+
 }
+
+
