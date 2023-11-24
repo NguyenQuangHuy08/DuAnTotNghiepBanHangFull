@@ -158,24 +158,24 @@ public class HuongDanBaoQuanController {
         return "redirect:/HuongDanBaoQuan/list";
     }
 
-    @GetMapping("/HuongDanBaoQuan/search")
-    public String searchHuongDanBaoQuan(@RequestParam(value = "tenHuongDanBaoQuan", required = false) String tenHuongDanBaoQuan, Model model) {
-        List<HuongDanBaoQuan> listPageFind;
-        if (tenHuongDanBaoQuan != null) {
-            listPageFind = huongDanBaoQuanService.findHuongDanBaoQuan(tenHuongDanBaoQuan);
-            if (listPageFind.size()!=0) {
-                model.addAttribute("listPage", listPageFind);
-                model.addAttribute("messageFindDone", "Tìm thấy dữ liệu");
-                return "/CoGiay/list";
-            } else {
-                model.addAttribute("messageFindError", "Không tìm thấy dữ liệu");
-            }
-        } else {
-            model.addAttribute("messageFind", "Bạn hãy nhập tên hướng dẫn bảo quản muốn tìm kiếm!");
-        }
-
-        return "/HuongDanBaoQuan/list";
-    }
+//    @GetMapping("/HuongDanBaoQuan/search")
+//    public String searchHuongDanBaoQuan(@RequestParam(value = "tenHuongDanBaoQuan", required = false) String tenHuongDanBaoQuan, Model model) {
+//        List<HuongDanBaoQuan> listPageFind;
+//        if (tenHuongDanBaoQuan != null) {
+//            listPageFind = huongDanBaoQuanService.findHuongDanBaoQuan(tenHuongDanBaoQuan);
+//            if (listPageFind.size()!=0) {
+//                model.addAttribute("listPage", listPageFind);
+//                model.addAttribute("messageFindDone", "Tìm thấy dữ liệu");
+//                return "/HuongDanBaoQuan/list";
+//            } else {
+//                model.addAttribute("messageFindError", "Không tìm thấy dữ liệu");
+//            }
+//        } else {
+//            model.addAttribute("messageFind", "Bạn hãy nhập tên hướng dẫn bảo quản muốn tìm kiếm!");
+//        }
+//
+//        return "/HuongDanBaoQuan/list";
+//    }
 
     @ModelAttribute("tenHuongDanBaoQuan")
     public List<HuongDanBaoQuan> getListHuongDanBaoQuan() {

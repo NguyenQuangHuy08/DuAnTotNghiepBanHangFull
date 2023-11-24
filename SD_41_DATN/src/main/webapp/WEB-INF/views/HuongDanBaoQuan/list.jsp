@@ -15,6 +15,107 @@
 </head>
 
 <style>
+    <%--        Dành cho tab--%>
+    .nav-tabs {
+        background-image: linear-gradient(
+                to bottom right, #25AEB8, #0DDB9F
+        );
+        padding: 0;
+        margin: 20px 0 0;
+        list-style: none;
+        width: 500px;
+        height: 40px;
+        display: flex;
+        /*max-width: fit-content;*/
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+    }
+
+    .nav-item {
+        font-weight: bold;
+        font-size: 15px;
+        width: 140px;
+        margin-top: 10px;
+        margin-bottom: 5px;
+        height: 20px;
+        text-align: center;
+        border-right: 1px solid #1d868d;
+        transition: 0.5s;
+        cursor: pointer;
+    }
+
+    .nav-item:nth-last-child(1) {
+        border-right: none;
+    }
+
+    .nav-item.active {
+        color: #555;
+    }
+
+    .bg-active {
+        background-color: #eee;
+        padding: 20px;
+        width: 140px;
+        position: absolute;
+        left: 0;
+        height: 100%;
+        z-index: -1;
+        transition: 0.5s;
+    }
+
+    .content-tabs {
+        padding: 30px;
+        background-color: #eee;
+        color: #555;
+        border-radius: 10px;
+        border-top-left-radius: 0;
+        min-height: 300px;
+        text-align: justify;
+    }
+
+    .content-tabs .tab {
+        display: none;
+    }
+
+    .content-tabs .tab.active {
+        display: block;
+        animation: showContent 0.5s ease-in-out 1;
+    }
+
+    @keyframes showContent {
+        from {
+            opacity: 0;
+            transform: translateY(100px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    <%--        Danh cho giá bán--%>
+
+    #priceSlider {
+        width: 300px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    #giaBan {
+        height: 10px;
+        margin: 10px 0;
+    }
+
+    #priceSlider .noUi-handle {
+        width: 20px;
+        border-radius: 20px 20px 20px;
+        background-color: aliceblue;
+        height: 20px;
+        cursor: ew-resize;
+    }
 
     /*    Table */
     td, th {
@@ -57,7 +158,7 @@
                     <div class="col-6">
                         <h6 style="color:black">Hướng dẫn bảo quản</h6>
                         <select style="width: 500px;height: 35px; border-radius: 5px 5px 5px;margin-bottom: 0px"
-                                type="text" id="tenMauSac">
+                                type="text" id="tenHuongDanBaoQuan">
                             <option style="border-radius: 5px 5px 5px" value="">Tất cả tên hướng dẫn bảo quản</option>
                             <c:forEach items="${tenHuongDanBaoQuan}" var="tenHuongDanBaoQuan">
                                 <option style="border-radius: 5px 5px 5px">${tenHuongDanBaoQuan.tenHuongDanBaoQuan}</option>
@@ -101,7 +202,7 @@
         </thead>
         <tbody>
         <c:forEach var="hdbq" items="${listPage}" varStatus="i">
-            <tr class="product-item " data-tenHuongDanBaoQuan="${hdbq.tenHuongDanBaoQuan}" data-trangThai="${hdbq.trangThai}">
+            <tr class="product-item hide-row" data-tenHuongDanBaoQuan="${hdbq.tenHuongDanBaoQuan}" data-trangThai="${hdbq.trangThai}">
                 <th style="padding-top: 40px" scope="row">${i.index+1}</th>
                 <td style="padding-top: 55px; text-align: center">${hdbq.tenHuongDanBaoQuan}</td>
                 <td style="padding-top: 55px; text-align: center">${hdbq.ghiChu}</td>

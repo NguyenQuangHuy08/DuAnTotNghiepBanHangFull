@@ -12,79 +12,121 @@
     <title>Danh sách dữ liệu phiếu giao hàng</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 <%--    <link href="/css/ChuongTrinhGiamGia/HoaDon/list.css" rel="stylesheet">--%>
-<%--<style>--%>
+    <style>
+        <%--        Dành cho tab--%>
+        .nav-tabs {
+            background-image: linear-gradient(
+                    to bottom right, #25AEB8, #0DDB9F
+            );
+            padding: 0;
+            margin: 20px 0 0;
+            list-style: none;
+            width: 500px;
+            height: 40px;
+            display: flex;
+            /*max-width: fit-content;*/
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
 
-<%--    .nav-tabs{--%>
-<%--        background-image: linear-gradient(--%>
-<%--                to bottom right, #25AEB8, #0DDB9F--%>
-<%--        );--%>
-<%--        padding: 0;--%>
-<%--        margin: 20px 0 0;--%>
-<%--        list-style: none;--%>
-<%--        width: 500px;--%>
-<%--        height: 40px;--%>
-<%--        display: flex;--%>
-<%--        /*max-width: fit-content;*/--%>
-<%--        border-top-left-radius: 10px;--%>
-<%--        border-top-right-radius: 10px;--%>
-<%--        overflow: hidden;--%>
-<%--        position: relative;--%>
-<%--        z-index: 1;--%>
-<%--    }--%>
-<%--    .nav-item{--%>
-<%--        font-weight: bold;--%>
-<%--        font-size: 15px;--%>
-<%--        width: 140px;--%>
-<%--        margin-top: 10px;--%>
-<%--        margin-bottom: 5px;--%>
-<%--        height: 20px;--%>
-<%--        text-align: center;--%>
-<%--        border-right: 1px solid #1d868d;--%>
-<%--        transition: 0.5s;--%>
-<%--        cursor: pointer;--%>
-<%--    }--%>
-<%--    .nav-item:nth-last-child(1){--%>
-<%--        border-right: none;--%>
-<%--    }--%>
-<%--    .nav-item.active{--%>
-<%--        color: #555;--%>
-<%--    }--%>
-<%--    .bg-active{--%>
-<%--        background-color: #eee;--%>
-<%--        padding: 20px;--%>
-<%--        width: 140px;--%>
-<%--        position: absolute;--%>
-<%--        left: 0;--%>
-<%--        height: 100%;--%>
-<%--        z-index: -1;--%>
-<%--        transition: 0.5s;--%>
-<%--    }--%>
-<%--    .content-tabs{--%>
-<%--        padding: 30px;--%>
-<%--        background-color: #eee;--%>
-<%--        color: #555;--%>
-<%--        border-radius: 10px;--%>
-<%--        border-top-left-radius: 0;--%>
-<%--        min-height: 300px;--%>
-<%--        text-align: justify;--%>
-<%--    }--%>
-<%--    .content-tabs .tab{--%>
-<%--        display: none;--%>
-<%--    }--%>
-<%--    .content-tabs .tab.active{--%>
-<%--        display: block;--%>
-<%--        animation: showContent 0.5s ease-in-out 1;--%>
-<%--    }--%>
-<%--    @keyframes showContent{--%>
-<%--        from{--%>
-<%--            opacity: 0;--%>
-<%--            transform: translateY(100px);--%>
-<%--        }to{--%>
-<%--             opacity: 1;--%>
-<%--             transform: translateY(0);--%>
-<%--         }--%>
-<%--    }--%>
-<%--</style>--%>
+        .nav-item {
+            font-weight: bold;
+            font-size: 15px;
+            width: 140px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            height: 20px;
+            text-align: center;
+            border-right: 1px solid #1d868d;
+            transition: 0.5s;
+            cursor: pointer;
+        }
+
+        .nav-item:nth-last-child(1) {
+            border-right: none;
+        }
+
+        .nav-item.active {
+            color: #555;
+        }
+
+        .bg-active {
+            background-color: #eee;
+            padding: 20px;
+            width: 140px;
+            position: absolute;
+            left: 0;
+            height: 100%;
+            z-index: -1;
+            transition: 0.5s;
+        }
+
+        .content-tabs {
+            padding: 30px;
+            background-color: #eee;
+            color: #555;
+            border-radius: 10px;
+            border-top-left-radius: 0;
+            min-height: 300px;
+            text-align: justify;
+        }
+
+        .content-tabs .tab {
+            display: none;
+        }
+
+        .content-tabs .tab.active {
+            display: block;
+            animation: showContent 0.5s ease-in-out 1;
+        }
+
+        @keyframes showContent {
+            from {
+                opacity: 0;
+                transform: translateY(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        <%--        Danh cho giá bán--%>
+
+        #priceSlider {
+            width: 300px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        #giaBan {
+            height: 10px;
+            margin: 10px 0;
+        }
+
+        #priceSlider .noUi-handle {
+            width: 20px;
+            border-radius: 20px 20px 20px;
+            background-color: aliceblue;
+            height: 20px;
+            cursor: ew-resize;
+        }
+
+        /*    Table */
+        td, th {
+            padding: 10px; /* Khoảng cách nội dung bên trong ô */
+            color: black; /* Màu chữ */
+            text-align: center; /* Căn giữa nội dung trong ô */
+        }
+
+        .hide-row {
+            display: none;
+        }
+
+    </style>
 
 </head>
 <body>
@@ -160,6 +202,30 @@
         </div>
     </div>
 
+    <div class="row">
+        <h3 style="margin-top: 5px; color: black; margin-bottom: 20px">Lọc</h3>
+        <div class="common-filter">
+            <form id="filter-form">
+                <div class="row">
+                    <div class="col-6">
+                        <h6 style="color:black">Tên khách hàng</h6>
+                        <input style="width: 500px; height: 35px;border-radius: 5px 5px 5px" type="text"
+                               id="tenKhachHang" placeholder="Tên khách hàng">
+                    </div>
+                    <div class="col-6">
+                        <h6 style="color:black">Tên user</h6>
+                        <input style="width: 500px; height: 35px;border-radius: 5px 5px 5px" type="text" id="tenUser"
+                               placeholder="Tên user">
+                    </div>
+
+                </div>
+            </form>
+            <div>
+
+            </div>
+        </div>
+    </div>
+
 
 <%--Tab list--%>
     <table class="data-table" style="margin-top: 30px;width: 100%;border-radius: 50px 50px 50px">
@@ -175,7 +241,7 @@
         </thead>
         <tbody>
         <c:forEach var="phieuGiaoHang" items="${listPage}" varStatus="i">
-            <tr class="product-item hide-row">
+            <tr class="product-item hide-row" data-tenKhachHang="${phieuGiaoHang.khachHang.tenKhachHang}" data-tenUser="${phieuGiaoHang.user.tenUser}">
 
                 <td style="padding-top: 3px; text-align: center; color: black">${i.index+1}</td>
                 <td style="padding-top: 3px; text-align: center; color: black">${phieuGiaoHang.khachHang.tenKhachHang}</td>
@@ -197,34 +263,65 @@
 
 <%@ include file="../templates/Admin/Layouts/GiayTheThao/_FooterGiayTheThao.jsp" %>
 
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-            let navtabs = document.querySelectorAll('.sliderTab');
-            navtabs.forEach(item => {
-            item.addEventListener('click', function(event){
-            if(event.target.classList.contains('nav-item')){
+    var filterForm = document.getElementById('filter-form');
+    var searchPerformed = false; // Tạo biến để kiểm tra xem tìm kiếm đã được thực hiện hay chưa
 
-            let lastActive = item.querySelector('li.active');
-            let newActive = event.target;
-            let bgActive = item.querySelector('.bg-active');
+    filterForm.addEventListener('input', function () {
+        var tenKhachHang = document.getElementById('tenKhachHang').value.toLowerCase();
+        var tenUser = document.getElementById('tenUser').value.toLowerCase();
 
-            lastActive.classList.remove('active');
-            newActive.classList.add('active');
-            bgActive.style.left = newActive.offsetLeft + 'px';
+        var products = document.getElementsByClassName('product-item');
 
-            let lastContentActive = item.querySelector('.tab.active');
-            let newContentActive = document.getElementById(newActive.dataset.target);
-            lastContentActive.classList.remove('active');
-            newContentActive.classList.add('active');
+        for (var i = 0; i < products.length; i++) {
+            var product = products[i];
+
+            var productTenKhachHang = product.getAttribute('data-tenKhachHang').toLowerCase();
+            var productTenUser = product.getAttribute('data-tenUser').toLowerCase();
+
+            if (productTenKhachHang.includes(tenKhachHang) &&
+                productTenUser.includes(tenUser)) {
+
+                product.classList.remove('hide-row'); // Loại bỏ lớp ẩn
+
+            } else {
+
+                product.classList.add('hide-row'); // Thêm lớp ẩn
 
             }
-            })
-            })
+        }
+
+        var noResultsMessage = document.getElementById('noResults');
+        if (anyResults) {
+            noResultsMessage.style.display = 'none'; // Ẩn thông báo
+        } else {
+            noResultsMessage.style.display = 'block'; // Hiển thị thông báo
+        }
+        // Đặt biến searchPerformed thành true khi người dùng thực hiện tìm kiếm
+        searchPerformed = true;
+
+    });
+
+    // Trước khi kích hoạt tìm kiếm, kiểm tra xem searchPerformed đã được thiết lập thành true hay chưa
+    if (!searchPerformed) {
+        var initialProducts = document.getElementsByClassName('product-item');
+        for (var i = 0; i < initialProducts.length; i++) {
+
+            initialProducts[i].classList.remove('hide-row'); // Loại bỏ lớp ẩn
+
+        }
+    }
 </script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </body>
 </html>
 

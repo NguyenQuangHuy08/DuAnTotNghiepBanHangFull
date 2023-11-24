@@ -243,7 +243,15 @@ public class PhieuGiaoHangController {
     public List<HoaDon> getListHoaDon(){
 
         return hoaDonRepository.findAll();
-
     }
 
+    @ModelAttribute("tenKhachHang")
+    public List<KhachHang> getListTenKhachHang() {
+        return khachHangRepository.findAll();
+    }
+
+    @ModelAttribute("tenUser")
+    public List<User> getListTenUser() {
+        return userRepository.findAll();
+    }
 }
