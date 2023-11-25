@@ -7,9 +7,7 @@ import com.example.sd_41.repository.HoaDon.HoaDonChiTietRepository;
 import com.example.sd_41.repository.HoaDon.HoaDonRepository;
 import com.example.sd_41.repository.ImageRepository;
 import com.example.sd_41.repository.KhachHangRepository;
-import com.example.sd_41.repository.SanPham.AllGiayTheThao.MauSacRepository;
-import com.example.sd_41.repository.SanPham.AllGiayTheThao.SizeRepository;
-import com.example.sd_41.repository.SanPham.AllGiayTheThao.ThuongHieuRepository;
+import com.example.sd_41.repository.SanPham.AllGiayTheThao.*;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoChiTietRepository;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoRepository;
 
@@ -76,10 +74,22 @@ public class TrangChuGiayTheThaoController {
      private ThuongHieuRepository thuongHieuRepository;
 
      @Autowired
+     private CongDungRepository congDungRepository;
+
+     @Autowired
+     private TrongLuongRepository trongLuongRepository;
+
+     @Autowired
+     private FormRepository formRepository;
+
+     @Autowired
      private SizeRepository sizeRepository;
 
      @Autowired
      private MauSacRepository mauSacRepository;
+
+     @Autowired
+     private ChatLieuRepository chatLieuRepository;
 
 
     //Todo code view giầy thể thao cho người dùng mua hàng phân trang cho người dùng ở luôn trang index by Giầy thể thao
@@ -130,6 +140,56 @@ public class TrangChuGiayTheThaoController {
         model.addAttribute("currentPage", currentPage);
     }
 
+    private void giaoDienTrangChuListGiayTheThaoDetails(Model model, Integer pageNum, Integer pageSize, GiayTheThaoRepository giayTheThaoRepository) {
+        // Số sản phẩm hiển thị trên mỗi trang
+        int size = 25;
+
+        // Lấy tất cả sản phẩm
+        List<GiayTheThao> lstGiayTheThao = giayTheThaoRepository.findAll();
+        model.addAttribute("lstGiayTheThao", lstGiayTheThao);
+
+        // Thiết lập Pageable với số lượng sản phẩm trên mỗi trang
+        Pageable pageable = PageRequest.of(pageNum - 1, size);
+
+        // Lấy trang dữ liệu
+        Page<GiayTheThao> page = giayTheThaoRepository.findAll(pageable);
+
+        // Hiển thị thông tin sản phẩm
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("listPage", page.getContent());
+
+        // Danh sách các trang để hiển thị ra giao diện
+        List<Integer> pageNumbers = new ArrayList<>();
+        int totalPages = page.getTotalPages();
+        int currentPage = pageNum;
+        int startPage, endPage;
+
+        if (totalPages <= 5) {
+            startPage = 1;
+            endPage = totalPages;
+        } else {
+            if (currentPage <= 3) {
+                startPage = 1;
+                endPage = 5;
+            } else if (currentPage + 2 >= totalPages) {
+                startPage = totalPages - 4;
+                endPage = totalPages;
+            } else {
+                startPage = currentPage - 2;
+                endPage = currentPage + 2;
+            }
+        }
+
+        for (int i = startPage; i <= endPage; i++) {
+            pageNumbers.add(i);
+        }
+
+        // Todo code sử lý dữ liệu size và màu sắc để lọc thông tin
+
+        model.addAttribute("pageNumbers", pageNumbers);
+        model.addAttribute("currentPage", currentPage);
+    }
+
     //Todo code list giầy thể thao trang chủ
     @RequestMapping(value = "TrangChu/listGiayTheThao")
     public String showListViewGiayTheThao(Model model,
@@ -160,7 +220,7 @@ public class TrangChuGiayTheThaoController {
     public String showListViewGiayTheThaoDetailsAndLoc(Model model,
                                                        HttpSession session,
                                                        @RequestParam(name = "pageNum",required = false,defaultValue = "1") Integer pageNum,
-                                                       @RequestParam(name = "pageSize",required = false,defaultValue = "9") Integer pageSize
+                                                       @RequestParam(name = "pageSize",required = false,defaultValue = "25") Integer pageSize
                                                        ){
 
 
@@ -168,7 +228,7 @@ public class TrangChuGiayTheThaoController {
 
             System.out.println("Tài khoản của khách hàng đã được đang nhập");
             model.addAttribute("maKH",session.getAttribute("maKH"));
-            giaoDienTrangChuListGiayTheThao(model,pageNum,pageSize,giayTheThaoRepository);
+            giaoDienTrangChuListGiayTheThaoDetails(model,pageNum,pageSize,giayTheThaoRepository);
 
             return "/templates/Users/indexLoginDetails";
 
@@ -667,6 +727,35 @@ public class TrangChuGiayTheThaoController {
         return thuongHieuRepository.findAll();
 
     }
+
+    @ModelAttribute("form")
+    public List<Form> getListForm(){
+
+        return formRepository.findAll();
+
+    }
+
+    @ModelAttribute("chatLieu")
+    public List<ChatLieu> getListChatLieu(){
+
+        return chatLieuRepository.findAll();
+
+    }
+
+    @ModelAttribute("congDung")
+    public List<CongDung> getListCongDung(){
+
+        return congDungRepository.findAll();
+
+    }
+
+    @ModelAttribute("trongLuong")
+    public List<TrongLuong> getListTrongLuong(){
+
+        return trongLuongRepository.findAll();
+
+    }
+
 
     @ModelAttribute("size")
     public List<Size> getListSize(){

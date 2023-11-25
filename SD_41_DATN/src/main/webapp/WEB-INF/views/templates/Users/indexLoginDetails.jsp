@@ -13,8 +13,8 @@
 <%--   Header--%>
 <%@ include file="Layouts/Index/_Header_No_Register.jsp" %>
 
-<%@ include file="Layouts/Index/_Session1.jsp" %>
-
+<%--<%@ include file="Layouts/Index/_Session1.jsp" %>--%>
+<div style="margin-top: 120px"></div>
 <%@ include file="Layouts/Index/_Session2.jsp" %>
 
 <%@ include file="Layouts/Index/_Session3Details.jsp" %>

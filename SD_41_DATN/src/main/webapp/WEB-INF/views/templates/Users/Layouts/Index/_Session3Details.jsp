@@ -22,6 +22,15 @@
         flex: 0 0 48%; /* Đặt chiều rộng cho mỗi cột, có thể điều chỉnh tùy ý */
     }
 
+    /*css cho trọng lượng*/
+    .trongLuongContainer {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .trongLuongColumn {
+        flex: 0 0 48%; /* Đặt chiều rộng cho mỗi cột, có thể điều chỉnh tùy ý */
+    }
 
     /*    Css cho giá bán*/
 
@@ -91,7 +100,7 @@
                     <h4>Tên giầy thể thao</h4>
                     <input style="width: 260px; height: 35px; border-radius: 5px 5px 5px" type="text"
                            id="tenGiayTheThao" placeholder="Tên giày thể thao" oninput="filterProducts()">
-                    <h4 style="color: black">Giá bán</h4>
+                    <h4 style="color: black;margin-top: 20px;margin-bottom: 20px">Giá bán</h4>
                     <div id="priceSlider" style="margin-top: 20px;width: 250px">
                         <%--                                        Slide chỉ là nút--%>
                         <div style="width: 250px" id="giaBan" class="noUi-target noUi-ltr noUi-horizontal"></div>
@@ -102,26 +111,63 @@
                         <p style="color: black">Giá tối thiểu: <span id="minPrice">100.000</span></p>
                         <p style="color: black">Giá tối đa: <span id="maxPrice">300.000</span></p>
                     </div>
-                    <h4>Màu sắc</h4>
-                    <h4>Size</h4>
-                    <div class="brandContainer">
-                        <div class="brandColumn">
-                            <c:forEach items="${size}" var="size" begin="0" end="3">
+                    <h4 style="margin-bottom: 20px">Form giày thể thao</h4>
+                    <div class="formContainer">
+                        <div class="formColumn">
+                            <c:forEach items="${form}" var="form">
                                 <div style="margin-bottom: 5px;">
                                     <label>
-                                        <input type="checkbox" class="" value="${size.size}"
-                                               onchange="getSelectedBrands()">${size.size}
+                                        <input type="checkbox" class="formCheckbox" value="${form.tenForm}" onchange="getSelectedForm()">
+                                            ${form.tenForm}
                                     </label>
                                 </div>
                             </c:forEach>
                         </div>
-
-                        <div class="brandColumn">
-                            <c:forEach items="${size}" var="size" begin="4" end="7">
+                    </div>
+                    <h4 style="margin-bottom: 20px;margin-top: 20px">Công dụng</h4>
+                    <div class="congDungContainer">
+                        <div class="congDungColumn">
+                            <c:forEach items="${congDung}" var="congDung">
                                 <div style="margin-bottom: 5px;">
                                     <label>
-                                        <input type="checkbox" class="brandCheckbox" value="${size.size}"
-                                               onchange="getSelectedBrands()">${size.size}
+                                        <input type="checkbox" class="congDungCheckbox" value="${congDung.tenCongDung}" onchange="getSelectedCongDung()">
+                                            ${congDung.tenCongDung}
+                                    </label>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                    <h4 style="margin-bottom: 20px;margin-top: 20px">Chất liệu</h4>
+                    <div class="chatLieuContainer">
+                        <div class="chatLieuColumn">
+                            <c:forEach items="${chatLieu}" var="chatLieu">
+                                <div style="margin-bottom: 5px;">
+                                    <label>
+                                        <input type="checkbox" class="chatLieuCheckbox" value="${chatLieu.tenChatLieu}" onchange="getSelectedChatLieu()">
+                                            ${chatLieu.tenChatLieu}
+                                    </label>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                    <h4 style="margin-bottom: 20px;margin-top: 20px">Trọng lượng giầy</h4>
+                    <div class="trongLuongContainer">
+                        <div class="trongLuongColumn">
+                            <c:forEach items="${trongLuong}" var="trongLuong" begin="0" end="3">
+                                <div style="margin-bottom: 5px;">
+                                    <label>
+                                        <input type="checkbox" class="trongLuongCheckbox" value="${trongLuong.tenTrongLuong}"
+                                               onchange="getSelectedTrongLuong()">${trongLuong.tenTrongLuong}
+                                    </label>
+                                </div>
+                            </c:forEach>
+                        </div>
+                        <div class="trongLuongColumn">
+                            <c:forEach items="${trongLuong}" var="trongLuong" begin="4" end="7">
+                                <div style="margin-bottom: 5px;">
+                                    <label>
+                                        <input type="checkbox" class="trongLuongCheckbox" value="${trongLuong.tenTrongLuong}"
+                                               onchange="getSelectedTrongLuong()">${trongLuong.tenTrongLuong}
                                     </label>
                                 </div>
                             </c:forEach>
@@ -129,7 +175,7 @@
                     </div>
 
 
-                    <h4>Thương hiệu</h4>
+                    <h4 style="margin-top: 20px; margin-bottom: 20px">Thương hiệu</h4>
                     <div class="brandContainer">
                         <div class="brandColumn">
                             <c:forEach items="${thuongHieu}" var="thuongHieu" begin="0" end="3">
@@ -141,7 +187,6 @@
                                 </div>
                             </c:forEach>
                         </div>
-
                         <div class="brandColumn">
                             <c:forEach items="${thuongHieu}" var="thuongHieu" begin="4" end="7">
                                 <div style="margin-bottom: 5px;">
@@ -157,18 +202,27 @@
                 </div>
                 <div class="col-9" style="">
                     <div class="row">
-                        <div id="noResults" class="alert alert-warning" style="display: none;margin-top: 10px">
-                            <h5 style="text-align: center;height: 60px;margin-top: 40px">Không có dữ liệu phù hợp với bộ
-                                lọc hiện tại!</h5>
+                        <div class="col-12">
+                            <div id="noResults" class="alert alert-warning" style="display: none;margin-top: 10px">
+                                <h5 style="text-align: center;height: 60px;margin-top: 40px">Không có dữ liệu phù hợp với bộ
+                                    lọc hiện tại!
+                                </h5>
+                            </div>
                         </div>
-
                         <%--                --%>
                         <div id="product-list" class="row">
                             <!-- Danh sách sản phẩm sẽ được hiển thị ở đây -->
                             <c:forEach var="listGiay" items="${listPage}">
                                 <c:if test="${listGiay.trangThai == 1}">
                                     <div class="col-lg-3 col-md-6 product-item"
-                                         data-thuongHieu="${listGiay.thuongHieu.tenThuongHieu}" data-giaBan="${listGiay.giaBan}">
+                                         data-thuongHieu    =   "${listGiay.thuongHieu.tenThuongHieu}"
+                                         data-giaBan        =   "${listGiay.giaBan}"
+                                         data-Form          =   "${listGiay.form.tenForm}"
+                                         data-CongDung      =   "${listGiay.congDung.tenCongDung}"
+                                         data-TrongLuong    =   "${listGiay.trongLuong.tenTrongLuong}"
+                                         data-ChatLieu      =   "${listGiay.chatLieu.tenChatLieu}"
+                                    >
+
                                         <a href="${pageContext.request.contextPath}/GiayTheThao/detailThongTinGiayTheThao/${listGiay.id}">
                                             <div class="card" style="height: 300px">
                                                 <img class="card-img-top" style="height: 200px"
@@ -182,9 +236,6 @@
                                                             <fmt:formatNumber type="" value="${listGiay.giaBan}"
                                                                               pattern="#,##0.###"/> VNĐ
                                                         </h6>
-                                                        <h6>ID
-                                                                ${listGiay.id}
-                                                        </h6>
                                                     </div>
                                                 </div>
                                             </div>
@@ -197,38 +248,38 @@
 
                         <%--                Todo code phân trang giầy thể thao--%>
 
-                        <div class="row">
-                            <div class="col-12" style="">
-                                <ul class="pagination" style="margin-left: 400px">
-                                    <c:choose>
-                                        <c:when test="${currentPage > 1}">
-                                            <li class="page-item">
-                                                <a href="/TrangChu/listGiayTheThao/Details?pageNum=${currentPage - 1}"
-                                                   class="page-link"
-                                                   style="border: 1px solid red;width: 100px">Previous</a>
-                                            </li>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <!-- Ẩn nút "Previous" khi trang hiện tại là trang đầu tiên -->
-                                        </c:otherwise>
-                                    </c:choose>
+<%--                        <div class="row">--%>
+<%--                            <div class="col-12" style="">--%>
+<%--                                <ul class="pagination" style="margin-left: 400px">--%>
+<%--                                    <c:choose>--%>
+<%--                                        <c:when test="${currentPage > 1}">--%>
+<%--                                            <li class="page-item">--%>
+<%--                                                <a href="/TrangChu/listGiayTheThao/Details?pageNum=${currentPage - 1}"--%>
+<%--                                                   class="page-link"--%>
+<%--                                                   style="border: 1px solid red;width: 100px">Previous</a>--%>
+<%--                                            </li>--%>
+<%--                                        </c:when>--%>
+<%--                                        <c:otherwise>--%>
+<%--                                            <!-- Ẩn nút "Previous" khi trang hiện tại là trang đầu tiên -->--%>
+<%--                                        </c:otherwise>--%>
+<%--                                    </c:choose>--%>
 
-                                    <c:forEach var="pageNumber" items="${pageNumbers}">
-                                        <li class="page-item ${pageNumber == currentPage ? 'active' : ''}">
-                                            <a href="/TrangChu/listGiayTheThao/Details?pageNum=${pageNumber}"
-                                               class="page-link">${pageNumber}</a>
-                                        </li>
-                                    </c:forEach>
+<%--                                    <c:forEach var="pageNumber" items="${pageNumbers}">--%>
+<%--                                        <li class="page-item ${pageNumber == currentPage ? 'active' : ''}">--%>
+<%--                                            <a href="/TrangChu/listGiayTheThao/Details?pageNum=${pageNumber}"--%>
+<%--                                               class="page-link">${pageNumber}</a>--%>
+<%--                                        </li>--%>
+<%--                                    </c:forEach>--%>
 
-                                    <c:if test="${currentPage < totalPage}">
-                                        <li class="page-item">
-                                            <a href="/TrangChu/listGiayTheThao/Details?pageNum=${currentPage + 1}"
-                                               class="page-link" style="border: 1px solid red; width: 50px">Next</a>
-                                        </li>
-                                    </c:if>
-                                </ul>
-                            </div>
-                        </div>
+<%--                                    <c:if test="${currentPage < totalPage}">--%>
+<%--                                        <li class="page-item">--%>
+<%--                                            <a href="/TrangChu/listGiayTheThao/Details?pageNum=${currentPage + 1}"--%>
+<%--                                               class="page-link" style="border: 1px solid red; width: 50px">Next</a>--%>
+<%--                                        </li>--%>
+<%--                                    </c:if>--%>
+<%--                                </ul>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
                     </div>
                 </div>
             </div>
@@ -244,7 +295,10 @@
         var minPrice = document.getElementById('minPrice');
         var maxPrice = document.getElementById('maxPrice');
         var selectedBrands = [];
-
+        var selectedForms = [];
+        var selectedCongDungs =[];
+        var selectedTrongLuongs = [];
+        var selectedChatLieus = [];
         noUiSlider.create(giaBanSlider, {
             start: [100000, 300000000],
             connect: true,
@@ -268,8 +322,6 @@
             filterProducts();
         });
 
-
-
         function filterProducts() {
             var productList = document.getElementById('product-list');
             var anyResults = false;
@@ -281,10 +333,26 @@
                 var productBrand = product.getAttribute('data-thuongHieu');
                 var productName = product.querySelector('.card-title').textContent.toLowerCase();
                 var productGiaBan = parseFloat(product.getAttribute('data-giaBan'));
+                var productForm = product.getAttribute('data-Form');
+                var productCongDung = product.getAttribute('data-CongDung');
+                var productTrongLuong = product.getAttribute('data-TrongLuong');
+                var productChatLieu = product.getAttribute('data-ChatLieu');
 
-                if ((selectedBrands.length === 0 || selectedBrands.includes(productBrand)) &&
-                    (tenGiayFilter === '' || productName.includes(tenGiayFilter)) &&
-                    (productGiaBan >= parseFloat(giaBanValues[0]) && productGiaBan <= parseFloat(giaBanValues[1]))) {
+                var brandCondition = selectedBrands.length === 0 || selectedBrands.includes(productBrand);
+                var formCondition = selectedForms.length === 0 || selectedForms.includes(productForm);
+                var congDungCondition = selectedCongDungs.length === 0 || selectedCongDungs.includes(productCongDung);
+                var trongLuongCondition = selectedTrongLuongs.length === 0 || selectedTrongLuongs.includes(productTrongLuong);
+                var chatLieuCondition = selectedChatLieus.length === 0 || selectedChatLieus.includes(productChatLieu);
+                var nameCondition = tenGiayFilter === '' || productName.includes(tenGiayFilter);
+                var priceCondition = productGiaBan >= parseFloat(giaBanValues[0]) && productGiaBan <= parseFloat(giaBanValues[1]);
+
+                if (brandCondition          &&
+                    formCondition           &&
+                    nameCondition           &&
+                    priceCondition          &&
+                    congDungCondition       &&
+                    chatLieuCondition       &&
+                    trongLuongCondition     ) {
                     product.style.display = 'block';
                     anyResults = true;
                 } else {
@@ -313,11 +381,61 @@
             filterProducts();
         }
 
+        function getSelectedForm() {
+            selectedForms = [];
+            var formCheckboxes = document.getElementsByClassName('formCheckbox');
+
+            for (var i = 0; i < formCheckboxes.length; i++) {
+                if (formCheckboxes[i].checked) {
+                    selectedForms.push(formCheckboxes[i].value);
+                }
+            }
+
+            filterProducts();
+        }
+
+        function getSelectedCongDung(){
+            selectedCongDungs = [];
+            var congDungCheckboxes = document.getElementsByClassName('congDungCheckbox');
+
+            for (var i = 0; i < congDungCheckboxes.length; i++) {
+                if (congDungCheckboxes[i].checked) {
+                    selectedCongDungs.push(congDungCheckboxes[i].value);
+                }
+            }
+
+            filterProducts();
+        }
+
+        function getSelectedTrongLuong(){
+            selectedTrongLuongs = [];
+            var trongLuongCheckboxes = document.getElementsByClassName('trongLuongCheckbox');
+
+            for (var i = 0; i < trongLuongCheckboxes.length; i++) {
+                if (trongLuongCheckboxes[i].checked) {
+                    selectedTrongLuongs.push(trongLuongCheckboxes[i].value);
+                }
+            }
+
+            filterProducts();
+        }
+
+        function getSelectedChatLieu(){
+            selectedChatLieus = [];
+            var chatLieuCheckboxes = document.getElementsByClassName('chatLieuCheckbox');
+
+            for (var i = 0; i < chatLieuCheckboxes.length; i++) {
+                if (chatLieuCheckboxes[i].checked) {
+                    selectedChatLieus.push(chatLieuCheckboxes[i].value);
+                }
+            }
+
+            filterProducts();
+        }
+
         giaBanSlider.noUiSlider.on('change', function () {
             filterProducts();
         });
     </script>
-
-
 
 </section>
