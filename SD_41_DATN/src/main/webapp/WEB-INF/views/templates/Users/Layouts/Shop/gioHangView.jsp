@@ -40,7 +40,9 @@
     <table style="border:1px solid #FAFAFA; width:1150px; margin-top: 40px">
         <thead>
         <tr>
-            <th scope="col" style="text-align: center;color: black; width: 40px">#</th>
+            <th scope="col" style="text-align: center;color: black; width: 40px">
+              <input type="checkbox" id="selectAll">
+            </th>
             <th scope="col" style="text-align: center;color: black">Tên giầy thể thao</th>
             <th scope="col" style="text-align: center;color: black">Hình ảnh</th>
             <th scope="col" style="text-align: center;color: black">Phân loại hàng</th>
@@ -133,6 +135,16 @@
 
 
 
+</script>
+
+<%--Chọn tất cả sản phẩm trong giỏ hàng--%>
+<script>
+    document.getElementById('selectAll').addEventListener('change', function () {
+        var checkboxes = document.querySelectorAll('[name="chon"]');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = document.getElementById('selectAll').checked;
+        });
+    });
 </script>
 
 <%@ include file="../../Layouts/Index/_Session1.jsp" %>

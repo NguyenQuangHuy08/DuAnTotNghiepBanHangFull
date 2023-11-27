@@ -646,7 +646,67 @@ public class TrangChuGiayTheThaoController {
 
 
 
-    //Todo code người dùng add hóa đơn
+//    //Todo code người dùng add hóa đơn
+//    @PostMapping("/GiayTheThao/nguoiDung/addHoaDon")
+//    public String nguoiDungAddHoaDon(Model model,
+//                                     @RequestParam(value = "chon", required = false) List<String> chon,
+//                                     @RequestParam(value = "idGiayChiTiet", required = false) List<UUID> idGiayChiTiet,
+//                                     @RequestParam(value = "soLuong", required = false) List<String> soLuong,
+//                                     @RequestParam(value = "donGia", required = false) List<String> donGia,
+//                                     HttpSession session,
+//                                     RedirectAttributes attributes) {
+//
+//        //Đã lưu mã vào session
+//        UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
+//        KhachHang khachHang = khachHangRepository.findById(idKhachHang).orElse(null);
+//
+//        //Chọn là null
+//        if (chon == null) {
+//
+//          attributes.addFlashAttribute("erCheckNun","Xin lỗi hãy chọn một sản phẩm để thanh toán !");
+//          return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+//
+//          //Chọn khác null
+//        } else {
+//
+//                HoaDon hoaDon = new HoaDon();
+//                //Thêm vào Hóa đơn
+//                LocalTime localTime = LocalTime.now();
+//                LocalDate ngayThanhToan = LocalDate.now();
+//                String ngayThanhToanToDate = ngayThanhToan.toString();
+//
+//                hoaDon.setMaHoaDon("MaHD" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
+//                hoaDon.setKhachHang(khachHang);
+//                hoaDon.setTrangThai(0);
+//                hoaDon.setNgayThanhToan(ngayThanhToanToDate);
+//                hoaDon.setNgayTao(ngayThanhToanToDate);
+//                hoaDonRepository.save(hoaDon);
+//                int thanhTien = 0;
+//                //Thêm vào hóa đơn chi tiết
+//                 for (String stt : chon){
+//
+//                         HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
+//                         hoaDonChiTiet.setHoaDon(hoaDon);
+//                         hoaDonChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTietRepository.findById(idGiayChiTiet.get(Integer.parseInt(stt))).orElse(null));
+//                         hoaDonChiTiet.setSoLuong(String.valueOf(Integer.parseInt(soLuong.get(Integer.parseInt(stt)))));
+//                         BigDecimal gia = new BigDecimal(donGia.get(Integer.parseInt(stt)));
+//                         hoaDonChiTiet.setDonGia(gia);
+//                         hoaDonChiTiet.setTrangThai(1);
+//                         model.addAttribute("hoaDonChiTiet",hoaDonChiTiet);
+//                         hoaDonChiTietRepository.save(hoaDonChiTiet);
+//                        thanhTien += Integer.parseInt(donGia.get(Integer.parseInt(stt)));
+//
+//                 }
+//                        hoaDon.setThanhTien(BigDecimal.valueOf(thanhTien));
+//                        model.addAttribute("hoaDon",hoaDon);
+//                        hoaDonRepository.save(hoaDon);
+//
+//            return "redirect:/nguoiDung/HoaDon/"+hoaDon.getId();
+//
+//            }
+//
+//        }
+
     @PostMapping("/GiayTheThao/nguoiDung/addHoaDon")
     public String nguoiDungAddHoaDon(Model model,
                                      @RequestParam(value = "chon", required = false) List<String> chon,
@@ -656,78 +716,47 @@ public class TrangChuGiayTheThaoController {
                                      HttpSession session,
                                      RedirectAttributes attributes) {
 
-        //Đã lưu mã vào session
+        // Đã lưu mã vào session
         UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
         KhachHang khachHang = khachHangRepository.findById(idKhachHang).orElse(null);
 
-        //Chọn là null
-        if (chon == null) {
-
-          attributes.addFlashAttribute("erCheckNun","Xin lỗi hãy chọn một sản phẩm để thanh toán !");
-          return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
-
-          //Chọn khác null
+        // Chọn là null
+        if (chon == null || chon.isEmpty()) {
+            attributes.addFlashAttribute("erCheckNun", "Xin lỗi hãy chọn ít nhất một sản phẩm để thanh toán !");
+            return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
         } else {
+            HoaDon hoaDon = new HoaDon();
+            // Thêm vào Hóa đơn
+            LocalTime localTime = LocalTime.now();
+            LocalDate ngayThanhToan = LocalDate.now();
+            String ngayThanhToanToDate = ngayThanhToan.toString();
 
-                HoaDon hoaDon = new HoaDon();
-
-//                for(int i=0; i< chon.size();i++){
-//
-//                    thanhTien += Integer.parseInt(donGia.get(i));
-//
-//                }
-
-                //Thêm vào giỏ hàng
-                LocalTime localTime = LocalTime.now();
-                LocalDate ngayThanhToan = LocalDate.now();
-                String ngayThanhToanToDate = ngayThanhToan.toString();
-
-                hoaDon.setMaHoaDon("MaHD" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
-                hoaDon.setKhachHang(khachHang);
-//                hoaDon.setThanhTien(BigDecimal.valueOf(thanhTien));
-                hoaDon.setTrangThai(0);
-                hoaDon.setNgayThanhToan(ngayThanhToanToDate);
-                hoaDon.setNgayTao(ngayThanhToanToDate);
-
-            // Lưu hóa đơn trước khi tính tổng thành tiền
-                 hoaDonRepository.save(hoaDon);
-
-                int thanhTien = 0;
-
-
-                //Thêm vào giỏ hàng chi tiết
-                 for (String stt : chon){
-
-                         HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
-                         hoaDonChiTiet.setHoaDon(hoaDon);
-                         hoaDonChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTietRepository.findById(idGiayChiTiet.get(Integer.parseInt(stt))).orElse(null));
-                         hoaDonChiTiet.setSoLuong(String.valueOf(Integer.parseInt(soLuong.get(Integer.parseInt(stt)))));
-//                         BigDecimal gia = new BigDecimal(donGia.get(Integer.parseInt(stt)));
-
-//                         int soLuongInt = Integer.parseInt(soLuong.get(Integer.parseInt(stt)));
-                         BigDecimal gia = new BigDecimal(donGia.get(Integer.parseInt(stt)));
-//                         thanhTien += soLuongInt * gia.intValue();
-                         hoaDonChiTiet.setDonGia(gia);
-
-                         hoaDonChiTiet.setTrangThai(1);
-                         model.addAttribute("hoaDonChiTiet",hoaDonChiTiet);
-                         hoaDonChiTietRepository.save(hoaDonChiTiet);
-
-                        thanhTien += Integer.parseInt(donGia.get(Integer.parseInt(stt)));
-
-
-                 }
-
-                        hoaDon.setThanhTien(BigDecimal.valueOf(thanhTien));
-                        model.addAttribute("hoaDon",hoaDon);
-                        hoaDonRepository.save(hoaDon);
-
-            return "redirect:/nguoiDung/HoaDon/"+hoaDon.getId();
-
+            hoaDon.setMaHoaDon("MaHD" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
+            hoaDon.setKhachHang(khachHang);
+            hoaDon.setTrangThai(0);
+            hoaDon.setNgayThanhToan(ngayThanhToanToDate);
+            hoaDon.setNgayTao(ngayThanhToanToDate);
+            hoaDonRepository.save(hoaDon);
+            int thanhTien = 0;
+            // Thêm vào hóa đơn chi tiết
+            for (String stt : chon) {
+                HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
+                hoaDonChiTiet.setHoaDon(hoaDon);
+                hoaDonChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTietRepository.findById(idGiayChiTiet.get(Integer.parseInt(stt))).orElse(null));
+                hoaDonChiTiet.setSoLuong(String.valueOf(Integer.parseInt(soLuong.get(Integer.parseInt(stt)))));
+                BigDecimal gia = new BigDecimal(donGia.get(Integer.parseInt(stt)));
+                hoaDonChiTiet.setDonGia(gia);
+                hoaDonChiTiet.setTrangThai(1);
+                model.addAttribute("hoaDonChiTiet", hoaDonChiTiet);
+                hoaDonChiTietRepository.save(hoaDonChiTiet);
+                thanhTien += Integer.parseInt(donGia.get(Integer.parseInt(stt)));
             }
-
+            hoaDon.setThanhTien(BigDecimal.valueOf(thanhTien));
+            model.addAttribute("hoaDon", hoaDon);
+            hoaDonRepository.save(hoaDon);
+            return "redirect:/nguoiDung/HoaDon/" + hoaDon.getId();
         }
-
+    }
 
 
 
