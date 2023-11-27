@@ -70,9 +70,6 @@ public class HoaDonController {
         HoaDon hoaDon = hoaDonRepository.findById(hoaDonId).orElse(null);
         model.addAttribute("hoaDonId", hoaDonId);
         if (hoaDon != null) {
-            // Thực hiện xử lý với đối tượng hoaDon
-//            System.out.println("Id của hóa đơn là: " + id);
-//            System.out.println("Id của hóa đơn là: " + hoaDonId);
 
             List<HoaDonChiTiet> hoaDonChiTietList = hoaDonChiTietRepository.findByHoaDon_Id(hoaDonId);
 

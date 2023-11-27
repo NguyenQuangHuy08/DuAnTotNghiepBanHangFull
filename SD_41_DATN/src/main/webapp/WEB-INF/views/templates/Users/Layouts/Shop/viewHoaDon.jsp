@@ -88,6 +88,8 @@
                     <span style="display: inline-block;color: black;font-size: 16px">Tên giầy thể thao: ${list.giayTheThaoChiTiet.giayTheThao.tenGiayTheThao}</span>
                     <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Size: ${list.giayTheThaoChiTiet.size.size}</span>
                     <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Màu sắc: ${list.giayTheThaoChiTiet.mauSac.tenMauSac}</span>
+                    <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Số lượng:${list.soLuong}</span>
+                    <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Gia bán:${list.giayTheThaoChiTiet.giayTheThao.giaBan}</span>
                     <span style="display: inline-block;padding-left: 20px">
                             <img src="/upload/${list.giayTheThaoChiTiet.giayTheThao.image.get(0).link}" width="110px"
                                  style="border-radius: 10px 10px 10px">
@@ -100,7 +102,6 @@
             <div class="row">
                 <div class="col-3">
                     <h4>Giá tiền :</h4>
-
                 </div>
                 <div class="col-6">
                     <%--                <label>${hoaDon.thanhTien}</label>--%>
@@ -110,6 +111,19 @@
                     </p>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-3">
+                    <h4>Số lượng :</h4>
+                </div>
+                <div class="col-6">
+                    <%--                <label>${hoaDon.thanhTien}</label>--%>
+                    <%--                <input type="text" id="price" value="${hoaDon.thanhTien}" readonly>--%>
+                    <p style="font-size: 18px;color: red">
+
+                    </p>
+                </div>
+            </div>
+
         </div>
 
         <form action="/nguoiDung/hoaDon/ThanhToan/${hoaDonId}" method="post">

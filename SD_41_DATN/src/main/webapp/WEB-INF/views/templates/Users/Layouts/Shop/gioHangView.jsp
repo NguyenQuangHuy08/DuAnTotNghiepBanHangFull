@@ -51,15 +51,13 @@
         </tr>
         </thead>
         <tbody>
+
         <c:forEach var="gioHangChiTiet" items="${listGioHangChiTiet}" varStatus="i">
                 <tr>
                     <td style="padding-top: 20px; text-align: center; color: black">
-<%--                           <input type="checkbox" name="chon" value="${gioHangChiTiet.giayTheThaoChiTiet.id}">--%>
-<%--                            <input type="checkbox" name="chon-${gioHangChiTiet.giayTheThaoChiTiet.id}" value="${gioHangChiTiet.giayTheThaoChiTiet.id}">--%>
-<%--                            <input type="checkbox" name="chon-${gioHangChiTiet.giayTheThaoChiTiet.id}" value="${gioHangChiTiet.giayTheThaoChiTiet.id}">--%>
-                                <input type="checkbox" name="chon" value="${gioHangChiTiet.giayTheThaoChiTiet.id}" id="chon-${gioHangChiTiet.giayTheThaoChiTiet.id}">
-
+                            <input type="checkbox" name="chon" value="${i.index}" id="chon-${gioHangChiTiet.giayTheThaoChiTiet.id}">
                     </td>
+                    <input type="hidden" name="idGiayChiTiet" value="${gioHangChiTiet.giayTheThaoChiTiet.id}">
                     <td style="padding-top: 20px; text-align: center; color: black">
                             ${gioHangChiTiet.giayTheThaoChiTiet.giayTheThao.tenGiayTheThao}
                     </td>

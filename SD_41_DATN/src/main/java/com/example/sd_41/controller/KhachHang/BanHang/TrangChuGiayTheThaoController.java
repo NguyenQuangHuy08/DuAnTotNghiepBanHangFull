@@ -649,12 +649,11 @@ public class TrangChuGiayTheThaoController {
     //Todo code người dùng add hóa đơn
     @PostMapping("/GiayTheThao/nguoiDung/addHoaDon")
     public String nguoiDungAddHoaDon(Model model,
-                                     @RequestParam(value = "action", required = false) String action,
-                                     @RequestParam(value = "chon", required = false) List<UUID> chon,
+                                     @RequestParam(value = "chon", required = false) List<String> chon,
+                                     @RequestParam(value = "idGiayChiTiet", required = false) List<UUID> idGiayChiTiet,
                                      @RequestParam(value = "soLuong", required = false) List<String> soLuong,
                                      @RequestParam(value = "donGia", required = false) List<String> donGia,
                                      HttpSession session,
-                                     HttpServletRequest request,
                                      RedirectAttributes attributes) {
 
         //Đã lưu mã vào session
@@ -670,14 +669,13 @@ public class TrangChuGiayTheThaoController {
           //Chọn khác null
         } else {
 
-                int thanhTien = 0;
                 HoaDon hoaDon = new HoaDon();
 
-                for(int i=0; i< chon.size() ;i++){
-
-                    thanhTien += Integer.parseInt(donGia.get(i));
-
-                }
+//                for(int i=0; i< chon.size();i++){
+//
+//                    thanhTien += Integer.parseInt(donGia.get(i));
+//
+//                }
 
                 //Thêm vào giỏ hàng
                 LocalTime localTime = LocalTime.now();
@@ -686,37 +684,52 @@ public class TrangChuGiayTheThaoController {
 
                 hoaDon.setMaHoaDon("MaHD" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
                 hoaDon.setKhachHang(khachHang);
-                hoaDon.setThanhTien(BigDecimal.valueOf(thanhTien));
+//                hoaDon.setThanhTien(BigDecimal.valueOf(thanhTien));
                 hoaDon.setTrangThai(0);
                 hoaDon.setNgayThanhToan(ngayThanhToanToDate);
                 hoaDon.setNgayTao(ngayThanhToanToDate);
-                model.addAttribute("hoaDon",hoaDon);
-                hoaDonRepository.save(hoaDon);
+
+            // Lưu hóa đơn trước khi tính tổng thành tiền
+                 hoaDonRepository.save(hoaDon);
+
+                int thanhTien = 0;
+
 
                 //Thêm vào giỏ hàng chi tiết
-                 for (int i=0; i<chon.size();i++){
-
-                     UUID selectedId = chon.get(i);
-                     GiayTheThaoChiTiet chiTiet = giayTheThaoChiTietRepository.findById(selectedId).orElse(null);
-                     if (chiTiet != null) {
+                 for (String stt : chon){
 
                          HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
                          hoaDonChiTiet.setHoaDon(hoaDon);
-                         hoaDonChiTiet.setGiayTheThaoChiTiet(chiTiet);
-                         hoaDonChiTiet.setSoLuong(String.valueOf(Integer.parseInt(soLuong.get(i))));
+                         hoaDonChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTietRepository.findById(idGiayChiTiet.get(Integer.parseInt(stt))).orElse(null));
+                         hoaDonChiTiet.setSoLuong(String.valueOf(Integer.parseInt(soLuong.get(Integer.parseInt(stt)))));
+//                         BigDecimal gia = new BigDecimal(donGia.get(Integer.parseInt(stt)));
+
+//                         int soLuongInt = Integer.parseInt(soLuong.get(Integer.parseInt(stt)));
+                         BigDecimal gia = new BigDecimal(donGia.get(Integer.parseInt(stt)));
+//                         thanhTien += soLuongInt * gia.intValue();
+                         hoaDonChiTiet.setDonGia(gia);
+
                          hoaDonChiTiet.setTrangThai(1);
                          model.addAttribute("hoaDonChiTiet",hoaDonChiTiet);
                          hoaDonChiTietRepository.save(hoaDonChiTiet);
 
-                     }
+                        thanhTien += Integer.parseInt(donGia.get(Integer.parseInt(stt)));
+
 
                  }
 
-                return "redirect:/nguoiDung/HoaDon/"+hoaDon.getId();
+                        hoaDon.setThanhTien(BigDecimal.valueOf(thanhTien));
+                        model.addAttribute("hoaDon",hoaDon);
+                        hoaDonRepository.save(hoaDon);
+
+            return "redirect:/nguoiDung/HoaDon/"+hoaDon.getId();
 
             }
 
         }
+
+
+
 
 
 //Finall dữ liệu trả về
