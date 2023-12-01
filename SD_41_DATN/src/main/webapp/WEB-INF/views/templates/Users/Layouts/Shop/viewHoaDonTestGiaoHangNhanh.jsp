@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="frm"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
@@ -64,11 +63,7 @@
 
 <div class="container" style="margin-top: 150px">
     <div class="container-fluid">
-
-        <form action="/nguoiDung/hoaDon/ThanhToan/${hoaDonId}" method="post">
-            <div class="thongBaoHoaDon">
-                <span style="color: red;font-size: 20px;margin-left: 40px">${diaChiChonNull}</span>
-            </div>
+        <form method="post">
             <div class="row px-xl-5">
                 <div class="col-lg-6">
                     <h5 class="section-title position-relative text-uppercase mb-3">
@@ -80,128 +75,95 @@
                     <div id="view_dia_chi_cu" style="display:block">
                         <div class="bg-light p-30 mb-5">
                             <div class="row">
-                                <div class="col-md-6 form-group" style="margin-top: 30px">
-                                    <label>Họ tên :</label>
+                                <div class="col-md-6 form-group">
+                                    <label>Họ tên</label>
                                     <%--                                    <input class="form-control" type="text" name="ten" id="ten" value="${khachHang.ten}" placeholder="${khachHang.ten}" readonly>--%>
                                     <input class="form-control" type="text" name="tenKhachHang" id="ten" value="${tenKhachHang}" placeholder="${tenKhachHang}" readonly>
-                                    <input type="hidden" name="tenKhachHang" value="${tenKhachHang}">
+
 
                                 </div>
-                                <div class="col-md-6 form-group" style="margin-top: 30px">
-                                    <label>Email :</label>
+                                <div class="col-md-6 form-group">
+                                    <label>Email</label>
                                     <%--                                    <input class="form-control" type="text" name="email" id="email" value="${khachHang.email}" placeholder="${khachHang.email}" readonly>--%>
-                                    <input class="form-control" type="text" name="email" id="email" value="${email}"
-                                           placeholder="${email}" readonly>
-                                    <input type="hidden" name="email" value="${email}">
+                                    <input class="form-control" type="text" name="email" id="email" value="${email}" placeholder="${email}" readonly>
+
 
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label>Số điện thoại :</label>
+                                    <label>Số điện thoại</label>
                                     <%--                                    <input class="form-control" type="text" name="sdt" id="sdt" value="${khachHang.sdt}" placeholder="${khachHang.sdt}" readonly>--%>
-                                    <input class="form-control" type="text" name="soDienThoai" id="sdt"
-                                           value="${soDienThoai}" placeholder="${soDienThoai}" readonly>
-
-                                    <input type="hidden" name="soDienThoai" value="${soDienThoai}">
+                                    <input class="form-control" type="text" name="soDienThoai" id="sdt" value="${soDienThoai}" placeholder="${soDienThoai}" readonly>
 
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label>Tỉnh :</label>
-                                    <input class="form-control" type="text" name="quocGia" placeholder="${thanhPho}"
-                                           value="${thanhPho}" id="tinh" readonly>
-                                    <input type="hidden" name="quocGia" value="${thanhPho}">
+                                    <label>Tỉnh</label>
+                                    <input class="form-control" type="text" name="quocGia"
+                                           placeholder="${khachHang.quoc_gia}" value="${khachHang.quoc_gia}" id="tinh"
+                                           readonly>
 
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label>Huyện : </label>
                                     <input class="form-control" type="text" name="thanhPho"
-                                           placeholder="${huyen}" value="${huyen}"
+                                           placeholder="${khachHang.thanh_pho}" value="${khachHang.thanh_pho}"
                                            id="huyen"
                                            readonly>
-                                    <input type="hidden" name="thanhPho" value="${huyen}">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label>Xã :</label>
                                     <input class="form-control" type="text" name="diaChi" id="xa"
-                                           value="${xa}"
-                                           placeholder="${xa}"
+                                           value="${khachHang.dia_chi}"
+                                           placeholder="${khachHang.dia_chi}"
                                            readonly>
-                                    <input type="hidden" name="diaChi" value="${xa}">
                                 </div>
-
-                                <div class="col-12">
-                                    <label>Ghi chú :</label>
-                                    <textarea id="mess" name="mess" class="form-control" rows="4" placeholder="Nhập ghi chú của bạn"></textarea>
-                                </div>
-
                             </div>
                         </div>
                     </div>
-
                     <input type="checkbox" name="diaChiChon" value="diaChiMoi" id="checkbox2"
                            onclick="toggleView('view_dia_chi_moi')">
                     <label for="checkbox2" class="label_check_box">Địa chỉ mới</label>
                     <div id="view_dia_chi_moi" style="display:none">
                         <div class="bg-light p-30 mb-5">
                             <div class="bg-light p-30 mb-5">
-                                <div class="row" style="margin-top: 10px">
-                                    <div class="col-md-6 form-group" style="margin-top: 20px;">
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
                                         <label>Họ tên</label>
-                                        <span style="color: red">*</span>
-                                        <input class="form-control" name="ten1" id="ten1" type="text"
-                                               placeholder="Họ tên">
-                                        <span style="color: red;">${tenKhachHangMoiNull}</span>
+                                        <input class="form-control" name="ten1" id="ten1" type="text" placeholder="Họ tên">
                                     </div>
-                                    <div class="col-md-6 form-group" style="margin-top: 20px;">
+                                    <div class="col-md-6 form-group">
                                         <label>Email</label>
-                                        <span style="color: red">*</span>
                                         <input class="form-control" name="email1" id="email1" type="text"
                                                placeholder="Email">
-                                        <span style="color: red;">${emailMoiNull}</span>
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label>Số điện thoại</label>
-                                        <span style="color: red">*</span>
                                         <input class="form-control" name="sdt1" id="sdt1" type="text"
                                                placeholder="Số điện thoại">
-                                        <span style="color: red;">${soDienThoaiMoiNull}</span>
-                                        <span style="color: red;">${erLogSoDienThoai0}</span>
-                                        <span style="color: red;">${erLogSoDienThoaiChonChu}</span>
-                                        <span style="color: red;">${erLogSoDienThoaiNumber}</span>
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label for="province">Tỉnh:</label>
-                                        <span style="color: red">*</span>
                                         <select id="province" class="form-control"
                                                 onchange="loadDistricts(); checkSelection()">
                                             <option value="">Chọn tỉnh</option>
                                         </select>
                                         <input type="hidden" id="tinh1" name="quocGia1">
-                                        <span style="color: red;">${quocGiaMoiNull}</span>
                                     </div>
 
-                                    <div class="col-md-6 form-group" style="margin-bottom: 20px">
+                                    <div class="col-md-6 form-group">
                                         <label for="district">Huyện:</label>
-                                        <span style="color: red">*</span>
                                         <select id="district" class="form-control"
                                                 onchange="loadWards(); checkSelection()"
                                                 disabled>
                                             <option value="">Chọn huyện</option>
                                         </select>
                                         <input type="hidden" id="huyen1" name="thanhPho1">
-                                        <span style="color: red;">${thanhPhoMoiNull}</span>
                                     </div>
-                                    <div class="col-md-6 form-group" style="margin-bottom: 20px">
+                                    <div class="col-md-6 form-group">
                                         <label for="ward">Xã:</label>
-                                        <span style="color: red">*</span>
                                         <select id="ward" class="form-control" onchange="checkSelection()" disabled>
                                             <option value="">Chọn xã</option>
                                         </select>
                                         <input type="hidden" id="xa1" name="diaChi1">
-                                        <span style="color: red;">${diaChiMoiNull}</span>
-                                    </div>
-                                    <div class="col-12">
-                                        <label>Ghi chú :</label>
-                                        <textarea id="messMoi" name="messMoi" class="form-control" rows="4" placeholder="Nhập ghi chú của bạn"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -213,90 +175,123 @@
                     <h5 class="section-title position-relative text-uppercase mb-3"><span
                             class="">Order Total</span></h5>
                     <div class="bg-light p-30 mb-5">
-                        <div class="border-bottom" style="margin-top: 20px">
-                            <br>
-                            <c:forEach items="${hoaDonChiTietList}" var="list" varStatus="i">
-                                <p>
-                                    <span style="display: inline-block;color: black;font-size: 16px;margin-left: 15px">${i.index+1} :</span>
-                                    <span style="display: inline-block;color: black;font-size: 16px">${list.giayTheThaoChiTiet.giayTheThao.tenGiayTheThao}</span>
-                                    <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Size: ${list.giayTheThaoChiTiet.size.size}</span>
-                                    <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Màu sắc: ${list.giayTheThaoChiTiet.mauSac.tenMauSac}</span>
-                                    <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Số lượng: ${list.soLuong}</span>
-                                    <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px;margin-top: 30px">Giá bán:
-
-                            <fmt:formatNumber type="" value="${list.giayTheThaoChiTiet.giayTheThao.giaBan}" pattern="#,##0.###"/> VNĐ
-
-                        </span>
-                              <span style="display: inline-block;padding-left: 20px">
-                            <img src="/upload/${list.giayTheThaoChiTiet.giayTheThao.image.get(0).link}" width="110px"
-                                 style="border-radius: 10px 10px 10px">
-                        </span>
-                                </p>
+                        <div class="border-bottom">
+                            <h6 class="mb-3">Sản phẩm</h6>
+                            <c:forEach items="${listHoaDonChiTietDTOS}" var="list" varStatus="vTri">
+                                <div class="d-flex justify-content-between ">
+                                    <p><img style="width: 50px"
+                                            src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
+                                    <p style="width: 200px">${list.hoaDonChiTiet.aoChiTiet.ao.ten}</p>
+                                    <p><fmt:formatNumber value="${list.gia}" type="currency" currencySymbol="VNĐ"/></p>
+                                    <p>${list.hoaDonChiTiet.soLuong}</p>
+                                </div>
+                                <input type="hidden" id="slTon${vTri.index + 1}"
+                                       value="${list.hoaDonChiTiet.aoChiTiet.slton}">
+                                <input type="hidden" id="sl${vTri.index + 1}" value="${list.hoaDonChiTiet.soLuong}">
+                                <input type="hidden" name="idAoCheck" id="idAo${vTri.index + 1}"
+                                       value="${list.hoaDonChiTiet.aoChiTiet.ao.id}">
+                                <input type="hidden" name="mauSacCheck" id="mauSac${vTri.index + 1}"
+                                       value="${list.hoaDonChiTiet.aoChiTiet.mau_sac.id}">
+                                <input type="hidden" name="sizeCheck" id="size${vTri.index + 1}"
+                                       value="${list.hoaDonChiTiet.aoChiTiet.size.id}">
+                                <input type="hidden" name="soLuongCheck" id="size${vTri.index + 1}"
+                                       value="${list.hoaDonChiTiet.soLuong}">
                             </c:forEach>
-
                         </div>
-
                         <div class="border-bottom pt-3 pb-2">
                             <div class="border-bottom pt-3 pb-2">
                                 <div class="d-flex justify-content-between mb-3">
-                                    <h4 style="margin-left: 15px;color: black">Đơn giá :</h4>
-                                    <h5 style="margin-right: 50px;color: red">
-                                        <fmt:formatNumber type="" value="${hoaDon.thanhTien}" pattern="#,##0.###"/> VNĐ
-                                    </h5>
-                                    <input type="hidden" name="thanhTien" value="${hoaDon.thanhTien}">
+                                    <h6>Đơn giá</h6>
+                                    <h6>
+                                        <fmt:formatNumber value="${tongTien}" type="currency" currencySymbol="VNĐ"/>
+                                    </h6>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                    <h4 style="margin-left: 15px;color: black" class="font-weight-medium">Ship :</h4>
-                                    <h6 style="margin-right: 50px;color: red" class="font-weight-medium">
-                                        <p style="font-size: 17px" id="shipcode"></p>
-                                        <input type="hidden" name="ship" id="ship" readonly style="border: none; background: none; text-align: left;padding-left: 50%">
+                                    <h6 class="font-weight-medium">Ship</h6>
+                                    <h6 class="font-weight-medium">
+                                        <p id="shipcode"></p>
+                                        <input type="hidden" id="ship" readonly
+                                               style="border: none; background: none; text-align: left;padding-left: 50%">
                                     </h6>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="price" style="font-size: 20px;color: black;margin-bottom: 20px;margin-left:10px;margin-top: 5px;margin-left: 10px">Tổng tiền:</label>
-                                <input name="thanhTienTong" type="hidden" id="price" value="${hoaDon.thanhTien}" readonly>
-                                <input name="thanhTienTongPrice" type="hidden" id="price1" name="tongTien" readonly>
+                                <label for="price" style="font-size: 20px;color: black">Tổng tiền:</label>
+                                <input type="hidden" id="price" value="${tongTien}" readonly>
+                                <input type="hidden" id="price1" name="tongTien" readonly>
                                 <br>
-                                <label id="tongTienString" style="font-size: 18px;color:#ff0000;margin-left: 10px"></label>
+                                <label id="tongTienString" style="font-size: 20px"></label>
+                            </div>
+                            <div class="form-group">
+                                <div class="payment-methods">
+                                    <label>
+                                        <p style="padding-top: 5px" onclick="toggleView('view_anh2')">Chương trình giảm
+                                            giá
+                                            <i class="fas fa-angle-down"></i></p>
+                                    </label>
+                                </div>
+                                <div id="view_anh2" style="display:none">
+                                    <div class="voucher-list">
+                                        <c:if test="${soChuongTrinhGG == 0}"> Hiện tại không có chương trình giảm giá áp dụng cho hóa đơn</c:if>
+                                        <c:forEach items="${CTGG}" var="list">
+                                            <div class="voucher-details">
+                                                <input name="options" type="radio" value="${list.phanTramGiam}"
+                                                       onclick="updatePrice(this)"
+                                                       <c:if test="${list.soLuongSanPham > slDK || list.soTienHoaDon > tongTienDK}">disabled</c:if>>
+                                                <label for="${list.ma}" class="radio-label"></label>
+                                                <span class="voucher-name">${list.ten}</span>
+                                                <span class="voucher-condition" style="margin-left: 20px;"><a href="#"
+                                                                                                              style=" color: #0e84b5"
+                                                                                                              onclick="showCondition('Số sản phẩm trên ${list.soLuongSanPham} và tổng tiền hóa đơn trên ${list.soTienHoaDon}')">Xem điều kiện</a></span>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+
+                                <div id="condition-popup" style="display: none;">
+                                    <div class="condition-content">
+                                        <span class="close-btn" onclick="closeCondition()">Đóng</span>
+                                        <div id="condition-text"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="mb-5">
-                        <div class="thongBaoPayment">
-                            <span style="color: red">${hinhThucThanhToanNull}</span>
-
-                        </div>
                         <h5 class="section-title position-relative text-uppercase mb-3"><span
                                 class="">Payment</span></h5>
                         <div class="bg-light p-30">
                             <div class="form-group mb-4">
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" value="momo" name="payment"
+                                    <input type="radio" class="custom-control-input" value="bank" name="payment"
+                                           id="banktransfer">
+                                    <label class="custom-control-label" for="banktransfer">Thanh toán vnpay</label>
+                                </div>
+                            </div>
+                            <div class="form-group mb-4">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" value="bank1" name="payment"
                                            id="banktransfer1">
-                                    <label class="custom-control-label" for="banktransfer1" style="margin-top: 15px;margin-left: 15px">Thanh toán momo</label>
+                                    <label class="custom-control-label" for="banktransfer1">Thanh toán momo</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" value="cash" name="payment" id="directcheck">
-                                    <label class="custom-control-label" for="directcheck" style="margin-left: 15px">Thanh toán khi nhận
+                                    <input type="radio" class="custom-control-input" value="cash" name="payment"
+                                           id="directcheck">
+                                    <label class="custom-control-label" for="directcheck">Thanh toán khi nhận
                                         hàng</label>
                                 </div>
                             </div>
-                            <button style="margin-top: 10px" type="submit" class="btn btn-block btn-primary font-weight-bold py-3">
-                                Đặt hàng
+                            <button class="btn btn-block btn-primary font-weight-bold py-3"
+                                    formaction="/user/hoa_don/dat_hang/${idHoaDon}" onclick="kiemTra()">Đặt hàng
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
-
     </div>
-
-</div>
-
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -335,7 +330,7 @@
 
         function updatePrice(radioButton) {
             var priceInput = document.getElementById("price");
-            var currentPrice = parseFloat(${hoaDon.thanhTien});
+            var currentPrice = parseFloat(${tongTien});
             var selectedValue = parseFloat(radioButton.value);
             var newPrice = currentPrice - (currentPrice * selectedValue / 100);
 
@@ -407,8 +402,6 @@
                 document.getElementById('tinh').style.borderColor = 'gray';
                 document.getElementById('huyen').style.borderColor = 'gray';
                 document.getElementById('xa').style.borderColor = 'gray';
-                // document.getElementById('mess').style.borderColor = 'gray';
-
             }
             checkBothUnchecked();
         });
@@ -547,10 +540,6 @@
             var wardName = xa;
             var wardId = await findWardIdByName(wardName, districtId);
 
-            // var mess = document.getElementById("mess").value;
-            // var wardName = mess;
-            // var wardId = await findWardIdByName(wardName, districtId);
-
             const transportationFeeDTO = {
                 toDistrictId: districtId,
                 toWardCode: wardId,
@@ -612,9 +601,199 @@
     </script>
     <script>
 
+        function kiemTra() {
+
+            var box1 = document.getElementById("checkbox1");
+            var box2 = document.getElementById("checkbox2");
+
+            var radioBank = document.getElementById("banktransfer");
+            var radioMomo = document.getElementById("banktransfer1");
+            var radioCash = document.getElementById("directcheck");
+
+            var ten = document.getElementsByName("ten")[0].value;
+            var email = document.getElementsByName("email")[0].value;
+            var sdt = document.getElementsByName("sdt")[0].value;
+            var quocGia = document.getElementById("tinh").value;
+            var thanhPho = document.getElementById("huyen").value;
+            var diaChi = document.getElementById("xa").value;
+
+
+            var ten1 = document.getElementsByName("ten1")[0].value;
+            var email1 = document.getElementsByName("email1")[0].value;
+            var sdt1 = document.getElementsByName("sdt1")[0].value;
+            var tinh1 = document.getElementById("province").value;
+            var huyen1 = document.getElementById("district").value;
+            var xa1 = document.getElementById("ward").value;
+
+
+            if (!box1.checked && !box2.checked) {
+                Swal.fire({
+                    icon: 'warning',
+                    html: '<div class="swal-text">Vui lòng điền đầy đủ thông tin để nhận hàng</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                    allowOutsideClick: true,
+                });
+                setTimeout(() => {
+                    Swal.close();
+                }, 1000);
+                event.preventDefault();
+            }
+            if (box1.checked && !box2.checked) {
+                var hasError = false;
+                if (ten.trim() === '') {
+                    document.getElementById('ten').style.borderColor = 'red';
+                    hasError = true;
+                } else {
+                    document.getElementById('ten').style.borderColor = 'gray';
+                }
+                if (email.trim() === '') {
+                    document.getElementById('email').style.borderColor = 'red';
+                    hasError = true;
+                } else {
+                    document.getElementById('email').style.borderColor = 'gray';
+                }
+                if (sdt.trim() === '') {
+                    document.getElementById('sdt').style.borderColor = 'red';
+                    hasError = true;
+                } else {
+                    document.getElementById('sdt').style.borderColor = 'gray';
+                }
+                if (quocGia.trim() === '') {
+                    document.getElementById('tinh').style.borderColor = 'red';
+                    hasError = true;
+                } else {
+                    document.getElementById('tinh').style.borderColor = 'gray';
+                }
+                if (thanhPho.trim() === '') {
+                    document.getElementById('huyen').style.borderColor = 'red';
+                    hasError = true;
+                } else {
+                    document.getElementById('huyen').style.borderColor = 'gray';
+                }
+                if (diaChi.trim() === '') {
+                    document.getElementById('xa').style.borderColor = 'red';
+                    hasError = true;
+                } else {
+                    document.getElementById('xa').style.borderColor = 'gray';
+                }
+
+                if (hasError) {
+                    Swal.fire({
+                        icon: 'warning',
+                        html: '<div class="swal-text">Vui lòng điền đầy đủ thông tin và đúng định dạng để nhận hàng</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                        allowOutsideClick: true,
+                    });
+                    setTimeout(() => {
+                        Swal.close();
+                    }, 1000);
+                    event.preventDefault();
+                }
+            }
+
+            if (!box1.checked && box2.checked) {
+                var hasError = false;
+
+                var validEmailFormat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/; // Regex kiểm tra định dạng email
+                var isEmailValid = validEmailFormat.test(email1);
+
+                // Kiểm tra xem sdt1 có đúng 10 số không và chỉ chứa ký tự số hay không
+                var validPhoneNumber = /^\d{10}$/; // Regex kiểm tra 10 ký tự số
+                var isPhoneNumberValid = validPhoneNumber.test(sdt1);
+
+                if (ten1.trim() === '') {
+                    document.getElementById('ten1').style.borderColor = 'red';
+                    hasError = true;
+                } else {
+                    document.getElementById('ten1').style.borderColor = 'gray';
+                }
+                if (email1.trim() === '' || !isEmailValid) {
+                    document.getElementById('email1').style.borderColor = 'red';
+                    hasError = true;
+                } else {
+                    document.getElementById('email1').style.borderColor = 'gray';
+                }
+                if (sdt1.trim() === '' || !isPhoneNumberValid) {
+                    document.getElementById('sdt1').style.borderColor = 'red';
+                    hasError = true;
+                } else {
+                    document.getElementById('sdt1').style.borderColor = 'gray';
+                }
+                if (tinh1.trim() === '') {
+                    document.getElementById('province').style.borderColor = 'red';
+                    hasError = true;
+                } else {
+                    document.getElementById('province').style.borderColor = 'gray';
+                }
+                if (huyen1.trim() === '') {
+                    document.getElementById('district').style.borderColor = 'red';
+                    hasError = true;
+                } else {
+                    document.getElementById('district').style.borderColor = 'gray';
+                }
+                if (xa1.trim() === '') {
+                    document.getElementById('ward').style.borderColor = 'red';
+                    hasError = true;
+                } else {
+                    document.getElementById('ward').style.borderColor = 'gray';
+                }
+
+                if (hasError) {
+                    Swal.fire({
+                        icon: 'warning',
+                        html: '<div class="swal-text">Vui lòng điền đầy đủ thông tin và đúng định dạng để nhận hàng</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                        allowOutsideClick: true,
+                    });
+                    setTimeout(() => {
+                        Swal.close();
+                    }, 1000);
+                    event.preventDefault();
+                }
+            }
+
+            if (!radioBank.checked && !radioCash.checked && !radioMomo.checked) {
+                Swal.fire({
+                    icon: 'warning',
+                    html: '<div class="swal-text">Vui lòng chọn phương thức thanh toán</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                    allowOutsideClick: true,
+                });
+                setTimeout(() => {
+                    Swal.close();
+                }, 1000);
+                event.preventDefault();
+            }
+
+            for (var i = 0; i < 99; i++) {
+                var slTon = parseFloat(document.getElementById("slTon" + (i + 1)).value);
+                var sl = parseFloat(document.getElementById("sl" + (i + 1)).value);
+
+
+                console.log(sl);
+                console.log(slTon);
+
+                if (sl > slTon) {
+                    Swal.fire({
+                        icon: 'warning',
+                        html: '<div class="swal-text">Số lượng chọn quá lớn cho sản phẩm</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                        allowOutsideClick: true,
+                    });
+                    setTimeout(() => {
+                        Swal.close();
+                    }, 2000);
+                    event.preventDefault();
+                }
+            }
+        }
+
+
+        // Kiểm tra các trường trong địa chỉ cũ và trả về true nếu đầy đủ, ngược lại trả về false
+        // Ví dụ:
+
+
+    </script>
+    <script>
+
         var priceInput = document.getElementById("price");
         var priceInput1 = document.getElementById("price1");
-        var currentPrice = parseFloat(${hoaDon.thanhTien});
+        var currentPrice = parseFloat(${tongTien});
 
         async function loadProvinces() {
             const response = await fetch(`http://localhost:8080/public/provinces`);
@@ -792,6 +971,6 @@
             }, 1000);
         }
     </script>
-
 </body>
+
 </html>

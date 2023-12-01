@@ -144,6 +144,26 @@
                                 <fmt:formatNumber  type="" value="${giayTheThao.giaBan}" pattern="#,##0.###" />
                             </span>
                     VNĐ
+
+<%--                    Todo sủa code ở đây--%>
+                    <c:choose>
+                        <c:when test="${sale !=0}">
+                            <div class="gia">
+                                <p>
+                                    <del>${giayTheThao.giaBan}</del>
+                                    <strong>${giayTheThao.giaBan * (100 - sale)/100}</strong>
+                                </p>
+                            </div>
+                        </c:when>
+                        <c:when test="${sale==0}">
+                            <div class="gia">
+                                <p>
+                                    <strong>${giayTheThao.giaBan}</strong>
+                                </p>
+                            </div>
+                        </c:when>
+                    </c:choose>
+
                 </p>
 
                 <h6 style="color: gray">

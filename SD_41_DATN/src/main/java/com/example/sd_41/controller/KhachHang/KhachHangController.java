@@ -28,6 +28,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 public class KhachHangController {
@@ -103,20 +105,58 @@ public class KhachHangController {
     @RequestMapping(value = "/KhachHang/create")
     public String create(@Valid
                          @ModelAttribute("khachHang") KhachHang khachHang,
+                         @RequestParam("quocGia1") String quocGia1,
+                         @RequestParam("thanhPho1") String thanhPho1,
+                         @RequestParam("diaChi1") String diaChi1  ,
                          BindingResult result,
                          Model model,
                          RedirectAttributes attributes,
                          HttpSession session){
 
-        System.out.println(khachHang.getNgaySinh());
         if (result.hasErrors()){
 
             return "/templates/Users/Layouts/DangNhap/Register";
 
         }
 
-        //Check trùng tên Email
+        //Check trô email
+        if(khachHang.getEmail() == null
+            || khachHang.getEmail().isEmpty()
+                || khachHang.getEmail().trim().length()==0){
 
+            model.addAttribute("erCheckEmailKhachHangNull","Không được để trống Email !");
+            return "/templates/Users/Layouts/DangNhap/Register";
+
+        }
+
+        //Check email phải có đuôi @gmail.com
+        if(!khachHang.getEmail().endsWith("@gmail.com")){
+
+            model.addAttribute("erMail@gmail","Email của bạn không đúng định dạng !");
+            return "/templates/Users/Layouts/DangNhap/Register";
+
+        }
+
+        //Check tên email nhập kí tự số đầu tiên
+        if (khachHang.getEmail().matches("^\\d.*") ||
+                !khachHang.getEmail().matches(".*[a-zA-Z].*")) {
+            model.addAttribute("erCheckEmailSo", "Tên Email  không hợp lệ!, Phải bắt đầu bằng chữ cái đầu tiên!");
+            return "/templates/Users/Layouts/DangNhap/Register";
+
+        }
+
+        Pattern pattern = Pattern.compile("^[^-0-9].*");
+        Matcher matcher = pattern.matcher(khachHang.getEmail());
+
+        if (!matcher.matches()) {
+
+            model.addAttribute("erCheckEmail", "Email thao không hợp lệ!");
+            return "/templates/Users/Layouts/DangNhap/Register";
+
+        }
+
+
+        //Check trùng tên Email
         if(checkTrungEmailKhachHang(khachHang.getEmail())){
 
             model.addAttribute("erCheckTrungEmailKhachHang","Xin lỗi tên email này đã tồn tại trong hệ thống !");
@@ -165,7 +205,25 @@ public class KhachHangController {
 
         }
 
-        //Todo code image cho khach hang
+        //Check thành phố
+        if (quocGia1 == null || quocGia1.isEmpty()) {
+            result.rejectValue("quocGia1", "Thành phố không được để trống!");
+            return "/templates/Users/Layouts/DangNhap/Register";
+        }
+
+        if (thanhPho1 == null || thanhPho1.isEmpty()) {
+            result.rejectValue("thanhPho1", "Huyện không được để trống!");
+            return "/templates/Users/Layouts/DangNhap/Register";
+        }
+
+        if (diaChi1 == null || diaChi1.isEmpty()) {
+            result.rejectValue("diaChi1", "Xã không được để trống!");
+            return "/templates/Users/Layouts/DangNhap/Register";
+        }
+        //check huyện
+
+
+        //check xã
 
 
         LocalDate ngayTao = LocalDate.now();
@@ -177,9 +235,13 @@ public class KhachHangController {
         String ngayTaoDate = ngayTao.toString();
         String ngaySuaDate = ngaySua.toString();
 
-        khachHang.setNgaySua(ngayTaoDate);
+        khachHang.setNgayTao(ngayTaoDate);
         khachHang.setNgaySua(ngaySuaDate);
         khachHang.setMaKhachHang("MaKH" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
+        khachHang.setThanhPho(quocGia1);
+        khachHang.setHuyen(thanhPho1);
+        khachHang.setXa(diaChi1);
+        khachHang.setDiaChi(khachHang.getDiaChi());
 
         khachHangRepository.save(khachHang);
 
@@ -197,6 +259,7 @@ public class KhachHangController {
 
 
 
+
     //Todo code edit khách hàng
     @RequestMapping("/KhachHang/edit/{id}")
     public String edit(Model model, @PathVariable UUID id){
@@ -209,6 +272,7 @@ public class KhachHangController {
 
         model.addAttribute("khachHang", khachHangRepository.findById(id));
         return "/KhachHang/edit";
+
     }
 
     //Todo code xóa khách hàng

@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Document</title>
+    <title>Chương trình giảm giá sản phẩm</title>
     <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -20,14 +20,6 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
     <style>
-        body {
-            width: 100%;
-            background-color: rgb(238, 238, 238);
-        }
-
-        /* .promotion{
-
-  } */
 
         .btn-function {
             display: flex;

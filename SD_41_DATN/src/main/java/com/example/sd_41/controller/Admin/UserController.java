@@ -111,7 +111,7 @@ public class UserController {
 
             }
 
-            //Check tên sản phẩm nhập kí tự số đầu tiên
+            //Check tên email nhập kí tự số đầu tiên
             if (user.getEmail().matches("^\\d.*") ||
                     !user.getEmail().matches(".*[a-zA-Z].*")) {
                 model.addAttribute("erCheckEmailSo", "Tên Email  không hợp lệ!, Phải bắt đầu bằng chữ cái đầu tiên!");

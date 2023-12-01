@@ -86,7 +86,7 @@
 
                     </td>
 <%--                    Xóa riêng--%>
-                    <td style="margin-bottom: 10px">
+
 
                 </tr>
         </c:forEach>
@@ -146,6 +146,8 @@
         });
     });
 </script>
+
+
 
 <%@ include file="../../Layouts/Index/_Session1.jsp" %>
 </body>

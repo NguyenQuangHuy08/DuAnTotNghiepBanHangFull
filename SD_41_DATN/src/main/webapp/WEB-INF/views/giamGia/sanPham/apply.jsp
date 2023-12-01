@@ -168,7 +168,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 </td>
                 <td>${gtt.giaBan}</td>
                 <td>${gtt.moTa}</td>
-                <td>${gtt.trangThai}</td>
+                <td>${gtt.trangThai==0 ? 'Đã kích hoạt': 'Chưa kích hoạt'}</td>
                 <!-- <td style="width: 300px;">
                     
                         <button class="btn btn-success">Thêm</button>

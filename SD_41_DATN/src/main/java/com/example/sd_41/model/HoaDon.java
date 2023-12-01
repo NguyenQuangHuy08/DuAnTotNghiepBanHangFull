@@ -36,6 +36,9 @@ public class HoaDon {
     @Column(name = "ghiChu")
     private String ghiChu;
 
+    @Column(name = "mess")
+    private String mess;
+
     @Column(name = "ngayTao")
     private String ngayTao;
 

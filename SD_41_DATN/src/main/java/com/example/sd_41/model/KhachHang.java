@@ -28,7 +28,6 @@ public class KhachHang {
     @Column(name = "Url_Image")
     private String link;
 
-    @Email(message = "Email không hợp lệ", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     @Column(name = "email")
     private String email;
 
@@ -51,6 +50,15 @@ public class KhachHang {
 
     @Column(name = "diaChi")
     private String diaChi;
+
+    @Column(name = "thanhPho")
+    private String thanhPho;
+
+    @Column(name = "huyen")
+    private String huyen;
+
+    @Column(name = "xa")
+    private String xa;
 
     @Column(name = "ghiChu")
     private String ghiChu;

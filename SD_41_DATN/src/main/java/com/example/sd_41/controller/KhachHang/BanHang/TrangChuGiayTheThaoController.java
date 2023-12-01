@@ -3,6 +3,7 @@ package com.example.sd_41.controller.KhachHang.BanHang;
 import com.example.sd_41.model.*;
 import com.example.sd_41.repository.BanHang.GioHangChiTietRepository;
 import com.example.sd_41.repository.BanHang.GioHangRepository;
+import com.example.sd_41.repository.ChuongTrinhGiamGia.ChuongTrinhGiamGiaChiTietGiayTheThaoRepository;
 import com.example.sd_41.repository.HoaDon.HoaDonChiTietRepository;
 import com.example.sd_41.repository.HoaDon.HoaDonRepository;
 import com.example.sd_41.repository.ImageRepository;
@@ -91,6 +92,8 @@ public class TrangChuGiayTheThaoController {
      @Autowired
      private ChatLieuRepository chatLieuRepository;
 
+     @Autowired
+     private ChuongTrinhGiamGiaChiTietGiayTheThaoRepository chuongTrinhGiamGiaChiTietGiayTheThaoRepository;
 
     //Todo code view giầy thể thao cho người dùng mua hàng phân trang cho người dùng ở luôn trang index by Giầy thể thao
 
@@ -138,6 +141,13 @@ public class TrangChuGiayTheThaoController {
 
         model.addAttribute("pageNumbers", pageNumbers);
         model.addAttribute("currentPage", currentPage);
+
+        //Todo code list các sản phẩm giầy thể thao có chương trình khuyến mãi
+
+      List<ChuongTrinhGiamGiaChiTietGiayTheThao> listSale = chuongTrinhGiamGiaChiTietGiayTheThaoRepository.findAll();
+      model.addAttribute("listSale",listSale);
+
+
     }
 
     private void giaoDienTrangChuListGiayTheThaoDetails(Model model, Integer pageNum, Integer pageSize, GiayTheThaoRepository giayTheThaoRepository) {
@@ -343,6 +353,26 @@ public class TrangChuGiayTheThaoController {
 
         model.addAttribute("pageNumbers", pageNumbers);
         model.addAttribute("currentPage", currentPage);
+
+        //Todo code giảm giá bên details
+
+        List<ChuongTrinhGiamGiaChiTietGiayTheThao> listSale = chuongTrinhGiamGiaChiTietGiayTheThaoRepository.findAll();
+
+        for(ChuongTrinhGiamGiaChiTietGiayTheThao sale : listSale){
+
+            //Trạng thái đã kích hoạt
+            if(sale.getTrangThai() == 1){
+
+                model.addAttribute("sale",sale.getChuongTrinhGiamGiaGiayTheThao().getPhanTramGiam());
+
+            }else {
+
+                model.addAttribute("sale","0");
+
+            }
+
+        }
+
     }
 
     //Todo code lọc
@@ -646,67 +676,7 @@ public class TrangChuGiayTheThaoController {
 
 
 
-//    //Todo code người dùng add hóa đơn
-//    @PostMapping("/GiayTheThao/nguoiDung/addHoaDon")
-//    public String nguoiDungAddHoaDon(Model model,
-//                                     @RequestParam(value = "chon", required = false) List<String> chon,
-//                                     @RequestParam(value = "idGiayChiTiet", required = false) List<UUID> idGiayChiTiet,
-//                                     @RequestParam(value = "soLuong", required = false) List<String> soLuong,
-//                                     @RequestParam(value = "donGia", required = false) List<String> donGia,
-//                                     HttpSession session,
-//                                     RedirectAttributes attributes) {
-//
-//        //Đã lưu mã vào session
-//        UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
-//        KhachHang khachHang = khachHangRepository.findById(idKhachHang).orElse(null);
-//
-//        //Chọn là null
-//        if (chon == null) {
-//
-//          attributes.addFlashAttribute("erCheckNun","Xin lỗi hãy chọn một sản phẩm để thanh toán !");
-//          return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
-//
-//          //Chọn khác null
-//        } else {
-//
-//                HoaDon hoaDon = new HoaDon();
-//                //Thêm vào Hóa đơn
-//                LocalTime localTime = LocalTime.now();
-//                LocalDate ngayThanhToan = LocalDate.now();
-//                String ngayThanhToanToDate = ngayThanhToan.toString();
-//
-//                hoaDon.setMaHoaDon("MaHD" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
-//                hoaDon.setKhachHang(khachHang);
-//                hoaDon.setTrangThai(0);
-//                hoaDon.setNgayThanhToan(ngayThanhToanToDate);
-//                hoaDon.setNgayTao(ngayThanhToanToDate);
-//                hoaDonRepository.save(hoaDon);
-//                int thanhTien = 0;
-//                //Thêm vào hóa đơn chi tiết
-//                 for (String stt : chon){
-//
-//                         HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
-//                         hoaDonChiTiet.setHoaDon(hoaDon);
-//                         hoaDonChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTietRepository.findById(idGiayChiTiet.get(Integer.parseInt(stt))).orElse(null));
-//                         hoaDonChiTiet.setSoLuong(String.valueOf(Integer.parseInt(soLuong.get(Integer.parseInt(stt)))));
-//                         BigDecimal gia = new BigDecimal(donGia.get(Integer.parseInt(stt)));
-//                         hoaDonChiTiet.setDonGia(gia);
-//                         hoaDonChiTiet.setTrangThai(1);
-//                         model.addAttribute("hoaDonChiTiet",hoaDonChiTiet);
-//                         hoaDonChiTietRepository.save(hoaDonChiTiet);
-//                        thanhTien += Integer.parseInt(donGia.get(Integer.parseInt(stt)));
-//
-//                 }
-//                        hoaDon.setThanhTien(BigDecimal.valueOf(thanhTien));
-//                        model.addAttribute("hoaDon",hoaDon);
-//                        hoaDonRepository.save(hoaDon);
-//
-//            return "redirect:/nguoiDung/HoaDon/"+hoaDon.getId();
-//
-//            }
-//
-//        }
-
+    //Todo code add giầy thể thao chi tiết vào giỏ hàng chi tiết
     @PostMapping("/GiayTheThao/nguoiDung/addHoaDon")
     public String nguoiDungAddHoaDon(Model model,
                                      @RequestParam(value = "chon", required = false) List<String> chon,
@@ -740,6 +710,7 @@ public class TrangChuGiayTheThaoController {
             int thanhTien = 0;
             // Thêm vào hóa đơn chi tiết
             for (String stt : chon) {
+
                 HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
                 hoaDonChiTiet.setHoaDon(hoaDon);
                 hoaDonChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTietRepository.findById(idGiayChiTiet.get(Integer.parseInt(stt))).orElse(null));
@@ -748,8 +719,10 @@ public class TrangChuGiayTheThaoController {
                 hoaDonChiTiet.setDonGia(gia);
                 hoaDonChiTiet.setTrangThai(1);
                 model.addAttribute("hoaDonChiTiet", hoaDonChiTiet);
+
                 hoaDonChiTietRepository.save(hoaDonChiTiet);
                 thanhTien += Integer.parseInt(donGia.get(Integer.parseInt(stt)));
+
             }
             hoaDon.setThanhTien(BigDecimal.valueOf(thanhTien));
             model.addAttribute("hoaDon", hoaDon);

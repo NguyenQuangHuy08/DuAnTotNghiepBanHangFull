@@ -103,14 +103,11 @@
             </c:forEach>
         </div>
         <div class="col-12">
-
-            <div class="row">
+            <div class="row" style="margin-top: 30px">
                 <div class="col-3">
-                    <h4>Giá tiền :</h4>
+                    <h4>Tổng tiền :</h4>
                 </div>
                 <div class="col-6">
-                    <%--                <label>${hoaDon.thanhTien}</label>--%>
-                    <%--                <input type="text" id="price" value="${hoaDon.thanhTien}" readonly>--%>
                     <p style="font-size: 18px;color: red">
                         <fmt:formatNumber type="" value="${hoaDon.thanhTien}" pattern="#,##0.###"/> VNĐ
                     </p>
@@ -121,8 +118,6 @@
                     <h4>Số lượng :</h4>
                 </div>
                 <div class="col-6">
-                    <%--                <label>${hoaDon.thanhTien}</label>--%>
-                    <%--                <input type="text" id="price" value="${hoaDon.thanhTien}" readonly>--%>
                     <p style="font-size: 18px;color: red">
 
                     </p>
@@ -130,6 +125,10 @@
             </div>
 
         </div>
+
+
+
+
 
         <form action="/nguoiDung/hoaDon/ThanhToan/${hoaDonId}" method="post">
             <div class="form-group">
@@ -270,6 +269,6 @@
 
 <%@ include file="../../Layouts/Index/_Session1.jsp" %>
 </body>
-</html>
+</html>s
 
 

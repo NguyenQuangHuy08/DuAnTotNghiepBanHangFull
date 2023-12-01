@@ -15,8 +15,11 @@ import java.util.UUID;
 public interface ChuongTrinhGiamGiaChiTietGiayTheThaoRepository extends JpaRepository<ChuongTrinhGiamGiaChiTietGiayTheThao, UUID> {
 
     List<ChuongTrinhGiamGiaChiTietGiayTheThao> findAllByChuongTrinhGiamGiaGiayTheThao(ChuongTrinhGiamGiaGiayTheThao gg);
+
     @Query("Delete FROM ChuongTrinhGiamGiaChiTietGiayTheThao gg WHERE gg.chuongTrinhGiamGiaGiayTheThao.id = :gg and gg.giayTheThao.id = :gtt")
+
     void deleteByChuongTrinhGiamGiaGiayTheThaoAndGiayTheThao(@Param("gg") UUID gg, @Param("gtt") UUID gtt);
+
     ChuongTrinhGiamGiaChiTietGiayTheThao findByChuongTrinhGiamGiaGiayTheThaoAndGiayTheThao(ChuongTrinhGiamGiaGiayTheThao gg, GiayTheThao gtt);
 
 

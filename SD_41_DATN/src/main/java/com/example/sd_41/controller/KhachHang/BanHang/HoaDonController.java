@@ -4,12 +4,15 @@ import com.example.sd_41.controller.Momo.MomoModel;
 import com.example.sd_41.controller.Momo.ResultMoMo;
 import com.example.sd_41.controller.Utils.Constant;
 import com.example.sd_41.controller.Utils.Decode;
+import com.example.sd_41.model.GiayTheThaoChiTiet;
 import com.example.sd_41.model.HoaDon;
 import com.example.sd_41.model.HoaDonChiTiet;
 import com.example.sd_41.model.KhachHang;
+import com.example.sd_41.repository.BanHang.GioHangChiTietRepository;
 import com.example.sd_41.repository.HoaDon.HoaDonChiTietRepository;
 import com.example.sd_41.repository.HoaDon.HoaDonRepository;
 import com.example.sd_41.repository.KhachHangRepository;
+import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoChiTietRepository;
 import com.example.sd_41.service.HoaDon.HoaDonChiTietServie;
 import com.example.sd_41.service.HoaDon.HoaDonService;
 import com.example.sd_41.service.HoaDon.HoaDonServiceImpl;
@@ -56,6 +59,12 @@ public class HoaDonController {
     @Autowired
     private HoaDonServiceImpl hoaDonServiceImpl;
 
+    @Autowired
+    private GiayTheThaoChiTietRepository giayTheThaoChiTietRepository;
+
+    @Autowired
+    private GioHangChiTietRepository gioHangChiTietRepository;
+
 
     //Todo code view hóa đơn
     //hiện thông tin cho view hóa đơn
@@ -82,6 +91,11 @@ public class HoaDonController {
             model.addAttribute("tenKhachHang", hoaDon.getKhachHang().getTenKhachHang());
             model.addAttribute("diaChi", hoaDon.getKhachHang().getDiaChi());
             model.addAttribute("soDienThoai", hoaDon.getKhachHang().getSoDienThoai());
+            model.addAttribute("email", hoaDon.getKhachHang().getEmail());
+            model.addAttribute("thanhPho",hoaDon.getKhachHang().getThanhPho());
+            model.addAttribute("huyen",hoaDon.getKhachHang().getHuyen());
+            model.addAttribute("xa",hoaDon.getKhachHang().getXa());
+
 
         } else {
 
@@ -101,216 +115,575 @@ public class HoaDonController {
                                               HttpServletRequest request,
                                               RedirectAttributes attributes) throws JsonProcessingException {
         UUID hoaDonId = UUID.fromString(id);
-        String hinhThuc = request.getParameter("payment-method");
 
+        //Todo code mã code mới bên controller
 
+        String diaChiChon = request.getParameter("diaChiChon");
 
-        if ("banking".equals(hinhThuc)) {
+        //Địa chỉ chon là null
+        if(diaChiChon == null || diaChiChon.isEmpty()){
 
-            //Todo code
-
-            ObjectMapper mapper = new ObjectMapper();
-            int code = (int) Math.floor(((Math.random() * 89999999) + 10000000));
-            String orderId = Integer.toString(code);
-            MomoModel jsonRequest = new MomoModel();
-            jsonRequest.setPartnerCode(Constant.IDMOMO);
-            jsonRequest.setOrderId(orderId);
-            jsonRequest.setStoreId(orderId);
-            jsonRequest.setRedirectUrl(Constant.redirectUrl);
-            jsonRequest.setIpnUrl(Constant.ipnUrl);
-            jsonRequest.setAmount(String.valueOf(1000));
-            jsonRequest.setOrderInfo("Thanh toán Male Fashion.");
-            jsonRequest.setRequestId(orderId);
-            jsonRequest.setOrderType(Constant.orderType);
-            jsonRequest.setRequestType(Constant.requestType);
-            jsonRequest.setTransId("1");
-            jsonRequest.setResultCode("200");
-            jsonRequest.setMessage("");
-            jsonRequest.setPayType(Constant.payType);
-            jsonRequest.setResponseTime("300000");
-            jsonRequest.setExtraData("");
-
-            String decode = "accessKey=" + Constant.accessKey + "&amount=" + jsonRequest.amount + "&extraData="
-                    + jsonRequest.extraData + "&ipnUrl=" + Constant.ipnUrl + "&orderId=" + orderId + "&orderInfo="
-                    + jsonRequest.orderInfo + "&partnerCode=" + jsonRequest.getPartnerCode() + "&redirectUrl="
-                    + Constant.redirectUrl + "&requestId=" + jsonRequest.getRequestId() + "&requestType="
-                    + Constant.requestType;
-
-
-            String signature = Decode.encode(Constant.serectkey, decode);
-            jsonRequest.setSignature(signature);
-            String json = mapper.writeValueAsString(jsonRequest);
-            HttpClient client = HttpClient.newHttpClient();
-            ResultMoMo res = new ResultMoMo();
-
-            try {
-                HttpRequest requestMomo = HttpRequest.newBuilder().uri(new URI(Constant.Url))
-                        .POST(HttpRequest.BodyPublishers.ofString(json)).headers("Content-Type", "application/json")
-                        .build();
-                HttpResponse<String> response = client.send(requestMomo, HttpResponse.BodyHandlers.ofString());
-                res = mapper.readValue(response.body(), ResultMoMo.class);
-            } catch (InterruptedException | URISyntaxException | IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            if (res == null) {
-
-                session.setAttribute("error_momo", "Thanh toán thất bại");
-                return "redirect:/home";
-
-            } else {
-//					return "redirect:/shop";
-//				resp.sendRedirect(res.payUrl);
-                return "redirect:" + res.payUrl;
-
-            }
-
-
-//            System.out.println("Bạn đã chọn thanh toán bằng banking");
-//            return "Bạn đã chọn thanh toán bằng tiền mặt";
-
-        } else if ("cash".equals(hinhThuc)) {
-
-            System.out.println("Bạn đã chọn thanh toán bằng tiền mặt");
-            String diaChiChon = request.getParameter("diaChiChon");
-
-            if ("diaChiCu".equals(diaChiChon)) {
-
-                HoaDon hoaDon = hoaDonRepository.findById(hoaDonId).orElse(null);
-
-                if (hoaDon != null) {
-
-                    String soDienThoaiCu = request.getParameter("hiddenSoDienThoai");
-                    String diaChiCu = request.getParameter("hiddenDiaChi");
-
-                    LocalDate ngayThanhToanCu = LocalDate.now();
-                    String ngayTaoCu = ngayThanhToanCu.toString();
-
-                    hoaDon.setTrangThai(1);
-                    hoaDon.setNgayThanhToan(ngayTaoCu);
-
-                    hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoaiCu + ", Địa chỉ giao hàng: " + diaChiCu);
-
-                    hoaDonRepository.save(hoaDon);
-                    model.addAttribute("idKH", hoaDon.getKhachHang().getId());
-//                    return "/templates/Users/Layouts/Shop/viewHoaDonThanhCong";
-                    return "redirect:/nguoiDung/hoaDon/thanhToan/ThanhCong";
-
-                } else {
-
-                    System.out.println("Hóa đơn không tồn tại");
-
-                }
-
-            }else if("diaChiMoi".equals(diaChiChon)){
-
-                HoaDon hoaDon = hoaDonRepository.findById(hoaDonId).orElse(null);
-
-                if (hoaDon != null) {
-
-                    String soDienThoai = request.getParameter("soDienThoai");
-                    String diaChi = request.getParameter("diaChi");
-
-                    //Check số điện thoại
-                    if(soDienThoai.isEmpty() || soDienThoai.trim().length() ==0 || soDienThoai == null){
-
-                        attributes.addFlashAttribute("erLogSoDienThoaiChon","Xin lỗi không được để trống số điện thoại !");
-                        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-
-                    }
-
-                    //check số điện thoại nhập là chữ
-                    try{
-
-                        int soDienThoaiFomat = Integer.parseInt(soDienThoai);
-
-                        if(soDienThoaiFomat < 0){
-
-                            attributes.addFlashAttribute("erLogSoDienThoai0","Số điện thoại không được nhỏ hơn 0");
-                            return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-
-                        }
-
-
-                    }catch (NumberFormatException e){
-
-                        e.printStackTrace();
-                        attributes.addFlashAttribute("erLogSoDienThoaiChonChu","Số điện thoại không được là chữ !");
-                        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-
-                    }
-
-                    // Validate số điện thoại bắt đầu bằng số 0 và có độ dài là 10 số
-                    String phoneNumberRegex = "^0\\d{9}$";
-
-                    if (!soDienThoai.matches(phoneNumberRegex)) {
-                        attributes.addFlashAttribute("erLogSoDienThoaiNumber", "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại bắt đầu bằng số 0 và có độ dài là 10 số.");
-                        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-                    }
-
-                    //Check địa chỉ nhận hàng
-                    if(diaChi == null || diaChi.isEmpty() || diaChi.trim().length()==0){
-
-                        attributes.addFlashAttribute("erLogDiaChiChon","Không được để trống địa chỉ !");
-                        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-
-                    }
-
-                    if(diaChi.matches("^\\d.*")
-                        || !diaChi.matches(".*[a-zA-Z].*")){
-
-                        attributes.addFlashAttribute("erLogDiaChiChonNo","Xin lỗi tên địa chỉ không hợp lệ");
-                        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-
-                    }
-
-
-                    LocalDate ngayThanhToanMoi = LocalDate.now();
-                    String ngayTaoMoi = ngayThanhToanMoi.toString();
-
-                    hoaDon.setTrangThai(1);
-                    hoaDon.setNgayThanhToan(ngayTaoMoi);
-                    hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoai + ", Địa chỉ giao hàng: " + diaChi);
-
-                    hoaDonRepository.save(hoaDon);
-                    model.addAttribute("idKH", hoaDon.getKhachHang().getId());
-//                    return "/templates/Users/Layouts/Shop/viewHoaDonThanhCong";
-                    return "redirect:/nguoiDung/hoaDon/thanhToan/ThanhCong";
-
-                } else {
-
-                    System.out.println("Hóa đơn không tồn tại");
-
-                }
-
-            }else if(diaChiChon == null || diaChiChon.isEmpty()){
-
-                attributes.addFlashAttribute("erViewDiaChiChon","Vui lòng chọn địa chỉ để có thể giao hàng !");
-                return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-
-            }else{
-
-                attributes.addFlashAttribute("erViewDiaChiChon","Vui lòng chọn địa chỉ để có thể giao hàng !");
-                return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-
-            }
-
-        }else if(hinhThuc == null || hinhThuc.isEmpty()){
-
-            System.out.println("Hình thức thanh toán không hợp lệ");
-            attributes.addFlashAttribute("messageNoChonNull","Vui lòng chọn một hình thức để có thể thanh toán !");
+            attributes.addFlashAttribute("diaChiChonNull","Xin lỗi vui lòng chọn địa chỉ để có thể thanh toán!");
+            System.out.println("Vui lòng chọn một địa chỉ để có thể thanh toán");
             return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
 
         }else{
 
-            System.out.println("Hình thức thanh toán không hợp lệ");
-            attributes.addFlashAttribute("messageNoChon","Vui lòng chọn hình thức để có thể thanh toán !");
-            return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+            //Địa chỉ chọn không null
+
+            String hinhThucThanhToan = request.getParameter("payment");
+
+            //Hình thức thanh toán
+            if(hinhThucThanhToan == null || hinhThucThanhToan.isEmpty()) {
+
+                attributes.addFlashAttribute("hinhThucThanhToanNull", "Vui lòng chọn hình thức thanh toán!");
+                System.out.println("Vui lòng chọn hình thức thanh toán");
+                return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+
+            }else{
+
+                //Chọn địa chỉ mới để thanh toán
+                if("diaChiCu".equals(diaChiChon)){
+
+                    System.out.println("Bạn chọn địa chỉ cũ để thanh toán");
+
+                    //Thanh toán bằng địa chỉ cũ qua thanh toán momo
+                    if ("momo".equals(hinhThucThanhToan)) {
+                        System.out.println("Bạn chọn thanh toán bằng hình thức momo");
+
+                        String thanhTien    = request.getParameter("thanhTien");
+                        String phiShip      = request.getParameter("ship");
+                        String thanhTienTongPrice = request.getParameter("thanhTienTongPrice");
+
+                        System.out.println("Thành tiền : "+thanhTien);
+                        System.out.println("Phí ship : "+phiShip);
+                        System.out.println("Tổng tiền : "+thanhTienTongPrice);
+
+                        ObjectMapper mapper = new ObjectMapper();
+
+                        int code = (int) Math.floor(((Math.random() * 89999999) + 10000000));
+                        String orderId = Integer.toString(code);
+                        MomoModel jsonRequest = new MomoModel();
+                        jsonRequest.setPartnerCode(Constant.IDMOMO);
+                        jsonRequest.setOrderId(orderId);
+                        jsonRequest.setStoreId(orderId);
+                        jsonRequest.setRedirectUrl(Constant.redirectUrl);
+                        jsonRequest.setIpnUrl(Constant.ipnUrl);
+                        jsonRequest.setAmount(thanhTienTongPrice);
+                        jsonRequest.setOrderInfo("Thanh toán sản phẩm của hàng Bess Shoes.");
+                        jsonRequest.setRequestId(orderId);
+                        jsonRequest.setOrderType(Constant.orderType);
+                        jsonRequest.setRequestType(Constant.requestType);
+                        jsonRequest.setTransId("1");
+                        jsonRequest.setResultCode("200");
+                        jsonRequest.setMessage("");
+                        jsonRequest.setPayType(Constant.payType);
+                        jsonRequest.setResponseTime("300000");
+                        jsonRequest.setExtraData("");
+
+                        String decode = "accessKey=" + Constant.accessKey + "&amount=" + jsonRequest.amount + "&extraData="
+                                + jsonRequest.extraData + "&ipnUrl=" + Constant.ipnUrl + "&orderId=" + orderId + "&orderInfo="
+                                + jsonRequest.orderInfo + "&partnerCode=" + jsonRequest.getPartnerCode() + "&redirectUrl="
+                                + Constant.redirectUrl + "&requestId=" + jsonRequest.getRequestId() + "&requestType="
+                                + Constant.requestType;
+
+
+                        String signature = Decode.encode(Constant.serectkey, decode);
+                        jsonRequest.setSignature(signature);
+                        String json = mapper.writeValueAsString(jsonRequest);
+                        HttpClient client = HttpClient.newHttpClient();
+                        ResultMoMo res = new ResultMoMo();
+
+                        try {
+                            HttpRequest requestMomo = HttpRequest.newBuilder().uri(new URI(Constant.Url))
+                                    .POST(HttpRequest.BodyPublishers.ofString(json)).headers("Content-Type", "application/json")
+                                    .build();
+                            HttpResponse<String> response = client.send(requestMomo, HttpResponse.BodyHandlers.ofString());
+                            res = mapper.readValue(response.body(), ResultMoMo.class);
+
+                        } catch (InterruptedException | URISyntaxException | IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        if (res == null) {
+
+//                            session.setAttribute("error_momo", "Thanh toán thất bại");
+//                            return "redirect:/home";
+                            System.out.println("Thanh toán thất bại");
+                            return "redirect:/TrangChu/listGiayTheThao";
+
+
+                        } else {
+//					return "redirect:/shop";
+//				resp.sendRedirect(res.payUrl);
+                            System.out.println("Thanh toán thành công");
+                            return "redirect:" + res.payUrl;
+//                            System.out.println("Thanh toán thất bại");
+//                            return "redirect:/TrangChu/listGiayTheThao";
+
+                        }
+
+
+
+
+
+                    }
+
+                    //Thanh toán bằng địa chỉ cũ qua thanh toán khi nhận hàng
+                    if("cash".equals(hinhThucThanhToan)) {
+
+                        System.out.println("Bạn chọn thanh toán bằng hình thức thanh toán khi nhận hàng");
+                        HoaDon hoaDon = hoaDonRepository.findById(hoaDonId).orElse(null);
+
+                        if(hoaDon != null){
+
+                            String tenKhachHangCu       = request.getParameter("tenKhachHang");
+                            String soDienThoaiCu        = request.getParameter("soDienThoai");
+                            String quocGiaCu            = request.getParameter("quocGia");
+                            String thanhPhoCu           = request.getParameter("thanhPho");
+                            String diaChiCu             = request.getParameter("diaChi");
+                            String messCu               = request.getParameter("mess");
+
+                            LocalDate ngayThanhToanCu = LocalDate.now();
+                            String ngayTaoCu = ngayThanhToanCu.toString();
+
+                            hoaDon.setTrangThai(1);
+                            hoaDon.setNgayThanhToan(ngayTaoCu);
+                            hoaDon.setNgayTao(ngayTaoCu);
+                            hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoaiCu + ", Địa chỉ giao hàng: " + diaChiCu + "," + thanhPhoCu + "," + quocGiaCu);
+                            hoaDon.setMess(messCu);
+
+                            //Lấy số lượng hiện tại trừ đi
+
+                            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon_Id(hoaDonId);
+                            model.addAttribute("hoaDonChiTiets",hoaDonChiTiets);
+
+                            //Tìm hóa đơn để tính số lượng
+                            for(HoaDonChiTiet hoaDonChiTietList : hoaDonChiTiets){
+
+                                //Số lượng mua của khách hàng
+                                String soLuongMuaToString = hoaDonChiTietList.getSoLuong();
+                                int soLuongMua = Integer.parseInt(soLuongMuaToString);
+
+                                //Số lượng có trong kho
+                                GiayTheThaoChiTiet giayTheThaoChiTiet = hoaDonChiTietList.getGiayTheThaoChiTiet();
+                                String soLuongCoToString = giayTheThaoChiTiet.getSoLuong();
+                                int soLuongCo = Integer.parseInt(soLuongCoToString);
+
+                                giayTheThaoChiTiet.setSoLuong(Integer.toString(soLuongCo - soLuongMua));
+                                giayTheThaoChiTietRepository.save(giayTheThaoChiTiet);
+
+
+                            }
+
+                            hoaDonRepository.save(hoaDon);
+                            model.addAttribute("idKH",hoaDon.getKhachHang().getId());
+                            return "redirect:/nguoiDung/hoaDon/thanhToan/ThanhCong";
+
+                        }
+
+
+                    }
+
+                }
+
+                //Chọn địa chỉ mới để thanh toán
+                if("diaChiMoi".equals(diaChiChon)){
+
+                    System.out.println("Bạn chọn địa chỉ cũ để thanh toán ");
+
+                    if("momo".equals(hinhThucThanhToan)){
+
+                        System.out.println("Bạn chọn hình thức thanh toán bằng momo");
+
+                    }
+
+
+                    //Bạn chọn thanh toán khi nhận hàng
+                    if("cash".equals(hinhThucThanhToan)){
+
+                        HoaDon hoaDon = hoaDonRepository.findById(hoaDonId).orElse(null);
+
+                        if(hoaDon != null){
+
+                            String tenKhachHangMoi      = request.getParameter("ten1");
+                            String emailMoi             = request.getParameter("email1");
+                            String soDienThoaiMoi       = request.getParameter("sdt1");
+                            String quocGiaMoi           = request.getParameter("quocGia1");
+                            String thanhPhoMoi          = request.getParameter("thanhPho1");
+                            String diaChiMoi            = request.getParameter("diaChi1");
+                            String messMoi              = request.getParameter("messMoi");
+                            //Check trống các trường
+
+                            //Check trống tên khách hàng
+                            if(tenKhachHangMoi == null
+                                    || tenKhachHangMoi.trim().length() ==0
+                                    || tenKhachHangMoi.isEmpty()){
+
+                                attributes.addFlashAttribute("tenKhachHangMoiNull","Xin lỗi tên khách hàng không được để trống");
+                                return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+
+                            }
+
+                            //Check trống email
+                            if(emailMoi.trim().length() ==0
+                                    || emailMoi == null
+                                    || emailMoi.isEmpty()){
+
+                                attributes.addFlashAttribute("emailMoiNull","Xin lỗi tên email không được để trống");
+                                return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+
+                            }
+
+                            //Check trống số điện thoại
+
+                            if(soDienThoaiMoi.trim().length() ==0
+                                    || soDienThoaiMoi.isEmpty()
+                                    || soDienThoaiMoi == null){
+
+                                attributes.addFlashAttribute("soDienThoaiMoiNull","Xin lỗi không được để trống số điện thoại !");
+                                return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+
+                            }
+
+                            //check số điện thoại nhập là chữ
+                            try {
+
+                                int soDienThoaiFomat = Integer.parseInt(soDienThoaiMoi);
+
+                                if (soDienThoaiFomat < 0) {
+
+                                    attributes.addFlashAttribute("erLogSoDienThoai0", "Số điện thoại không được nhỏ hơn 0");
+                                    return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+
+                                }
+
+
+                            } catch (NumberFormatException e) {
+
+                                e.printStackTrace();
+                                attributes.addFlashAttribute("erLogSoDienThoaiChonChu", "Số điện thoại không được là chữ !");
+                                return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+
+                            }
+
+                            // Validate số điện thoại bắt đầu bằng số 0 và có độ dài là 10 số
+                            String phoneNumberRegex = "^0\\d{9}$";
+
+                            if (!soDienThoaiMoi.matches(phoneNumberRegex)) {
+
+                                attributes.addFlashAttribute("erLogSoDienThoaiNumber", "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại bắt đầu bằng số 0 và có độ dài là 10 số.");
+                                return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+
+                            }
+
+                            if(quocGiaMoi == null
+                                    || quocGiaMoi.trim().length() ==0
+                                    || quocGiaMoi.isEmpty()){
+
+                                attributes.addFlashAttribute("quocGiaMoiNull", "Không được để trống tỉnh !");
+                                return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+
+                            }
+
+                            if(thanhPhoMoi  == null
+                                    || thanhPhoMoi.trim().length()==0
+                                    || thanhPhoMoi.isEmpty()){
+
+                                attributes.addFlashAttribute("thanhPhoMoiNull", "Không được để trống huyện !");
+                                return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+
+                            }
+
+                            if(diaChiMoi == null
+                                    || diaChiMoi.isEmpty()
+                                    || diaChiMoi.trim().length() == 0){
+
+                                attributes.addFlashAttribute("diaChiMoiNull", "Không được để trống xã !");
+                                return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+
+
+                            }
+                            //Lưu lại đơn hàng
+                            LocalDate ngayThanhToanMoi = LocalDate.now();
+                            String ngayThanhToanToString = ngayThanhToanMoi.toString();
+
+                            hoaDon.setNgayThanhToan(ngayThanhToanToString);
+                            hoaDon.setNgayTao(ngayThanhToanToString);
+                            hoaDon.setTrangThai(1);
+                            hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoaiMoi + ", Địa chỉ giao hàng: " + diaChiMoi + "," + thanhPhoMoi + "," + quocGiaMoi);
+                            hoaDon.setMess(messMoi);
+                            //Lấy số lượng hiện tại trừ đi
+
+                            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon_Id(hoaDonId);
+                            model.addAttribute("hoaDonChiTiets",hoaDonChiTiets);
+
+                            //Tìm hóa đơn để tính số lượng
+                            for(HoaDonChiTiet hoaDonChiTietList : hoaDonChiTiets){
+
+                                //Số lượng mua của khách hàng
+                                String soLuongMuaToString = hoaDonChiTietList.getSoLuong();
+                                int soLuongMua = Integer.parseInt(soLuongMuaToString);
+
+                                //Số lượng có trong kho
+                                GiayTheThaoChiTiet giayTheThaoChiTiet = hoaDonChiTietList.getGiayTheThaoChiTiet();
+                                String soLuongCoToString = giayTheThaoChiTiet.getSoLuong();
+                                int soLuongCo = Integer.parseInt(soLuongCoToString);
+
+                                giayTheThaoChiTiet.setSoLuong(Integer.toString(soLuongCo - soLuongMua));
+                                giayTheThaoChiTietRepository.save(giayTheThaoChiTiet);
+
+
+                            }
+
+                            hoaDonRepository.save(hoaDon);
+                            model.addAttribute("idKH",hoaDon.getKhachHang().getId());
+                            return "redirect:/nguoiDung/hoaDon/thanhToan/ThanhCong";
+
+                        }
+
+                    }
+
+                }
+
+            }
+
 
         }
 
 
-        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+
+//
+//        if ("banking".equals(hinhThuc)) {
+//
+//            //Todo code
+//
+//            ObjectMapper mapper = new ObjectMapper();
+//            int code = (int) Math.floor(((Math.random() * 89999999) + 10000000));
+//            String orderId = Integer.toString(code);
+//            MomoModel jsonRequest = new MomoModel();
+//            jsonRequest.setPartnerCode(Constant.IDMOMO);
+//            jsonRequest.setOrderId(orderId);
+//            jsonRequest.setStoreId(orderId);
+//            jsonRequest.setRedirectUrl(Constant.redirectUrl);
+//            jsonRequest.setIpnUrl(Constant.ipnUrl);
+//            jsonRequest.setAmount(String.valueOf(1000));
+//            jsonRequest.setOrderInfo("Thanh toán Male Fashion.");
+//            jsonRequest.setRequestId(orderId);
+//            jsonRequest.setOrderType(Constant.orderType);
+//            jsonRequest.setRequestType(Constant.requestType);
+//            jsonRequest.setTransId("1");
+//            jsonRequest.setResultCode("200");
+//            jsonRequest.setMessage("");
+//            jsonRequest.setPayType(Constant.payType);
+//            jsonRequest.setResponseTime("300000");
+//            jsonRequest.setExtraData("");
+//
+//            String decode = "accessKey=" + Constant.accessKey + "&amount=" + jsonRequest.amount + "&extraData="
+//                    + jsonRequest.extraData + "&ipnUrl=" + Constant.ipnUrl + "&orderId=" + orderId + "&orderInfo="
+//                    + jsonRequest.orderInfo + "&partnerCode=" + jsonRequest.getPartnerCode() + "&redirectUrl="
+//                    + Constant.redirectUrl + "&requestId=" + jsonRequest.getRequestId() + "&requestType="
+//                    + Constant.requestType;
+//
+//
+//            String signature = Decode.encode(Constant.serectkey, decode);
+//            jsonRequest.setSignature(signature);
+//            String json = mapper.writeValueAsString(jsonRequest);
+//            HttpClient client = HttpClient.newHttpClient();
+//            ResultMoMo res = new ResultMoMo();
+//
+//            try {
+//                HttpRequest requestMomo = HttpRequest.newBuilder().uri(new URI(Constant.Url))
+//                        .POST(HttpRequest.BodyPublishers.ofString(json)).headers("Content-Type", "application/json")
+//                        .build();
+//                HttpResponse<String> response = client.send(requestMomo, HttpResponse.BodyHandlers.ofString());
+//                res = mapper.readValue(response.body(), ResultMoMo.class);
+//            } catch (InterruptedException | URISyntaxException | IOException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//            if (res == null) {
+//
+//                session.setAttribute("error_momo", "Thanh toán thất bại");
+//                return "redirect:/home";
+//
+//            } else {
+////					return "redirect:/shop";
+////				resp.sendRedirect(res.payUrl);
+//                return "redirect:" + res.payUrl;
+//
+//            }
+//
+//
+////            System.out.println("Bạn đã chọn thanh toán bằng banking");
+////            return "Bạn đã chọn thanh toán bằng tiền mặt";
+//
+//        } else if ("cash".equals(hinhThuc)) {
+//
+//            System.out.println("Bạn đã chọn thanh toán bằng tiền mặt");
+//            String diaChiChon = request.getParameter("diaChiChon");
+//
+//            if ("diaChiCu".equals(diaChiChon)) {
+//
+//                HoaDon hoaDon = hoaDonRepository.findById(hoaDonId).orElse(null);
+//
+//                if (hoaDon != null) {
+//
+//                    String soDienThoaiCu = request.getParameter("hiddenSoDienThoai");
+//                    String diaChiCu = request.getParameter("hiddenDiaChi");
+//
+//                    LocalDate ngayThanhToanCu = LocalDate.now();
+//                    String ngayTaoCu = ngayThanhToanCu.toString();
+//
+//                    hoaDon.setTrangThai(1);
+//                    hoaDon.setNgayThanhToan(ngayTaoCu);
+//                    hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoaiCu + ", Địa chỉ giao hàng: " + diaChiCu);
+//
+//                    //Lấy số lượng hiện tại và trừ đi
+//
+//                    List<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietRepository.findByHoaDon_Id(hoaDonId);
+//                    model.addAttribute("hoaDonChiTiet",hoaDonChiTiet);
+//
+//                    // Tìm hóa đơn để tính số lượng
+//                    for (HoaDonChiTiet hoaDonChiTietList : hoaDonChiTiet) {
+//
+//                        // Số lượng mua của khách hàng
+//                        String soLuongMuaAsString = hoaDonChiTietList.getSoLuong();
+//                        int soLuongMua = Integer.parseInt(soLuongMuaAsString);
+//
+//                        // Số lượng hiện có trong kho
+//                        GiayTheThaoChiTiet giayTheThaoChiTiet = hoaDonChiTietList.getGiayTheThaoChiTiet();
+//                        String soLuongCoAsString = giayTheThaoChiTiet.getSoLuong();
+//                        int soLuongCo = Integer.parseInt(soLuongCoAsString);
+//                        giayTheThaoChiTiet.setSoLuong(Integer.toString(soLuongCo - soLuongMua));
+//                        giayTheThaoChiTietRepository.save(giayTheThaoChiTiet);
+//
+//
+//                    }
+//
+//
+//
+//                    hoaDonRepository.save(hoaDon);
+//                    model.addAttribute("idKH", hoaDon.getKhachHang().getId());
+////                    return "/templates/Users/Layouts/Shop/viewHoaDonThanhCong";
+//                    return "redirect:/nguoiDung/hoaDon/thanhToan/ThanhCong";
+//
+//                } else {
+//
+//                    System.out.println("Hóa đơn không tồn tại");
+//
+//                }
+//
+//            }else if("diaChiMoi".equals(diaChiChon)){
+//
+//                HoaDon hoaDon = hoaDonRepository.findById(hoaDonId).orElse(null);
+//
+//                if (hoaDon != null) {
+//
+//                    String soDienThoai = request.getParameter("soDienThoai");
+//                    String diaChi = request.getParameter("diaChi");
+//
+//                    //Check số điện thoại
+//                    if(soDienThoai.isEmpty() || soDienThoai.trim().length() ==0 || soDienThoai == null){
+//
+//                        attributes.addFlashAttribute("erLogSoDienThoaiChon","Xin lỗi không được để trống số điện thoại !");
+//                        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+//
+//                    }
+//
+//                    //check số điện thoại nhập là chữ
+//                    try{
+//
+//                        int soDienThoaiFomat = Integer.parseInt(soDienThoai);
+//
+//                        if(soDienThoaiFomat < 0){
+//
+//                            attributes.addFlashAttribute("erLogSoDienThoai0","Số điện thoại không được nhỏ hơn 0");
+//                            return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+//
+//                        }
+//
+//
+//                    }catch (NumberFormatException e){
+//
+//                        e.printStackTrace();
+//                        attributes.addFlashAttribute("erLogSoDienThoaiChonChu","Số điện thoại không được là chữ !");
+//                        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+//
+//                    }
+//
+//                    // Validate số điện thoại bắt đầu bằng số 0 và có độ dài là 10 số
+//                    String phoneNumberRegex = "^0\\d{9}$";
+//
+//                    if (!soDienThoai.matches(phoneNumberRegex)) {
+//                        attributes.addFlashAttribute("erLogSoDienThoaiNumber", "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại bắt đầu bằng số 0 và có độ dài là 10 số.");
+//                        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+//                    }
+//
+//                    //Check địa chỉ nhận hàng
+//                    if(diaChi == null || diaChi.isEmpty() || diaChi.trim().length()==0){
+//
+//                        attributes.addFlashAttribute("erLogDiaChiChon","Không được để trống địa chỉ !");
+//                        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+//
+//                    }
+//
+//                    if(diaChi.matches("^\\d.*")
+//                        || !diaChi.matches(".*[a-zA-Z].*")){
+//
+//                        attributes.addFlashAttribute("erLogDiaChiChonNo","Xin lỗi tên địa chỉ không hợp lệ");
+//                        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+//
+//                    }
+//
+//
+//                    LocalDate ngayThanhToanMoi = LocalDate.now();
+//                    String ngayTaoMoi = ngayThanhToanMoi.toString();
+//
+//                    hoaDon.setTrangThai(1);
+//                    hoaDon.setNgayThanhToan(ngayTaoMoi);
+//                    hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoai + ", Địa chỉ giao hàng: " + diaChi);
+//
+//                    hoaDonRepository.save(hoaDon);
+//                    model.addAttribute("idKH", hoaDon.getKhachHang().getId());
+////                    return "/templates/Users/Layouts/Shop/viewHoaDonThanhCong";
+//                    return "redirect:/nguoiDung/hoaDon/thanhToan/ThanhCong";
+//
+//                } else {
+//
+//                    System.out.println("Hóa đơn không tồn tại");
+//
+//                }
+//
+//            }else if(diaChiChon == null || diaChiChon.isEmpty()){
+//
+//                attributes.addFlashAttribute("erViewDiaChiChon","Vui lòng chọn địa chỉ để có thể giao hàng !");
+//                return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+//
+//            }else{
+//
+//                attributes.addFlashAttribute("erViewDiaChiChon","Vui lòng chọn địa chỉ để có thể giao hàng !");
+//                return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+//
+//            }
+//
+//        }else if(hinhThuc == null || hinhThuc.isEmpty()){
+//
+//            System.out.println("Hình thức thanh toán không hợp lệ");
+//            attributes.addFlashAttribute("messageNoChonNull","Vui lòng chọn một hình thức để có thể thanh toán !");
+//            return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+//
+//        }else{
+//
+//            System.out.println("Hình thức thanh toán không hợp lệ");
+//            attributes.addFlashAttribute("messageNoChon","Vui lòng chọn hình thức để có thể thanh toán !");
+//            return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+//
+//        }
+
+
+//        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
+        return "redirect:/TrangChu/listGiayTheThao";
 
     }
 
