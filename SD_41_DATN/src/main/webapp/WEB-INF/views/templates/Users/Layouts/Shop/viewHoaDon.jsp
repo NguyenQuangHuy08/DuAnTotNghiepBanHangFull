@@ -69,6 +69,7 @@
             <div class="thongBaoHoaDon">
                 <span style="color: red;font-size: 20px;margin-left: 40px">${diaChiChonNull}</span>
             </div>
+            ${error_momo}
             <div class="row px-xl-5">
                 <div class="col-lg-6">
                     <h5 class="section-title position-relative text-uppercase mb-3">

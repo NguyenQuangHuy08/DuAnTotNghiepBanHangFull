@@ -25,10 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -115,6 +112,7 @@ public class HoaDonController {
                                               HttpServletRequest request,
                                               RedirectAttributes attributes) throws JsonProcessingException {
         UUID hoaDonId = UUID.fromString(id);
+        session.setAttribute("hoaDonId",hoaDonId);
 
         //Todo code mã code mới bên controller
 
@@ -142,13 +140,14 @@ public class HoaDonController {
 
             }else{
 
-                //Chọn địa chỉ mới để thanh toán
+                //Chọn địa chỉ cũ để thanh toán
                 if("diaChiCu".equals(diaChiChon)){
 
                     System.out.println("Bạn chọn địa chỉ cũ để thanh toán");
 
                     //Thanh toán bằng địa chỉ cũ qua thanh toán momo
                     if ("momo".equals(hinhThucThanhToan)) {
+
                         System.out.println("Bạn chọn thanh toán bằng hình thức momo");
 
                         String thanhTien    = request.getParameter("thanhTien");
@@ -207,25 +206,17 @@ public class HoaDonController {
                         }
                         if (res == null) {
 
-//                            session.setAttribute("error_momo", "Thanh toán thất bại");
-//                            return "redirect:/home";
+                            session.setAttribute("error_momo", "Thanh toán thất bại");
                             System.out.println("Thanh toán thất bại");
                             return "redirect:/TrangChu/listGiayTheThao";
 
 
                         } else {
-//					return "redirect:/shop";
-//				resp.sendRedirect(res.payUrl);
-                            System.out.println("Thanh toán thành công");
+
+                            //Hiện ra trang để quét mã QR
                             return "redirect:" + res.payUrl;
-//                            System.out.println("Thanh toán thất bại");
-//                            return "redirect:/TrangChu/listGiayTheThao";
 
                         }
-
-
-
-
 
                     }
 
@@ -448,243 +439,50 @@ public class HoaDonController {
 
             }
 
+            return "redirect:/TrangChu/listGiayTheThao";
 
         }
 
+    }
+
+    //Todo code thanh toán bằng momo
+    @GetMapping("paywithmomo")
+    public String PayWithMomoGet(@ModelAttribute("message") String message,
+                                 Model model,
+                                 HttpSession session,
+                                 HttpServletRequest request) {
+        if (!message.equals("Successful.")) {
+            System.out.println("Thanh toán không thành công !");
+            session.setAttribute("error_momo", "Thanh toán không thành công!");
+            return "redirect:/TrangChu/listGiayTheThao";
+
+        } else {
 
 
+            String thanhTien    = request.getParameter("thanhTien");
+            String phiShip      = request.getParameter("ship");
+            String thanhTienTongPrice = request.getParameter("thanhTienTongPrice");
+
+            System.out.println("Thành tiền : "+thanhTien);
+            System.out.println("Phí ship : "+phiShip);
+            System.out.println("Tổng tiền : "+thanhTienTongPrice);
+
+//            if(session.getAttribute("hoaDonId") != null) {
 //
-//        if ("banking".equals(hinhThuc)) {
-//
-//            //Todo code
-//
-//            ObjectMapper mapper = new ObjectMapper();
-//            int code = (int) Math.floor(((Math.random() * 89999999) + 10000000));
-//            String orderId = Integer.toString(code);
-//            MomoModel jsonRequest = new MomoModel();
-//            jsonRequest.setPartnerCode(Constant.IDMOMO);
-//            jsonRequest.setOrderId(orderId);
-//            jsonRequest.setStoreId(orderId);
-//            jsonRequest.setRedirectUrl(Constant.redirectUrl);
-//            jsonRequest.setIpnUrl(Constant.ipnUrl);
-//            jsonRequest.setAmount(String.valueOf(1000));
-//            jsonRequest.setOrderInfo("Thanh toán Male Fashion.");
-//            jsonRequest.setRequestId(orderId);
-//            jsonRequest.setOrderType(Constant.orderType);
-//            jsonRequest.setRequestType(Constant.requestType);
-//            jsonRequest.setTransId("1");
-//            jsonRequest.setResultCode("200");
-//            jsonRequest.setMessage("");
-//            jsonRequest.setPayType(Constant.payType);
-//            jsonRequest.setResponseTime("300000");
-//            jsonRequest.setExtraData("");
-//
-//            String decode = "accessKey=" + Constant.accessKey + "&amount=" + jsonRequest.amount + "&extraData="
-//                    + jsonRequest.extraData + "&ipnUrl=" + Constant.ipnUrl + "&orderId=" + orderId + "&orderInfo="
-//                    + jsonRequest.orderInfo + "&partnerCode=" + jsonRequest.getPartnerCode() + "&redirectUrl="
-//                    + Constant.redirectUrl + "&requestId=" + jsonRequest.getRequestId() + "&requestType="
-//                    + Constant.requestType;
+//                String hoaDonId = (String) session.getAttribute("hoaDonId");
+//                System.out.println("ID của hóa đơn: " + hoaDonId);
 //
 //
-//            String signature = Decode.encode(Constant.serectkey, decode);
-//            jsonRequest.setSignature(signature);
-//            String json = mapper.writeValueAsString(jsonRequest);
-//            HttpClient client = HttpClient.newHttpClient();
-//            ResultMoMo res = new ResultMoMo();
-//
-//            try {
-//                HttpRequest requestMomo = HttpRequest.newBuilder().uri(new URI(Constant.Url))
-//                        .POST(HttpRequest.BodyPublishers.ofString(json)).headers("Content-Type", "application/json")
-//                        .build();
-//                HttpResponse<String> response = client.send(requestMomo, HttpResponse.BodyHandlers.ofString());
-//                res = mapper.readValue(response.body(), ResultMoMo.class);
-//            } catch (InterruptedException | URISyntaxException | IOException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//            if (res == null) {
-//
-//                session.setAttribute("error_momo", "Thanh toán thất bại");
-//                return "redirect:/home";
-//
-//            } else {
-////					return "redirect:/shop";
-////				resp.sendRedirect(res.payUrl);
-//                return "redirect:" + res.payUrl;
+//                System.out.println("Thanh toán thành công");
+//                return ""+hoaDonId;
 //
 //            }
-//
-//
-////            System.out.println("Bạn đã chọn thanh toán bằng banking");
-////            return "Bạn đã chọn thanh toán bằng tiền mặt";
-//
-//        } else if ("cash".equals(hinhThuc)) {
-//
-//            System.out.println("Bạn đã chọn thanh toán bằng tiền mặt");
-//            String diaChiChon = request.getParameter("diaChiChon");
-//
-//            if ("diaChiCu".equals(diaChiChon)) {
-//
-//                HoaDon hoaDon = hoaDonRepository.findById(hoaDonId).orElse(null);
-//
-//                if (hoaDon != null) {
-//
-//                    String soDienThoaiCu = request.getParameter("hiddenSoDienThoai");
-//                    String diaChiCu = request.getParameter("hiddenDiaChi");
-//
-//                    LocalDate ngayThanhToanCu = LocalDate.now();
-//                    String ngayTaoCu = ngayThanhToanCu.toString();
-//
-//                    hoaDon.setTrangThai(1);
-//                    hoaDon.setNgayThanhToan(ngayTaoCu);
-//                    hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoaiCu + ", Địa chỉ giao hàng: " + diaChiCu);
-//
-//                    //Lấy số lượng hiện tại và trừ đi
-//
-//                    List<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietRepository.findByHoaDon_Id(hoaDonId);
-//                    model.addAttribute("hoaDonChiTiet",hoaDonChiTiet);
-//
-//                    // Tìm hóa đơn để tính số lượng
-//                    for (HoaDonChiTiet hoaDonChiTietList : hoaDonChiTiet) {
-//
-//                        // Số lượng mua của khách hàng
-//                        String soLuongMuaAsString = hoaDonChiTietList.getSoLuong();
-//                        int soLuongMua = Integer.parseInt(soLuongMuaAsString);
-//
-//                        // Số lượng hiện có trong kho
-//                        GiayTheThaoChiTiet giayTheThaoChiTiet = hoaDonChiTietList.getGiayTheThaoChiTiet();
-//                        String soLuongCoAsString = giayTheThaoChiTiet.getSoLuong();
-//                        int soLuongCo = Integer.parseInt(soLuongCoAsString);
-//                        giayTheThaoChiTiet.setSoLuong(Integer.toString(soLuongCo - soLuongMua));
-//                        giayTheThaoChiTietRepository.save(giayTheThaoChiTiet);
-//
-//
-//                    }
-//
-//
-//
-//                    hoaDonRepository.save(hoaDon);
-//                    model.addAttribute("idKH", hoaDon.getKhachHang().getId());
-////                    return "/templates/Users/Layouts/Shop/viewHoaDonThanhCong";
-//                    return "redirect:/nguoiDung/hoaDon/thanhToan/ThanhCong";
-//
-//                } else {
-//
-//                    System.out.println("Hóa đơn không tồn tại");
-//
-//                }
-//
-//            }else if("diaChiMoi".equals(diaChiChon)){
-//
-//                HoaDon hoaDon = hoaDonRepository.findById(hoaDonId).orElse(null);
-//
-//                if (hoaDon != null) {
-//
-//                    String soDienThoai = request.getParameter("soDienThoai");
-//                    String diaChi = request.getParameter("diaChi");
-//
-//                    //Check số điện thoại
-//                    if(soDienThoai.isEmpty() || soDienThoai.trim().length() ==0 || soDienThoai == null){
-//
-//                        attributes.addFlashAttribute("erLogSoDienThoaiChon","Xin lỗi không được để trống số điện thoại !");
-//                        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-//
-//                    }
-//
-//                    //check số điện thoại nhập là chữ
-//                    try{
-//
-//                        int soDienThoaiFomat = Integer.parseInt(soDienThoai);
-//
-//                        if(soDienThoaiFomat < 0){
-//
-//                            attributes.addFlashAttribute("erLogSoDienThoai0","Số điện thoại không được nhỏ hơn 0");
-//                            return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-//
-//                        }
-//
-//
-//                    }catch (NumberFormatException e){
-//
-//                        e.printStackTrace();
-//                        attributes.addFlashAttribute("erLogSoDienThoaiChonChu","Số điện thoại không được là chữ !");
-//                        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-//
-//                    }
-//
-//                    // Validate số điện thoại bắt đầu bằng số 0 và có độ dài là 10 số
-//                    String phoneNumberRegex = "^0\\d{9}$";
-//
-//                    if (!soDienThoai.matches(phoneNumberRegex)) {
-//                        attributes.addFlashAttribute("erLogSoDienThoaiNumber", "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại bắt đầu bằng số 0 và có độ dài là 10 số.");
-//                        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-//                    }
-//
-//                    //Check địa chỉ nhận hàng
-//                    if(diaChi == null || diaChi.isEmpty() || diaChi.trim().length()==0){
-//
-//                        attributes.addFlashAttribute("erLogDiaChiChon","Không được để trống địa chỉ !");
-//                        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-//
-//                    }
-//
-//                    if(diaChi.matches("^\\d.*")
-//                        || !diaChi.matches(".*[a-zA-Z].*")){
-//
-//                        attributes.addFlashAttribute("erLogDiaChiChonNo","Xin lỗi tên địa chỉ không hợp lệ");
-//                        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-//
-//                    }
-//
-//
-//                    LocalDate ngayThanhToanMoi = LocalDate.now();
-//                    String ngayTaoMoi = ngayThanhToanMoi.toString();
-//
-//                    hoaDon.setTrangThai(1);
-//                    hoaDon.setNgayThanhToan(ngayTaoMoi);
-//                    hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoai + ", Địa chỉ giao hàng: " + diaChi);
-//
-//                    hoaDonRepository.save(hoaDon);
-//                    model.addAttribute("idKH", hoaDon.getKhachHang().getId());
-////                    return "/templates/Users/Layouts/Shop/viewHoaDonThanhCong";
-//                    return "redirect:/nguoiDung/hoaDon/thanhToan/ThanhCong";
-//
-//                } else {
-//
-//                    System.out.println("Hóa đơn không tồn tại");
-//
-//                }
-//
-//            }else if(diaChiChon == null || diaChiChon.isEmpty()){
-//
-//                attributes.addFlashAttribute("erViewDiaChiChon","Vui lòng chọn địa chỉ để có thể giao hàng !");
-//                return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-//
-//            }else{
-//
-//                attributes.addFlashAttribute("erViewDiaChiChon","Vui lòng chọn địa chỉ để có thể giao hàng !");
-//                return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-//
-//            }
-//
-//        }else if(hinhThuc == null || hinhThuc.isEmpty()){
-//
-//            System.out.println("Hình thức thanh toán không hợp lệ");
-//            attributes.addFlashAttribute("messageNoChonNull","Vui lòng chọn một hình thức để có thể thanh toán !");
-//            return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-//
-//        }else{
-//
-//            System.out.println("Hình thức thanh toán không hợp lệ");
-//            attributes.addFlashAttribute("messageNoChon","Vui lòng chọn hình thức để có thể thanh toán !");
-//            return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-//
-//        }
 
+//            return "redirect:/TrangChu/listGiayTheThao";
 
-//        return "redirect:/nguoiDung/HoaDon/" + hoaDonId;
-        return "redirect:/TrangChu/listGiayTheThao";
+            return "";
 
+        }
     }
 
     //Todo code log swel thông báo cho thanh toán thành công cho đơn hàng

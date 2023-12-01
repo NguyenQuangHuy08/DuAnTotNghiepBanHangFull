@@ -451,6 +451,7 @@ public class TrangChuGiayTheThaoController {
         String size = request.getParameter("size");
         String soLuong = request.getParameter("soLuong");
         String idGiayTheThao = request.getParameter("idGiayTheThao");
+        String giaBan = request.getParameter("gia");
         UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
 
         if(idKhachHang != null) {
@@ -459,6 +460,9 @@ public class TrangChuGiayTheThaoController {
 
             GiayTheThao giayTheThao = giayTheThaoRepository.findById(giayTheThaoId).orElse(null);
             model.addAttribute("giayTheThao", giayTheThao);
+
+            giayTheThao.setGiaBan(giaBan);
+            giayTheThaoRepository.save(giayTheThao);
 
             //Check size và màu sắc khi chưa chọn gì
             if(size == null || mauSac == null){
@@ -551,7 +555,10 @@ public class TrangChuGiayTheThaoController {
                         gioHangChiTiet.setGioHang(gioHang);
                         gioHangChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTiet);
                         gioHangChiTiet.setSoLuong(String.valueOf(checkSoLuongAddToCart));
-                        gioHangChiTiet.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(checkSoLuongAddToCart)));
+//                        gioHangChiTiet.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(checkSoLuongAddToCart)));
+
+                        BigDecimal giaBanBigDeimal = new BigDecimal(giaBan);
+                        gioHangChiTiet.setDonGia(giaBanBigDeimal.multiply(BigDecimal.valueOf(checkSoLuongAddToCart)));
 
                         gioHangChiTietRepository.save(gioHangChiTiet);
 
@@ -581,7 +588,6 @@ public class TrangChuGiayTheThaoController {
             model.addAttribute("successMessage", "Thêm sản phẩm vào giỏ hàng thành công!");
 
             return "redirect:/GiayTheThao/NguoiDungSuccessLoginAddToCart";
-//            return "/templates/Users/Layouts/Shop/gioHangView";
 
     }
 
