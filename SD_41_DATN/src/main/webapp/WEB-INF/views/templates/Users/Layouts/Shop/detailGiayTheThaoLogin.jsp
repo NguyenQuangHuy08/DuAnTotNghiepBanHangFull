@@ -142,28 +142,33 @@
                 <p style="color: black;margin-top: 30px;font-size: 18px">
                     Giá bán:  <span style="color: red">
                                 <fmt:formatNumber  type="" value="${giayTheThao.giaBan}" pattern="#,##0.###" />
-                            </span>
+                              </span>
                     VNĐ
 
 <%--                    Todo sủa code ở đây--%>
+
+<%--                    Đang gặp vấn đề là sản phẩm không áp dụng cũng được giảm giá 10%--%>
                     <c:choose>
-                        <c:when test="${sale !=0}">
+<%--                        Trường hợp này là có sale--%>
+<%--                    Nếu mà sale khác 1--%>
+                        <c:when test="${sale != 1}">
                             <div class="gia">
                                 <p>
                                     <del>
-
+<%--                                            Đây là giá bán ban đầu khi chưa được giảm--%>
                                             <fmt:formatNumber  type="" value="${giayTheThao.giaBan}" pattern="#,##0.###" /> VNĐ
 
                                     </del>
+<%--                                            Đây là giá bán khi đã được giảm    --%>
                                     <strong>
 
-                                                <fmt:formatNumber  type="" value="${giayTheThao.giaBan * (100 - sale)/100}" pattern="#,##0.###" /> VNĐ
+                                            <fmt:formatNumber  type="" value="${giayTheThao.giaBan * (100 - sale )/100}" pattern="#,##0.###" /> VNĐ
 
                                     </strong>
                                 </p>
                             </div>
                         </c:when>
-                        <c:when test="${sale==0}">
+                        <c:when test="${sale == 1}">
                             <div class="gia">
                                 <p>
                                     <strong>

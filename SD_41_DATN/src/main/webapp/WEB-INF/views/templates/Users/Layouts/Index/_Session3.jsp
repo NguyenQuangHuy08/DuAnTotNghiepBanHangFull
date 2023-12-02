@@ -106,6 +106,7 @@
                 </div>
 
 <%--                Todo code giầy thể thao sale cho khách hàng--%>
+<%--                    Trường hợp sale vẫn đang đúng--%>
                 <div class="row" style="margin-top: 120px">
                     <h3 style="text-align: center">SALE</h3>
                     <div class="col-12">
@@ -137,6 +138,10 @@
                         </c:forEach>
                     </div>
                 </div>
+
+
+
+
             </div>
         </div>
     </div>

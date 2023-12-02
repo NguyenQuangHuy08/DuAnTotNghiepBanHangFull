@@ -3,6 +3,7 @@ package com.example.sd_41.repository.ChuongTrinhGiamGia;
 import com.example.sd_41.model.ChuongTrinhGiamGiaChiTietGiayTheThao;
 import com.example.sd_41.model.ChuongTrinhGiamGiaGiayTheThao;
 import com.example.sd_41.model.GiayTheThao;
+import com.example.sd_41.model.GioHang;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,6 +22,9 @@ public interface ChuongTrinhGiamGiaChiTietGiayTheThaoRepository extends JpaRepos
     void deleteByChuongTrinhGiamGiaGiayTheThaoAndGiayTheThao(@Param("gg") UUID gg, @Param("gtt") UUID gtt);
 
     ChuongTrinhGiamGiaChiTietGiayTheThao findByChuongTrinhGiamGiaGiayTheThaoAndGiayTheThao(ChuongTrinhGiamGiaGiayTheThao gg, GiayTheThao gtt);
+
+    List<ChuongTrinhGiamGiaChiTietGiayTheThao> findByGiayTheThao_Id(UUID idGiayTheThao);
+
 
 
 }

@@ -175,7 +175,7 @@
         <div>
             <h4>Thêm bằng file excel</h4>
             <form  action="importExcel" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".xlsx"  class="form-control" required>
+                <input type="file" name="file" accept=".xlsx"  class="form-control">
 
                 <button class="btn btn-primary" style="margin-top: 10px">Import</button>
             </form>

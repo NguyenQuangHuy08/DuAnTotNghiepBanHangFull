@@ -254,30 +254,8 @@ public class TrangChuGiayTheThaoController {
     }
 
 
-
-    //Todo code list giày thể thao Deals of the Week bên trang chủ
-
-    @RequestMapping(value = "GiayTheThao/listGiayTheThaoDealsOfTheWeek")
-    public String listGiayTheThaoDealsOfTheWeek(Model model,
-                                                @RequestParam(value = "pageNum",required = false,defaultValue = "1")Integer pageNum,
-                                                @RequestParam(value = "pageSize",required = false,defaultValue = "12") Integer pageSize){
-
-        List<GiayTheThaoChiTiet> lstGiayTheThaoDealsOfTheWeek = giayTheThaoChiTietRepository.findAll();
-        model.addAttribute("lstGiayTheThaoDealsOfTheWeek",lstGiayTheThaoDealsOfTheWeek);
-
-        Pageable pageable = PageRequest.of(pageNum-1,pageSize);
-        Page<GiayTheThaoChiTiet> page = giayTheThaoChiTietRepository.findAll(pageable);
-
-        model.addAttribute("totalPage",page.getTotalPages());
-        model.addAttribute("listPage",page.getContent());
-
-
-        return "/templates/Users/index";
-
-    }
-
-
     //Todo code detail thông tin sản phẩm chi tiết và thông tin sản phẩm
+    //id ở đây là id của giầy thể thao
     private void detailGiayTheThaoChiTietTrangChu(Model model, UUID id, Integer pageNum, Integer pageSize) {
         GiayTheThao giayTheThao = giayTheThaoRepository.findById(id).orElse(null);
         model.addAttribute("giayTheThao", giayTheThao);
@@ -355,25 +333,62 @@ public class TrangChuGiayTheThaoController {
         model.addAttribute("currentPage", currentPage);
 
         //Todo code giảm giá bên details
+        try{
 
-        List<ChuongTrinhGiamGiaChiTietGiayTheThao> listSale = chuongTrinhGiamGiaChiTietGiayTheThaoRepository.findAll();
+            List<ChuongTrinhGiamGiaChiTietGiayTheThao> listSale = chuongTrinhGiamGiaChiTietGiayTheThaoRepository.findByGiayTheThao_Id(id);
 
-        for(ChuongTrinhGiamGiaChiTietGiayTheThao sale : listSale){
+            for(ChuongTrinhGiamGiaChiTietGiayTheThao sale : listSale){
 
-            //Trạng thái đã kích hoạt
-            if(sale.getTrangThai() == 1){
+                //Trạng thái đã kích hoạt
+                //Trạng thái 1 là đã được kích hoạt
+                if(sale.getTrangThai() == 1){
 
-                model.addAttribute("sale",sale.getChuongTrinhGiamGiaGiayTheThao().getPhanTramGiam());
+                    model.addAttribute("sale",sale.getChuongTrinhGiamGiaGiayTheThao().getPhanTramGiam());
 
-            }else {
+                }else {
 
-                model.addAttribute("sale","0");
+                    model.addAttribute("sale",0);
+
+                }
 
             }
 
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+            model.addAttribute("sale",null);
+            model.addAttribute("giayTheThao", giayTheThao);
+
+
         }
 
+
+
     }
+
+    //Todo code list giày thể thao Deals of the Week bên trang chủ
+
+    @RequestMapping(value = "GiayTheThao/listGiayTheThaoDealsOfTheWeek")
+    public String listGiayTheThaoDealsOfTheWeek(Model model,
+                                                @RequestParam(value = "pageNum",required = false,defaultValue = "1")Integer pageNum,
+                                                @RequestParam(value = "pageSize",required = false,defaultValue = "12") Integer pageSize){
+
+        List<GiayTheThaoChiTiet> lstGiayTheThaoDealsOfTheWeek = giayTheThaoChiTietRepository.findAll();
+        model.addAttribute("lstGiayTheThaoDealsOfTheWeek",lstGiayTheThaoDealsOfTheWeek);
+
+        Pageable pageable = PageRequest.of(pageNum-1,pageSize);
+        Page<GiayTheThaoChiTiet> page = giayTheThaoChiTietRepository.findAll(pageable);
+
+        model.addAttribute("totalPage",page.getTotalPages());
+        model.addAttribute("listPage",page.getContent());
+
+
+        return "/templates/Users/index";
+
+    }
+
+
 
     //Todo code lọc
     @GetMapping("/GiayTheThao/find/{idGiayTheThao}/{idMauSac}/{idSize}")
@@ -461,6 +476,7 @@ public class TrangChuGiayTheThaoController {
             GiayTheThao giayTheThao = giayTheThaoRepository.findById(giayTheThaoId).orElse(null);
             model.addAttribute("giayTheThao", giayTheThao);
 
+//            set lại giá bán cho giầy thể thao nếu nó có sản phẩm được giảm giá
             giayTheThao.setGiaBan(giaBan);
             giayTheThaoRepository.save(giayTheThao);
 
