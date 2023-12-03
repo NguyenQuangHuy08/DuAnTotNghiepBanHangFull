@@ -198,6 +198,7 @@ public class TrangChuGiayTheThaoController {
 
         model.addAttribute("pageNumbers", pageNumbers);
         model.addAttribute("currentPage", currentPage);
+
     }
 
     //Todo code list giầy thể thao trang chủ
@@ -333,8 +334,14 @@ public class TrangChuGiayTheThaoController {
         model.addAttribute("currentPage", currentPage);
 
         //Todo code giảm giá bên details
+
+//        String gia = request.getParameter("gia");
+//        giayTheThao.setGiaBan(gia);
+//        giayTheThaoRepository.save(giayTheThao);
+
         try{
 
+            //Tim kiếm giầy thể thao được áp dụng cho giảm giá
             List<ChuongTrinhGiamGiaChiTietGiayTheThao> listSale = chuongTrinhGiamGiaChiTietGiayTheThaoRepository.findByGiayTheThao_Id(id);
 
             for(ChuongTrinhGiamGiaChiTietGiayTheThao sale : listSale){
@@ -362,8 +369,6 @@ public class TrangChuGiayTheThaoController {
 
 
         }
-
-
 
     }
 
@@ -414,11 +419,13 @@ public class TrangChuGiayTheThaoController {
     public String detailChiTietGiayTheThao(@PathVariable UUID id, Model model,//id là id của giầy thể thao
                                            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                            @RequestParam(value = "pageSize", required = false, defaultValue = "4") Integer pageSize,
-                                           HttpSession session) {
+                                           HttpSession session,
+                                           HttpServletRequest request) {
 
         if(session.getAttribute("khachHangLog") != null){
 
             System.out.println("Đã đăng nhập tài khoản!");
+
             detailGiayTheThaoChiTietTrangChu(model,id,pageNum,pageSize);
             return "/templates/Users/Layouts/Shop/detailGiayTheThaoLogin";
 
@@ -466,7 +473,11 @@ public class TrangChuGiayTheThaoController {
         String size = request.getParameter("size");
         String soLuong = request.getParameter("soLuong");
         String idGiayTheThao = request.getParameter("idGiayTheThao");
+        //Giá bán
         String giaBan = request.getParameter("gia");
+        attributes.addFlashAttribute("giaBan", giaBan);
+//        session.setAttribute("giaBan",giaBan);
+
         UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
 
         if(idKhachHang != null) {
@@ -474,11 +485,8 @@ public class TrangChuGiayTheThaoController {
             UUID giayTheThaoId = UUID.fromString(idGiayTheThao);
 
             GiayTheThao giayTheThao = giayTheThaoRepository.findById(giayTheThaoId).orElse(null);
-            model.addAttribute("giayTheThao", giayTheThao);
 
-//            set lại giá bán cho giầy thể thao nếu nó có sản phẩm được giảm giá
-            giayTheThao.setGiaBan(giaBan);
-            giayTheThaoRepository.save(giayTheThao);
+            model.addAttribute("giayTheThao", giayTheThao);
 
             //Check size và màu sắc khi chưa chọn gì
             if(size == null || mauSac == null){
@@ -511,6 +519,7 @@ public class TrangChuGiayTheThaoController {
 
                     }
 
+
                     int checkSoLuongAddToCart = Integer.parseInt(soLuong);
                     int soLuongTonKho = Integer.parseInt(giayTheThaoChiTiet.getSoLuong());
 
@@ -541,6 +550,8 @@ public class TrangChuGiayTheThaoController {
 
                     }
 
+                    //Trường hợp check sản phẩm đã có
+                    //Đây là số lượng
                     GioHangChiTiet existingItem = gioHangChiTietRepository.findByGioHangAndGiayTheThaoChiTiet(gioHang, giayTheThaoChiTiet);
 
                     if (existingItem != null) {
@@ -549,16 +560,23 @@ public class TrangChuGiayTheThaoController {
                         int existingQuantity = Integer.parseInt(existingItem.getSoLuong());
                         int newQuantity = existingQuantity + Integer.parseInt(soLuong);
 
+                        //Dùng cho set lại giá bán
+                        BigDecimal giaBanBigDeimal = new BigDecimal(giaBan);
+
                         if(newQuantity > soLuongTonKho){
 
                             attributes.addFlashAttribute("soLuongMax","Sản phẩm này trong kho chỉ còn"+ soLuongTonKho + "quý vị thông cảm");
                             existingItem.setSoLuong(String.valueOf(soLuongTonKho));
+                            //Set đơn giá cho sản phẩm đã có trong giỏ hàng
                             existingItem.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(soLuongTonKho)));
+
                             gioHangChiTietRepository.save(existingItem);
 
                         }else{
 
+                            //Dành cho sản phẩm chưa có trong giỏ hàng
                             existingItem.setSoLuong(String.valueOf(newQuantity));
+//                            existingItem.setDonGia(giaBanBigDeimal.multiply(BigDecimal.valueOf(soLuongTonKho)));
                             existingItem.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(newQuantity)));
                             gioHangChiTietRepository.save(existingItem);
 
@@ -580,7 +598,6 @@ public class TrangChuGiayTheThaoController {
 
                     }
 
-//                    return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
                       return "redirect:/GiayTheThao/NguoiDungSuccessLoginAddToCart";
 
 
@@ -617,8 +634,14 @@ public class TrangChuGiayTheThaoController {
         if(session.getAttribute("khachHangLog") != null){
 
             System.out.println("Đã đăng nhập tài khoản!");
+//          Lấy dữ liệu từ trong db
+
+            String giaBan = (String) attributes.getAttribute("giaBan");
+            model.addAttribute("giaBan",giaBan);
+            attributes.addFlashAttribute("giaBan",giaBan);
             List<GioHangChiTiet> listGioHangChiTiet = gioHangChiTietRepository.findAll();
             model.addAttribute("listGioHangChiTiet",listGioHangChiTiet);
+
             return "/templates/Users/Layouts/Shop/gioHangView";
 
         }else {
@@ -629,12 +652,6 @@ public class TrangChuGiayTheThaoController {
         }
 
     }
-
-
-
-
-
-
 
     //Todo code delete
 
@@ -728,7 +745,9 @@ public class TrangChuGiayTheThaoController {
             hoaDon.setTrangThai(0);
             hoaDon.setNgayThanhToan(ngayThanhToanToDate);
             hoaDon.setNgayTao(ngayThanhToanToDate);
+
             hoaDonRepository.save(hoaDon);
+
             int thanhTien = 0;
             // Thêm vào hóa đơn chi tiết
             for (String stt : chon) {
@@ -746,9 +765,11 @@ public class TrangChuGiayTheThaoController {
                 thanhTien += Integer.parseInt(donGia.get(Integer.parseInt(stt)));
 
             }
+
             hoaDon.setThanhTien(BigDecimal.valueOf(thanhTien));
             model.addAttribute("hoaDon", hoaDon);
             hoaDonRepository.save(hoaDon);
+
             return "redirect:/nguoiDung/HoaDon/" + hoaDon.getId();
         }
     }

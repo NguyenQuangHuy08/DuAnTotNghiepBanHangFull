@@ -67,6 +67,12 @@ public class HoaDonService implements HoaDonServiceImpl{
 
     }
 
+    @Override
+    public String tongSl(UUID id) {
+
+        return hoaDonRepository.tongSl(id);
+
+    }
 
 
 

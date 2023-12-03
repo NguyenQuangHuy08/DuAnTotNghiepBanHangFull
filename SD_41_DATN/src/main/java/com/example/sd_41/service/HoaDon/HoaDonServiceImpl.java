@@ -15,4 +15,6 @@ public interface HoaDonServiceImpl {
 
     void update(UUID id, HoaDon updateHoaDon);
 
+    String tongSl(UUID id);
+
 }

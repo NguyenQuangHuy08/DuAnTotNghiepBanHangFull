@@ -57,6 +57,31 @@
 
     </style>
 
+
+<%--    css cho chương trình giảm giá--%>
+
+    <style>
+        .payment-methods {
+            padding: 10px 0;
+        }
+
+        #ctgg-details,
+        #banking-image,
+        #cash-details {
+            display: none;
+        }
+
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+
+
 </head>
 <body>
 <%--Header cho giỏ hàng --%>
@@ -73,7 +98,7 @@
             <div class="row px-xl-5">
                 <div class="col-lg-6">
                     <h5 class="section-title position-relative text-uppercase mb-3">
-                        <span class="">Địa chỉ nhận hàng</span>
+                        <span class="">ĐỊA CHỈ NHẬN HÀNG</span>
                     </h5>
                     <input type="checkbox" name="diaChiChon" value="diaChiCu" id="checkbox1">
                     <label for="checkbox1" class="label_check_box">Địa chỉ ban đầu</label>
@@ -243,6 +268,7 @@
                                     <h4 style="margin-left: 15px;color: black">Đơn giá :</h4>
                                     <h5 style="margin-right: 50px;color: red">
                                         <fmt:formatNumber type="" value="${hoaDon.thanhTien}" pattern="#,##0.###"/> VNĐ
+
                                     </h5>
                                     <input type="hidden" name="thanhTien" value="${hoaDon.thanhTien}">
                                 </div>
@@ -254,14 +280,50 @@
                                     </h6>
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label for="price" style="font-size: 20px;color: black;margin-bottom: 20px;margin-left:10px;margin-top: 5px;margin-left: 10px">Tổng tiền:</label>
-                                <input name="thanhTienTong" type="hidden" id="price" value="${hoaDon.thanhTien}" readonly>
-                                <input name="thanhTienTongPrice" type="hidden" id="price1" name="tongTien" readonly>
+                                <input name="thanhTienTong" type="text" id="price" value="${hoaDon.thanhTien}" readonly>
+<%--                                <input name="thanhTienTongPrice" type="hidden" id="price1" name="tongTien" readonly>--%>
+                                <input type="text" id="price1" name="tongTien" readonly>
                                 <br>
                                 <label id="tongTienString" style="font-size: 18px;color:#ff0000;margin-left: 10px"></label>
                             </div>
                         </div>
+                    </div>
+
+<%--                    Cho khuyến mãi --%>
+                    <h5 style="margin-bottom: 20px;color: black">KHUYẾN MẠI</h5>
+
+                    <div class="mb-5" style="background-color: #F8F9FA;margin-bottom: 30px">
+                        <label style="margin-top: 15px;margin-left: 15px;">Chương trình giảm giá:</label>
+
+                        <div class="payment-methods">
+                            <label for="ctgg">
+                                <input style="margin-left: 15px" type="radio" name="ctgg-method" id="ctgg" onchange="togglePaymentDetails1()"> Chương trình giảm giá
+                            </label>
+
+                        </div>
+
+                        <div id="ctgg-details" style="margin-bottom: 20px">
+
+                                <c:choose>
+                                    <c:when test="${not empty CTGG}">
+                                        <c:set var="count" value="0"/>
+                                        <c:forEach items="${CTGG}" var="list">
+<%--                                            Hiện các mã khuyễn mãi còn để áp dụng--%>
+                                            <c:if test="${list.trangThai == 1}">
+                                                <input style="margin-left: 15px" name="options" id="price" type="radio" value="${list.phanTramGiam}" onclick="updatePrice(this)"> ${list.tenChuongTrinh}<br>
+                                                <c:set var="count" value="${count + 1}"/>
+                                            </c:if>
+                                        </c:forEach>
+                                    </c:when>
+                                    <c:otherwise>
+                                            <p style="color: red; margin-left: 15px;font-size: 15px">Không có mã khuyễn mãi nào áp dụng cho mã hóa đơn này</p>
+                                    </c:otherwise>
+                                </c:choose>
+                        </div>
+                        <br>
                     </div>
                     <div class="mb-5">
                         <div class="thongBaoPayment">
@@ -293,9 +355,7 @@
                 </div>
             </div>
         </form>
-
     </div>
-
 </div>
 
 
@@ -304,122 +364,282 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="../../../resources/lib/easing/easing.min.js"></script>
     <script src="../../../resources/lib/owlcarousel/owl.carousel.min.js"></script>
-
     <!-- Contact Javascript File -->
     <script src="../../../resources/mail/jqBootstrapValidation.min.js"></script>
     <script src="../../../resources/mail/contact.js"></script>
-
     <!-- Template Javascript -->
     <script src="../../../resources/js/main.js"></script>
 
-    <script>
 
-        var gia = parseFloat(document.getElementById("price").value);
-        var gia1 = gia;
-        document.getElementById("price1").value = gia1.toFixed(0);
 
-        var gia1Formatted1 = gia.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+<%--Mã code js cho giao hàng nhanh --%>
 
-        var gia1WithCurrency1 = gia1Formatted1 + " VNĐ";
 
-        document.getElementById("price").value = gia1WithCurrency1;
-        document.getElementById("tongTienString").innerText = gia1WithCurrency1;
+<script>
 
-        function togglePaymentDetails1() {
-            var ctggDetails = document.getElementById("ctgg-details");
-            var ctggRadio = document.getElementById("ctgg");
+    var gia = parseFloat(document.getElementById("price").value);
+    var gia1 = gia;
+    document.getElementById("price1").value = gia1.toFixed(0);
 
-            if (ctggRadio.checked) {
-                ctggDetails.style.display = "block";
+    var gia1Formatted1 = gia.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+
+    var gia1WithCurrency1 = gia1Formatted1 + " VNĐ";
+
+    document.getElementById("price").value = gia1WithCurrency1;
+    document.getElementById("tongTienString").innerText = gia1WithCurrency1;
+
+    function togglePaymentDetails1() {
+        var ctggDetails = document.getElementById("ctgg-details");
+        var ctggRadio = document.getElementById("ctgg");
+
+        if (ctggRadio.checked) {
+            ctggDetails.style.display = "block";
+        }
+    }
+
+    function updatePrice(radioButton) {
+        var priceInput = document.getElementById("price");
+        var currentPrice = parseFloat(${hoaDon.thanhTien});
+        var selectedValue = parseFloat(radioButton.value);
+        var newPrice = currentPrice - (currentPrice * selectedValue / 100);
+
+        var gia1Formatted = newPrice.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+
+        var gia1WithCurrency = gia1Formatted + " VNĐ";
+
+        priceInput.value = gia1WithCurrency;
+        document.getElementById("tongTienString").innerText = gia1WithCurrency;
+    }
+
+    function toggleView(elementId) {
+        var element = document.getElementById(elementId);
+        element.style.display = (element.style.display === "block") ? "none" : "block";
+    }
+
+    function toggleView(elementId) {
+        var element = document.getElementById(elementId);
+        element.style.display = (element.style.display === "block") ? "none" : "block";
+    }
+</script>
+<script>
+    function showCondition(condition) {
+        document.getElementById("condition-text").innerHTML = condition;
+        document.getElementById("condition-popup").style.display = "block";
+    }
+
+    function closeCondition() {
+        document.getElementById("condition-popup").style.display = "none";
+    }
+</script>
+<script>
+
+    var checkbox1 = document.getElementById("checkbox1");
+    var checkbox2 = document.getElementById("checkbox2");
+    var view_dia_chi_cu = document.getElementById("view_dia_chi_cu");
+    var view_dia_chi_moi = document.getElementById("view_dia_chi_moi");
+
+    var bothUnchecked = true;
+
+    // Thêm sự kiện cho checkbox1 để kiểm tra trạng thái của checkbox2
+    checkbox1.addEventListener("change", async function () {
+        if (checkbox1.checked) {
+            checkbox2.checked = false;
+            view_dia_chi_moi.style.display = "none";
+            view_dia_chi_cu.style.display = "block";
+            document.getElementById("province").selectedIndex = 0;
+            document.getElementById("district").selectedIndex = 0;
+            document.getElementById("ward").selectedIndex = 0;
+            document.getElementById('ten1').style.borderColor = 'gray';
+            document.getElementById('email1').style.borderColor = 'gray';
+            document.getElementById('sdt1').style.borderColor = 'gray';
+            document.getElementById('province').style.borderColor = 'gray';
+            document.getElementById('district').style.borderColor = 'gray';
+            document.getElementById('ward').style.borderColor = 'gray';
+            await findCalculateShipping();
+        }
+        checkBothUnchecked();
+    });
+
+    // Thêm sự kiện cho checkbox2 để kiểm tra trạng thái của checkbox1
+    checkbox2.addEventListener("change", function () {
+        if (checkbox2.checked) {
+            checkbox1.checked = false;
+            view_dia_chi_moi.style.display = "block";
+            document.getElementById('ten').style.borderColor = 'gray';
+            document.getElementById('email').style.borderColor = 'gray';
+            document.getElementById('sdt').style.borderColor = 'gray';
+            document.getElementById('tinh').style.borderColor = 'gray';
+            document.getElementById('huyen').style.borderColor = 'gray';
+            document.getElementById('xa').style.borderColor = 'gray';
+            // document.getElementById('mess').style.borderColor = 'gray';
+
+        }
+        checkBothUnchecked();
+    });
+
+    function checkBothUnchecked() {
+        if (!checkbox1.checked && !checkbox2.checked) {
+            const shippingCost = 0;
+
+            var tongSoTien = currentPrice + shippingCost;
+            priceInput1.value = tongSoTien;
+
+            var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 3
+            });
+
+            var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";
+
+            document.getElementById("ship").value = gia1WithCurrency3;
+            document.getElementById("shipcode").innerText = gia1WithCurrency3;
+
+            var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 3
+            });
+
+            var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
+
+            priceInput.value = gia1WithCurrency2;
+            document.getElementById("tongTienString").innerText = gia1WithCurrency2;
+            bothUnchecked = true;
+            document.getElementById("province").selectedIndex = 0;
+            document.getElementById("district").selectedIndex = 0;
+            document.getElementById("ward").selectedIndex = 0;
+        }
+        if (!checkbox1.checked && checkbox2.checked) {
+            const shippingCost = 0;
+
+            var tongSoTien = currentPrice + shippingCost;
+            priceInput1.value = tongSoTien;
+            document.getElementById("tongTienString").innerText = tongSoTien;
+
+            var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 3
+            });
+
+            var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";
+
+            document.getElementById("ship").value = gia1WithCurrency3;
+            document.getElementById("shipcode").innerText = gia1WithCurrency3;
+
+            var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 3
+            });
+
+            var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
+
+            priceInput.value = gia1WithCurrency2;
+            document.getElementById("tongTienString").innerText = gia1WithCurrency2;
+            bothUnchecked = true;
+        }
+    }
+
+    // Thêm sự kiện onchange cho các combobox
+
+    // Hàm để cập nhật giá trị các input dựa trên các combobox đã chọn
+
+
+    async function findProvinceIdByName(provinceName) {
+        const response = await fetch(`http://localhost:8080/public/provinces`);
+        const data = await response.json();
+
+        for (const province of data.data) {
+            if (province.ProvinceName === provinceName) {
+                return province.ProvinceID;
             }
         }
 
-        function updatePrice(radioButton) {
-            var priceInput = document.getElementById("price");
-            var currentPrice = parseFloat(${hoaDon.thanhTien});
-            var selectedValue = parseFloat(radioButton.value);
-            var newPrice = currentPrice - (currentPrice * selectedValue / 100);
+        return null;
+    }
 
-            var gia1Formatted = newPrice.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+    async function findProvinceNameById(provinceid) {
+        const response = await fetch(`http://localhost:8080/public/provinces`);
+        const data = await response.json();
 
-            var gia1WithCurrency = gia1Formatted + " VNĐ";
-
-            priceInput.value = gia1WithCurrency;
-            document.getElementById("tongTienString").innerText = gia1WithCurrency;
-        }
-
-        function toggleView(elementId) {
-            var element = document.getElementById(elementId);
-            element.style.display = (element.style.display === "block") ? "none" : "block";
-        }
-
-        function toggleView(elementId) {
-            var element = document.getElementById(elementId);
-            element.style.display = (element.style.display === "block") ? "none" : "block";
-        }
-    </script>
-    <script>
-        function showCondition(condition) {
-            document.getElementById("condition-text").innerHTML = condition;
-            document.getElementById("condition-popup").style.display = "block";
-        }
-
-        function closeCondition() {
-            document.getElementById("condition-popup").style.display = "none";
-        }
-    </script>
-    <script>
-
-        var checkbox1 = document.getElementById("checkbox1");
-        var checkbox2 = document.getElementById("checkbox2");
-        var view_dia_chi_cu = document.getElementById("view_dia_chi_cu");
-        var view_dia_chi_moi = document.getElementById("view_dia_chi_moi");
-
-        var bothUnchecked = true;
-
-        // Thêm sự kiện cho checkbox1 để kiểm tra trạng thái của checkbox2
-        checkbox1.addEventListener("change", async function () {
-            if (checkbox1.checked) {
-                checkbox2.checked = false;
-                view_dia_chi_moi.style.display = "none";
-                view_dia_chi_cu.style.display = "block";
-                document.getElementById("province").selectedIndex = 0;
-                document.getElementById("district").selectedIndex = 0;
-                document.getElementById("ward").selectedIndex = 0;
-                document.getElementById('ten1').style.borderColor = 'gray';
-                document.getElementById('email1').style.borderColor = 'gray';
-                document.getElementById('sdt1').style.borderColor = 'gray';
-                document.getElementById('province').style.borderColor = 'gray';
-                document.getElementById('district').style.borderColor = 'gray';
-                document.getElementById('ward').style.borderColor = 'gray';
-                await findCalculateShipping();
+        for (const province of data.data) {
+            if (province.ProvinceID === provinceid) {
+                return province.ProvinceName;
             }
-            checkBothUnchecked();
-        });
+        }
 
-        // Thêm sự kiện cho checkbox2 để kiểm tra trạng thái của checkbox1
-        checkbox2.addEventListener("change", function () {
-            if (checkbox2.checked) {
-                checkbox1.checked = false;
-                view_dia_chi_moi.style.display = "block";
-                document.getElementById('ten').style.borderColor = 'gray';
-                document.getElementById('email').style.borderColor = 'gray';
-                document.getElementById('sdt').style.borderColor = 'gray';
-                document.getElementById('tinh').style.borderColor = 'gray';
-                document.getElementById('huyen').style.borderColor = 'gray';
-                document.getElementById('xa').style.borderColor = 'gray';
-                // document.getElementById('mess').style.borderColor = 'gray';
+        return null;
+    }
 
+    async function findDistrictIdByName(districtName, provinceId) {
+        const response = await fetch('http://localhost:8080/public/districts?province_id=' + provinceId);
+        const data = await response.json();
+
+        for (const district of data.data) {
+            if (district.DistrictName === districtName) {
+                return district.DistrictID;
             }
-            checkBothUnchecked();
-        });
+        }
 
-        function checkBothUnchecked() {
-            if (!checkbox1.checked && !checkbox2.checked) {
-                const shippingCost = 0;
+        // Trả về null nếu không tìm thấy huyện nào có tên tương ứng
+        return null;
+    }
+
+    async function findWardIdByName(wardName, districtId) {
+        const response = await fetch('http://localhost:8080/public/wards?district_id=' + districtId);
+        const data = await response.json();
+
+        for (const ward of data.data) {
+            if (ward.WardName === wardName) {
+                return ward.WardCode;
+            }
+        }
+
+        // Trả về null nếu không tìm thấy xã nào có tên tương ứng
+        return null;
+    }
+
+    async function findCalculateShipping() {
+        var tinh = document.getElementById("tinh").value;
+        var provinceName = tinh;
+        var provinceId = await findProvinceIdByName(provinceName);
+
+
+        var huyen = document.getElementById("huyen").value;
+        var districtName = huyen;
+        var districtId = await findDistrictIdByName(districtName, provinceId);
+
+        var xa = document.getElementById("xa").value;
+        var wardName = xa;
+        var wardId = await findWardIdByName(wardName, districtId);
+
+        // var mess = document.getElementById("mess").value;
+        // var wardName = mess;
+        // var wardId = await findWardIdByName(wardName, districtId);
+
+        const transportationFeeDTO = {
+            toDistrictId: districtId,
+            toWardCode: wardId,
+            quantity: 1,
+            insuranceValue: 0
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/public/transportationFee', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(transportationFeeDTO)
+            });
+
+            const data = await response.json();
+
+            if (data && data.code === 200) {
+                const shippingCost = data.data.total;
 
                 var tongSoTien = currentPrice + shippingCost;
                 priceInput1.value = tongSoTien;
+                document.getElementById("tongTienString").innerText = tongSoTien;
+
 
                 var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {
                     minimumFractionDigits: 0,
@@ -440,13 +660,147 @@
 
                 priceInput.value = gia1WithCurrency2;
                 document.getElementById("tongTienString").innerText = gia1WithCurrency2;
-                bothUnchecked = true;
-                document.getElementById("province").selectedIndex = 0;
-                document.getElementById("district").selectedIndex = 0;
-                document.getElementById("ward").selectedIndex = 0;
+
+            } else {
+                document.getElementById("shippingCost").innerText = "Không thể tính phí vận chuyển.";
             }
-            if (!checkbox1.checked && checkbox2.checked) {
-                const shippingCost = 0;
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById("shippingCost").innerText = "Lỗi khi tính phí vận chuyển. Chi tiết lỗi: " + error.message;
+        }
+    }
+
+
+    // JavaScript code để kiểm tra địa chỉ cũ
+
+</script>
+<script>
+
+    var priceInput = document.getElementById("price");
+    var priceInput1 = document.getElementById("price1");
+    var currentPrice = parseFloat(${hoaDon.thanhTien});
+
+    async function loadProvinces() {
+        const response = await fetch(`http://localhost:8080/public/provinces`);
+        const data = await response.json();
+
+        const provinceSelect = document.getElementById("province");
+        provinceSelect.innerHTML = '<option value="">Chọn tỉnh</option>';
+
+        for (const province of data.data) { // Thay đổi dòng này để lấy dữ liệu từ data.data
+            const option = document.createElement("option");
+            option.value = province.ProvinceID;
+            option.text = province.ProvinceName;
+            provinceSelect.appendChild(option);
+            console.log(province.ProvinceID, province.ProvinceName);
+        }
+    }
+
+    async function loadDistricts() {
+        const provinceId = document.getElementById("province").value;
+
+        if (!provinceId) {
+            return;
+        }
+
+        const response = await fetch('http://localhost:8080/public/districts?province_id=' + provinceId);
+        const data = await response.json();
+
+        const districtSelect = document.getElementById("district");
+        districtSelect.innerHTML = '<option value="">Chọn huyện</option>';
+
+        for (const district of data.data) {
+            const option = document.createElement("option");
+            option.value = district.DistrictID;
+            option.text = district.DistrictName;
+            districtSelect.appendChild(option);
+        }
+
+        districtSelect.disabled = false;
+        document.getElementById("ward").disabled = true;
+        document.getElementById("message").innerText = "";
+    }
+
+    async function loadWards() {
+        const districtId = document.getElementById("district").value;
+
+        if (!districtId) {
+            return;
+        }
+
+        const response = await fetch('http://localhost:8080/public/wards?district_id=' + districtId);
+        const data = await response.json();
+
+        const wardSelect = document.getElementById("ward");
+        wardSelect.innerHTML = '<option value="">Chọn xã</option>';
+
+        for (const ward of data.data) {
+            const option = document.createElement("option");
+            option.value = ward.WardCode;
+            option.text = ward.WardName;
+            wardSelect.appendChild(option);
+        }
+
+        wardSelect.disabled = false;
+        document.getElementById("message").innerText = "";
+    }
+
+    function checkSelection() {
+        const provinceSelect = document.getElementById("province");
+        const districtSelect = document.getElementById("district");
+        const wardSelect = document.getElementById("ward");
+
+        const provinceName = provinceSelect.options[provinceSelect.selectedIndex].text;
+        const districtName = districtSelect.options[districtSelect.selectedIndex].text;
+        const wardName = wardSelect.options[wardSelect.selectedIndex].text;
+
+        if (provinceName) {
+            document.getElementById("tinh1").value = provinceName;
+        }
+
+        if (districtName) {
+            document.getElementById("huyen1").value = districtName;
+        }
+
+        if (wardName) {
+            document.getElementById("xa1").value = wardName;
+        }
+
+        if (provinceName && districtName && wardName) {
+            calculateShipping();
+        } else {
+            document.getElementById("message").innerText = "";
+            // Khóa nút tính phí nếu không đủ điều kiện
+            document.getElementById("shippingCost").innerText = "";
+        }
+    }
+
+    async function calculateShipping() {
+        const districtSelect = document.getElementById("district");
+        const wardSelect = document.getElementById("ward");
+        const toDistrictId = districtSelect.value;
+        const toWardCode = wardSelect.value;
+
+        const transportationFeeDTO = {
+            toDistrictId: toDistrictId,
+            toWardCode: toWardCode,
+            quantity: 1,
+            insuranceValue: 0
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/public/transportationFee', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(transportationFeeDTO)
+            });
+
+            const data = await response.json();
+
+            if (data && data.code === 200) {
+                const shippingCost = data.data.total;
 
                 var tongSoTien = currentPrice + shippingCost;
                 priceInput1.value = tongSoTien;
@@ -471,328 +825,87 @@
 
                 priceInput.value = gia1WithCurrency2;
                 document.getElementById("tongTienString").innerText = gia1WithCurrency2;
-                bothUnchecked = true;
+
+            } else {
+                document.getElementById("shippingCost").innerText = "Không thể tính phí vận chuyển.";
             }
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById("shippingCost").innerText = "Lỗi khi tính phí vận chuyển. Chi tiết lỗi: " + error.message;
         }
+    }
 
-        // Thêm sự kiện onchange cho các combobox
+    loadProvinces();
+    document.getElementById("province").addEventListener("change", loadDistricts);
+    document.getElementById("district").addEventListener("change", loadWards);
+    document.getElementById("ward").addEventListener("change", checkSelection);
 
-        // Hàm để cập nhật giá trị các input dựa trên các combobox đã chọn
+</script>
+<script>
+    var loiHoaDonBySL = "${loiHoaDonBySL}";
+    if (loiHoaDonBySL == "2") {
+        Swal.fire({
+            icon: 'warning',
+            html: '<div class="swal-text">Xin lỗi, sản phẩm trong hóa đn của bạn nhiều hơn số lượng tồn</div><div class="progress-bar-container"></div>',
+            allowOutsideClick: true
+
+        });
+        setTimeout(() => {
+            Swal.close();
+            addFormContainer.style.display = 'block';
+        }, 1000);
+    }
+</script>
 
 
-        async function findProvinceIdByName(provinceName) {
-            const response = await fetch(`http://localhost:8080/public/provinces`);
-            const data = await response.json();
+<%--Mã js cho chương trình giảm giá hóa đơn --%>
 
-            for (const province of data.data) {
-                if (province.ProvinceName === provinceName) {
-                    return province.ProvinceID;
-                }
-            }
+<script>
 
-            return null;
+    var gia = parseFloat(document.getElementById("price").value);
+    var gia1 = gia;
+    document.getElementById("price1").value = gia1.toFixed(0);
+
+    //Hiện ra các loại mã áp dụng cho hóa đơn này thôi
+    function togglePaymentDetails1() {
+        var ctggDetails = document.getElementById("ctgg-details");
+        var ctggRadio   = document.getElementById("ctgg");
+
+        if (ctggRadio.checked) {
+            ctggDetails.style.display = "block";
         }
+    }
 
-        async function findProvinceNameById(provinceid) {
-            const response = await fetch(`http://localhost:8080/public/provinces`);
-            const data = await response.json();
-
-            for (const province of data.data) {
-                if (province.ProvinceID === provinceid) {
-                    return province.ProvinceName;
-                }
-            }
-
-            return null;
-        }
-
-        async function findDistrictIdByName(districtName, provinceId) {
-            const response = await fetch('http://localhost:8080/public/districts?province_id=' + provinceId);
-            const data = await response.json();
-
-            for (const district of data.data) {
-                if (district.DistrictName === districtName) {
-                    return district.DistrictID;
-                }
-            }
-
-            // Trả về null nếu không tìm thấy huyện nào có tên tương ứng
-            return null;
-        }
-
-        async function findWardIdByName(wardName, districtId) {
-            const response = await fetch('http://localhost:8080/public/wards?district_id=' + districtId);
-            const data = await response.json();
-
-            for (const ward of data.data) {
-                if (ward.WardName === wardName) {
-                    return ward.WardCode;
-                }
-            }
-
-            // Trả về null nếu không tìm thấy xã nào có tên tương ứng
-            return null;
-        }
-
-        async function findCalculateShipping() {
-            var tinh = document.getElementById("tinh").value;
-            var provinceName = tinh;
-            var provinceId = await findProvinceIdByName(provinceName);
-
-
-            var huyen = document.getElementById("huyen").value;
-            var districtName = huyen;
-            var districtId = await findDistrictIdByName(districtName, provinceId);
-
-            var xa = document.getElementById("xa").value;
-            var wardName = xa;
-            var wardId = await findWardIdByName(wardName, districtId);
-
-            // var mess = document.getElementById("mess").value;
-            // var wardName = mess;
-            // var wardId = await findWardIdByName(wardName, districtId);
-
-            const transportationFeeDTO = {
-                toDistrictId: districtId,
-                toWardCode: wardId,
-                quantity: 1,
-                insuranceValue: 0
-            };
-
-            try {
-                const response = await fetch('http://localhost:8080/public/transportationFee', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(transportationFeeDTO)
-                });
-
-                const data = await response.json();
-
-                if (data && data.code === 200) {
-                    const shippingCost = data.data.total;
-
-                    var tongSoTien = currentPrice + shippingCost;
-                    priceInput1.value = tongSoTien;
-                    document.getElementById("tongTienString").innerText = tongSoTien;
-
-
-                    var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 3
-                    });
-
-                    var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";
-
-                    document.getElementById("ship").value = gia1WithCurrency3;
-                    document.getElementById("shipcode").innerText = gia1WithCurrency3;
-
-                    var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 3
-                    });
-
-                    var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
-
-                    priceInput.value = gia1WithCurrency2;
-                    document.getElementById("tongTienString").innerText = gia1WithCurrency2;
-
-                } else {
-                    document.getElementById("shippingCost").innerText = "Không thể tính phí vận chuyển.";
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById("shippingCost").innerText = "Lỗi khi tính phí vận chuyển. Chi tiết lỗi: " + error.message;
-            }
-        }
-
-
-        // JavaScript code để kiểm tra địa chỉ cũ
-
-    </script>
-    <script>
-
+    function updatePrice(radioButton) {
         var priceInput = document.getElementById("price");
         var priceInput1 = document.getElementById("price1");
         var currentPrice = parseFloat(${hoaDon.thanhTien});
+        var selectedValue = parseFloat(radioButton.value);
 
-        async function loadProvinces() {
-            const response = await fetch(`http://localhost:8080/public/provinces`);
-            const data = await response.json();
+        var newPrice = currentPrice - (currentPrice * selectedValue / 100);
 
-            const provinceSelect = document.getElementById("province");
-            provinceSelect.innerHTML = '<option value="">Chọn tỉnh</option>';
+        // Định dạng số theo định dạng tiền tệ của Việt Nam với "VNĐ" ở cuối
+        var formattedPrice = newPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
-            for (const province of data.data) { // Thay đổi dòng này để lấy dữ liệu từ data.data
-                const option = document.createElement("option");
-                option.value = province.ProvinceID;
-                option.text = province.ProvinceName;
-                provinceSelect.appendChild(option);
-                console.log(province.ProvinceID, province.ProvinceName);
-            }
-        }
+        // Xóa ký tự đơn vị tiền tệ hiện tại (₫) và thêm "VNĐ" vào cuối
+        formattedPrice = formattedPrice.replace('₫', '') + ' VNĐ';
 
-        async function loadDistricts() {
-            const provinceId = document.getElementById("province").value;
+        document.getElementById("tongTienString").innerText = formattedPrice;
 
-            if (!provinceId) {
-                return;
-            }
+        priceInput.value = newPrice.toFixed(2);
+        priceInput1.value = newPrice.toFixed(2);
 
-            const response = await fetch('http://localhost:8080/public/districts?province_id=' + provinceId);
-            const data = await response.json();
+    }
 
-            const districtSelect = document.getElementById("district");
-            districtSelect.innerHTML = '<option value="">Chọn huyện</option>';
 
-            for (const district of data.data) {
-                const option = document.createElement("option");
-                option.value = district.DistrictID;
-                option.text = district.DistrictName;
-                districtSelect.appendChild(option);
-            }
+    function toggleView(elementId) {
 
-            districtSelect.disabled = false;
-            document.getElementById("ward").disabled = true;
-            document.getElementById("message").innerText = "";
-        }
+        var element = document.getElementById(elementId);
+        element.style.display = (element.style.display === "block") ? "none" : "block";
 
-        async function loadWards() {
-            const districtId = document.getElementById("district").value;
+    }
 
-            if (!districtId) {
-                return;
-            }
-
-            const response = await fetch('http://localhost:8080/public/wards?district_id=' + districtId);
-            const data = await response.json();
-
-            const wardSelect = document.getElementById("ward");
-            wardSelect.innerHTML = '<option value="">Chọn xã</option>';
-
-            for (const ward of data.data) {
-                const option = document.createElement("option");
-                option.value = ward.WardCode;
-                option.text = ward.WardName;
-                wardSelect.appendChild(option);
-            }
-
-            wardSelect.disabled = false;
-            document.getElementById("message").innerText = "";
-        }
-
-        function checkSelection() {
-            const provinceSelect = document.getElementById("province");
-            const districtSelect = document.getElementById("district");
-            const wardSelect = document.getElementById("ward");
-
-            const provinceName = provinceSelect.options[provinceSelect.selectedIndex].text;
-            const districtName = districtSelect.options[districtSelect.selectedIndex].text;
-            const wardName = wardSelect.options[wardSelect.selectedIndex].text;
-
-            if (provinceName) {
-                document.getElementById("tinh1").value = provinceName;
-            }
-
-            if (districtName) {
-                document.getElementById("huyen1").value = districtName;
-            }
-
-            if (wardName) {
-                document.getElementById("xa1").value = wardName;
-            }
-
-            if (provinceName && districtName && wardName) {
-                calculateShipping();
-            } else {
-                document.getElementById("message").innerText = "";
-                // Khóa nút tính phí nếu không đủ điều kiện
-                document.getElementById("shippingCost").innerText = "";
-            }
-        }
-
-        async function calculateShipping() {
-            const districtSelect = document.getElementById("district");
-            const wardSelect = document.getElementById("ward");
-            const toDistrictId = districtSelect.value;
-            const toWardCode = wardSelect.value;
-
-            const transportationFeeDTO = {
-                toDistrictId: toDistrictId,
-                toWardCode: toWardCode,
-                quantity: 1,
-                insuranceValue: 0
-            };
-
-            try {
-                const response = await fetch('http://localhost:8080/public/transportationFee', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(transportationFeeDTO)
-                });
-
-                const data = await response.json();
-
-                if (data && data.code === 200) {
-                    const shippingCost = data.data.total;
-
-                    var tongSoTien = currentPrice + shippingCost;
-                    priceInput1.value = tongSoTien;
-                    document.getElementById("tongTienString").innerText = tongSoTien;
-
-                    var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 3
-                    });
-
-                    var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";
-
-                    document.getElementById("ship").value = gia1WithCurrency3;
-                    document.getElementById("shipcode").innerText = gia1WithCurrency3;
-
-                    var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 3
-                    });
-
-                    var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
-
-                    priceInput.value = gia1WithCurrency2;
-                    document.getElementById("tongTienString").innerText = gia1WithCurrency2;
-
-                } else {
-                    document.getElementById("shippingCost").innerText = "Không thể tính phí vận chuyển.";
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById("shippingCost").innerText = "Lỗi khi tính phí vận chuyển. Chi tiết lỗi: " + error.message;
-            }
-        }
-
-        loadProvinces();
-        document.getElementById("province").addEventListener("change", loadDistricts);
-        document.getElementById("district").addEventListener("change", loadWards);
-        document.getElementById("ward").addEventListener("change", checkSelection);
-
-    </script>
-    <script>
-        var loiHoaDonBySL = "${loiHoaDonBySL}";
-        if (loiHoaDonBySL == "2") {
-            Swal.fire({
-                icon: 'warning',
-                html: '<div class="swal-text">Xin lỗi, sản phẩm trong hóa đn của bạn nhiều hơn số lượng tồn</div><div class="progress-bar-container"></div>',
-                allowOutsideClick: true
-
-            });
-            setTimeout(() => {
-                Swal.close();
-                addFormContainer.style.display = 'block';
-            }, 1000);
-        }
-    </script>
+</script>
 
 </body>
 </html>

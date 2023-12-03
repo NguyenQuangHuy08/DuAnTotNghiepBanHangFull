@@ -4,11 +4,10 @@ import com.example.sd_41.controller.Momo.MomoModel;
 import com.example.sd_41.controller.Momo.ResultMoMo;
 import com.example.sd_41.controller.Utils.Constant;
 import com.example.sd_41.controller.Utils.Decode;
-import com.example.sd_41.model.GiayTheThaoChiTiet;
-import com.example.sd_41.model.HoaDon;
-import com.example.sd_41.model.HoaDonChiTiet;
-import com.example.sd_41.model.KhachHang;
+import com.example.sd_41.model.*;
 import com.example.sd_41.repository.BanHang.GioHangChiTietRepository;
+import com.example.sd_41.repository.ChuongTrinhGiamGia.ChuongTrinhGiamGiaChiTietHoaDonRepository;
+import com.example.sd_41.repository.ChuongTrinhGiamGia.ChuongTrinhGiamGiaHoaDonRepository;
 import com.example.sd_41.repository.HoaDon.HoaDonChiTietRepository;
 import com.example.sd_41.repository.HoaDon.HoaDonRepository;
 import com.example.sd_41.repository.KhachHangRepository;
@@ -16,6 +15,7 @@ import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoChiTietReposi
 import com.example.sd_41.service.HoaDon.HoaDonChiTietServie;
 import com.example.sd_41.service.HoaDon.HoaDonService;
 import com.example.sd_41.service.HoaDon.HoaDonServiceImpl;
+import com.example.sd_41.service.impl.ChuongTrinhGiamGiaHoaDonImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oracle.wls.shaded.org.apache.xpath.operations.Mod;
@@ -62,6 +62,16 @@ public class HoaDonController {
     @Autowired
     private GioHangChiTietRepository gioHangChiTietRepository;
 
+    @Autowired
+    private ChuongTrinhGiamGiaChiTietHoaDonRepository chuongTrinhGiamGiaChiTietHoaDonRepository;
+
+    @Autowired
+    private ChuongTrinhGiamGiaHoaDonRepository chuongTrinhGiamGiaHoaDonRepository;
+
+    @Autowired
+    ChuongTrinhGiamGiaHoaDonImpl chuongTrinhGiamGiaHoaDonImpl;
+
+
 
     //Todo code view hóa đơn
     //hiện thông tin cho view hóa đơn
@@ -70,6 +80,7 @@ public class HoaDonController {
     public String showViewHoaDon(
             @PathVariable String id,
             Model model,
+            RedirectAttributes attributes,
             HttpSession session) {
 
         UUID hoaDonId = UUID.fromString(id);
@@ -93,6 +104,17 @@ public class HoaDonController {
             model.addAttribute("huyen",hoaDon.getKhachHang().getHuyen());
             model.addAttribute("xa",hoaDon.getKhachHang().getXa());
 
+
+            //Thành tiền của hóa đơn
+            //Todo code thông tin cho giảm hóa đơn
+
+            String sl = hoaDonServiceImpl.tongSl(hoaDonId);
+            System.out.println("Thành tiền :"+ hoaDon.getThanhTien());
+            System.out.println("Số lượng : "+ sl);
+            System.out.println("Id của hóa đơn :"+ hoaDonId);
+
+            ///Hiện ra thông tin của các chương trình giảm giá
+            model.addAttribute("CTGG", chuongTrinhGiamGiaHoaDonImpl.findBySlandTt(sl, hoaDon.getThanhTien()));
 
         } else {
 
@@ -234,6 +256,8 @@ public class HoaDonController {
                             String thanhPhoCu           = request.getParameter("thanhPho");
                             String diaChiCu             = request.getParameter("diaChi");
                             String messCu               = request.getParameter("mess");
+                            String thanhTienTong = request.getParameter("thanhTienTong");
+                            String thanhTienTong1 = request.getParameter("tongTien");
 
                             LocalDate ngayThanhToanCu = LocalDate.now();
                             String ngayTaoCu = ngayThanhToanCu.toString();
@@ -243,6 +267,10 @@ public class HoaDonController {
                             hoaDon.setNgayTao(ngayTaoCu);
                             hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoaiCu + ", Địa chỉ giao hàng: " + diaChiCu + "," + thanhPhoCu + "," + quocGiaCu);
                             hoaDon.setMess(messCu);
+
+                            System.out.println("Thành tiền tổng cho hóa đơn là: "+ thanhTienTong);
+                            System.out.println("Thành tiền tổng cho hóa đơn là: "+ thanhTienTong1);
+
 
                             //Lấy số lượng hiện tại trừ đi
 
@@ -266,6 +294,10 @@ public class HoaDonController {
 
 
                             }
+
+
+                            BigDecimal thanhTienBigDecimal = new BigDecimal(thanhTienTong1);
+                            hoaDon.setThanhTien(thanhTienBigDecimal);
 
                             hoaDonRepository.save(hoaDon);
                             model.addAttribute("idKH",hoaDon.getKhachHang().getId());

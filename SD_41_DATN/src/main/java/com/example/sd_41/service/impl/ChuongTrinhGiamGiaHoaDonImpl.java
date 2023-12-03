@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,5 +34,11 @@ public interface ChuongTrinhGiamGiaHoaDonImpl {
     public void updateTrangThai();
 
     public Page<ChuongTrinhGiamGiaHoaDon> filterByTTChuaHetHan(Pageable pageable);
+
+
+    //Todo code thanh toán áp dụng cho chương trình giảm giá hóa đơn
+    List<ChuongTrinhGiamGiaHoaDon> findBySlandTt(String sl, BigDecimal tt);
+
+
 
 }

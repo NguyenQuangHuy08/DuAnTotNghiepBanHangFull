@@ -48,4 +48,9 @@ public interface ChuongTrinhGiamGiaHoaDonRepository extends JpaRepository<Chuong
     Page<ChuongTrinhGiamGiaHoaDon> filterByTTChuaHetHan(Pageable pageable);
 
 
+    //Todo code giảm giá hóa đơn bên repo
+    @Query("SELECT hd FROM ChuongTrinhGiamGiaHoaDon hd WHERE hd.soLuongSanPham <= ?1 and hd.soTienHoaDon <= ?2")
+    List<ChuongTrinhGiamGiaHoaDon> findBySlandTt(String sl, BigDecimal tt);
+
+
 }

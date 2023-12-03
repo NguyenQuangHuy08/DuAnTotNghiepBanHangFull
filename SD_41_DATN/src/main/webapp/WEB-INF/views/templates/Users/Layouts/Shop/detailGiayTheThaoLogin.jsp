@@ -249,7 +249,7 @@
                         <h6 style="color: red">${erSoLuongAddToCartMax}</h6>
                         <h6 style="color: red">${erFailNotLoginKhachHang}</h6>
                     </div>
-                    <input type="hidden" name="gia" value="${giayTheThao.giaBan * (100 - sale)/100}">
+                    <input type="text" name="gia" value="${giayTheThao.giaBan * (100 - sale)/100}">
                     <input type="hidden" name="idGiayTheThao" value="${giayTheThao.id}">
                     <input type="hidden" name="idKhachHang" value="${idKhachHang}">
                     <input type="hidden" name="idGiayTheThaoChiTiet" value="${idGiayTheThaoChiTiet}">

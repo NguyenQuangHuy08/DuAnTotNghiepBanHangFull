@@ -138,4 +138,16 @@ public class ChuongTrinhGiamGiaHoaDonService implements ChuongTrinhGiamGiaHoaDon
         return page2;
     }
 
+    //Todo code cho hóa đơn áp dụng khuyễn mãi
+
+    @Override
+    public List<ChuongTrinhGiamGiaHoaDon> findBySlandTt(String sl, BigDecimal tt) {
+
+        return repo.findBySlandTt(sl, tt);
+
+    }
+
+
+
+
 }

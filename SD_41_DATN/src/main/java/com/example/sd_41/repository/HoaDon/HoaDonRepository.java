@@ -37,5 +37,8 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
 
     String timSanPhamBanChayNhat();
 
+    //Todo code áp dụng cho chương trình khuyến mãi cho hóa đơn
+    @Query("select sum(hdct.soLuong) from HoaDonChiTiet hdct where hdct.hoaDon.id = ?1")
+    String tongSl(UUID id);
 
 }

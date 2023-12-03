@@ -47,7 +47,6 @@ public class WebMVCConfig implements WebMvcConfigurer {
                         //Check bảng cổ giầy
                         "/CoGiay/list",
                         "/CoGiay/view-create",
-
                         "/kieuBuoc/hien-thi",
                         "/kieuBuoc/view-add",
                         "/chatLieu/hien-thi",
