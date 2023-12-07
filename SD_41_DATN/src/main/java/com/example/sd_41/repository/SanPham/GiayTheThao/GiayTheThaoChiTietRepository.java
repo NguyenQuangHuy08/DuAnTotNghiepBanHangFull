@@ -17,6 +17,11 @@ public interface GiayTheThaoChiTietRepository extends JpaRepository<GiayTheThaoC
 
     List<GiayTheThaoChiTiet> findByGiayTheThaoAndMauSacAndSize(GiayTheThao giayTheThao, MauSac mauSac, Size size);
 
+    //Todo code tìm size số lượng màu sắc
+    @Query("select p from GiayTheThaoChiTiet p where p.giayTheThao.id = ?1 and p.mauSac.id = ?2 and p.size.id = ?3")
+    GiayTheThaoChiTiet findIdByIdGiayTheThaoMauSacSize(UUID id, UUID idMauSac, UUID idSize);
+
+
     List<GiayTheThaoChiTiet> findByGiayTheThao(GiayTheThao giayTheThao);
 
 //    UUID findIdByGiayTheThaoAndSizeAndMauSac(UUID giayTheThaoId, UUID sizeId, UUID mauSacId);

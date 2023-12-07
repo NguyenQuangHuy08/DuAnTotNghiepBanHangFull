@@ -236,8 +236,15 @@
                         </div>
                         <div class="col-9">
                             <input name="soLuong" type="number" style="width: 100px">
-                            <span style="margin-left: 30px; font-size: 17px; color: gray">${totalSoLuong} sản phẩm có sẵn</span>
+                            <span style="margin-left: 30px; font-size: 17px; color: red">${totalSoLuong} sản phẩm có sẵn trong kho</span>
+                            <div class="" id="mauSacAndSize">
+
+                            </div>
+                            <div style="margin-bottom: 20px"></div>
+                            <div style="color: red" id="soLuongTonStr"></div>
+                            <input style="color: red" type="hidden" id="soLuongTon">
                         </div>
+
                     </div>
                     <div class="er" style="margin-top: 20px">
                         <%--                            Check số lượng--%>
@@ -249,8 +256,8 @@
                         <h6 style="color: red">${erSoLuongAddToCartMax}</h6>
                         <h6 style="color: red">${erFailNotLoginKhachHang}</h6>
                     </div>
-                    <input type="text" name="gia" value="${giayTheThao.giaBan * (100 - sale)/100}">
-                    <input type="hidden" name="idGiayTheThao" value="${giayTheThao.id}">
+                    <input type="hidden" name="gia" value="${giayTheThao.giaBan * (100 - sale)/100}">
+                    <input type="hidden" id="idGiayTheThao" name="idGiayTheThao" value="${giayTheThao.id}">
                     <input type="hidden" name="idKhachHang" value="${idKhachHang}">
                     <input type="hidden" name="idGiayTheThaoChiTiet" value="${idGiayTheThaoChiTiet}">
                     <div class="button_MuaHang" style="margin-top: 80px; margin-left: 90px">
@@ -267,302 +274,77 @@
             </div>
         </div>
 
-        <div class="col-12">
-            <div class="row" style="width: 1160px; margin-top: 30px">
-                <div class="col-1">
-                    <img src="../../../../../../resources/img/banner/banner-img.png" alt=""
-                         style="width: 100px; border: 1px solid white; border-radius: 1000px 1500px 700px; margin-top: 22px">
-                </div>
-                <div class="col-3" style="margin-left: 30px">
-                    <h4 style="margin-top: 15px">BEE SHOES</h4>
-                    <a href="https://www.facebook.com/profile.php?id=100032748851883" style="text-decoration: none"
-                       aria-label="Facebook" rel="noreferrer" target="_blank">
-                        <button style="margin-bottom: 10px; height: 40px" type="submit" class="btn btn">
-                            <img src="../../../../../../resources/img/banner/face.png" alt="" style="width: 15px">
-                            Chat
-                        </button>
-                    </a>
-                    <a href="#" style="text-decoration: none">
-                        <button style="margin-bottom: 10px; height: 40px; margin-left: 10px;" type="submit"
-                                class="btn btn">
-                            Xem Shop
-                        </button>
-                    </a>
-                </div>
-                <div class="vertical-line"></div>
-                <div class="col-3" style="margin-top: 20px">
-                    <p>Tổng sản phẩm cửa hàng hoạt động: </p>
-                    <p>Thời gian phản hồi: 30p</p>
-                </div>
-                <div class="col-2" style="margin-top: 20px">
-                    <p>Tỉ lệ phản hồi: 95%</p>
-                    <p>Tham gia: 10/2023</p>
-                </div>
-                <div class="col-2" style="margin-top: 20px">
-                    <p>Người theo dõi: </p>
-                    <p>Đánh giá: </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-12" style="margin-top: 20px;border: 0px solid #FAFAFA; background: #FAFAFA; width: 1160px">
-            <h4 style="height: 40px; margin-top: 30px; font-size: 20px">
-                <span style=" color: red;width: 50px;margin-right: 5px">❤</span>Thông tin chi tiết giầy thể thao!
-            </h4>
-        </div>
-        <div class="col-12" style="margin-top: 20px">
-            <div class="row">
-                <div class="col-2">
-                    <h6>Tên sản phẩm : </h6>
-                </div>
-                <div class="col-5">
-                    <span>${giayTheThao.tenGiayTheThao}</span>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 5px">
-                <div class="col-2" style="margin-top: 4px">
-                    <h6>Form giầy thể thao : </h6>
-                </div>
-                <div class="col-5">
-                    <span>${giayTheThao.form.tenForm} </span>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 5px">
-                <div class="col-2" style="margin-top: 4px">
-                    <h6>Chất liệu : </h6>
-                </div>
-                <div class="col-5">
-                    <span>${giayTheThao.chatLieu.tenChatLieu}</span>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 5px">
-                <div class="col-2" style="margin-top: 4px">
-                    <h6>Lót giầy : </h6>
-                </div>
-                <div class="col-5">
-                    <span>${giayTheThao.lotGiay.tenLotGiay}</span>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 5px">
-                <div class="col-2" style="margin-top: 4px">
-                    <h6>Cổ giầy : </h6>
-                </div>
-                <div class="col-5">
-                    <span>${giayTheThao.coGiay.tenCoGiay}</span>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 5px">
-                <div class="col-2" style="margin-top: 4px">
-                    <h6>Đế giầy : </h6>
-                </div>
-                <div class="col-5">
-                    <span>${giayTheThao.deGiay.tenDeGiay}</span>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 5px">
-                <div class="col-2" style="margin-top: 4px">
-                    <h6>Dây giầy : </h6>
-                </div>
-                <div class="col-5">
-                    <span>${giayTheThao.dayGiay.tenDayGiay}</span>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 5px">
-                <div class="col-2" style="margin-top: 4px">
-                    <h6>Trọng lượng : </h6>
-                </div>
-                <div class="col-5">
-                    <span>${giayTheThao.trongLuong.tenTrongLuong}</span>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 5px">
-                <div class="col-2" style="margin-top: 4px">
-                    <h6>Thương hiệu : </h6>
-                </div>
-                <div class="col-5">
-                    <span>${giayTheThao.thuongHieu.tenThuongHieu}</span>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 5px">
-                <div class="col-2" style="margin-top: 4px">
-                    <h6>Kiểu buộc : </h6>
-                </div>
-                <div class="col-5">
-                    <span>${giayTheThao.kieuBuoc.tenKieuBuoc}</span>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 5px">
-                <div class="col-2" style="margin-top: 4px">
-                    <h6>Hướng dẫn bảo quản : </h6>
-                </div>
-                <div class="col-5">
-                    <span>${giayTheThao.huongDanBaoQuan.tenHuongDanBaoQuan}</span>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 5px">
-                <div class="col-2" style="margin-top: 4px">
-                    <h6>Công dụng : </h6>
-                </div>
-                <div class="col-5">
-                    <span>${giayTheThao.congDung.tenCongDung}</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-12" style="margin-top: 20px;border: 0px solid #FAFAFA; background: #FAFAFA; width: 1160px">
-            <h4 style="height: 40px; margin-top: 30px; font-size: 20px">
-                <span style=" color: red;width: 50px;margin-right: 5px">❤</span>Thông tin cửa hàng!
-            </h4>
-        </div>
-        <div class="col-12" style="margin-top: 20px">
-            <span style="margin-bottom: 10px">-Tất cả sản phẩm mình đều hỗ trợ cho khách xem hàng, quý khách cứ bảo là shop cho kiểm tra hàng rồi shiper sẽ gọi cho shop.  Nhưng nhiều shiper khó tính họ theo đúng quy định của shopee là không được đồng kiểm. Nên quý khách thông cảm.</span>
-            <br>
-            <span>- Nến anh/chị nhận được sản phẩm lỗi hoặc do nhầm lẫn. Mong các bạn nhắn tin cho shop khắc phục trước khi đánh giá sản phẩm ạ ❤ Shop cam kết sẽ luôn có trách nhiệm với sản phẩm đã bán❤.</span>
-            <br>
-            <span style="margin-bottom: 10px">🔶QUY ĐỊNH ĐỔI TRẢ HÀNG: Quý khách có quyền đổi trả hàng trong vòng 07 ngày kể từ ngày nhận hàng (với điều kiện GIÀY CÒN MỚI NGUYÊN-CHƯA QUA SỬ DỤNG) cho những trường hợp sau:
-✔️Hàng lỗi nghiêm trọng do sản xuất; hàng giao sai mẫu, nhầm size. Anh/chị vui lòng inbox lại Shop để được hướng dẫn trả hàng/hoàn tiền và Shopee sẽ hỗ trợ 100% phí ship.
-✔️Trường hợp anh/chị đổi giày do muốn đổi size, đổi mẫu khác thì cũng xin inbox lại shop để được hướng dẫn. Nếu anh/chị không đến đổi trực tiếp được thì chi phí ship 2 chiều sẽ chịu 100% để thuê bên vận chuyển, bưu điện đi đổi hộ.
-Vì vậy, anh/chị vui lòng đọc kỹ quy định đổi trả hàng ạ😊
-- Hãy inbox Chat với shop nếu anh/chị cần tư vấn ạ.</span>
-        </div>
-        <div class="col-12" style="margin-top: 30px">
-            <h2 style="text-align: center;margin-bottom: 30px">Thông tin của các sản phẩm khác!</h2>
-        </div>
-        <div class="row">
-            <c:forEach var="listGiay" items="${listPage}">
-                <c:if test="${listGiay.trangThai == 1}">
-                    <a href="${pageContext.request.contextPath}/GiayTheThao/detailThongTinGiayTheThao/${listGiay.id}">
-                        <div class="col-lg-3 col-md-6">
-                            <div class="single-product">
-                                <img class="img-fluid" style="height: 200px" src="/upload/${listGiay.image.get(0).link}"
-                                     alt="">
-                                <div class="product-details">
-                                    <h6 style="text-align: center">${listGiay.tenGiayTheThao}</h6>
-                                    <div class="price">
-                                        <h6 style="text-align: center">
 
-                                            <span style="color: red"> Đ </span>
-                                            <fmt:formatNumber type="" value="${listGiay.giaBan}" pattern="#,##0.###"/>
-                                            VNĐ
-
-                                        </h6>
-                                            <%--                                            <h6 class="l-through">$210.00</h6>--%>
-                                    </div>
-                                    <div class="prd-bottom">
-                                        <a href="" class="social-info">
-                                            <span class="ti-bag"></span>
-                                            <p class="hover-text">add to bag</p>
-                                        </a>
-                                        <a href="" class="social-info">
-                                            <span class="lnr lnr-heart"></span>
-                                            <p class="hover-text">Wishlist</p>
-                                        </a>
-                                        <a href="" class="social-info">
-                                            <span class="lnr lnr-sync"></span>
-                                            <p class="hover-text">compare</p>
-                                        </a>
-                                        <a href="${pageContext.request.contextPath}/GiayTheThao/detailThongTinGiayTheThao/${listGiay.id}"
-                                           class="social-info">
-                                            <span class="lnr lnr-move"></span>
-                                            <p class="hover-text">view more</p>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </c:if>
-            </c:forEach>
-        </div>
-        <%--        Todo code phân trang--%>
-        <div class="row">
-            <div class="col-12" style="">
-                <ul class="pagination" style="margin-left: 400px">
-                    <c:if test="${currentPage > 1}">
-                        <li class="page-item">
-                            <a href="/GiayTheThao/detailThongTinGiayTheThao/${giayTheThao.id}?pageNum=${currentPage - 1}"
-                               class="page-link" style="border: 1px solid red;width: 100px">Previous</a>
-                        </li>
-                    </c:if>
-                    <c:forEach var="pageNumber" items="${pageNumbers}">
-                        <li class="page-item ${pageNumber == currentPage ? 'active' : ''}">
-                            <a href="/GiayTheThao/detailThongTinGiayTheThao/${giayTheThao.id}?pageNum=${pageNumber}"
-                               class="page-link">${pageNumber}</a>
-                        </li>
-                    </c:forEach>
-                    <c:if test="${currentPage < totalPage}">
-                        <li class="page-item">
-                            <a href="/GiayTheThao/detailThongTinGiayTheThao/${giayTheThao.id}?pageNum=${currentPage + 1}"
-                               class="page-link" style="border: 1px solid red; width: 50px">Next</a>
-                        </li>
-                    </c:if>
-                </ul>
-            </div>
-        </div>
 
     </div>
 </div>
 
 <div style="margin-top: 30px"></div>
 
-<%--js next hình ảnh--%>
 <script>
+    var mauSacAndSizeDiv = document.getElementById("mauSacAndSize");
+    mauSacAndSizeDiv.style.display = "none";
 
-    const imageContainer = document.getElementById("imageContainer");
-    const images = document.getElementsByClassName("images");
-    const imageDetail = document.querySelector(".image_Detail");
-    let currentImageIndex = 0;
+    function updateProductAvailability() {
+        var selectedColor = document.querySelector("input[name='mauSac']:checked");
+        var selectedSize = document.querySelector("input[name='size']:checked");
 
-    updateImageDetail(images[currentImageIndex]);
+        if (selectedColor && selectedSize) {
+            var colorId = selectedColor.value;
+            var sizeId = selectedSize.value;
 
-    for (let i = 0; i < images.length; i++) {
-        images[i].addEventListener("click", function () {
-            updateImageDetail(images[i]);
-        });
-    }
+            // Kiểm tra sự tồn tại của phần tử 'idGiayTheThao'
+            var idGiayTheThaoElement = document.getElementById("idGiayTheThao");
 
-    function updateImageDetail(image) {
-        imageDetail.src = image.src;
-        currentImageIndex = Array.from(images).indexOf(image);
-    }
+            if (idGiayTheThaoElement) {
+                var idGiayTheThao = idGiayTheThaoElement.value;
 
-    function nextImage() {
-        currentImageIndex = (currentImageIndex + 1) % images.length;
-        updateImageDetail(images[currentImageIndex]);
-        scrollImages();
-    }
+                console.log("Id của giày thể thao", idGiayTheThao);
+                console.log("Id size", sizeId);
+                console.log("Id màu sắc", colorId);
 
-    function prevImage() {
-        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-        updateImageDetail(images[currentImageIndex]);
-        scrollImages();
-    }
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/find/" + idGiayTheThao + "/" + colorId + "/" + sizeId, true);
 
-    function scrollImages() {
-        const scrollAmount = currentImageIndex * (160 + 10);
-        imageContainer.scrollLeft = scrollAmount;
-    }
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response > 0) {
 
-</script>
-<%--Bỏ các size và màu sắc bị trùng lặp--%>
-<script>
-    function removeDuplicateSizes() {
-        var sizeInputs = document.getElementsByName("size");
-        var seenSizes = {};
-        for (var i = 0; i < sizeInputs.length; i++) {
-            var sizeInput = sizeInputs[i];
-            var size = sizeInput.value;
+                            document.getElementById("soLuongTonStr").textContent = "Số lượng sản phẩm còn lại: " + response;
+                            document.getElementById("soLuongTon").value = response;
 
-            if (seenSizes[size]) {
-                sizeInput.parentNode.removeChild(sizeInput);
+                        } else {
+                            document.getElementById("soLuongTonStr").textContent = "Đã hết sản phẩm";
+                            document.getElementById("soLuongTon").value = 0;
+                        }
+                    } else {
+                        document.getElementById("soLuongTonStr").textContent = "Đã hết sản phẩm";
+                        document.getElementById("soLuongTon").value = 0;
+                    }
+                };
+
+                xhr.send();
+
+                mauSacAndSizeDiv.style.display = "block";
             } else {
-                seenSizes[size] = true;
+                console.error("Element with ID 'idGiayTheThao' not found in the DOM");
             }
         }
     }
 
-    // Gọi hàm loại bỏ trùng lặp khi trang đã tải xong
-    window.onload = removeDuplicateSizes;
+    var colorInputs = document.querySelectorAll("input[name='mauSac']");
+    var sizeInputs = document.querySelectorAll("input[name='size']");
+
+    colorInputs.forEach(function (input) {
+        input.addEventListener("change", updateProductAvailability);
+    });
+
+    sizeInputs.forEach(function (input) {
+        input.addEventListener("change", updateProductAvailability);
+    });
+
 </script>
-<%--Change or --%>
 
 
 
@@ -571,4 +353,5 @@ Vì vậy, anh/chị vui lòng đọc kỹ quy định đổi trả hàng ạ�
 <%@ include file="../../Layouts/Index/_Footer.jsp" %>
 
 </body>
+
 </html>

@@ -68,6 +68,7 @@ public class ThongKeHoaDonController {
 
         ObjectMapper objectMapper = new ObjectMapper();
         try {
+
             String jsonData = objectMapper.writeValueAsString(hdct);
             return jsonData;
 

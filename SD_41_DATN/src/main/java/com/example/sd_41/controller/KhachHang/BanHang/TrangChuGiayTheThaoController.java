@@ -335,10 +335,6 @@ public class TrangChuGiayTheThaoController {
 
         //Todo code giảm giá bên details
 
-//        String gia = request.getParameter("gia");
-//        giayTheThao.setGiaBan(gia);
-//        giayTheThaoRepository.save(giayTheThao);
-
         try{
 
             //Tim kiếm giầy thể thao được áp dụng cho giảm giá
@@ -635,7 +631,6 @@ public class TrangChuGiayTheThaoController {
 
             System.out.println("Đã đăng nhập tài khoản!");
 //          Lấy dữ liệu từ trong db
-
             String giaBan = (String) attributes.getAttribute("giaBan");
             model.addAttribute("giaBan",giaBan);
             attributes.addFlashAttribute("giaBan",giaBan);
@@ -653,20 +648,40 @@ public class TrangChuGiayTheThaoController {
 
     }
 
-    //Todo code delete
 
-//    @GetMapping("delete/{id}")
-//    public String deleteProduct(@PathVariable("id") Integer id){
+    //Todo code update tăng giảm số lượng trong giỏ hàng
+//    @RequestMapping("/updateSoLuong/{maGHCT}")
+//    public String updateSoLuong(Model model,
+//                                @PathVariable("maGHCT") String maGHCT,
+//                                @RequestParam("actions") String actions,
+//                                @RequestParam("soLuong") Integer soLuong
+//    ){
 //
-//        if(categoryRepository.existsById(id)){
+//        GioHangChiTiet gioHangChiTiet = gioHangChiTietService.findById(maGHCT);
 //
-//            categoryRepository.deleteById(id);
+//        if (gioHangChiTiet != null) {
+//            if ("tang".equals(actions)) {
+//
+//                gioHangChiTiet.setSoLuong(gioHangChiTiet.getSoLuong() + 1);
+//
+//            } else if ("giam".equals(actions)) {
+//
+//                gioHangChiTiet.setSoLuong(Math.max(gioHangChiTiet.getSoLuong() - 1, 1));
+//
+//            }
+//
+//            BigDecimal donGia = gioHangChiTiet.getMactsp().getGiaban().multiply(BigDecimal.valueOf(gioHangChiTiet.getSoLuong()));
+//            gioHangChiTiet.setDonGia(donGia);
+//            gioHangChiTietService.themSPVaoGioHang(gioHangChiTiet);
 //
 //        }
 //
-//        return "redirect:/category/list";
+//        return "redirect:/gioHang/gioHangView";
 //
 //    }
+
+
+
 
 
     //Todo code xóa giỏ hàng, id là của giỏ hàng chi tiết
@@ -731,8 +746,10 @@ public class TrangChuGiayTheThaoController {
 
         // Chọn là null
         if (chon == null || chon.isEmpty()) {
+
             attributes.addFlashAttribute("erCheckNun", "Xin lỗi hãy chọn ít nhất một sản phẩm để thanh toán !");
-            return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+//            return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+
         } else {
             HoaDon hoaDon = new HoaDon();
             // Thêm vào Hóa đơn
@@ -772,8 +789,22 @@ public class TrangChuGiayTheThaoController {
 
             return "redirect:/nguoiDung/HoaDon/" + hoaDon.getId();
         }
+
+        return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+
     }
 
+
+    //Todo code delete sản phẩm chi tiết trong giỏ hàng
+    @PostMapping("delete/{id}")
+    public String deleteProduct(Model model,
+                                @PathVariable("id") UUID id){
+
+        gioHangChiTietService.delete(id);
+        model.addAttribute("viewDelete","Xóa giỏ hàng chi tiết thành công");
+        return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+
+    }
 
 
 

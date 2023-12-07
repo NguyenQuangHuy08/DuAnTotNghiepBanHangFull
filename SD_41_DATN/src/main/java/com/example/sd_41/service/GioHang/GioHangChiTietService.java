@@ -14,8 +14,8 @@ public class GioHangChiTietService implements GioHangChiTietImpl{
     @Autowired
     private GioHangChiTietRepository gioHangChiTietRepository;
 
-    //Todo code delete từng sản phẩm trong giỏ hàng
-    //id là của giỏ hàng chi tiết
+    //Todo code delete giày thể thao chi tiết ra khỏi giỏ hàng
+
     public void delete(UUID id){
 
         if(gioHangChiTietRepository.existsById(id)){

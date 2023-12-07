@@ -107,38 +107,36 @@
 
 <%--                Todo code giầy thể thao sale cho khách hàng--%>
 <%--                    Trường hợp sale vẫn đang đúng--%>
-                <div class="row" style="margin-top: 120px">
-                    <h3 style="text-align: center">SALE</h3>
-                    <div class="col-12">
-                        <c:forEach var="listSale" items="${listSale}">
-                            <c:if test="${listSale.trangThai == 1}">
-                                <a href="${pageContext.request.contextPath}/GiayTheThao/detailThongTinGiayTheThao/${listSale.giayTheThao.id}">
-                                    <div class="col-lg-3 col-md-6">
-                                        <div class="single-product">
-                                            <img class="img-fluid" style="height: 200px" src="/upload/${listSale.giayTheThao.image.get(0).link}" alt="">
-                                            <div class="product-details">
-                                                <h6 style="text-align: center">${listSale.giayTheThao.tenGiayTheThao}</h6>
-                                                <div class="price">
-                                                    <h6 style="text-align: center">
 
-                                                        <span style="color: red"> Đ </span>
-                                                        <del>
-                                                            <fmt:formatNumber type="" value="${listSale.giayTheThao.giaBan}" pattern="#,##0.###" /> VNĐ
-                                                        </del>
-                                                        <fmt:formatNumber type="" value="${listSale.giayTheThao.giaBan * (100 - listSale.chuongTrinhGiamGiaGiayTheThao.phanTramGiam)/100}" pattern="#,##0.###" /> VNĐ
+                        <div class="col-12" style="text-align: center;margin-top: 60px; margin-bottom: 80px">
+                            <h3 style="color: black" style="margin-bottom: 100px;margin-top: 100px;text-align: center">SALE</h3>
+                        </div>
 
-                                                    </h6>
-                                                        <%--                                            <h6 class="l-through">$210.00</h6>--%>
-                                                </div>
+                    <c:forEach var="listSale" items="${listSale}">
+                        <c:if test="${listSale.trangThai == 1}">
+                            <a href="${pageContext.request.contextPath}/GiayTheThao/detailThongTinGiayTheThao/${listSale.giayTheThao.id}">
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="single-product">
+                                        <img class="img-fluid" style="height: 200px;width: 1300px" src="/upload/${listSale.giayTheThao.image.get(0).link}" alt="">
+                                        <div class="product-details">
+                                            <h6 style="text-align: center">${listSale.giayTheThao.tenGiayTheThao}</h6>
+                                            <div class="price">
+                                                <h6 style="text-align: center">
+
+                                                    <span style="color: red"> Đ </span>
+                                                    <del>
+                                                        <fmt:formatNumber type="" value="${listSale.giayTheThao.giaBan}" pattern="#,##0.###" /> VNĐ
+                                                    </del>
+                                                    <fmt:formatNumber type="" value="${listSale.giayTheThao.giaBan * (100 - listSale.chuongTrinhGiamGiaGiayTheThao.phanTramGiam)/100}" pattern="#,##0.###" /> VNĐ
+
+                                                </h6>
                                             </div>
                                         </div>
                                     </div>
-                                </a>
-                            </c:if>
-                        </c:forEach>
-                    </div>
-                </div>
-
+                                </div>
+                            </a>
+                        </c:if>
+                    </c:forEach>
 
 
 

@@ -283,9 +283,9 @@
 
                             <div class="form-group">
                                 <label for="price" style="font-size: 20px;color: black;margin-bottom: 20px;margin-left:10px;margin-top: 5px;margin-left: 10px">Tổng tiền:</label>
-                                <input name="thanhTienTong" type="text" id="price" value="${hoaDon.thanhTien}" readonly>
+                                <input name="thanhTienTong" type="hidden" id="price" value="${hoaDon.thanhTien}" readonly>
 <%--                                <input name="thanhTienTongPrice" type="hidden" id="price1" name="tongTien" readonly>--%>
-                                <input type="text" id="price1" name="tongTien" readonly>
+                                <input type="hidden" id="price1" name="tongTien" readonly>
                                 <br>
                                 <label id="tongTienString" style="font-size: 18px;color:#ff0000;margin-left: 10px"></label>
                             </div>
@@ -907,5 +907,20 @@
 
 </script>
 
+
+<script>
+    // Hàm xử lý khi giá trị thay đổi
+    function formatShipValue() {
+        // Lấy giá trị từ input
+        var shipInput = document.getElementById("ship");
+        var shipValue = shipInput.value;
+
+        // Loại bỏ dấu chấm và khoảng trắng
+        var formattedValue = shipValue.replace(/\./g, "").trim();
+
+        // Đặt giá trị mới vào input
+        shipInput.value = formattedValue;
+    }
+</script>
 </body>
 </html>

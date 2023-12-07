@@ -72,13 +72,18 @@
                     </td>
                     <td style="padding-top: 20px; text-align: center; color: black">
 
-<%--                                <fmt:formatNumber type="" value="${gioHangChiTiet.giayTheThaoChiTiet.giayTheThao.giaBan * (100 - sale)/100}" pattern="#,##0.###" /> VNĐ--%>
-                                    <fmt:formatNumber type="" value="${giaBan}" pattern="#,##0.###" /> VNĐ
+                                <fmt:formatNumber type="" value="${gioHangChiTiet.giayTheThaoChiTiet.giayTheThao.giaBan * (100 - sale)/100}" pattern="#,##0.###" /> VNĐ
+<%--                                    <fmt:formatNumber type="" value="${giaBan}" pattern="#,##0.###" /> VNĐ--%>
 
                     </td>
                     <td style="padding-top: 20px; text-align: center; color: black">
 <%--                            ${gioHangChiTiet.soLuong}--%>
-                            <input name="soLuong" type="number" value="${gioHangChiTiet.soLuong}">
+                        <button type="submit" name="actions" value="giam">-</button>
+
+                        <input style="width: 30px" name="soLuong" type="number" value="${gioHangChiTiet.soLuong}">
+
+                        <button type="submit" name="actions" value="tang">+</button>
+
                     </td>
                     <td style="padding-top: 20px; text-align: center; color: black;margin-right:40px ">
 
@@ -87,7 +92,9 @@
 
                     </td>
 <%--                    Xóa riêng--%>
-
+                        <td>
+                            <button formaction="/delete/${gioHangChiTiet.id}" class="btn" style="color: black">✖</button>
+                        </td>
 
                 </tr>
         </c:forEach>

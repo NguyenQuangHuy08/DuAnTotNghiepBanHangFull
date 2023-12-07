@@ -150,7 +150,6 @@ public class HoaDonController {
         }else{
 
             //Địa chỉ chọn không null
-
             String hinhThucThanhToan = request.getParameter("payment");
 
             //Hình thức thanh toán
@@ -171,72 +170,116 @@ public class HoaDonController {
                     if ("momo".equals(hinhThucThanhToan)) {
 
                         System.out.println("Bạn chọn thanh toán bằng hình thức momo");
+                        HoaDon hoaDon = hoaDonRepository.findById(hoaDonId).orElse(null);
 
-                        String thanhTien    = request.getParameter("thanhTien");
-                        String phiShip      = request.getParameter("ship");
-                        String thanhTienTongPrice = request.getParameter("thanhTienTongPrice");
+                        if(hoaDon != null){
 
-                        System.out.println("Thành tiền : "+thanhTien);
-                        System.out.println("Phí ship : "+phiShip);
-                        System.out.println("Tổng tiền : "+thanhTienTongPrice);
+                            String tenKhachHangCu               = request.getParameter("tenKhachHang");
+                            String soDienThoaiCuMomo            = request.getParameter("soDienThoai");
+                            String quocGiaCuMomo                = request.getParameter("quocGia");
+                            String thanhPhoCuMomo               = request.getParameter("thanhPho");
+                            String diaChiCuMomo                 = request.getParameter("diaChi");
+                            String messCuMomo                   = request.getParameter("mess");
+                            String thanhTien                    = request.getParameter("thanhTien");
+                            String phiShip                      = request.getParameter("ship");
+                            String thanhTienTong1               = request.getParameter("tongTien");
 
-                        ObjectMapper mapper = new ObjectMapper();
+                            System.out.println("Thành tiền : "+thanhTien);
+                            System.out.println("Phí ship : "+phiShip);
+                            System.out.println("Tổng tiền : "+ thanhTienTong1);
 
-                        int code = (int) Math.floor(((Math.random() * 89999999) + 10000000));
-                        String orderId = Integer.toString(code);
-                        MomoModel jsonRequest = new MomoModel();
-                        jsonRequest.setPartnerCode(Constant.IDMOMO);
-                        jsonRequest.setOrderId(orderId);
-                        jsonRequest.setStoreId(orderId);
-                        jsonRequest.setRedirectUrl(Constant.redirectUrl);
-                        jsonRequest.setIpnUrl(Constant.ipnUrl);
-                        jsonRequest.setAmount(thanhTienTongPrice);
-                        jsonRequest.setOrderInfo("Thanh toán sản phẩm của hàng Bess Shoes.");
-                        jsonRequest.setRequestId(orderId);
-                        jsonRequest.setOrderType(Constant.orderType);
-                        jsonRequest.setRequestType(Constant.requestType);
-                        jsonRequest.setTransId("1");
-                        jsonRequest.setResultCode("200");
-                        jsonRequest.setMessage("");
-                        jsonRequest.setPayType(Constant.payType);
-                        jsonRequest.setResponseTime("300000");
-                        jsonRequest.setExtraData("");
+//                            BigDecimal thanhTienBigDecimal = new BigDecimal(thanhTienTong1);
 
-                        String decode = "accessKey=" + Constant.accessKey + "&amount=" + jsonRequest.amount + "&extraData="
-                                + jsonRequest.extraData + "&ipnUrl=" + Constant.ipnUrl + "&orderId=" + orderId + "&orderInfo="
-                                + jsonRequest.orderInfo + "&partnerCode=" + jsonRequest.getPartnerCode() + "&redirectUrl="
-                                + Constant.redirectUrl + "&requestId=" + jsonRequest.getRequestId() + "&requestType="
-                                + Constant.requestType;
+                            ObjectMapper mapper = new ObjectMapper();
 
+                            int code = (int) Math.floor(((Math.random() * 89999999) + 10000000));
+                            String orderId = Integer.toString(code);
+                            MomoModel jsonRequest = new MomoModel();
+                            jsonRequest.setPartnerCode(Constant.IDMOMO);
+                            jsonRequest.setOrderId(orderId);
+                            jsonRequest.setStoreId(orderId);
+                            jsonRequest.setRedirectUrl(Constant.redirectUrl);
+                            jsonRequest.setIpnUrl(Constant.ipnUrl);
+                            jsonRequest.setAmount(thanhTienTong1);
+                            jsonRequest.setOrderInfo("Thanh toán sản phẩm của hàng Bess Shoes.");
+                            jsonRequest.setRequestId(orderId);
+                            jsonRequest.setOrderType(Constant.orderType);
+                            jsonRequest.setRequestType(Constant.requestType);
+                            jsonRequest.setTransId("1");
+                            jsonRequest.setResultCode("200");
+                            jsonRequest.setMessage("");
+                            jsonRequest.setPayType(Constant.payType);
+                            jsonRequest.setResponseTime("300000");
+                            jsonRequest.setExtraData("");
 
-                        String signature = Decode.encode(Constant.serectkey, decode);
-                        jsonRequest.setSignature(signature);
-                        String json = mapper.writeValueAsString(jsonRequest);
-                        HttpClient client = HttpClient.newHttpClient();
-                        ResultMoMo res = new ResultMoMo();
-
-                        try {
-                            HttpRequest requestMomo = HttpRequest.newBuilder().uri(new URI(Constant.Url))
-                                    .POST(HttpRequest.BodyPublishers.ofString(json)).headers("Content-Type", "application/json")
-                                    .build();
-                            HttpResponse<String> response = client.send(requestMomo, HttpResponse.BodyHandlers.ofString());
-                            res = mapper.readValue(response.body(), ResultMoMo.class);
-
-                        } catch (InterruptedException | URISyntaxException | IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                        if (res == null) {
-
-                            session.setAttribute("error_momo", "Thanh toán thất bại");
-                            System.out.println("Thanh toán thất bại");
-                            return "redirect:/TrangChu/listGiayTheThao";
+                            String decode = "accessKey=" + Constant.accessKey + "&amount=" + jsonRequest.amount + "&extraData="
+                                    + jsonRequest.extraData + "&ipnUrl=" + Constant.ipnUrl + "&orderId=" + orderId + "&orderInfo="
+                                    + jsonRequest.orderInfo + "&partnerCode=" + jsonRequest.getPartnerCode() + "&redirectUrl="
+                                    + Constant.redirectUrl + "&requestId=" + jsonRequest.getRequestId() + "&requestType="
+                                    + Constant.requestType;
 
 
-                        } else {
+                            String signature = Decode.encode(Constant.serectkey, decode);
+                            jsonRequest.setSignature(signature);
+                            String json = mapper.writeValueAsString(jsonRequest);
+                            HttpClient client = HttpClient.newHttpClient();
+                            ResultMoMo res = new ResultMoMo();
 
-                            //Hiện ra trang để quét mã QR
-                            return "redirect:" + res.payUrl;
+                            try {
+                                HttpRequest requestMomo = HttpRequest.newBuilder().uri(new URI(Constant.Url))
+                                        .POST(HttpRequest.BodyPublishers.ofString(json)).headers("Content-Type", "application/json")
+                                        .build();
+                                HttpResponse<String> response = client.send(requestMomo, HttpResponse.BodyHandlers.ofString());
+                                res = mapper.readValue(response.body(), ResultMoMo.class);
+
+                            } catch (InterruptedException | URISyntaxException | IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                            if (res == null) {
+
+                                session.setAttribute("error_momo", "Thanh toán thất bại");
+                                System.out.println("Thanh toán thất bại");
+                                return "redirect:/TrangChu/listGiayTheThao";
+
+
+                            } else {
+
+                                //Hiện ra trang để quét mã QR
+                                System.out.println("Lưu lại thông tin hóa đơn khi thanh toán bằng momo");
+                                BigDecimal thanhTienBigDecemal = new BigDecimal(thanhTienTong1);
+
+                                hoaDon.setTrangThai(1);
+                                hoaDon.setThanhTien(thanhTienBigDecemal);
+                                hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoaiCuMomo + ", Địa chỉ giao hàng: " + diaChiCuMomo + "," + thanhPhoCuMomo + "," + quocGiaCuMomo);
+                                hoaDon.setMess(messCuMomo);
+
+                                List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon_Id(hoaDonId);
+                                model.addAttribute("hoaDonChiTiets",hoaDonChiTiets);
+
+                                //Tìm hóa đơn để tính số lượng
+                                for(HoaDonChiTiet hoaDonChiTietList : hoaDonChiTiets){
+
+                                    //Số lượng mua của khách hàng
+                                    String soLuongMuaToString = hoaDonChiTietList.getSoLuong();
+                                    int soLuongMua = Integer.parseInt(soLuongMuaToString);
+
+                                    //Số lượng có trong kho
+                                    GiayTheThaoChiTiet giayTheThaoChiTiet = hoaDonChiTietList.getGiayTheThaoChiTiet();
+                                    String soLuongCoToString = giayTheThaoChiTiet.getSoLuong();
+                                    int soLuongCo = Integer.parseInt(soLuongCoToString);
+
+                                    giayTheThaoChiTiet.setSoLuong(Integer.toString(soLuongCo - soLuongMua));
+                                    giayTheThaoChiTietRepository.save(giayTheThaoChiTiet);
+
+                                }
+
+
+                                hoaDonRepository.save(hoaDon);
+
+                                return "redirect:" + res.payUrl;
+
+                            }
 
                         }
 
@@ -256,8 +299,21 @@ public class HoaDonController {
                             String thanhPhoCu           = request.getParameter("thanhPho");
                             String diaChiCu             = request.getParameter("diaChi");
                             String messCu               = request.getParameter("mess");
-                            String thanhTienTong = request.getParameter("thanhTienTong");
                             String thanhTienTong1 = request.getParameter("tongTien");
+
+                            String ship = request.getParameter("ship");
+
+                            System.out.println("Giá trị ship ban đầu: " + request.getParameter("ship"));
+                            ship = ship.trim();
+                            System.out.println("Giá trị ship sau khi cắt bỏ khoảng trắng: " + ship);
+
+                            if (ship.matches("\\d*\\.?\\d*")) {
+                                BigDecimal shipBigDecimal = new BigDecimal(ship);
+                                System.out.println("Giá trị shipBigDecimal: " + shipBigDecimal);
+                                hoaDon.setPhiShip(shipBigDecimal);
+                            } else {
+                                System.out.println("Chuỗi không hợp lệ");
+                            }
 
                             LocalDate ngayThanhToanCu = LocalDate.now();
                             String ngayTaoCu = ngayThanhToanCu.toString();
@@ -265,12 +321,10 @@ public class HoaDonController {
                             hoaDon.setTrangThai(1);
                             hoaDon.setNgayThanhToan(ngayTaoCu);
                             hoaDon.setNgayTao(ngayTaoCu);
+                            BigDecimal thanhTienBigDecemal = new BigDecimal(thanhTienTong1);
+                            hoaDon.setThanhTien(thanhTienBigDecemal);
                             hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoaiCu + ", Địa chỉ giao hàng: " + diaChiCu + "," + thanhPhoCu + "," + quocGiaCu);
                             hoaDon.setMess(messCu);
-
-                            System.out.println("Thành tiền tổng cho hóa đơn là: "+ thanhTienTong);
-                            System.out.println("Thành tiền tổng cho hóa đơn là: "+ thanhTienTong1);
-
 
                             //Lấy số lượng hiện tại trừ đi
 
@@ -292,19 +346,15 @@ public class HoaDonController {
                                 giayTheThaoChiTiet.setSoLuong(Integer.toString(soLuongCo - soLuongMua));
                                 giayTheThaoChiTietRepository.save(giayTheThaoChiTiet);
 
+                                hoaDonChiTietRepository.delete(hoaDonChiTietList);
 
                             }
-
-
-                            BigDecimal thanhTienBigDecimal = new BigDecimal(thanhTienTong1);
-                            hoaDon.setThanhTien(thanhTienBigDecimal);
 
                             hoaDonRepository.save(hoaDon);
                             model.addAttribute("idKH",hoaDon.getKhachHang().getId());
                             return "redirect:/nguoiDung/hoaDon/thanhToan/ThanhCong";
 
                         }
-
 
                     }
 
@@ -317,12 +367,120 @@ public class HoaDonController {
 
                     if("momo".equals(hinhThucThanhToan)){
 
-                        System.out.println("Bạn chọn hình thức thanh toán bằng momo");
+                        System.out.println("Bạn chọn hình thức thanh toán bằng momo cho địa chỉ mới");
+
+                        HoaDon hoaDon = hoaDonRepository.findById(hoaDonId).orElse(null);
+//
+                        if(hoaDon != null){
+
+                            String tenKhachHangMoiMomo      = request.getParameter("ten1");
+                            String emailMoiMomo             = request.getParameter("email1");
+                            String soDienThoaiMoiMomo       = request.getParameter("sdt1");
+                            String quocGiaMoiMomo           = request.getParameter("quocGia1");
+                            String thanhPhoMoiMomo          = request.getParameter("thanhPho1");
+                            String diaChiMoiMomo            = request.getParameter("diaChi1");
+                            String messMoiMomo             = request.getParameter("messMoi");
+                            String thanhTienMomo            = request.getParameter("tongTien");
+
+
+                            System.out.println("Tổng tiền : "+ thanhTienMomo);
+
+                            ObjectMapper mapper = new ObjectMapper();
+
+                            int code = (int) Math.floor(((Math.random() * 89999999) + 10000000));
+                            String orderId = Integer.toString(code);
+                            MomoModel jsonRequest = new MomoModel();
+                            jsonRequest.setPartnerCode(Constant.IDMOMO);
+                            jsonRequest.setOrderId(orderId);
+                            jsonRequest.setStoreId(orderId);
+                            jsonRequest.setRedirectUrl(Constant.redirectUrl);
+                            jsonRequest.setIpnUrl(Constant.ipnUrl);
+                            jsonRequest.setAmount(thanhTienMomo);
+                            jsonRequest.setOrderInfo("Thanh toán sản phẩm của hàng Bess Shoes.");
+                            jsonRequest.setRequestId(orderId);
+                            jsonRequest.setOrderType(Constant.orderType);
+                            jsonRequest.setRequestType(Constant.requestType);
+                            jsonRequest.setTransId("1");
+                            jsonRequest.setResultCode("200");
+                            jsonRequest.setMessage("");
+                            jsonRequest.setPayType(Constant.payType);
+                            jsonRequest.setResponseTime("300000");
+                            jsonRequest.setExtraData("");
+
+                            String decode = "accessKey=" + Constant.accessKey + "&amount=" + jsonRequest.amount + "&extraData="
+                                    + jsonRequest.extraData + "&ipnUrl=" + Constant.ipnUrl + "&orderId=" + orderId + "&orderInfo="
+                                    + jsonRequest.orderInfo + "&partnerCode=" + jsonRequest.getPartnerCode() + "&redirectUrl="
+                                    + Constant.redirectUrl + "&requestId=" + jsonRequest.getRequestId() + "&requestType="
+                                    + Constant.requestType;
+
+
+                            String signature = Decode.encode(Constant.serectkey, decode);
+                            jsonRequest.setSignature(signature);
+                            String json = mapper.writeValueAsString(jsonRequest);
+                            HttpClient client = HttpClient.newHttpClient();
+                            ResultMoMo res = new ResultMoMo();
+
+                            try {
+                                HttpRequest requestMomo = HttpRequest.newBuilder().uri(new URI(Constant.Url))
+                                        .POST(HttpRequest.BodyPublishers.ofString(json)).headers("Content-Type", "application/json")
+                                        .build();
+                                HttpResponse<String> response = client.send(requestMomo, HttpResponse.BodyHandlers.ofString());
+                                res = mapper.readValue(response.body(), ResultMoMo.class);
+
+                            } catch (InterruptedException | URISyntaxException | IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                            if (res == null) {
+
+                                session.setAttribute("error_momo", "Thanh toán thất bại");
+                                System.out.println("Thanh toán thất bại");
+                                return "redirect:/TrangChu/listGiayTheThao";
+
+
+                            } else {
+
+
+                                //Hiện ra trang để quét mã QR
+                                System.out.println("Lưu lại thông tin hóa đơn khi thanh toán bằng momo");
+                                BigDecimal thanhTienBigDecemal = new BigDecimal(thanhTienMomo);
+
+                                hoaDon.setTrangThai(1);
+                                hoaDon.setThanhTien(thanhTienBigDecemal);
+                                hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoaiMoiMomo + ", Địa chỉ giao hàng: " + diaChiMoiMomo + "," + thanhPhoMoiMomo + "," + quocGiaMoiMomo);
+                                hoaDon.setMess(messMoiMomo);
+
+                                List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon_Id(hoaDonId);
+                                model.addAttribute("hoaDonChiTiets",hoaDonChiTiets);
+
+                                //Tìm hóa đơn để tính số lượng
+                                for(HoaDonChiTiet hoaDonChiTietList : hoaDonChiTiets){
+
+                                    //Số lượng mua của khách hàng
+                                    String soLuongMuaToString = hoaDonChiTietList.getSoLuong();
+                                    int soLuongMua = Integer.parseInt(soLuongMuaToString);
+
+                                    //Số lượng có trong kho
+                                    GiayTheThaoChiTiet giayTheThaoChiTiet = hoaDonChiTietList.getGiayTheThaoChiTiet();
+                                    String soLuongCoToString = giayTheThaoChiTiet.getSoLuong();
+                                    int soLuongCo = Integer.parseInt(soLuongCoToString);
+
+                                    giayTheThaoChiTiet.setSoLuong(Integer.toString(soLuongCo - soLuongMua));
+                                    giayTheThaoChiTietRepository.save(giayTheThaoChiTiet);
+
+                                }
+
+                                hoaDonRepository.save(hoaDon);
+
+                                return "redirect:" + res.payUrl;
+
+                            }
+
+                        }
 
                     }
 
-
-                    //Bạn chọn thanh toán khi nhận hàng
+                    //Bạn chọn thanh toán khi nhận hàng ở địa chỉ mới
                     if("cash".equals(hinhThucThanhToan)){
 
                         HoaDon hoaDon = hoaDonRepository.findById(hoaDonId).orElse(null);
@@ -336,6 +494,8 @@ public class HoaDonController {
                             String thanhPhoMoi          = request.getParameter("thanhPho1");
                             String diaChiMoi            = request.getParameter("diaChi1");
                             String messMoi              = request.getParameter("messMoi");
+                            String thanhTien            = request.getParameter("tongTien");
+
                             //Check trống các trường
 
                             //Check trống tên khách hàng
@@ -436,6 +596,8 @@ public class HoaDonController {
                             hoaDon.setTrangThai(1);
                             hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoaiMoi + ", Địa chỉ giao hàng: " + diaChiMoi + "," + thanhPhoMoi + "," + quocGiaMoi);
                             hoaDon.setMess(messMoi);
+                            BigDecimal thanhTienBigDecemal = new BigDecimal(thanhTien);
+                            hoaDon.setThanhTien(thanhTienBigDecemal);
                             //Lấy số lượng hiện tại trừ đi
 
                             List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon_Id(hoaDonId);
@@ -455,7 +617,6 @@ public class HoaDonController {
 
                                 giayTheThaoChiTiet.setSoLuong(Integer.toString(soLuongCo - soLuongMua));
                                 giayTheThaoChiTietRepository.save(giayTheThaoChiTiet);
-
 
                             }
 
@@ -481,41 +642,22 @@ public class HoaDonController {
     @GetMapping("paywithmomo")
     public String PayWithMomoGet(@ModelAttribute("message") String message,
                                  Model model,
-                                 HttpSession session,
-                                 HttpServletRequest request) {
+                                 HttpSession session) {
+
         if (!message.equals("Successful.")) {
-            System.out.println("Thanh toán không thành công !");
+
             session.setAttribute("error_momo", "Thanh toán không thành công!");
             return "redirect:/TrangChu/listGiayTheThao";
 
         } else {
 
-
-            String thanhTien    = request.getParameter("thanhTien");
-            String phiShip      = request.getParameter("ship");
-            String thanhTienTongPrice = request.getParameter("thanhTienTongPrice");
-
-            System.out.println("Thành tiền : "+thanhTien);
-            System.out.println("Phí ship : "+phiShip);
-            System.out.println("Tổng tiền : "+thanhTienTongPrice);
-
-//            if(session.getAttribute("hoaDonId") != null) {
-//
-//                String hoaDonId = (String) session.getAttribute("hoaDonId");
-//                System.out.println("ID của hóa đơn: " + hoaDonId);
-//
-//
-//                System.out.println("Thanh toán thành công");
-//                return ""+hoaDonId;
-//
-//            }
-
-//            return "redirect:/TrangChu/listGiayTheThao";
-
-            return "";
+            System.out.println("Thanh toán momo thành công");
+            return "redirect:/TrangChu/listGiayTheThao";
 
         }
     }
+
+
 
     //Todo code log swel thông báo cho thanh toán thành công cho đơn hàng
     @GetMapping("nguoiDung/hoaDon/thanhToan/ThanhCong")

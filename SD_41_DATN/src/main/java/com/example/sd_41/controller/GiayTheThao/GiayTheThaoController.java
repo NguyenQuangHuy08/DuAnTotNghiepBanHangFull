@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -140,8 +141,6 @@ public class GiayTheThaoController {
             model.addAttribute("listPageFind", listPageFind);
 
             return "/GiayTheThao/All_GiayTheThao/list";
-
-
 
     }
 
@@ -692,6 +691,21 @@ public class GiayTheThaoController {
         return "/BanHang/GiayTheThaoDetail";
 
     }
+
+    //Todo code detail số lượng của size và màu sắc
+    @GetMapping("/find/{idGiayTheThao}/{idMauSac}/{idSize}")
+    public ResponseEntity<?> find(@PathVariable UUID idGiayTheThao, @PathVariable UUID idMauSac, @PathVariable UUID idSize) {
+
+        System.out.println(idGiayTheThao);
+        System.out.println(idMauSac);
+        System.out.println(idSize);
+
+        GiayTheThaoChiTiet giayTheThaoChiTiet = giayTheThaoChiTietRepository.findIdByIdGiayTheThaoMauSacSize(idGiayTheThao, idMauSac, idSize);
+
+        return ResponseEntity.ok(giayTheThaoChiTiet.getSoLuong());
+
+    }
+
 
     //Todo code giầy thể thao xuất file PDF
     @GetMapping("GiayTheThao/exportPDF")
