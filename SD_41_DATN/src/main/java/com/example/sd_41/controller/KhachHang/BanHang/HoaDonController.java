@@ -4,10 +4,7 @@ import com.example.sd_41.controller.Momo.MomoModel;
 import com.example.sd_41.controller.Momo.ResultMoMo;
 import com.example.sd_41.controller.Utils.Constant;
 import com.example.sd_41.controller.Utils.Decode;
-import com.example.sd_41.model.GiayTheThaoChiTiet;
-import com.example.sd_41.model.HoaDon;
-import com.example.sd_41.model.HoaDonChiTiet;
-import com.example.sd_41.model.KhachHang;
+import com.example.sd_41.model.*;
 import com.example.sd_41.repository.BanHang.GioHangChiTietRepository;
 import com.example.sd_41.repository.ChuongTrinhGiamGia.ChuongTrinhGiamGiaChiTietHoaDonRepository;
 import com.example.sd_41.repository.ChuongTrinhGiamGia.ChuongTrinhGiamGiaHoaDonRepository;
@@ -21,6 +18,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -149,6 +147,7 @@ public class HoaDonController {
 
     //Todo code thanh toán thành công chờ xác nhận đơn hàng
     @PostMapping("nguoiDung/hoaDon/ThanhToan/{id}")
+    @Transactional
     public String showEditViewThanhToanHoaDon(Model model,
                                               @PathVariable String id,
                                               HttpSession session,
@@ -300,8 +299,24 @@ public class HoaDonController {
 
 
                                     hoaDonRepository.save(hoaDon);
+                                    //Xóa giỏ hang chi tiết khi thanh toán
+                                    String[] idGiayTheTheThaoChiTietArrayMomoCu = request.getParameterValues("idGiayTheTheThaoChiTiet");
 
+                                    if (idGiayTheTheThaoChiTietArrayMomoCu != null) {
+                                        for (String idGiayTheTheThaoChiTiet : idGiayTheTheThaoChiTietArrayMomoCu) {
+                                            UUID giayTheThaoChiTietId = UUID.fromString(idGiayTheTheThaoChiTiet);
 
+                                            // Tìm giỏ hàng chi tiết để xóa
+                                            GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findByGiayTheThaoChiTiet_Id(giayTheThaoChiTietId);
+
+                                            // Kiểm tra xem giỏ hàng chi tiết có tồn tại hay không
+                                            if (gioHangChiTiet != null) {
+                                                // Xóa giỏ hàng chi tiết
+                                                gioHangChiTietRepository.delete(gioHangChiTiet);
+
+                                            }
+                                        }
+                                    }
 
                                     return "redirect:" + res.payUrl;
 
@@ -382,12 +397,22 @@ public class HoaDonController {
                                 }
 
                                 hoaDonRepository.save(hoaDon);
-                                //Xóa giỏ hàng chi tiết
-                                if (idGiayTheTheThaoChiTietArray != null) {
-                                    for (String idgiayTheThaoChiTiet : idGiayTheTheThaoChiTietArray) {
-                                        // Bạn có thể thực hiện xử lý xóa giỏ hàng chi tiết ở đây
-                                        xoaGioHangChiTiet(UUID.fromString(idgiayTheThaoChiTiet));
 
+                                String[] idGiayTheTheThaoChiTietArrayCashCu = request.getParameterValues("idGiayTheTheThaoChiTiet");
+
+                                if (idGiayTheTheThaoChiTietArrayCashCu != null) {
+                                    for (String idGiayTheTheThaoChiTietCashCu : idGiayTheTheThaoChiTietArrayCashCu) {
+                                        UUID giayTheThaoChiTietId = UUID.fromString(idGiayTheTheThaoChiTietCashCu);
+
+                                        // Tìm giỏ hàng chi tiết để xóa
+                                        GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findByGiayTheThaoChiTiet_Id(giayTheThaoChiTietId);
+
+                                        // Kiểm tra xem giỏ hàng chi tiết có tồn tại hay không
+                                        if (gioHangChiTiet != null) {
+                                            // Xóa giỏ hàng chi tiết
+                                            gioHangChiTietRepository.delete(gioHangChiTiet);
+
+                                        }
                                     }
                                 }
 
@@ -512,6 +537,24 @@ public class HoaDonController {
 
                                     hoaDonRepository.save(hoaDon);
 
+                                    //Xóa giỏ hàng chi tiết
+                                    String[] idGiayTheTheThaoChiTietArrayMomoMoi = request.getParameterValues("idGiayTheTheThaoChiTiet");
+
+                                    if (idGiayTheTheThaoChiTietArrayMomoMoi != null) {
+                                        for (String idGiayTheTheThaoChiTiet : idGiayTheTheThaoChiTietArrayMomoMoi) {
+                                            UUID giayTheThaoChiTietId = UUID.fromString(idGiayTheTheThaoChiTiet);
+
+                                            // Tìm giỏ hàng chi tiết để xóa
+                                            GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findByGiayTheThaoChiTiet_Id(giayTheThaoChiTietId);
+
+                                            // Kiểm tra xem giỏ hàng chi tiết có tồn tại hay không
+                                            if (gioHangChiTiet != null) {
+                                                // Xóa giỏ hàng chi tiết
+                                                gioHangChiTietRepository.delete(gioHangChiTiet);
+
+                                            }
+                                        }
+                                    }
                                     return "redirect:" + res.payUrl;
 
                                 }
@@ -661,6 +704,23 @@ public class HoaDonController {
                                 }
 
                                 hoaDonRepository.save(hoaDon);
+                                String[] idGiayTheTheThaoChiTietArrayCashMoi = request.getParameterValues("idGiayTheTheThaoChiTiet");
+
+                                if (idGiayTheTheThaoChiTietArrayCashMoi != null) {
+                                    for (String idGiayTheTheThaoChiTiet : idGiayTheTheThaoChiTietArrayCashMoi) {
+                                        UUID giayTheThaoChiTietId = UUID.fromString(idGiayTheTheThaoChiTiet);
+
+                                        // Tìm giỏ hàng chi tiết để xóa
+                                        GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findByGiayTheThaoChiTiet_Id(giayTheThaoChiTietId);
+
+                                        // Kiểm tra xem giỏ hàng chi tiết có tồn tại hay không
+                                        if (gioHangChiTiet != null) {
+                                            // Xóa giỏ hàng chi tiết
+                                            gioHangChiTietRepository.delete(gioHangChiTiet);
+
+                                        }
+                                    }
+                                }
                                 model.addAttribute("idKH", hoaDon.getKhachHang().getId());
                                 return "redirect:/nguoiDung/hoaDon/thanhToan/ThanhCong";
 

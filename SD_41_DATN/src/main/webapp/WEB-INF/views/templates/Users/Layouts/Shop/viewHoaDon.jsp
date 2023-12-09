@@ -243,7 +243,6 @@
                             <br>
                             <c:forEach items="${hoaDonChiTietList}" var="list" varStatus="i">
                                 <p>
-                                    <input type="text" name="idGiayTheTheThaoChiTiet" value="${list.giayTheThaoChiTiet.id}">
                                     <input type="hidden" name="idGiayTheTheThaoChiTiet" value="${list.giayTheThaoChiTiet.id}">
                                     <span style="display: inline-block;color: black;font-size: 16px;margin-left: 15px">${i.index+1} :</span>
                                     <span style="display: inline-block;color: black;font-size: 16px">${list.giayTheThaoChiTiet.giayTheThao.tenGiayTheThao}</span>
