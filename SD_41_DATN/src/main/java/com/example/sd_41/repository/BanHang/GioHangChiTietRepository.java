@@ -13,4 +13,7 @@ public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, 
 
     GioHangChiTiet findByGioHangAndGiayTheThaoChiTiet(GioHang gioHang, GiayTheThaoChiTiet giayTheThaoChiTiet);
 
+    GioHangChiTiet findByGiayTheThaoChiTiet_Id(UUID idGiayTheThaoChiTiet);
+
+
 }

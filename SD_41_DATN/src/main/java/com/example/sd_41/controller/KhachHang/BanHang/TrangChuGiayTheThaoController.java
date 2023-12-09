@@ -455,8 +455,6 @@ public class TrangChuGiayTheThaoController {
     }
 
 
-
-
     //Todo code giỏ hàng cho giầy thể thao
     @PostMapping("GiayTheThao/NguoiDung/AddToCart/{id}")
     public String showAddToCartNguoiDung(Model model,
@@ -649,86 +647,6 @@ public class TrangChuGiayTheThaoController {
     }
 
 
-    //Todo code update tăng giảm số lượng trong giỏ hàng
-//    @RequestMapping("/updateSoLuong/{maGHCT}")
-//    public String updateSoLuong(Model model,
-//                                @PathVariable("maGHCT") String maGHCT,
-//                                @RequestParam("actions") String actions,
-//                                @RequestParam("soLuong") Integer soLuong
-//    ){
-//
-//        GioHangChiTiet gioHangChiTiet = gioHangChiTietService.findById(maGHCT);
-//
-//        if (gioHangChiTiet != null) {
-//            if ("tang".equals(actions)) {
-//
-//                gioHangChiTiet.setSoLuong(gioHangChiTiet.getSoLuong() + 1);
-//
-//            } else if ("giam".equals(actions)) {
-//
-//                gioHangChiTiet.setSoLuong(Math.max(gioHangChiTiet.getSoLuong() - 1, 1));
-//
-//            }
-//
-//            BigDecimal donGia = gioHangChiTiet.getMactsp().getGiaban().multiply(BigDecimal.valueOf(gioHangChiTiet.getSoLuong()));
-//            gioHangChiTiet.setDonGia(donGia);
-//            gioHangChiTietService.themSPVaoGioHang(gioHangChiTiet);
-//
-//        }
-//
-//        return "redirect:/gioHang/gioHangView";
-//
-//    }
-
-
-
-
-
-    //Todo code xóa giỏ hàng, id là của giỏ hàng chi tiết
-//
-//    @PostMapping("GiayTheThao/delete/{id}")
-//    public String deleteGioHang(Model model,
-//                                @PathVariable("id") UUID id //id của giỏ hàng chi tết,
-//    ){
-//
-//
-//            gioHangChiTietService.delete(id);
-//            model.addAttribute("viewDeleteGioHang", "Xóa sản phẩm trong giỏ hàng thành công !");
-//
-//            return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
-//
-//    }
-
-
-//    @PostMapping("/GiayTheThao/delete/*")
-//    public String deleteGioHang(Model model,HttpServletRequest request,HttpSession session
-//    ){
-//
-//        String url = request.getRequestURI();
-//        String[] parts = url.split("/GiayTheThao/delete/");
-//
-//        UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
-//        model.addAttribute("idKhachHang",idKhachHang);
-//
-//        String clear = request.getParameter("clear");
-//
-//        GioHangChiTiet gioHangChiTiet = gioHangChiTietImpl.findById(UUID.fromString(clear));
-//
-//        GioHangChiTiet gioHangChiTietNew = new GioHangChiTiet();
-//
-//        gioHangChiTietNew.setGioHang(gioHangChiTiet.getGioHang());
-//        gioHangChiTietNew.setGiayTheThaoChiTiet(gioHangChiTiet.getGiayTheThaoChiTiet());
-//        gioHangChiTietNew.setSoLuong(gioHangChiTiet.getSoLuong());
-//        gioHangChiTiet.setDonGia(gioHangChiTiet.getDonGia());
-//        gioHangChiTiet.setTrangThai(1);
-//
-//        gioHangChiTietImpl.update(gioHangChiTiet.getId(),gioHangChiTietNew);
-//
-//        return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
-//
-//    }
-
-
 
     //Todo code add giầy thể thao chi tiết vào giỏ hàng chi tiết
     @PostMapping("/GiayTheThao/nguoiDung/addHoaDon")
@@ -737,6 +655,7 @@ public class TrangChuGiayTheThaoController {
                                      @RequestParam(value = "idGiayChiTiet", required = false) List<UUID> idGiayChiTiet,
                                      @RequestParam(value = "soLuong", required = false) List<String> soLuong,
                                      @RequestParam(value = "donGia", required = false) List<String> donGia,
+
                                      HttpSession session,
                                      RedirectAttributes attributes) {
 
@@ -802,10 +721,18 @@ public class TrangChuGiayTheThaoController {
 
         gioHangChiTietService.delete(id);
         model.addAttribute("viewDelete","Xóa giỏ hàng chi tiết thành công");
-        return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+        return "redirect:/GiayTheThao/NguoiDung/delete";
 
     }
 
+    //Todo code thông báo xóa sản phẩm giầy thành công
+    @GetMapping("GiayTheThao/NguoiDung/delete")
+    public String nguoiDungXoaGiayTheThaoGioHangChiTiet(){
+
+        //Trả về đường dẫn hiện swal
+        return "/templates/Users/Layouts/Log/XoaGioHang";
+
+    }
 
 
 //Finall dữ liệu trả về

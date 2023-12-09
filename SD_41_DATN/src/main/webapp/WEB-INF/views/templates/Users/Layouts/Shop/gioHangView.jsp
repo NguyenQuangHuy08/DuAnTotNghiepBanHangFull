@@ -76,15 +76,23 @@
 <%--                                    <fmt:formatNumber type="" value="${giaBan}" pattern="#,##0.###" /> VNĐ--%>
 
                     </td>
+<%--                    <td style="padding-top: 20px; text-align: center; color: black">--%>
+<%--                        <button type="submit" name="actions" value="giam">-</button>--%>
+
+<%--                        <input style="width: 30px" name="soLuong" type="number" value="${gioHangChiTiet.soLuong}">--%>
+
+<%--                        <button type="submit" name="actions" value="tang">+</button>--%>
+
+<%--                    </td>--%>
                     <td style="padding-top: 20px; text-align: center; color: black">
-<%--                            ${gioHangChiTiet.soLuong}--%>
-                        <button type="submit" name="actions" value="giam">-</button>
+                        <button style="width: 30px" type="button" class="btn" onclick="updateQuantity('decrease', ${i.index})">-</button>
 
-                        <input style="width: 30px" name="soLuong" type="number" value="${gioHangChiTiet.soLuong}">
+                        <input id="soLuong-${i.index}" style="width: 45px" name="soLuong" type="number" value="${gioHangChiTiet.soLuong}">
 
-                        <button type="submit" name="actions" value="tang">+</button>
-
+                        <button style="width: 30px" type="button" class="btn" onclick="updateQuantity('increase', ${i.index})">+</button>
                     </td>
+
+
                     <td style="padding-top: 20px; text-align: center; color: black;margin-right:40px ">
 
                             <fmt:formatNumber type="" value="${gioHangChiTiet.donGia}" pattern="#,##0.###" /> VNĐ
@@ -141,8 +149,6 @@
            });
        });
 
-
-
 </script>
 
 <%--Chọn tất cả sản phẩm trong giỏ hàng--%>
@@ -155,6 +161,65 @@
     });
 </script>
 
+<%--Mã js cho số lượng tăng giảm--%>
+
+<script>
+
+    function updateQuantity(operation, index) {
+        var quantityInput = document.getElementById("soLuong-" + index);
+        var currentQuantity = parseInt(quantityInput.value);
+
+        if (operation === "increase") {
+            if (currentQuantity < 5) {
+
+                quantityInput.value = currentQuantity + 1;
+
+            } else {
+
+                Swal.fire({
+
+                    icon: 'success',
+                    title: '<span style="font-size: 17px; color: red">Xin lỗi, chỉ được phép mua tối đa 5 sản phẩm.</span>',
+                    showConfirmButton: false, // Ẩn nút OK
+                    timer: 1500, // Thời gian hiển thị thông báo (miligiây)
+
+                }).then(() => {
+
+                    // window.location.href = '/templates/Users/Layouts/Shop/gioHangView';
+                    window.location.href = '/GiayTheThao/NguoiDung/ViewGioHang';
+
+                });
+
+            }
+        } else if (operation === "decrease") {
+            if (currentQuantity > 1) {
+
+                quantityInput.value = currentQuantity - 1;
+
+            } else {
+
+                Swal.fire({
+
+                    icon: 'success',
+                    title: '<span style="font-size: 17px; color: red">Xin lỗi số lượng của sản phẩm mua phải lớn hơn hoặc bằng 1!</span>',
+                    showConfirmButton: false, // Ẩn nút OK
+                    timer: 1500, // Thời gian hiển thị thông báo (miligiây)
+
+                }).then(() => {
+
+                    // window.location.href = '/templates/Users/Layouts/Shop/gioHangView';
+                    window.location.href = '/GiayTheThao/NguoiDung/ViewGioHang';
+
+                });
+
+            }
+        }
+    }
+
+</script>
+
+
+<%--Todo code xác nhận xóa giầy thể thao chi tiết trong giỏ hàng--%>
 
 
 <%@ include file="../../Layouts/Index/_Session1.jsp" %>

@@ -243,13 +243,14 @@
                             <br>
                             <c:forEach items="${hoaDonChiTietList}" var="list" varStatus="i">
                                 <p>
+                                    <input type="text" name="idGiayTheTheThaoChiTiet" value="${list.giayTheThaoChiTiet.id}">
+                                    <input type="hidden" name="idGiayTheTheThaoChiTiet" value="${list.giayTheThaoChiTiet.id}">
                                     <span style="display: inline-block;color: black;font-size: 16px;margin-left: 15px">${i.index+1} :</span>
                                     <span style="display: inline-block;color: black;font-size: 16px">${list.giayTheThaoChiTiet.giayTheThao.tenGiayTheThao}</span>
                                     <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Size: ${list.giayTheThaoChiTiet.size.size}</span>
                                     <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Màu sắc: ${list.giayTheThaoChiTiet.mauSac.tenMauSac}</span>
-                                    <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Số lượng: ${list.soLuong}</span>
+                                    <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Số lượng mua: ${list.soLuong}</span>
                                     <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px;margin-top: 30px">Giá bán:
-
                             <fmt:formatNumber type="" value="${list.giayTheThaoChiTiet.giayTheThao.giaBan}" pattern="#,##0.###"/> VNĐ
 
                         </span>
@@ -273,7 +274,7 @@
                                     <input type="hidden" name="thanhTien" value="${hoaDon.thanhTien}">
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                    <h4 style="margin-left: 15px;color: black" class="font-weight-medium">Ship :</h4>
+                                    <h4 style="margin-left: 15px;color: black" class="font-weight-medium">Phí ship tạm tính :</h4>
                                     <h6 style="margin-right: 50px;color: red" class="font-weight-medium">
                                         <p style="font-size: 17px" id="shipcode"></p>
                                         <input type="hidden" name="ship" id="ship" readonly style="border: none; background: none; text-align: left;padding-left: 50%">
