@@ -124,7 +124,7 @@
                 <td style="">${kh.soDienThoai}</td>
                 <td style="">${kh.diaChi}</td>
                 <td style="">${kh.ghiChu}</td>
-                <td style="">${kh.trangThai==1 ?"Còn hoạt động ✔" : "Không còn hoạt động ✖"}</td>
+                <td style="padding-top: 30px">${kh.trangThai==0 ?"✔" : "✖"}</td>
                 <td>
                     <a href="${pageContext.request.contextPath}/KhachHang/edit/${kh.id}">
                         <button class="btn btn-primary">Edit</button>

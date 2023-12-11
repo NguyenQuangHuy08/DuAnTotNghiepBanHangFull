@@ -283,10 +283,6 @@ public class KhachHangController {
     }
 
 
-
-
-
-
     //Todo code update login
     @GetMapping("KhachHang/loginViewDangNhap")
     public String loginKhachHang(Model model){
@@ -385,6 +381,139 @@ public class KhachHangController {
             model.addAttribute("messageFind", "Bạn hãy nhập tên khách hàng muốn tìm kiếm!");
         }
         return "/KhachHang/list";
+    }
+
+    //Todo codo log Khách hàng chưa đăng nhập
+    @GetMapping("KhachHang/showSweetAlertLogin")
+    public String showLogErNotLogin(){
+
+        System.out.println("Bạn chưa đăng nhập tài khoản cho người dùng");
+        return "/templates/Users/Layouts/Log/AddToCartLogNotLogin";
+
+    }
+
+//    //Todo code Trang chủ khách hàng
+//    @GetMapping("TrangChu/ThongTinCaNhan")
+//    public String thongTinKhachHang(HttpSession session,
+//                                    Model model,
+//                                    RedirectAttributes attributes){
+//
+//        //Đã đăng nhập tài khoản
+//        if(session.getAttribute("khachHangLog") != null){
+//
+//            UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
+//
+//            if(idKhachHang != null){
+//
+//                System.out.println("Đăng nhập tài khoản thành công !");
+//                KhachHang khachHang = khachHangRepository.findById(idKhachHang).orElse(null);
+//
+//                model.addAttribute("khachHang",khachHang);
+//
+//                System.out.println("Email "+ khachHang.getEmail());
+//                System.out.println("Tên " + khachHang.getTenKhachHang());
+//                System.out.println("Giới tính "+ khachHang.getGioiTinh());
+//                System.out.println("Số điện thoại "+ khachHang.getSoDienThoai());
+//                System.out.println("Địa chỉ "+ khachHang.getDiaChi());
+//
+//                //Edit thông tin của khách hàng
+//
+//            }
+//
+//            return "/templates/Users/Layouts/DangNhap/CaiDat";
+//
+//        }else{
+//
+//            //Chưa đăng nhập tài khoản
+//            System.out.println("Khách hàng chưa đăng nhập tài khoản !");
+//            return "redirect:/KhachHang/showSweetAlertLogin";
+//
+//        }
+//
+//
+//    }
+//
+//    //Thay đổi thông tin của khách hàng
+//    @PostMapping("/TrangChu/ThongTinCaNhan/Luu")
+//    public String luuThongTin(@ModelAttribute("khachHang")
+//                                          KhachHang khachHang,
+//                                          HttpSession session) {
+//
+//        // Lấy thông tin khách hàng từ session
+////        KhachHang khachHangSession = (KhachHang) session.getAttribute("khachHang");
+//
+//        if(session.getAttribute("khachHangLog") != null){
+//
+//            System.out.println("Lấy được thông tin của khách hàng !");
+//            UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
+//
+//            if(idKhachHang != null) {
+//
+//                System.out.println("Đăng nhập tài khoản thành công !");
+//                KhachHang khachHangDangNhap = khachHangRepository.findById(idKhachHang).orElse(null);
+//
+//
+//
+//                khachHangRepository.save(khachHangDangNhap);
+//                System.out.println("Lưu thành công !");
+//
+//            }
+//
+//        }
+//
+//        return "/templates/Users/Layouts/DangNhap/CaiDat";
+//
+//    }
+
+
+    @GetMapping("/TrangChu/ThongTinCaNhan")
+    public String thongTinKhachHang(HttpSession session, Model model, RedirectAttributes attributes) {
+        if (session.getAttribute("khachHangLog") != null) {
+
+            UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
+            if (idKhachHang != null) {
+
+                System.out.println("Đăng nhập tài khoản thành công !");
+                KhachHang khachHang = khachHangRepository.findById(idKhachHang).orElse(null);
+                model.addAttribute("khachHang", khachHang);
+
+            }
+
+            return "/templates/Users/Layouts/DangNhap/CaiDat";
+
+        } else {
+
+            System.out.println("Khách hàng chưa đăng nhập tài khoản !");
+            return "redirect:/KhachHang/showSweetAlertLogin";
+
+        }
+    }
+
+    @PostMapping("/TrangChu/ThongTinCaNhan/Luu")
+    public String luuThongTin(@ModelAttribute("khachHang") KhachHang khachHang, HttpSession session) {
+        if (session.getAttribute("khachHangLog") != null) {
+            UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
+            if (idKhachHang != null) {
+                System.out.println("Đăng nhập tài khoản thành công !");
+                KhachHang khachHangDangNhap = khachHangRepository.findById(idKhachHang).orElse(null);
+
+                // Cập nhật thông tin từ form
+                khachHangDangNhap.setEmail(khachHang.getEmail());
+                khachHangDangNhap.setLink(khachHang.getLink());
+                khachHang.setMatKhau(khachHang.getMatKhau());
+                khachHangDangNhap.setTenKhachHang(khachHang.getTenKhachHang());
+                khachHangDangNhap.setGioiTinh(khachHang.getGioiTinh());
+                khachHangDangNhap.setSoDienThoai(khachHang.getSoDienThoai());
+                khachHangDangNhap.setDiaChi(khachHang.getDiaChi());
+                khachHangDangNhap.setThanhPho(khachHang.getThanhPho());
+                khachHang.setHuyen(khachHang.getHuyen());
+                khachHang.setXa(khachHang.getXa());
+
+                khachHangRepository.save(khachHangDangNhap);
+                System.out.println("Lưu thành công !");
+            }
+        }
+        return "/templates/Users/Layouts/DangNhap/CaiDat";
     }
 
 

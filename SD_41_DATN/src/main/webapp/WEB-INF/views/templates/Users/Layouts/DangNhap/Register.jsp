@@ -221,43 +221,6 @@
                         </div>
                     </div>
 
-
-
-<%--                    <div class="row">--%>
-<%--                        <div class="col-12">--%>
-<%--                            <div class="control-group">--%>
-<%--                                <label for="province">Tỉnh:</label>--%>
-<%--                                <select id="province" name="quocGia" class="form-control"--%>
-<%--                                        onchange="loadDistricts(); checkSelection()">--%>
-<%--                                    <option value="">${thanhPho}</option>--%>
-<%--                                </select>--%>
-<%--                                <input type="hidden" id="tinh1" name="quocGia1">--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                        <div class="col-12">--%>
-<%--                            <div class="control-group">--%>
-<%--                                <label for="district">Huyện:</label>--%>
-<%--                                <select id="district" name="thanhPho" class="form-control"--%>
-<%--                                        onchange="loadWards(); checkSelection()"--%>
-<%--                                        disabled>--%>
-<%--                                    <option value="">${huyen}</option>--%>
-<%--                                </select>--%>
-<%--                                <input type="hidden" id="huyen1" name="thanhPho1">--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                        <div class="col-12">--%>
-<%--                            <div class="control-group">--%>
-<%--                                <label for="ward">Xã:</label>--%>
-<%--                                <select id="ward" name="diaChi" class="form-control" onchange="checkSelection()"--%>
-<%--                                        disabled>--%>
-<%--                                    <option value="">${xa}</option>--%>
-<%--                                </select>--%>
-<%--                                <input type="hidden" id="xa1" name="diaChi1">--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-
-
                     <div class="container-login100-form-btn"
                          style="width: 150px; margin-top: 30px; margin-bottom: 30px; margin-left: 450px">
                         <button type="submit" class="login100-form-btn">
@@ -282,6 +245,8 @@
 <script src="/vendor/select2/select2.min.js"></script>
 <!--===============================================================================================-->
 <script src="/vendor/tilt/tilt.jquery.min.js"></script>
+
+
 <script>
     $('.js-tilt').tilt({
         scale: 1.1
