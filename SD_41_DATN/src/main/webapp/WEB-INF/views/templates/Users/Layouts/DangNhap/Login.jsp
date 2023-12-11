@@ -81,15 +81,18 @@
 
                 <div class="text-center p-t-12">
 						<span class="txt1">
-							Forgot
 						</span>
-                    <a class="txt2" href="#">
-                        Username / Password?
+                    <a class="txt2" href="/KhachHang/viewQuenMatKhau/2">
+                        <u style="font-size: 16px;color: black">
+                            Quên mật khẩu
+                        </u>
                     </a>
                 </div>
                     <br>
                     <a class="txt2" href="/KhachHang/view-createDanngKy">
-                        <span style="color: black;font-size: 15px">Đăng ký tài khoản</span>
+                        <span style="color: black;font-size: 17px">
+                                                            Đăng ký tài khoản
+                        </span>
                         <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
                     </a>
             </frm:form>

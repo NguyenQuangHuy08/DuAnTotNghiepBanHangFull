@@ -102,14 +102,15 @@
                                     ${erCheckTrungEmailKhachHang}
                                 </div>
                             </div>
-<%--                            <div class="col-6">--%>
-<%--                                <label for="matKhau" style="color: black">--%>
-<%--                                    Mật khẩu--%>
-<%--                                </label>--%>
-<%--                                <input class="form-control" type="password" id="matKhau" name="matKhau" value="${khachHang.matKhau}" />--%>
-<%--                            </div>--%>
                             <div class="col-6">
-                                <label for="tenKhachHang" style="color: black;margin-top: 0px">
+                                <label for="matKhau" style="color: black">
+                                    Mật khẩu
+                                    <span style="color: red">*</span>
+                                </label>
+                                <input class="form-control" type="password" id="matKhau" name="matKhau" value="${khachHang.matKhau}" />
+                            </div>
+                            <div class="col-6">
+                                <label for="tenKhachHang" style="color: black;margin-top: 20px">
                                     Tên chủ tài khoản:
                                     <span style="color: red">*</span>
                                 </label>
@@ -138,14 +139,7 @@
                                     ${erCheckSoDienThoaiNumer}
                                 </div>
                             </div>
-<%--                            <div class="col-6">--%>
-<%--                                <label for="diaChi" style="color: black;margin-top: 20px">--%>
-<%--                                    Địa chỉ cụ thể:--%>
-<%--                                    <span style="color: red">*</span>--%>
-<%--                                </label>--%>
-<%--                                <input class="form-control" type="text" id="diaChi" name="diaChi" value="${khachHang.diaChi}" />--%>
-<%--                            </div>--%>
-                        <div class="col-6">
+                        <div class="col-12">
                             <label for="diaChi" style="margin-top: 20px;margin-bottom: 1px;color: black">
                                 Địa chỉ
                                 <span style="color: red">*</span>
@@ -157,10 +151,18 @@
                                 ${erCheckDiaChiSo}
                             </div>
                         </div>
-
-
-
-                        <button style="margin-top: 30px;margin-left: 15px" type="submit" class="btn btn-primary">Lưu</button>
+                        <div class="row">
+                            <div class="col-3">
+                                <button style="margin-top: 40px;margin-left: 15px" type="submit" class="btn btn-primary">Lưu</button>
+                            </div>
+<%--                            <div class="col-3">--%>
+<%--                                <a href="/TrangChu/listGiayTheThao">--%>
+<%--                                    <p style="border: 1px solid #0069D9;color: white;margin-top: 30px; width: 105px; margin-left: 20px; height: 37px; border-radius: 5px 5px 5px;padding-top: 5px;padding-left: 9px;background-color: #007BFF;font-size: 15px">--%>
+<%--                                        Đổi mật khẩu--%>
+<%--                                    </p>--%>
+<%--                                </a>--%>
+<%--                            </div>--%>
+                        </div>
 
                     </div>
                 </div>

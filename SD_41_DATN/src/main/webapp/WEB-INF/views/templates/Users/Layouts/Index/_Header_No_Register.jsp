@@ -126,7 +126,12 @@
                                     <i class="fas fa-user fa-2x" style="color: black;"></i>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li class="nav-item"><a class="nav-link" href="/TrangChu/ThongTinCaNhan" style="color: black;font-weight: bold">Thông tin cá nhân</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="/TrangChu/ThongTinCaNhan" style="color: black;font-weight: bold">
+<%--                                        Thông tin cá nhân--%>
+                                        Hello : <span style="color: red">
+                                                     ${khachHangLog.tenKhachHang}
+                                                </span>
+                                    </a></li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="/KhachHang/thongTinHoaDonAll/${maKH}" style="color: black;font-weight: bold">
                                             Đơn hàng

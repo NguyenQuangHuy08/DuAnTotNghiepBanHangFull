@@ -275,6 +275,213 @@
         </div>
 
 
+        <div class="col-12">
+            <div class="row" style="width: 1160px; margin-top: 30px">
+                <div class="col-1">
+                    <img src="../../../../../../resources/img/banner/banner-img.png" alt=""
+                         style="width: 100px; border: 1px solid white; border-radius: 1000px 1500px 700px; margin-top: 22px">
+                </div>
+                <div class="col-3" style="margin-left: 30px">
+                    <h4 style="margin-top: 15px">BEE SHOES</h4>
+                    <a href="https://www.facebook.com/profile.php?id=100032748851883" style="text-decoration: none"
+                       aria-label="Facebook" rel="noreferrer" target="_blank">
+                        <button style="margin-bottom: 10px; height: 40px" type="submit" class="btn btn">
+                            <img src="../../../../../../resources/img/banner/face.png" alt="" style="width: 15px">
+                            Chat
+                        </button>
+                    </a>
+                    <a href="#" style="text-decoration: none">
+                        <button style="margin-bottom: 10px; height: 40px; margin-left: 10px;" type="submit"
+                                class="btn btn">
+                            Xem Shop
+                        </button>
+                    </a>
+                </div>
+                <div class="vertical-line"></div>
+                <div class="col-3" style="margin-top: 20px">
+                    <p>Tổng sản phẩm cửa hàng hoạt động: </p>
+                    <p>Thời gian phản hồi: 30p</p>
+                </div>
+                <div class="col-2" style="margin-top: 20px">
+                    <p>Tỉ lệ phản hồi: 95%</p>
+                    <p>Tham gia: 10/2023</p>
+                </div>
+                <div class="col-2" style="margin-top: 20px">
+                    <p>Người theo dõi: </p>
+                    <p>Đánh giá: </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12" style="margin-top: 20px;border: 0px solid #FAFAFA; background: #FAFAFA; width: 1160px">
+            <h4 style="height: 40px; margin-top: 30px; font-size: 20px">
+                <span style=" color: red;width: 50px;margin-right: 5px">❤</span>Thông tin chi tiết giầy thể thao!
+            </h4>
+        </div>
+        <div class="col-12" style="margin-top: 20px">
+            <div class="row">
+                <div class="col-2">
+                    <h6>Tên sản phẩm : </h6>
+                </div>
+                <div class="col-5">
+                    <span>${giayTheThao.tenGiayTheThao}</span>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px">
+                <div class="col-2" style="margin-top: 4px">
+                    <h6>Form giầy thể thao : </h6>
+                </div>
+                <div class="col-5">
+                    <span>${giayTheThao.form.tenForm} </span>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px">
+                <div class="col-2" style="margin-top: 4px">
+                    <h6>Chất liệu : </h6>
+                </div>
+                <div class="col-5">
+                    <span>${giayTheThao.chatLieu.tenChatLieu}</span>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px">
+                <div class="col-2" style="margin-top: 4px">
+                    <h6>Lót giầy : </h6>
+                </div>
+                <div class="col-5">
+                    <span>${giayTheThao.lotGiay.tenLotGiay}</span>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px">
+                <div class="col-2" style="margin-top: 4px">
+                    <h6>Cổ giầy : </h6>
+                </div>
+                <div class="col-5">
+                    <span>${giayTheThao.coGiay.tenCoGiay}</span>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px">
+                <div class="col-2" style="margin-top: 4px">
+                    <h6>Đế giầy : </h6>
+                </div>
+                <div class="col-5">
+                    <span>${giayTheThao.deGiay.tenDeGiay}</span>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px">
+                <div class="col-2" style="margin-top: 4px">
+                    <h6>Dây giầy : </h6>
+                </div>
+                <div class="col-5">
+                    <span>${giayTheThao.dayGiay.tenDayGiay}</span>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px">
+                <div class="col-2" style="margin-top: 4px">
+                    <h6>Trọng lượng : </h6>
+                </div>
+                <div class="col-5">
+                    <span>${giayTheThao.trongLuong.tenTrongLuong}</span>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px">
+                <div class="col-2" style="margin-top: 4px">
+                    <h6>Thương hiệu : </h6>
+                </div>
+                <div class="col-5">
+                    <span>${giayTheThao.thuongHieu.tenThuongHieu}</span>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px">
+                <div class="col-2" style="margin-top: 4px">
+                    <h6>Kiểu buộc : </h6>
+                </div>
+                <div class="col-5">
+                    <span>${giayTheThao.kieuBuoc.tenKieuBuoc}</span>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px">
+                <div class="col-2" style="margin-top: 4px">
+                    <h6>Hướng dẫn bảo quản : </h6>
+                </div>
+                <div class="col-5">
+                    <span>${giayTheThao.huongDanBaoQuan.tenHuongDanBaoQuan}</span>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px">
+                <div class="col-2" style="margin-top: 4px">
+                    <h6>Công dụng : </h6>
+                </div>
+                <div class="col-5">
+                    <span>${giayTheThao.congDung.tenCongDung}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12" style="margin-top: 20px;border: 0px solid #FAFAFA; background: #FAFAFA; width: 1160px">
+            <h4 style="height: 40px; margin-top: 30px; font-size: 20px">
+                <span style=" color: red;width: 50px;margin-right: 5px">❤</span>Thông tin cửa hàng!
+            </h4>
+        </div>
+        <div class="col-12" style="margin-top: 20px">
+            <span style="margin-bottom: 10px">-Tất cả sản phẩm mình đều hỗ trợ cho khách xem hàng, quý khách cứ bảo là shop cho kiểm tra hàng rồi shiper sẽ gọi cho shop.  Nhưng nhiều shiper khó tính họ theo đúng quy định của shopee là không được đồng kiểm. Nên quý khách thông cảm.</span>
+            <br>
+            <span>- Nến anh/chị nhận được sản phẩm lỗi hoặc do nhầm lẫn. Mong các bạn nhắn tin cho shop khắc phục trước khi đánh giá sản phẩm ạ ❤ Shop cam kết sẽ luôn có trách nhiệm với sản phẩm đã bán❤.</span>
+            <br>
+            <span style="margin-bottom: 10px">🔶QUY ĐỊNH ĐỔI TRẢ HÀNG: Quý khách có quyền đổi trả hàng trong vòng 07 ngày kể từ ngày nhận hàng (với điều kiện GIÀY CÒN MỚI NGUYÊN-CHƯA QUA SỬ DỤNG) cho những trường hợp sau:
+✔️Hàng lỗi nghiêm trọng do sản xuất; hàng giao sai mẫu, nhầm size. Anh/chị vui lòng inbox lại Shop để được hướng dẫn trả hàng/hoàn tiền và Shopee sẽ hỗ trợ 100% phí ship.
+✔️Trường hợp anh/chị đổi giày do muốn đổi size, đổi mẫu khác thì cũng xin inbox lại shop để được hướng dẫn. Nếu anh/chị không đến đổi trực tiếp được thì chi phí ship 2 chiều sẽ chịu 100% để thuê bên vận chuyển, bưu điện đi đổi hộ.
+Vì vậy, anh/chị vui lòng đọc kỹ quy định đổi trả hàng ạ😊
+- Hãy inbox Chat với shop nếu anh/chị cần tư vấn ạ.</span>
+        </div>
+
+        <div class="col-12" style="margin-top: 30px">
+            <h2 style="text-align: center;margin-bottom: 30px">Thông tin của các sản phẩm khác!</h2>
+        </div>
+        <div class="row">
+            <c:forEach var="listGiay" items="${listPage}">
+                <c:if test="${listGiay.trangThai == 1}">
+                    <a href="${pageContext.request.contextPath}/GiayTheThao/detailThongTinGiayTheThao/${listGiay.id}">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="single-product">
+                                <img class="img-fluid" style="height: 200px" src="/upload/${listGiay.image.get(0).link}"
+                                     alt="">
+                                <div class="product-details">
+                                    <h6 style="text-align: center">${listGiay.tenGiayTheThao}</h6>
+                                    <div class="price">
+                                        <h6 style="text-align: center">
+
+                                            <span style="color: red"> Đ </span>
+                                            <fmt:formatNumber type="" value="${listGiay.giaBan}" pattern="#,##0.###"/>
+                                            VNĐ
+
+                                        </h6>
+                                            <%--                                            <h6 class="l-through">$210.00</h6>--%>
+                                    </div>
+                                    <div class="prd-bottom">
+                                        <a href="" class="social-info">
+                                            <span class="ti-bag"></span>
+                                            <p class="hover-text">add to bag</p>
+                                        </a>
+                                        <a href="" class="social-info">
+                                            <span class="lnr lnr-heart"></span>
+                                            <p class="hover-text">Wishlist</p>
+                                        </a>
+                                        <a href="" class="social-info">
+                                            <span class="lnr lnr-sync"></span>
+                                            <p class="hover-text">compare</p>
+                                        </a>
+                                        <a href="${pageContext.request.contextPath}/GiayTheThao/detailThongTinGiayTheThao/${listGiay.id}"
+                                           class="social-info">
+                                            <span class="lnr lnr-move"></span>
+                                            <p class="hover-text">view more</p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </c:if>
+            </c:forEach>
+        </div>
+
 
     </div>
 </div>

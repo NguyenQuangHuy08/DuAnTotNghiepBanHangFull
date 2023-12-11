@@ -548,7 +548,7 @@ public class KhachHangController {
                     }
 
                     // Cập nhật thông tin từ form
-                    khachHangDangNhap.setEmail(khachHang.getEmail());
+                    khachHangDangNhap.setMatKhau(khachHang.getMatKhau());
                     khachHangDangNhap.setTenKhachHang(khachHang.getTenKhachHang());
                     khachHangDangNhap.setSoDienThoai(khachHang.getSoDienThoai());
                     khachHangDangNhap.setDiaChi(khachHang.getDiaChi());
@@ -571,6 +571,16 @@ public class KhachHangController {
         return "/templates/Users/Layouts/DangNhap/CaiDat";
 
     }
+
+    //Todo code log thông báo thay đổi mật khẩu thành công
+    @GetMapping("KhachHang/ThayDoiMatKhauThanhCong")
+    public String showViewThayDoiTaiKhoanThanhCong(){
+
+        System.out.println("Thay đổi mật khẩu khách hàng thành công !");
+        return "/templates/Users/Layouts/Log/thayDoiMatKhauKhachHangThanhCong";
+
+    }
+
 
     //Todo code view thay đổi thông tin của khách hàng
      @GetMapping("/KhachHang/viewQuenMatKhau/*")
@@ -600,11 +610,18 @@ public class KhachHangController {
 
         System.out.println(email);
 
+        if (email == null || email.trim().isEmpty()) {
+
+            System.out.println("Xin lỗi, vui lòng nhập email!");
+            model.addAttribute("loiEmailNull", "Xin lỗi, vui lòng nhập email");
+            return "/templates/Users/Layouts/DangNhap/quenMatKhau";
+
+        }
+
 
         try{
 
             KhachHang khachHang = khachHangImpl.findByEmail(email);
-            System.out.println("Email "+ khachHangRepository.findByEmail(email));
 
             int min = 100000;
             int max = 999999;
@@ -636,19 +653,22 @@ public class KhachHangController {
 
             mailSender.send(message);
             System.out.println("Thay đổi mật khẩu khách hàng thành công !");
-            return "redirect:/KhachHang/loginViewDangNhap";
+            return "redirect:/KhachHang/ThayDoiMatKhauThanhCong";
 
         }catch (Exception e){
 
             e.printStackTrace();
             System.out.println("Lỗi thay đổi tài khoản mật khẩu");
             model.addAttribute("idKH", "2");
-            model.addAttribute("loi", "email không đúng");
+            model.addAttribute("loi", "Xin lỗi email không hợp lệ hoặc không có tài khoản nào áp dụng cho email này");
             return "/templates/Users/Layouts/DangNhap/quenMatKhau";
 
         }
 
     }
+
+
+
 
 
 }
