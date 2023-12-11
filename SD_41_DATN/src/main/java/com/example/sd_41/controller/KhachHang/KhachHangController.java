@@ -119,7 +119,7 @@ public class KhachHangController {
 
         }
 
-        //Check trô email
+        //Check trống email
         if(khachHang.getEmail() == null
             || khachHang.getEmail().isEmpty()
                 || khachHang.getEmail().trim().length()==0){
@@ -392,80 +392,16 @@ public class KhachHangController {
 
     }
 
-//    //Todo code Trang chủ khách hàng
-//    @GetMapping("TrangChu/ThongTinCaNhan")
-//    public String thongTinKhachHang(HttpSession session,
-//                                    Model model,
-//                                    RedirectAttributes attributes){
-//
-//        //Đã đăng nhập tài khoản
-//        if(session.getAttribute("khachHangLog") != null){
-//
-//            UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
-//
-//            if(idKhachHang != null){
-//
-//                System.out.println("Đăng nhập tài khoản thành công !");
-//                KhachHang khachHang = khachHangRepository.findById(idKhachHang).orElse(null);
-//
-//                model.addAttribute("khachHang",khachHang);
-//
-//                System.out.println("Email "+ khachHang.getEmail());
-//                System.out.println("Tên " + khachHang.getTenKhachHang());
-//                System.out.println("Giới tính "+ khachHang.getGioiTinh());
-//                System.out.println("Số điện thoại "+ khachHang.getSoDienThoai());
-//                System.out.println("Địa chỉ "+ khachHang.getDiaChi());
-//
-//                //Edit thông tin của khách hàng
-//
-//            }
-//
-//            return "/templates/Users/Layouts/DangNhap/CaiDat";
-//
-//        }else{
-//
-//            //Chưa đăng nhập tài khoản
-//            System.out.println("Khách hàng chưa đăng nhập tài khoản !");
-//            return "redirect:/KhachHang/showSweetAlertLogin";
-//
-//        }
-//
-//
-//    }
-//
-//    //Thay đổi thông tin của khách hàng
-//    @PostMapping("/TrangChu/ThongTinCaNhan/Luu")
-//    public String luuThongTin(@ModelAttribute("khachHang")
-//                                          KhachHang khachHang,
-//                                          HttpSession session) {
-//
-//        // Lấy thông tin khách hàng từ session
-////        KhachHang khachHangSession = (KhachHang) session.getAttribute("khachHang");
-//
-//        if(session.getAttribute("khachHangLog") != null){
-//
-//            System.out.println("Lấy được thông tin của khách hàng !");
-//            UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
-//
-//            if(idKhachHang != null) {
-//
-//                System.out.println("Đăng nhập tài khoản thành công !");
-//                KhachHang khachHangDangNhap = khachHangRepository.findById(idKhachHang).orElse(null);
-//
-//
-//
-//                khachHangRepository.save(khachHangDangNhap);
-//                System.out.println("Lưu thành công !");
-//
-//            }
-//
-//        }
-//
-//        return "/templates/Users/Layouts/DangNhap/CaiDat";
-//
-//    }
+    //Todo code log thay đổi thông tin khách hàng thành công!
+    @GetMapping("KhachHang/showSweetAlertThayDoiThanhCong")
+    public String thayDoiThongTinKhachHangThanhCong(){
 
+        System.out.println("Thay đổi thông tin khách hàng thành công!");
+        return "/templates/Users/Layouts/Log/thayDoiThongTinKhachHangThanhCong";
 
+    }
+
+    //Todo code edit thông tin khách hàng
     @GetMapping("/TrangChu/ThongTinCaNhan")
     public String thongTinKhachHang(HttpSession session, Model model, RedirectAttributes attributes) {
         if (session.getAttribute("khachHangLog") != null) {
@@ -489,29 +425,174 @@ public class KhachHangController {
         }
     }
 
+    //Todo code thay đổi thông tin của khách hàng và view thông tin của khách hàng
     @PostMapping("/TrangChu/ThongTinCaNhan/Luu")
-    public String luuThongTin(@ModelAttribute("khachHang") KhachHang khachHang, HttpSession session) {
+    public String luuThongTin(
+                              Model model,
+                              @ModelAttribute("khachHang") KhachHang khachHang,
+                              HttpSession session,
+                              @RequestParam("file") MultipartFile file,
+                              RedirectAttributes attributes
+                              ) {
         if (session.getAttribute("khachHangLog") != null) {
             UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
             if (idKhachHang != null) {
                 System.out.println("Đăng nhập tài khoản thành công !");
                 KhachHang khachHangDangNhap = khachHangRepository.findById(idKhachHang).orElse(null);
 
-                // Cập nhật thông tin từ form
-                khachHangDangNhap.setEmail(khachHang.getEmail());
-                khachHangDangNhap.setLink(khachHang.getLink());
-                khachHang.setMatKhau(khachHang.getMatKhau());
-                khachHangDangNhap.setTenKhachHang(khachHang.getTenKhachHang());
-                khachHangDangNhap.setGioiTinh(khachHang.getGioiTinh());
-                khachHangDangNhap.setSoDienThoai(khachHang.getSoDienThoai());
-                khachHangDangNhap.setDiaChi(khachHang.getDiaChi());
-                khachHangDangNhap.setThanhPho(khachHang.getThanhPho());
-                khachHang.setHuyen(khachHang.getHuyen());
-                khachHang.setXa(khachHang.getXa());
+                if (khachHangDangNhap != null) { // Kiểm tra xem đối tượng có tồn tại hay không
+                    try {
 
-                khachHangRepository.save(khachHangDangNhap);
-                System.out.println("Lưu thành công !");
+                        if (!file.isEmpty()) {
+                            // Lưu file vào thư mục upload
+                            String fileOriginal = file.getOriginalFilename();
+                            String fileDest = context.getRealPath("/upload/" + fileOriginal);
+                            file.transferTo(new File(fileDest));
+
+                            // Cập nhật trường link trong đối tượng KhachHang
+                            khachHangDangNhap.setLink(fileOriginal);
+                            System.out.println("Lưu ảnh thành công !");
+                        }
+
+                    } catch (IOException e) {
+
+                        e.printStackTrace();
+
+                    }
+
+                    //Check trống tên email
+                    if(khachHang.getEmail() == null
+                            || khachHang.getEmail().trim().length()==0
+                            || khachHang.getEmail().isEmpty()){
+
+                        attributes.addFlashAttribute("erCheckTrongEmail","Xin lỗi không được để trống email!");
+                        return "redirect:/TrangChu/ThongTinCaNhan";
+
+                    }
+
+                    //Check email phải có đuôi @Gmail.com
+                    if(!khachHang.getEmail().endsWith("@gmail.com")){
+
+                        attributes.addFlashAttribute("erMail@gmail","Email của bạn không đúng định dạng !");
+                        return "redirect:/TrangChu/ThongTinCaNhan";
+
+                    }
+
+                    //Check tên email nhập kí tự số đầu tiên
+                    if (khachHang.getEmail().matches("^\\d.*") ||
+                            !khachHang.getEmail().matches(".*[a-zA-Z].*")) {
+
+                        attributes.addFlashAttribute("erCheckEmailSo", "Tên Email  không hợp lệ!, Phải bắt đầu bằng chữ cái đầu tiên!");
+                        return "redirect:/TrangChu/ThongTinCaNhan";
+
+                    }
+
+                    Pattern pattern = Pattern.compile("^[^-0-9].*");
+                    Matcher matcher = pattern.matcher(khachHang.getEmail());
+
+                    if (!matcher.matches()) {
+
+                        attributes.addFlashAttribute("erCheckEmail", "Email thao không hợp lệ!");
+                        return "redirect:/TrangChu/ThongTinCaNhan";
+
+                    }
+
+                    //Check tên khách hàng
+                    if(khachHang.getTenKhachHang() == null
+                            || khachHang.getTenKhachHang().trim().length() ==0
+                            || khachHang.getTenKhachHang().isEmpty()){
+
+                        attributes.addFlashAttribute("erCheckTenKhachHang","Xin lỗi không được để trống tên !");
+                        return "redirect:/TrangChu/ThongTinCaNhan";
+
+                    }
+
+                    //Check tên khách hàng là số
+                    if (khachHang.getTenKhachHang().matches("^\\d.*") ||
+                            !khachHang.getTenKhachHang().matches(".*[a-zA-Z].*")) {
+
+                        attributes.addFlashAttribute("erCheckTen", "Tên khách hàng phải là chữ");
+                        return "redirect:/TrangChu/ThongTinCaNhan";
+
+                    }
+
+
+                    //Check số điện thoại
+                    if(khachHang.getSoDienThoai() == null
+                            || khachHang.getSoDienThoai().trim().length()==0
+                            || khachHang.getSoDienThoai().isEmpty()){
+
+                        attributes.addFlashAttribute("erCheckSoDienThoai","Xin lỗi không được để trống số điện thoại !");
+                        return "redirect:/TrangChu/ThongTinCaNhan";
+
+                    }
+
+                    //Check số điện thoại phải là số
+                    try {
+
+                        int soDienThoai = Integer.parseInt(khachHang.getSoDienThoai());
+
+                        if(soDienThoai < 0){
+
+                            attributes.addFlashAttribute("erCheckSoDienThoaiNumer","Xin lỗi số điện thoại không được nhỏ hơn 0 !");
+                            return "redirect:/TrangChu/ThongTinCaNhan";
+
+                        }
+                    }catch (NumberFormatException e){
+
+                        e.printStackTrace();
+                        attributes.addFlashAttribute("erCheckSoDienThoaiString","Xin lỗi số điện thoại không được là chữ!");
+                        return "redirect:/TrangChu/ThongTinCaNhan";
+
+                    }
+
+                    String phoneNumberRegex = "^0\\d{9}$";
+
+                    if (!khachHang.getSoDienThoai().matches(phoneNumberRegex)) {
+
+                        attributes.addFlashAttribute("erLogSoDienThoaiNumber", "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại bắt đầu bằng số 0 và có độ dài là 10 số.");
+                        return "redirect:/TrangChu/ThongTinCaNhan";
+
+                    }
+
+
+                    //check địa chỉ cụ thể
+                    if(khachHang.getDiaChi() == null
+                            || khachHang.getDiaChi().trim().length() ==0
+                            || khachHang.getDiaChi().isEmpty()){
+
+                        attributes.addFlashAttribute("erCheckDiaChi","Xin lỗi không được để trống địa chỉ !");
+                        return "redirect:/TrangChu/ThongTinCaNhan";
+
+                    }
+
+                    if (khachHang.getDiaChi().matches("^\\d.*") ||
+                            !khachHang.getDiaChi().matches(".*[a-zA-Z].*")) {
+
+                        attributes.addFlashAttribute("erCheckDiaChiSo", "Địa chỉ  không hợp lệ!, Phải bắt đầu bằng chữ cái đầu tiên!");
+                        return "redirect:/TrangChu/ThongTinCaNhan";
+
+                    }
+
+                    // Cập nhật thông tin từ form
+                    khachHangDangNhap.setEmail(khachHang.getEmail());
+                    khachHangDangNhap.setTenKhachHang(khachHang.getTenKhachHang());
+                    khachHangDangNhap.setSoDienThoai(khachHang.getSoDienThoai());
+                    khachHangDangNhap.setDiaChi(khachHang.getDiaChi());
+
+                    khachHangRepository.save(khachHangDangNhap);
+                    System.out.println("Lưu thành công !");
+                    return "redirect:/KhachHang/showSweetAlertThayDoiThanhCong";
+
+                } else {
+                    System.out.println("Không tìm thấy thông tin khách hàng!");
+                }
             }
+        }else{
+
+            System.out.println("Khách hàng chưa đăng nhập tài khoản !");
+            return "redirect:/KhachHang/showSweetAlertLogin";
+
         }
         return "/templates/Users/Layouts/DangNhap/CaiDat";
     }

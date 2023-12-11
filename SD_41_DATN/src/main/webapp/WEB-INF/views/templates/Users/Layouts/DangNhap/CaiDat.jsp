@@ -66,76 +66,106 @@
 <body>
 
 <%--   Header--%>
-<%@ include file="../../Layouts/Index/_Header.jsp" %>
+<%@ include file="../../Layouts/Index/_Header_No_Register.jsp" %>
 
 
 <div class="container" style="margin-top: 120px">
-
-    <div class="row">
-        <div class="col-3" style="border:  1px solid red; height: 400px">
-            <label class="custom-file-upload" for="file">
-                <div class="icon">
-                    <img id="preview-image" src="image.jpg" alt="Placeholder Image">
+    <form action="${pageContext.request.contextPath}/TrangChu/ThongTinCaNhan/Luu" method="post" enctype="multipart/form-data">
+         <div class="row" style="margin-top: 150px">
+                <div class="col-3" style="">
+                    <label style="margin-top: 60px" class="custom-file-upload" for="file">
+                        <div class="icon">
+                            <img style="max-height: 100%;max-width: 100%" id="preview-image" src="${pageContext.request.contextPath}/upload/${khachHang.link}" alt="Image">
+                        </div>
+                        <div class="text">
+                            <span>Chọn ảnh</span>
+                        </div>
+                        <input type="file" id="file" name="file" onchange="previewImage()">
+                    </label>
                 </div>
-                <div class="text">
-                    <span></span>
+                <div class="col-9" style="">
+                    <div class="row">
+                            <div class="col-12">
+                                <h3 style="color: black;text-align: center;margin-bottom: 30px">Thông tin cá nhân</h3>
+                            </div>
+                            <div class="col-6">
+                                <label for="email" style="color: black">
+                                    Email
+                                    <span style="color: red">*</span>
+                                </label>
+                                <input class="form-control" type="text" id="email" name="email" value="${khachHang.email}" disabled/>
+                                <div class="thongBao" style="color: red">
+                                    ${erCheckTrongEmail}
+                                    ${erMail}
+                                    ${erCheckEmailSo}
+                                    ${erCheckEmail}
+                                    ${erCheckTrungEmailKhachHang}
+                                </div>
+                            </div>
+<%--                            <div class="col-6">--%>
+<%--                                <label for="matKhau" style="color: black">--%>
+<%--                                    Mật khẩu--%>
+<%--                                </label>--%>
+<%--                                <input class="form-control" type="password" id="matKhau" name="matKhau" value="${khachHang.matKhau}" />--%>
+<%--                            </div>--%>
+                            <div class="col-6">
+                                <label for="tenKhachHang" style="color: black;margin-top: 0px">
+                                    Tên chủ tài khoản:
+                                    <span style="color: red">*</span>
+                                </label>
+                                <input class="form-control" type="text" id="tenKhachHang" name="tenKhachHang" value="${khachHang.tenKhachHang}" />
+                                <div class="thongBao" style="color: red">
+                                    ${erCheckTenKhachHang}
+                                    ${erCheckTen}
+                                </div>
+                            </div>
+<%--                            <div class="col-6">--%>
+<%--                                <label for="gioiTinh" style="color: black;margin-top: 20px">--%>
+<%--                                    Giới tính:--%>
+<%--                                </label>--%>
+<%--                                <input  class="form-control" type="text" id="gioiTinh" name="gioiTinh" value="${khachHang.gioiTinh}" />--%>
+<%--                            </div>--%>
+                            <div class="col-6">
+                                <label for="soDienThoai" style="color: black;margin-top: 20px">
+                                    Số điện thoại:
+                                    <span style="color: red">*</span>
+                                </label>
+                                <input class="form-control" type="text" id="soDienThoai" name="soDienThoai" value="${khachHang.soDienThoai}" />
+                                <div class="thongBao" style="color: red">
+                                    ${erCheckSoDienThoai}
+                                    ${erLogSoDienThoaiNumber}
+                                    ${erCheckSoDienThoaiString}
+                                    ${erCheckSoDienThoaiNumer}
+                                </div>
+                            </div>
+<%--                            <div class="col-6">--%>
+<%--                                <label for="diaChi" style="color: black;margin-top: 20px">--%>
+<%--                                    Địa chỉ cụ thể:--%>
+<%--                                    <span style="color: red">*</span>--%>
+<%--                                </label>--%>
+<%--                                <input class="form-control" type="text" id="diaChi" name="diaChi" value="${khachHang.diaChi}" />--%>
+<%--                            </div>--%>
+                        <div class="col-6">
+                            <label for="diaChi" style="margin-top: 20px;margin-bottom: 1px;color: black">
+                                Địa chỉ
+                                <span style="color: red">*</span>
+                            </label>
+                            <br>
+                            <textarea rows="5" cols="52" name="diaChi" id="diaChi">${khachHang.diaChi}</textarea>
+                            <div class="thongBao" style="color: red">
+                                ${erCheckDiaChi}
+                                ${erCheckDiaChiSo}
+                            </div>
+                        </div>
+
+
+
+                        <button style="margin-top: 30px;margin-left: 15px" type="submit" class="btn btn-primary">Lưu</button>
+
+                    </div>
                 </div>
-                <input type="file" id="file" onchange="previewImage()">
-            </label>
-        </div>
-        <div class="col-7" style="border: 1px solid red; height: 400px">
-
-            <h4>Thông tin đăng nhập</h4>
-
-            <h5>Email: ${khachHang.email}</h5>
-            <h5>Tên: ${khachHang.tenKhachHang}</h5>
-            <h5>Giới tính:${khachHang.gioiTinh}</h5>
-            <h5>Số điện thoại${khachHang.soDienThoai}</h5>
-            <h5>Địa chỉ: ${khachHang.diaChi}</h5>
-
-            <form action="${pageContext.request.contextPath}/TrangChu/ThongTinCaNhan/Luu" method="post">
-
-
-                <div class="row">
-                    <div class="col-6">
-                        <label for="email" style="color: black">
-                                Email
-                        </label>
-                        <input class="form-control" type="text" id="email" name="email" value="${khachHang.email}" />
-                    </div>
-                    <div class="col-6">
-                        <label for="matKhau" style="color: black">
-                            Mật khẩu
-                        </label>
-                        <input class="form-control" type="password" id="matKhau" name="matKhau" value="${khachHang.matKhau}" />
-                    </div>
-                    <div class="col-6">
-                        <label for="tenKhachHang" style="color: black">
-                            Tên khách hàng:
-                        </label>
-                        <input class="form-control" type="text" id="tenKhachHang" name="tenKhachHang" value="${khachHang.tenKhachHang}" />
-                    </div>
-                    <div class="col-6">
-                        <label for="gioiTinh">Giới tính:</label>
-                        <input  class="form-control" type="text" id="gioiTinh" name="gioiTinh" value="${khachHang.gioiTinh}" />
-                    </div>
-                    <div class="col-6">
-                        <label for="soDienThoai">Số điện thoại:</label>
-                        <input class="form-control" type="text" id="soDienThoai" name="soDienThoai" value="${khachHang.soDienThoai}" />
-                    </div>
-                    <div class="col-6">
-                        <label for="diaChi">Địa chỉ cụ thể:</label>
-                        <input class="form-control" type="text" id="diaChi" name="diaChi" value="${khachHang.diaChi}" />
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Lưu thông tin</button>
-            </form>
-
-        </div>
-    </div>
-
-
+         </div>
+    </form>
 </div>
 
 <%--Mã js cho chọn ảnh--%>
@@ -144,7 +174,6 @@
     function previewImage() {
         var preview = document.getElementById('preview-image');
         var fileInput = document.getElementById('file');
-
         var file = fileInput.files[0];
         var reader = new FileReader();
 
@@ -155,185 +184,45 @@
         if (file) {
             reader.readAsDataURL(file);
         } else {
-            preview.src = "image.jpg"; // Placeholder image
-        }
-    }
-</script>
-
-<%--Địa chỉ cho giao hàng nhanh --%>
-
-<script>
-
-    var priceInput = document.getElementById("price");
-    var priceInput1 = document.getElementById("price1");
-    var currentPrice = parseFloat(${tongTien});
-    var quocGiaValue = '${thanhPho}';
-
-    async function loadProvinces() {
-        const response = await fetch(`http://localhost:8080/public/provinces`);
-        const data = await response.json();
-
-        const provinceSelect = document.getElementById("province");
-        if (quocGiaValue === null || quocGiaValue === "") {
-            provinceSelect.innerHTML = '<option value="">Chọn tỉnh</option>';
-        }
-
-
-        for (const province of data.data) { // Thay đổi dòng này để lấy dữ liệu từ data.data
-            const option = document.createElement("option");
-            option.value = province.ProvinceID;
-            option.text = province.ProvinceName;
-            provinceSelect.appendChild(option);
-            console.log(province.ProvinceID, province.ProvinceName);
+            preview.src = "image.jpg"; // Ảnh mẫu
         }
     }
 
+    function updateImage(updatedImageUrl) {
+        // Thêm tham số ngẫu nhiên để tránh lưu trữ cache
+        var randomParam = Date.now();
+        updatedImageUrl += "?random=" + randomParam;
 
-    async function loadDistricts() {
-        const provinceId = document.getElementById("province").value;
+        // Cập nhật nguồn ảnh
+        document.getElementById('preview-image').src = updatedImageUrl;
 
-        if (!provinceId) {
-            return;
-        }
-
-        const response = await fetch('http://localhost:8080/public/districts?province_id=' + provinceId);
-        const data = await response.json();
-
-        const districtSelect = document.getElementById("district");
-        districtSelect.innerHTML = '<option value="">Chọn huyện</option>';
-
-        for (const district of data.data) {
-            const option = document.createElement("option");
-            option.value = district.DistrictID;
-            option.text = district.DistrictName;
-            districtSelect.appendChild(option);
-        }
-
-        districtSelect.disabled = false;
-        document.getElementById("ward").disabled = true;
-        document.getElementById("message").innerText = "";
+        console.log("Ảnh đã được cập nhật!");
     }
 
-    async function loadWards() {
-        const districtId = document.getElementById("district").value;
+    function submitForm() {
+        // Bạn có thể cần thêm logic ở đây để xử lý việc gửi biểu mẫu qua AJAX hoặc gửi thông thường
 
-        if (!districtId) {
-            return;
-        }
+        // Ví dụ: Giả sử bạn sử dụng AJAX để gửi biểu mẫu
+        $.ajax({
+            url: "${pageContext.request.contextPath}/TrangChu/ThongTinCaNhan/Luu",
+            type: "POST",
+            data: new FormData($("#yourFormId")[0]),
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                // Giả sử dữ liệu chứa URL ảnh đã cập nhật
+                var updatedImageUrl = data.updatedImageUrl;
 
-        const response = await fetch('http://localhost:8080/public/wards?district_id=' + districtId);
-        const data = await response.json();
-
-        const wardSelect = document.getElementById("ward");
-        wardSelect.innerHTML = '<option value="">Chọn xã</option>';
-
-        for (const ward of data.data) {
-            const option = document.createElement("option");
-            option.value = ward.WardCode;
-            option.text = ward.WardName;
-            wardSelect.appendChild(option);
-        }
-
-        wardSelect.disabled = false;
-        document.getElementById("message").innerText = "";
-    }
-
-    function checkSelection() {
-        const provinceSelect = document.getElementById("province");
-        const districtSelect = document.getElementById("district");
-        const wardSelect = document.getElementById("ward");
-
-        const provinceName = provinceSelect.options[provinceSelect.selectedIndex].text;
-        const districtName = districtSelect.options[districtSelect.selectedIndex].text;
-        const wardName = wardSelect.options[wardSelect.selectedIndex].text;
-
-        if (provinceName) {
-            document.getElementById("tinh1").value = provinceName;
-        }
-
-        if (districtName) {
-            document.getElementById("huyen1").value = districtName;
-        }
-
-        if (wardName) {
-            document.getElementById("xa1").value = wardName;
-        }
-
-        if (provinceName && districtName && wardName) {
-            calculateShipping();
-        } else {
-            document.getElementById("message").innerText = "";
-            // Khóa nút tính phí nếu không đủ điều kiện
-            document.getElementById("shippingCost").innerText = "";
-        }
-    }
-
-    async function calculateShipping() {
-        const districtSelect = document.getElementById("district");
-        const wardSelect = document.getElementById("ward");
-        const toDistrictId = districtSelect.value;
-        const toWardCode = wardSelect.value;
-
-        const transportationFeeDTO = {
-            toDistrictId: toDistrictId,
-            toWardCode: toWardCode,
-            quantity: 1,
-            insuranceValue: 0
-        };
-
-        try {
-            const response = await fetch('http://localhost:8080/public/transportationFee', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(transportationFeeDTO)
-            });
-
-            const data = await response.json();
-
-            if (data && data.code === 200) {
-                const shippingCost = data.data.total;
-
-                var tongSoTien = currentPrice + shippingCost;
-                priceInput1.value = tongSoTien;
-
-                var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 3
-                });
-
-                var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";
-
-                document.getElementById("ship").value = gia1WithCurrency3;
-
-                var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 3
-                });
-
-                var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
-
-                priceInput.value = gia1WithCurrency2;
-
-            } else {
-                document.getElementById("shippingCost").innerText = "Không thể tính phí vận chuyển.";
+                // Gọi hàm để cập nhật ảnh
+                updateImage(updatedImageUrl);
+            },
+            error: function () {
+                // Xử lý lỗi nếu cần
             }
-        } catch (error) {
-            console.error('Error:', error);
-            document.getElementById("shippingCost").innerText = "Lỗi khi tính phí vận chuyển. Chi tiết lỗi: " + error.message;
-        }
+        });
     }
 
-    loadProvinces();
-    document.getElementById("province").addEventListener("change", loadDistricts);
-    document.getElementById("district").addEventListener("change", loadWards);
-    document.getElementById("ward").addEventListener("change", checkSelection);
-
 </script>
-
-<%----%>
-<script src="/js/main.js"></script>
 
 </body>
 </html>
