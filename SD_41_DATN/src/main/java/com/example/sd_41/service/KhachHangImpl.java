@@ -8,4 +8,8 @@ public interface KhachHangImpl {
 
     KhachHang findById(UUID id);
 
+    KhachHang findByEmail(String email);
+
+    void update(UUID id, KhachHang update);
+
 }

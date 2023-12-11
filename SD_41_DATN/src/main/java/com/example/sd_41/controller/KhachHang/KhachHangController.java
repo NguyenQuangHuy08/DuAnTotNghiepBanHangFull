@@ -4,8 +4,10 @@ import com.example.sd_41.model.GioHang;
 import com.example.sd_41.model.KhachHang;
 import com.example.sd_41.repository.BanHang.GioHangRepository;
 import com.example.sd_41.repository.KhachHangRepository;
+import com.example.sd_41.service.KhachHangImpl;
 import com.example.sd_41.service.KhachHangService;
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.Data;
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,6 +42,9 @@ public class KhachHangController {
     ServletContext context;
 
     @Autowired
+    JavaMailSender mailSender;
+
+    @Autowired
     private KhachHangRepository khachHangRepository;
 
     @Autowired
@@ -45,6 +52,9 @@ public class KhachHangController {
 
     @Autowired
     private GioHangRepository gioHangRepository;
+
+    @Autowired
+    private KhachHangImpl khachHangImpl;
 
     @Data
     public static class SearchKH{
@@ -460,43 +470,6 @@ public class KhachHangController {
 
                     }
 
-                    //Check trống tên email
-                    if(khachHang.getEmail() == null
-                            || khachHang.getEmail().trim().length()==0
-                            || khachHang.getEmail().isEmpty()){
-
-                        attributes.addFlashAttribute("erCheckTrongEmail","Xin lỗi không được để trống email!");
-                        return "redirect:/TrangChu/ThongTinCaNhan";
-
-                    }
-
-                    //Check email phải có đuôi @Gmail.com
-                    if(!khachHang.getEmail().endsWith("@gmail.com")){
-
-                        attributes.addFlashAttribute("erMail@gmail","Email của bạn không đúng định dạng !");
-                        return "redirect:/TrangChu/ThongTinCaNhan";
-
-                    }
-
-                    //Check tên email nhập kí tự số đầu tiên
-                    if (khachHang.getEmail().matches("^\\d.*") ||
-                            !khachHang.getEmail().matches(".*[a-zA-Z].*")) {
-
-                        attributes.addFlashAttribute("erCheckEmailSo", "Tên Email  không hợp lệ!, Phải bắt đầu bằng chữ cái đầu tiên!");
-                        return "redirect:/TrangChu/ThongTinCaNhan";
-
-                    }
-
-                    Pattern pattern = Pattern.compile("^[^-0-9].*");
-                    Matcher matcher = pattern.matcher(khachHang.getEmail());
-
-                    if (!matcher.matches()) {
-
-                        attributes.addFlashAttribute("erCheckEmail", "Email thao không hợp lệ!");
-                        return "redirect:/TrangChu/ThongTinCaNhan";
-
-                    }
-
                     //Check tên khách hàng
                     if(khachHang.getTenKhachHang() == null
                             || khachHang.getTenKhachHang().trim().length() ==0
@@ -594,7 +567,87 @@ public class KhachHangController {
             return "redirect:/KhachHang/showSweetAlertLogin";
 
         }
+
         return "/templates/Users/Layouts/DangNhap/CaiDat";
+
+    }
+
+    //Todo code view thay đổi thông tin của khách hàng
+     @GetMapping("/KhachHang/viewQuenMatKhau/*")
+    public String viewQuenMatKhau(HttpServletRequest request, Model model) {
+        String url = request.getRequestURI();
+        String[] p = url.split("/KhachHang/viewQuenMatKhau/");
+        String idStr = p[1];
+
+        if (idStr.equalsIgnoreCase("2")) {
+
+            model.addAttribute("idKH", "2");
+
+        }
+
+        return "/templates/Users/Layouts/DangNhap/quenMatKhau";
+
+    }
+
+    //Todo code khách hàng quên mật khẩu đăng nhập
+    @PostMapping("/KhachHang/QuenMatKhau")
+    public String saveKhachHangQuenMatKhau(
+
+            Model model,
+            HttpServletRequest request){
+
+        String email = request.getParameter("email");
+
+        System.out.println(email);
+
+
+        try{
+
+            KhachHang khachHang = khachHangImpl.findByEmail(email);
+            System.out.println("Email "+ khachHangRepository.findByEmail(email));
+
+            int min = 100000;
+            int max = 999999;
+            int randomNumber = (int) (Math.random() * (max - min + 1) + min);
+
+            KhachHang kh = new KhachHang();
+
+            //Thay đổi thông tin của khách hàng
+
+            kh.setMaKhachHang(khachHang.getMaKhachHang());
+            kh.setTenKhachHang(khachHang.getTenKhachHang());
+            kh.setEmail(khachHang.getEmail());
+            kh.setMatKhau(String.valueOf(randomNumber));
+            kh.setNgaySinh(khachHang.getNgaySinh());
+            kh.setDiaChi(khachHang.getDiaChi());
+            kh.setSoDienThoai(khachHang.getSoDienThoai());
+            kh.setHuyen(khachHang.getHuyen());
+            kh.setThanhPho(khachHang.getThanhPho());
+            kh.setXa(khachHang.getXa());
+            kh.setTrangThai(khachHang.getTrangThai());
+
+            khachHangImpl.update(khachHang.getId(),kh);
+
+            SimpleMailMessage message = new SimpleMailMessage();
+
+            message.setTo(email);
+            message.setSubject("Mật khẩu mới của bạn là ");
+            message.setText("Mật khẩu mới của bạn là :" + randomNumber);
+
+            mailSender.send(message);
+            System.out.println("Thay đổi mật khẩu khách hàng thành công !");
+            return "redirect:/KhachHang/loginViewDangNhap";
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+            System.out.println("Lỗi thay đổi tài khoản mật khẩu");
+            model.addAttribute("idKH", "2");
+            model.addAttribute("loi", "email không đúng");
+            return "/templates/Users/Layouts/DangNhap/quenMatKhau";
+
+        }
+
     }
 
 

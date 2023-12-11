@@ -8,10 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.UUID;
 
 @Service
-public class KhachHangService {
+public class KhachHangService implements KhachHangImpl {
 
     @Autowired
     private KhachHangRepository khachHangRepository;
@@ -32,6 +34,37 @@ public class KhachHangService {
     public KhachHang findById(UUID id){
 
         return khachHangRepository.findById(id).orElse(null);
+
+    }
+
+    //Tìm kiếm khách hàng theo id
+    public KhachHang findByEmail(String email) {
+
+        return khachHangRepository.findByEmail(email);
+
+    }
+
+    //Update lại thông tin của khách hàng
+    @Override
+    public void update(UUID id, KhachHang update){
+
+        Optional<KhachHang> optionalKhachHang = khachHangRepository.findById(id);
+
+        if (optionalKhachHang.isPresent()){
+
+            KhachHang khachHang = optionalKhachHang.get();
+            khachHang.setMaKhachHang(update.getMaKhachHang());
+            khachHang.setTenKhachHang(update.getTenKhachHang());
+            khachHang.setNgaySinh(update.getNgaySinh());
+            khachHang.setDiaChi(update.getDiaChi());
+            khachHang.setThanhPho(update.getThanhPho());
+            khachHang.setHuyen(update.getHuyen());
+            khachHang.setSoDienThoai(update.getSoDienThoai());
+            khachHang.setEmail(update.getEmail());
+            khachHang.setMatKhau(update.getMatKhau());
+            khachHang.setTrangThai(update.getTrangThai());
+            khachHangRepository.save(khachHang);
+        }
 
     }
 
