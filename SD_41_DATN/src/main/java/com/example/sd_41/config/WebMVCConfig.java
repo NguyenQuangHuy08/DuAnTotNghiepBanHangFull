@@ -34,79 +34,119 @@ public class WebMVCConfig implements WebMvcConfigurer {
     @Autowired
     LogGinInterceptor logGinInterceptor;
 
-	@Autowired
+    @Autowired
     adminInterceptor adminInterceptor;
 
-	public void addInterceptors(InterceptorRegistry registry){
+    public void addInterceptors(InterceptorRegistry registry){
 
-	    //Member
+        //Member
         registry.addInterceptor(logGinInterceptor)
                 .addPathPatterns(
-                        //Check home admin
+                        //Trang chủ
                         "/TrangChu/Admin/home",
-                        //Check bảng cổ giầy
-                        "/CoGiay/list",
-                        "/CoGiay/view-create",
-                        "/kieuBuoc/hien-thi",
-                        "/kieuBuoc/view-add",
-                        "/chatLieu/hien-thi",
-                        "/chatLieu/view-add",
-                        "/congDung/hien-thi",
-                        "/congDung/view-add",
-                        "/dayGiay/hien-thi",
-                        "/dayGiay/view-add",
-                        "/deGiay",
-                        "/deGiay/create",
-                        "/dinhTanGiay/hien-thi",
-                        "/dinhTanGiay/view-add",
-                        "/thuongHieu",
-                        "/thuongHieu/create",
-                        "/trongLuong/hien-thi",
-                        "/trongLuong/view-add",
-                        "/form/hien-thi",
-                        "/form/view-add",
-                        "/HuongDanBaoQuan/list",
-                        "/HuongDanBaoQuan/create",
+                        //Giầy thể thao
+                        "/GiayTheThao/listGiayTheThao",
+                        //Khách hàng
                         "/KhachHang/list",
-                        "/KhachHang/view-create"
-                        );
+                        //Phiếu giao hàng
+                        "/PhieuGiaoHang/listPhieuGiaoHang"
 
+
+
+                );
 
         //Dành cho Admin
         registry.addInterceptor(adminInterceptor)
                 .addPathPatterns(
-                        //Todo gắn link check phân quyền
-                        "/CoGiay/list",
-                        "/CoGiay/view-create",
-                        "/kieuBuoc/hien-thi",
-                        "/kieuBuoc/view-add",
-                        "/chatLieu/hien-thi",
-                        "/chatLieu/view-add",
-                        "/congDung/hien-thi",
-                        "/congDung/view-add",
-                        "/dayGiay/hien-thi",
-                        "/dayGiay/view-add",
-                        "/deGiay",
-                        "/deGiay/create",
-                        "/dinhTanGiay/hien-thi",
-                        "/dinhTanGiay/view-add",
-                        "/thuongHieu",
-                        "/thuongHieu/create",
-                        "/trongLuong/hien-thi",
-                        "/trongLuong/view-add",
-                        "/form/hien-thi",
-                        "/form/view-add",
-                        "/HuongDanBaoQuan/list",
-                        "/HuongDanBaoQuan/create",
+                        //Todo gắn link check phân quyền admin
+                        //Giầy thể thao
+                        "/GiayTheThao/create",
+                        "/GiayTheThao/update/{id}",
+                        "/GiayTheThao/exportPDF",
+                        "/GiayTheThao/exportExcal",
+                        //Nhân viên hoặc user
                         "/user/view-add",
                         "/user/hien-thi",
-                        "/KhachHang/list",
-                        "/KhachHang/view-create"
+                        "/user/detail/{id}",
+                        //Màu sắc
+                        "/MauSac/list",
+                        "/MauSac/view-create",
+                        "/MauSac/edit/{id}",
+                        "/MauSac/search",
+                        "/MauSac/delete/{id}",
+                        //Bảng size
+                        "/Size/hien-thi",
+                        "/Size/view-add",
+                        "/Size/delete/{id}",
+                        "/Size/detail/{id}",
+                        //Bảng khuyễn mại
+                        "/chuongTrinhGiamGia/sanPham",
+                        "/chuongTrinhGiamGia/sanPham/createForm",
+                        "/chuongTrinhGiamGia/hoaDon",
+                        "/chuongTrinhGiamGia/hoaDon/createForm",
+                        "/chuongTrinhGiamGia/hoaDon/history",
+                        //Thống kê
+                        "/thongKeChuanData",
+                        //Cổ giầy
+                        "/CoGiay/list",
+                        "/CoGiay/view-create",
+                        "/CoGiay/edit/{id}",
+                        "/CoGiay/search",
+                        "/CoGiay/delete/{id}",
+                        //Kiểu buộc
+                        "/kieuBuoc/hien-thi",
+                        "/kieuBuoc/view-add",
+                        "/kieuBuoc/search",
+                        "/kieuBuoc/detail/{id}",
+                        //Chất liệu
+                        "/chatLieu/hien-thi",
+                        "/chatLieu/view-add",
+                        "/chatLieu/detail/{id}",
+                        //Công dụng
+                        "/congDung/hien-thi",
+                        "/congDung/view-add",
+                        "/congDung/detail/{id}",
+                        //Dây giầy
+                        "/dayGiay/hien-thi",
+                        "/dayGiay/view-add",
+                        "/dayGiay/detail/{id}",
+                        //Đế giầy
+                        "/deGiay",
+                        "/deGiay/create",
+                        "deGiay/edit/{id}",
+                        //Đinh tán giầy
+                        "/dinhTanGiay/hien-thi",
+                        "/dinhTanGiay/view-add",
+                        "/dinhTanGiay/detail/{id}",
+                        //Thương hiệu
+                        "/thuongHieu",
+                        "/thuongHieu/create",
+                        "/thuongHieu/edit/{id}",
+                        //Trọng lượng
+                        "/trongLuong/hien-thi",
+                        "/trongLuong/view-add",
+                        "/trongLuong/detail/{id}",
+                        //Form
+                        "/form/hien-thi",
+                        "/form/view-add",
+                        "/form/detail/{id}",
+                        //Chất liệu
+                        "/chatLieu/hien-thi",
+                        "/chatLieu/view-add",
+                        "/chatLieu/detail/{id}",
+                        //Hướng dẫn bảo quản
+                        "/HuongDanBaoQuan/list",
+                        "HuongDanBaoQuan/edit/{id}",
+                        "/HuongDanBaoQuan/delete/{id}",
+                        //Lót giầy
+                        "LotGiay/list",
+                        "/LotGiay/create",
+                        "/LotGiay/edit/{id}",
+                        "/LotGiay/delete/{id}"
 
                         );
 
     }
-
 
 
 

@@ -86,7 +86,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                 <td>${dg.ghiChu}</td>
                 <td>${dg.ngayTao}</td>
                 <td>${dg.ngaySua}</td>
-                <td>${dg.trangThai==1?"Kích hoạt":"Ngừng kích hoạt"}</td>
+                <td>${dg.trangThai ==  1 ? "✔" : "✖"}</td>
                 <td>
                   <a href="deGiay/edit/${dg.id}" class="btn btn-primary"
                     >Cập nhật</a

@@ -5,7 +5,7 @@
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Title</title>
+    <title>Dây giầy</title>
 </head>
 <body>
 <%@ include file="../templates/Admin/Layouts/GiayTheThao/_HeaderGiayTheThao.jsp" %>
@@ -35,11 +35,11 @@
         <div class="form-group">
             <label>Trạng thái</label>
             <div class="form-check">
-                <form:radiobutton cssClass="form-check-input" path="trangThai" value="0" checked="true" />
+                <form:radiobutton cssClass="form-check-input" path="trangThai" value="1" checked="true" />
                 <label class="form-check-label">Đang kích hoạt</label>
             </div>
             <div class="form-check">
-                <form:radiobutton cssClass="form-check-input" path="trangThai" value="1" />
+                <form:radiobutton cssClass="form-check-input" path="trangThai" value="0" />
                 <label class="form-check-label">Chưa kích hoạt</label>
             </div>
         </div>

@@ -22,9 +22,9 @@ public class LogGinInterceptor implements HandlerInterceptor {
 
         if(object == null){
 
-              //chưa login
-              response.sendRedirect(request.getContextPath() + "/UserLog/login");
-              return false;
+            //chưa login
+            response.sendRedirect(request.getContextPath() + "/UserLog/login");
+            return false;
 
         }
 
@@ -54,7 +54,6 @@ public class LogGinInterceptor implements HandlerInterceptor {
             throws Exception {
         HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
     }
-
 
 
 }

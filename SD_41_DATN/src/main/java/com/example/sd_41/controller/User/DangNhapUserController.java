@@ -8,18 +8,12 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping(value = "/UserLog")
@@ -32,6 +26,22 @@ public class DangNhapUserController {
     @Autowired
     ServletContext context;
 
+    //Todo code check trùng email
+    private boolean emailCheckTrung(String email){
+
+        for (User user : userRepository.findAll()){
+
+            if(user.getEmail().equalsIgnoreCase(email)){
+
+                return true;//Email đã tồn tại
+
+            }
+
+        }
+
+        return false;
+
+    }
 
     //Todo code login cho user
     @GetMapping(value = "/login")
@@ -68,20 +78,13 @@ public class DangNhapUserController {
             System.out.println("Đăng nhập thành công !");
             session.setAttribute("userLog",userData);
             session.setAttribute("maUser",maUser);
-//            return "redirect:/TrangChu/Admin/home";
+
             return "redirect:/UserLog/showSweetAlertLoginAdminSuccess";
-//            showSweetAlertLoginAdminSuccess
 
         }else if(userData != null && userData.getTrangThai() == 1){
 
             System.out.println("Tài khoản này đã không còn hoạt động");
             model.addAttribute("messageTrangThai","Tài khoản này đã không còn hoạt động!");
-            return "/templates/Admin/Layouts/DangNhap/Login";
-
-        }else if(userData == null){
-
-            model.addAttribute("erUserNoNull","Xin lỗi tài khoản này không tồn tại !");
-            System.out.println("Xin lỗi tài khoản này không tồn tại !");
             return "/templates/Admin/Layouts/DangNhap/Login";
 
         }

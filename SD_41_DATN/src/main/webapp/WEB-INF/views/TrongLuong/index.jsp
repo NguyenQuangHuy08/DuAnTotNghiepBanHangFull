@@ -54,7 +54,7 @@
                 <td>${d.ngayTao}</td>
                 <td>${d.ngaySua}</td>
                 <td>${d.ghiChu}</td>
-                <td>${d.trangThai == 0 ? "Đã kích hoạt" : "Chưa kích hoạt"}</td>
+                <td>${d.trangThai == 1  ?"✔" : "✖"}</td>
 
                 <td>
                         <%--                    <a href="/user/delete/${d.id}" class="btn btn-danger btn-sm">Remove</a>--%>

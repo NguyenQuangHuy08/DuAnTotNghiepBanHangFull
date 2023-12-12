@@ -94,11 +94,11 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">STT</th>
-            <th scope="col">Tên màu sắc</th>
-            <th scope="col">Ghi chú</th>
-            <th scope="col">Trạng thái</th>
-            <th scope="col">Functions</th>
+            <th scope="col" style="text-align: center">STT</th>
+            <th scope="col" style="text-align: center">Tên màu sắc</th>
+            <th scope="col" style="text-align: center">Ghi chú</th>
+            <th scope="col" style="text-align: center">Trạng thái</th>
+            <th scope="col" style="text-align: center">Functions</th>
         </tr>
         </thead>
         <tbody>
@@ -107,7 +107,7 @@
                 <th style="" scope="row">${i.index+1}</th>
                 <td style="">${ms.tenMauSac}</td>
                 <td style="">${ms.ghiChu}</td>
-                <td style="">${ms.trangThai==1 ?"✔" : "✖"}</td>
+                <td style="">${ms.trangThai== 0 ?"✔" : "✖"}</td>
                 <td>
                     <a href="${pageContext.request.contextPath}/MauSac/edit/${ms.id}">
                         <button class="btn btn-primary">Edit</button>

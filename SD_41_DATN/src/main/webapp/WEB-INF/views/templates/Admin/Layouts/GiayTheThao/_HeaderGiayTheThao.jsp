@@ -105,8 +105,9 @@
                     <a class="collapse-item" href="/thuongHieu">Thương hiệu</a>
                     <a class="collapse-item" href="/trongLuong/hien-thi">Trọng lượng</a>
                     <a class="collapse-item" href="/form/hien-thi">Form</a>
-                    <a class="collapse-item" href="#">Chất liệu</a>
+                    <a class="collapse-item" href="/chatLieu/hien-thi">Chất liệu</a>
                     <a class="collapse-item" href="/HuongDanBaoQuan/list">Hướng dẫn bảo quản</a>
+                    <a class="collapse-item" href="/LotGiay/list">Lót giầy</a>
 
                 </div>
             </div>
@@ -151,7 +152,7 @@
         <li class="nav-item">
             <a class="nav-link" href="">
                 <i class="fas fa-fw fa-table"></i>
-                <span>Tables</span></a>
+                <span>Bán hàng tại quầy</span></a>
         </li>
     </ul>
     <!-- The end code nav -->

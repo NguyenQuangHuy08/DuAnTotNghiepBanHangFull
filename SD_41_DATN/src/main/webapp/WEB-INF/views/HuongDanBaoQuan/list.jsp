@@ -14,122 +14,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
-<style>
-    <%--        Dành cho tab--%>
-    .nav-tabs {
-        background-image: linear-gradient(
-                to bottom right, #25AEB8, #0DDB9F
-        );
-        padding: 0;
-        margin: 20px 0 0;
-        list-style: none;
-        width: 500px;
-        height: 40px;
-        display: flex;
-        /*max-width: fit-content;*/
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-        overflow: hidden;
-        position: relative;
-        z-index: 1;
-    }
-
-    .nav-item {
-        font-weight: bold;
-        font-size: 15px;
-        width: 140px;
-        margin-top: 10px;
-        margin-bottom: 5px;
-        height: 20px;
-        text-align: center;
-        border-right: 1px solid #1d868d;
-        transition: 0.5s;
-        cursor: pointer;
-    }
-
-    .nav-item:nth-last-child(1) {
-        border-right: none;
-    }
-
-    .nav-item.active {
-        color: #555;
-    }
-
-    .bg-active {
-        background-color: #eee;
-        padding: 20px;
-        width: 140px;
-        position: absolute;
-        left: 0;
-        height: 100%;
-        z-index: -1;
-        transition: 0.5s;
-    }
-
-    .content-tabs {
-        padding: 30px;
-        background-color: #eee;
-        color: #555;
-        border-radius: 10px;
-        border-top-left-radius: 0;
-        min-height: 300px;
-        text-align: justify;
-    }
-
-    .content-tabs .tab {
-        display: none;
-    }
-
-    .content-tabs .tab.active {
-        display: block;
-        animation: showContent 0.5s ease-in-out 1;
-    }
-
-    @keyframes showContent {
-        from {
-            opacity: 0;
-            transform: translateY(100px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    <%--        Danh cho giá bán--%>
-
-    #priceSlider {
-        width: 300px;
-        margin: 0 auto;
-        text-align: center;
-    }
-
-    #giaBan {
-        height: 10px;
-        margin: 10px 0;
-    }
-
-    #priceSlider .noUi-handle {
-        width: 20px;
-        border-radius: 20px 20px 20px;
-        background-color: aliceblue;
-        height: 20px;
-        cursor: ew-resize;
-    }
-
-    /*    Table */
-    td, th {
-        padding: 10px; /* Khoảng cách nội dung bên trong ô */
-        color: black; /* Màu chữ */
-        text-align: center; /* Căn giữa nội dung trong ô */
-    }
-
-    .hide-row {
-        display: none;
-    }
-
-</style>
-
 <body>
 <%@ include file="../templates/Admin/Layouts/GiayTheThao/_HeaderGiayTheThao.jsp" %>
 <div class="container">
@@ -208,7 +92,7 @@
                 <td style="padding-top: 55px; text-align: center">${hdbq.ghiChu}</td>
                 <td style="padding-top: 55px; text-align: center">${hdbq.ngayTao}</td>
                 <td style="padding-top: 55px; text-align: center">${hdbq.ngaySua}</td>
-                <td style="padding-top: 55px; text-align: center">${hdbq.trangThai==1 ?"✔" : "✖"}</td>
+                <td style="padding-top: 55px; text-align: center">${hdbq.trangThai == 1 ?"✔" : "✖"}</td>
                 <td>
                     <a href="${pageContext.request.contextPath}/HuongDanBaoQuan/edit/${hdbq.id}"><button class="btn btn-primary">Edit</button></a>
                     <a href="${pageContext.request.contextPath}/HuongDanBaoQuan/delete/${hdbq.id}" class="btn btn-danger">Delete</a>

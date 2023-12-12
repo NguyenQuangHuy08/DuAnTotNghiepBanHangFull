@@ -37,12 +37,18 @@
                         <label >Form</label>
                         <select class="form-control" name="form.id">
                             <c:forEach items="${form}" var="form">
-                                <c:if test="${form.trangThai eq 1}">
-                                    <option value="${form.id}">${form.tenForm}</option>
-                                </c:if>
+                                <option value="${form.id}">${form.tenForm}</option>
                             </c:forEach>
                         </select>
                     </div>
+<%--                    <div class="form-group col-md-4">--%>
+<%--                        <label >Công dụng</label>--%>
+<%--                        <select  class="form-control" name="congDung.id">--%>
+<%--                            <c:forEach items="${congDung}" var="congDung">--%>
+<%--                                <option value="${congDung.id}">${congDung.tenCongDung}</option>--%>
+<%--                            </c:forEach>--%>
+<%--                        </select>--%>
+<%--                    </div>--%>
                     <div class="form-group col-md-4">
                         <label>Công dụng</label>
                         <select class="form-control" name="congDung.id">
@@ -53,13 +59,12 @@
                             </c:forEach>
                         </select>
                     </div>
+
                     <div class="form-group col-md-4">
                         <label>Chất liệu</label>
                         <select  class="form-control" name="chatLieu.id">
                             <c:forEach items="${chatLieu}" var="chatLieu">
-                                <c:if test="${chatLieu.trangThai eq 1}">
-                                    <option value="${chatLieu.id}">${chatLieu.tenChatLieu}</option>
-                                </c:if>
+                                <option value="${chatLieu.id}">${chatLieu.tenChatLieu}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -70,9 +75,7 @@
                         <label >Hướng dẫn bảo quản </label>
                         <select class="form-control" name="huongDanBaoQuan.id">
                             <c:forEach items="${huongDanBaoQuan}" var="huongDanBaoQuan">
-                                <c:if test="${huongDanBaoQuan.trangThai eq 1}">
-                                    <option value="${huongDanBaoQuan.id}">${huongDanBaoQuan.tenHuongDanBaoQuan}</option>
-                                </c:if>
+                                <option value="${huongDanBaoQuan.id}">${huongDanBaoQuan.tenHuongDanBaoQuan}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -80,9 +83,7 @@
                         <label >Lót giầy</label>
                         <select  class="form-control" name="lotGiay.id">
                             <c:forEach items="${lotGiay}" var="lotGiay">
-                                <c:if test="${lotGiay.trangThai eq 1}">
-                                    <option value="${lotGiay.id}">${lotGiay.tenLotGiay}</option>
-                                </c:if>
+                                <option value="${lotGiay.id}">${lotGiay.tenLotGiay}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -90,9 +91,7 @@
                         <label>Cổ giầy</label>
                         <select  class="form-control" name="coGiay.id">
                             <c:forEach items="${coGiay}" var="coGiay">
-                                <c:if test="${coGiay.trangThai eq 1}">
-                                    <option value="${coGiay.id}">${coGiay.tenCoGiay}</option>
-                                </c:if>
+                                <option value="${coGiay.id}">${coGiay.tenCoGiay}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -103,9 +102,7 @@
                         <label >Đế giầy</label>
                         <select class="form-control" name="deGiay.id">
                             <c:forEach items="${deGiay}" var="deGiay">
-                                <c:if test="${deGiay.trangThai eq 1}">
-                                    <option value="${deGiay.id}">${deGiay.tenDeGiay}</option>
-                                </c:if>
+                                <option value="${deGiay.id}">${deGiay.tenDeGiay}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -113,9 +110,7 @@
                         <label >Dây giày</label>
                         <select  class="form-control" name="dayGiay.id">
                             <c:forEach items="${dayGiay}" var="dayGiay">
-                                <c:if test="${dayGiay.trangThai eq 1}">
-                                    <option value="${dayGiay.id}">${dayGiay.tenDayGiay}</option>
-                                </c:if>
+                                <option value="${dayGiay.id}">${dayGiay.tenDayGiay}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -123,9 +118,7 @@
                         <label >Trọng lượng</label>
                         <select  class="form-control" name="trongLuong.id">
                             <c:forEach items="${trongLuong}" var="trongLuong">
-                                <c:if test="${trongLuong.trangThai eq 1}">
-                                    <option value="${trongLuong.id}">${trongLuong.tenTrongLuong}</option>
-                                </c:if>
+                                <option value="${trongLuong.id}">${trongLuong.tenTrongLuong}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -133,9 +126,7 @@
                         <label>Thương hiệu</label>
                         <select  class="form-control" name="thuongHieu.id">
                             <c:forEach items="${thuongHieu}" var="thuongHieu">
-                                <c:if test="${thuongHieu.trangThai eq 1}">
-                                    <option value="${thuongHieu.id}">${thuongHieu.tenThuongHieu}</option>
-                                </c:if>
+                                <option value="${thuongHieu.id}">${thuongHieu.tenThuongHieu}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -143,9 +134,7 @@
                         <label>Kiểu buộc</label>
                         <select  class="form-control" name="kieuBuoc.id">
                             <c:forEach items="${kieuBuoc}" var="kieuBuoc">
-                                <c:if test="${kieuBuoc.trangThai eq 1}">
-                                    <option value="${kieuBuoc.id}">${kieuBuoc.tenKieuBuoc}</option>
-                                </c:if>
+                                <option value="${kieuBuoc.id}">${kieuBuoc.tenKieuBuoc}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -153,9 +142,9 @@
                         <label>Đinh tán giầy</label>
                         <select  class="form-control" name="dinhTanGiay.id">
                             <c:forEach items="${dinhTanGiay}" var="dinhTanGiay">
-                                <c:if test="${dinhTanGiay.trangThai eq 1}">
-                                    <option value="${dinhTanGiay.id}">${dinhTanGiay.tenDinhTanGiay}</option>
-                                </c:if>
+                                <option value="${dinhTanGiay.id}">
+                                        ${dinhTanGiay.tenDinhTanGiay}
+                                </option>
                             </c:forEach>
                         </select>
                     </div>

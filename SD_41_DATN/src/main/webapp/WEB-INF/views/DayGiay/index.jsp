@@ -5,7 +5,7 @@
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Title</title>
+    <title>Dây giầy</title>
 </head>
 <body>
 <%@ include file="../templates/Admin/Layouts/GiayTheThao/_HeaderGiayTheThao.jsp" %>
@@ -56,7 +56,7 @@
                 <td>${d.ngayTao}</td>
                 <td>${d.ngaySua}</td>
                 <td>${d.ghiChu}</td>
-                <td>${d.trangThai == 0 ? "Đã kích hoạt" : "Chưa kích hoạt"}</td>
+                <td style="padding-left: 70px">${d.trangThai == 1 ? "✔" : "✖"}</td>
 
                 <td>
                         <%--                    <a href="/user/delete/${d.id}" class="btn btn-danger btn-sm">Remove</a>--%>

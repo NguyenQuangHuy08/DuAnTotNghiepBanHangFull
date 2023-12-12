@@ -14,9 +14,9 @@
 
     Swal.fire({
         icon: 'success',
-        title: '<span style="font-size: 24px;">Chức năng này hiện tại không áp dụng cho loại tài khoản này!</span>',
+        title: '<span style="font-size: 24px;color: red">Xin lỗi hiện tại chức năng này không áp dụng cho loại tài khoản này!</span>',
         showConfirmButton: false, // Ẩn nút OK
-        timer: 1600, // Thời gian hiển thị thông báo (miligiây)
+        timer: 2000, // Thời gian hiển thị thông báo (miligiây)
 
     }).then(() => {
 

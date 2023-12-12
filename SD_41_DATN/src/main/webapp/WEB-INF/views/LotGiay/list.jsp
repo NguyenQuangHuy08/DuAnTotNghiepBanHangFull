@@ -47,7 +47,7 @@
                 <td style="padding-top: 55px; text-align: center">${lg.ghiChu}</td>
                 <td style="padding-top: 55px; text-align: center">${lg.ngayTao}</td>
                 <td style="padding-top: 55px; text-align: center">${lg.ngaySua}</td>
-                <td style="padding-top: 55px; text-align: center">${lg.trangThai==1 ?"Còn" : "Hết"}</td>
+                <td style="padding-top: 55px; text-align: center">${lg.trangThai==1 ? "✔" : "✖"}</td>
                 <td>
                     <a href="${pageContext.request.contextPath}/LotGiay/edit/${lg.id}"><button class="btn btn-primary">Edit</button></a>
                     <a href="${pageContext.request.contextPath}/LotGiay/delete/${lg.id}" class="btn btn-danger">Delete</a>

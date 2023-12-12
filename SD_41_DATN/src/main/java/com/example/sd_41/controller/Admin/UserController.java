@@ -50,7 +50,9 @@ public class UserController {
 
     @GetMapping()
     public String form(){
+
         return "User/index";
+
     }
 
     @GetMapping("/hien-thi")

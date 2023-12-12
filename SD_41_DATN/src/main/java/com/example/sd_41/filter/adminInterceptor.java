@@ -22,27 +22,27 @@ public class adminInterceptor implements HandlerInterceptor {
 
     )throws Exception{
 
-           Object object = request.getSession().getAttribute("userLog");//Lưu địa chỉ đăng nhập
-           User user = (User) object;
+        Object object = request.getSession().getAttribute("userLog");//Lưu địa chỉ đăng nhập
+        User user = (User) object;
 
-           //Danh cho tài khoản ADMIN
-           if (user == null){
+        //Danh cho tài khoản ADMIN
+        if (user == null){
 
-                 //Chưa login
-                response.sendRedirect(request.getContextPath() + "/UserLog/login");
-                return false;
+            //Chưa login
+            response.sendRedirect(request.getContextPath() + "/UserLog/login");
+            return false;
 
-           }
-           //Check quyền đăng nhập
-           if(user.getRole() != RoleEnum.ADMIN){
+        }
+        //Check quyền đăng nhập
+        if(user.getRole() != RoleEnum.ADMIN){
 
-                    response.setStatus(403);
-                    response.sendRedirect(request.getContextPath() + "/UserLog/showLogTaiKhoanKhongApDung");
-                    return false;
+            response.setStatus(403);
+            response.sendRedirect(request.getContextPath() + "/UserLog/showLogTaiKhoanKhongApDung");
+            return false;
 
-           }
+        }
 
-            return true;
+        return true;
 
     }
 

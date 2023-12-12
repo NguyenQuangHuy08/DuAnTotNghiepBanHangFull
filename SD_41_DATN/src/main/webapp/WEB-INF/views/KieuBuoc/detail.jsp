@@ -34,19 +34,17 @@
     <div class="form-group">
         <label>Trạng thái</label>
         <div class="form-check">
-            <form:radiobutton cssClass="form-check-input" path="trangThai" value="0" checked="true" />
+            <form:radiobutton cssClass="form-check-input" path="trangThai" value="1" checked="true" />
             <label class="form-check-label">Đang kích hoạt</label>
         </div>
         <div class="form-check">
-            <form:radiobutton cssClass="form-check-input" path="trangThai" value="1" />
+            <form:radiobutton cssClass="form-check-input" path="trangThai" value="0" />
             <label class="form-check-label">Chưa kích hoạt</label>
         </div>
     </div>
 
     <button class="btn btn-success">update</button>
     </div>
-
-
 
 </form:form>
 <%@ include file="../templates/Admin/Layouts/GiayTheThao/_FooterGiayTheThao.jsp" %>

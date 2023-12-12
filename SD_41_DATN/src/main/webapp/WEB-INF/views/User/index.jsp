@@ -44,6 +44,7 @@
                 <th>Giới tính</th>
                 <th>SDT</th>
                 <th>Trạng thái</th>
+                <th>Role</th>
                 <th>Action</th>
             </tr>
             </thead>
@@ -56,7 +57,7 @@
                     <td>${d.gioiTinh}</td>
                     <td>${d.soDienThoai}</td>
                     <td>${d.trangThai == 0 ? "Đang hoạt động" : "Đã nghỉ làm"}</td>
-
+                    <td>${d.role}</td>
                     <td>
                             <%--                    <a href="/user/delete/${d.id}" class="btn btn-danger btn-sm">Remove</a>--%>
                         <a href="/user/detail/${d.id}" class="btn btn-info btn-sm">Detail</a>

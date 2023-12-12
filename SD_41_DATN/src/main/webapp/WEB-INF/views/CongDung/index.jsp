@@ -11,7 +11,7 @@
 <%@ include file="../templates/Admin/Layouts/GiayTheThao/_HeaderGiayTheThao.jsp" %>
 
 <div class="container">
-    <h1>Công Dụng</h1>
+    <h1 style="color: black;text-align: center">Công Dụng</h1>
     <div>
         <form action="/congDung/filter">
             <h6 style="color:black;margin-top: 10px">Trạng thái</h6>
@@ -56,7 +56,7 @@
                     <td>${d.ngayTao}</td>
                     <td>${d.ngaySua}</td>
                     <td>${d.ghiChu}</td>
-                    <td>${d.trangThai == 0 ? "Đã kích hoạt" : "Chưa kích hoạt"}</td>
+                    <td style="padding-left: 45px">${d.trangThai == 1 ?"✔" : "✖"}</td>
 
                     <td>
                             <%--                    <a href="/user/delete/${d.id}" class="btn btn-danger btn-sm">Remove</a>--%>
