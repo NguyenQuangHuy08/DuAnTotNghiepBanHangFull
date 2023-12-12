@@ -25,42 +25,31 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-    <style>
+        <style>
 
-        /* Ẩn ô input mặc định */
-        #fileInput {
-            display: none;
-        }
-
-        /* Tùy chỉnh nút chọn tệp ảnh */
         .custom-file-upload {
-            height: 200px;
-            /*width: 300px;*/
+            border: 2px dashed #cacaca;
+            border-radius: 50% 50% 50%;
+            background-color: rgba(255, 255, 255, 1);
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 20px;
-            cursor: pointer;
-            border: 2px dashed #cacaca;
-            background-color: rgba(255, 255, 255, 1);
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0px 48px 35px -48px rgba(0, 0, 0, 0.1);
-            position: relative;
+            height: 170px;
+            width: 190px;
         }
 
         .custom-file-upload .icon {
             display: flex;
             align-items: center;
             justify-content: center;
-
         }
 
-        .custom-file-upload .icon svg {
-            height: 80px;
-            fill: rgba(75, 85, 99, 1);
-
+        .custom-file-upload .icon img {
+            max-height: 100%;
+            max-width: 100%;
+            border-radius: 50%;
         }
 
         .custom-file-upload .text {
@@ -72,28 +61,19 @@
         .custom-file-upload .text span {
             font-weight: 400;
             color: rgba(75, 85, 99, 1);
-
         }
 
         .custom-file-upload input {
             display: none;
-
         }
 
-
-        .preview-image {
-
-            position: absolute;
-            top: 0px;
-            width: 100%;
-            height: 100%;
-            border-radius: 10px 10px 10px;
-
-
+        #preview-image {
+            max-height: 100%;
+            max-width: 100%;
         }
-
-
     </style>
+
+
 </head>
 <body>
 
@@ -108,7 +88,20 @@
 
                 <div class="row" style="width: 800px">
 
-                    <div class="col-3" style="margin-top: 70px">
+                    <div class="col-3" style="margin-top: 10px">
+
+                        <label style="margin-top: 60px" class="custom-file-upload" for="file">
+                            <div class="icon">
+                                <img style="max-height: 100%;max-width: 100%" id="preview-image" src="${pageContext.request.contextPath}/upload/${khachHang.link}" alt="Image">
+                            </div>
+                            <div class="text">
+                                <span>Chọn ảnh</span>
+                            </div>
+                            <input type="file" id="file" name="file" onchange="previewImage()">
+                        </label>
+                        <div class="thongBao" style="color: red">
+                            ${imageNull}
+                        </div>
 
                     </div>
 
@@ -120,6 +113,7 @@
                                 <frm:input class="form-control" placeholder="Email" cssStyle="width: 250px; margin-left: 40px; margin-right: 30px" path="email"/>
                                 <frm:errors path="email" style="color: red;margin-left: 35px"></frm:errors>
                                 <label style="color: red;margin-left: 40px">${erCheckEmailKhachHangNull}</label>
+                                <label style="color: red;margin-left: 40px">${erMailgmail}</label>
                                 <label style="color: red;margin-left: 40px">${erMail}</label>
                                 <label style="color: red;margin-left: 40px">${erCheckEmail}</label>
                                 <label style="color: red;margin-left: 40px">${erCheckEmailSo}</label>
@@ -131,7 +125,7 @@
                                 <frm:input class="form-control" type="password" placeholder="Mật khẩu"
                                            cssStyle="width: 250px; margin-left: 30px" path="matKhau"/>
                                 <frm:errors path="matKhau"></frm:errors>
-                                <label class="">${matKhauNotNull}</label>
+                                <label class="" style="color: red; margin-left: 40px">${matKhauNotNull}</label>
                             </div>
                         </div>
                         <div class="row">
@@ -167,8 +161,11 @@
                                 <frm:input class="form-control" placeholder="Số điện thoại"
                                            cssStyle="width: 250px; margin-left: 30px" path="soDienThoai"/>
                                 <frm:errors path="soDienThoai"></frm:errors>
-                                <label class="">${soDienThoaiNotNull}</label>
-                                <label>${soDienThoaiHopLe}</label>
+                                <label style="color: red;margin-left: 40px">${soDienThoaiNotNull}</label>
+                                <label style="color: red;margin-left: 40px">${erCheckSoDienThoaiNumer}</label>
+                                <label style="color: red;margin-left: 40px">${erCheckSoDienThoaiString}</label>
+                                <label style="color: red;margin-left: 40px">${erLogSoDienThoaiNumber}</label>
+
                             </div>
                         </div>
                         <div class="row">
@@ -176,6 +173,9 @@
                                 <label style="margin-left: 40px; margin-top: 20px">Địa chỉ cụ thể<span
                                         style="color: red;margin-left: 5px">*</span></label>
                                 <frm:input class="form-control" placeholder="Địa chỉ" cssStyle="width: 250px; margin-left: 40px" path="diaChi"/>
+                                <label style="color: red;margin-left: 40px">${diaChiNotNull}</label>
+                                <label style="color: red;margin-left: 40px">${diaChiHopLe}</label>
+
                             </div>
                             <div class="col-6">
                                 <label for="province" style="margin-left: 40px; margin-top: 20px">Thành phố/Tỉnh<span
@@ -187,7 +187,9 @@
                                 </select>
                                 <input type="hidden" id="tinh1" name="quocGia1">
                                 <div class="er">
-                                    <span style="color: red">${quocGia1}</span>
+                                    <label style="color: red;margin-left: 40px">${quocGia1}</label>
+                                    <label style="color: red;margin-left: 40px">${erCheckThanhPhoNull}</label>
+
                                 </div>
                             </div>
                         </div>
@@ -202,7 +204,8 @@
                                 </select>
                                 <input type="hidden" id="huyen1" name="thanhPho1">
                                 <div class="er">
-                                    <span style="color: red">${thanhPho1}</span>
+                                    <label style="color: red;margin-left: 40px">${thanhPho1}</label>
+                                    <label style="color: red;margin-left: 40px">${erCheckHuyenNull}</label>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -215,7 +218,8 @@
                                 </select>
                                 <input type="hidden" id="xa1" name="diaChi1">
                                 <div class="er">
-                                    <span style="color: red">${diaChi1}</span>
+                                    <label style="color: red;margin-left: 40px">${diaChi1}</label>
+                                    <label style="color: red;margin-left: 40px">${erCheckXaNull}</label>
                                 </div>
                             </div>
                         </div>
@@ -247,38 +251,62 @@
 <script src="/vendor/tilt/tilt.jquery.min.js"></script>
 
 
+<%--Todo code js cho image--%>
+
 <script>
-    $('.js-tilt').tilt({
-        scale: 1.1
-    })
+    function previewImage() {
+        var preview = document.getElementById('preview-image');
+        var fileInput = document.getElementById('file');
+        var file = fileInput.files[0];
+        var reader = new FileReader();
 
-    //    js cho image
-    const fileInput = document.getElementById('fileInput');
-    const customFileUpload = document.querySelector('.custom-file-upload');
-
-    fileInput.addEventListener('change', function () {
-        const file = fileInput.files[0];
-        if (file) {
-            const reader = new FileReader();
-
-            reader.onload = function (e) {
-                const previewImage = document.createElement('img');
-                previewImage.src = e.target.result;
-                previewImage.alt = 'Uploaded Image';
-                previewImage.classList.add('preview-image');
-
-                // Xóa các hình ảnh xem trước hiện tại (nếu có)
-                const existingPreviewImages = customFileUpload.querySelectorAll('.preview-image');
-                existingPreviewImages.forEach(img => img.remove());
-
-                customFileUpload.appendChild(previewImage);
-            };
-
-            reader.readAsDataURL(file);
+        reader.onloadend = function () {
+            preview.src = reader.result;
         }
-    });
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = "image.jpg"; // Ảnh mẫu
+        }
+    }
+
+    function updateImage(updatedImageUrl) {
+        // Thêm tham số ngẫu nhiên để tránh lưu trữ cache
+        var randomParam = Date.now();
+        updatedImageUrl += "?random=" + randomParam;
+
+        // Cập nhật nguồn ảnh
+        document.getElementById('preview-image').src = updatedImageUrl;
+
+        console.log("Ảnh đã được cập nhật!");
+    }
+
+    function submitForm() {
+        // Bạn có thể cần thêm logic ở đây để xử lý việc gửi biểu mẫu qua AJAX hoặc gửi thông thường
+
+        // Ví dụ: Giả sử bạn sử dụng AJAX để gửi biểu mẫu
+        $.ajax({
+            url: "${pageContext.request.contextPath}/TrangChu/ThongTinCaNhan/Luu",
+            type: "POST",
+            data: new FormData($("#yourFormId")[0]),
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                // Giả sử dữ liệu chứa URL ảnh đã cập nhật
+                var updatedImageUrl = data.updatedImageUrl;
+
+                // Gọi hàm để cập nhật ảnh
+                updateImage(updatedImageUrl);
+            },
+            error: function () {
+                // Xử lý lỗi nếu cần
+            }
+        });
+    }
 
 </script>
+
 <!--===============================================================================================-->
 
 <%--Todo code js bên cho giao hàng nhanh --%>

@@ -103,6 +103,15 @@ public class KhachHangController {
 
     }
 
+    //Todo code log view Đăng ký tài khoản thành công
+    @GetMapping("khachHang/DangKyTaiKhoanThanhCong")
+    public String showViewDangKyTaiKhoanThanhCong(){
+
+        System.out.println("Đăng ký tài khoản thành công !");
+        return "/templates/Users/Layouts/Log/dangKyTaiKhoanThanhCong";
+
+    }
+
     //Todo code đăng ký tài khoản khách hàng
     @RequestMapping(value = "/KhachHang/view-createDanngKy")
     public String create(Model model){
@@ -121,13 +130,39 @@ public class KhachHangController {
                          BindingResult result,
                          Model model,
                          RedirectAttributes attributes,
-                         HttpSession session){
+                         HttpSession session,
+                         @RequestParam("file") MultipartFile file
+        ){
 
         if (result.hasErrors()){
 
             return "/templates/Users/Layouts/DangNhap/Register";
 
         }
+
+
+        //Check trống thành phố
+        if(quocGia1 == null || quocGia1.isEmpty() || quocGia1.trim().length() ==0){
+
+            model.addAttribute("erCheckThanhPhoNull","Địa chỉ thành phố không được để trống!");
+            return "/templates/Users/Layouts/DangNhap/Register";
+
+        }
+
+        if(thanhPho1 == null || thanhPho1.isEmpty() || thanhPho1.trim().length() ==0){
+
+            model.addAttribute("erCheckHuyenNull","Địa chỉ quận huyện không được để trống!");
+            return "/templates/Users/Layouts/DangNhap/Register";
+
+        }
+
+        if(diaChi1 == null || diaChi1.trim().length() ==0 || diaChi1.isEmpty()){
+
+            model.addAttribute("erCheckXaNull","Địa chỉ xã không được để trống!");
+            return "/templates/Users/Layouts/DangNhap/Register";
+
+        }
+
 
         //Check trống email
         if(khachHang.getEmail() == null
@@ -142,7 +177,7 @@ public class KhachHangController {
         //Check email phải có đuôi @gmail.com
         if(!khachHang.getEmail().endsWith("@gmail.com")){
 
-            model.addAttribute("erMail@gmail","Email của bạn không đúng định dạng !");
+            model.addAttribute("erMailgmail","Email của bạn không đúng định dạng (.@gmail.com)!");
             return "/templates/Users/Layouts/DangNhap/Register";
 
         }
@@ -194,13 +229,16 @@ public class KhachHangController {
         }
 
 
+        //Check mật khẩu
         if (khachHang.getMatKhau() == null || khachHang.getMatKhau().isEmpty() || khachHang.getMatKhau().trim().length()==0){
-            model.addAttribute("matKhauNotNull", "Mật khẩu không được để trống");
 
+            model.addAttribute("matKhauNotNull", "Mật khẩu không được để trống");
             return "/templates/Users/Layouts/DangNhap/Register";
 
         }
 
+
+        //Chech địa chỉ khách hàng
         if (khachHang.getDiaChi() == null || khachHang.getDiaChi().isEmpty() || khachHang.getDiaChi().trim().length()==0){
 
             model.addAttribute("diaChiNotNull", "Địa chỉ không được để trống");
@@ -209,31 +247,77 @@ public class KhachHangController {
         }
 
         if (khachHang.getDiaChi().matches("^\\d.*") || !khachHang.getDiaChi().matches(".*[a-zA-Z].*")){
+
             model.addAttribute("diaChiHopLe", "Địa chỉ không hợp lệ");
-
             return "/templates/Users/Layouts/DangNhap/Register";
 
         }
 
-        //Check thành phố
-        if (quocGia1 == null || quocGia1.isEmpty()) {
-            result.rejectValue("quocGia1", "Thành phố không được để trống!");
+        //Check số điện thoai
+        if(khachHang.getSoDienThoai() == null
+            || khachHang.getSoDienThoai().trim().length() == 0
+            || khachHang.getSoDienThoai().isEmpty()){
+
+            model.addAttribute("soDienThoaiNotNull", "Số điện thoại không được để trống !");
             return "/templates/Users/Layouts/DangNhap/Register";
+
         }
 
-        if (thanhPho1 == null || thanhPho1.isEmpty()) {
-            result.rejectValue("thanhPho1", "Huyện không được để trống!");
+        //Check số điện thoại phải là số
+        try {
+
+            int soDienThoai = Integer.parseInt(khachHang.getSoDienThoai());
+
+            if(soDienThoai < 0){
+
+                attributes.addFlashAttribute("erCheckSoDienThoaiNumer","Xin lỗi số điện thoại không được nhỏ hơn 0 !");
+                return "/templates/Users/Layouts/DangNhap/Register";
+
+            }
+        }catch (NumberFormatException e){
+
+            e.printStackTrace();
+            attributes.addFlashAttribute("erCheckSoDienThoaiString","Xin lỗi số điện thoại không được là chữ!");
             return "/templates/Users/Layouts/DangNhap/Register";
+
         }
 
-        if (diaChi1 == null || diaChi1.isEmpty()) {
-            result.rejectValue("diaChi1", "Xã không được để trống!");
+        String phoneNumberRegex = "^0\\d{9}$";
+
+        if (!khachHang.getSoDienThoai().matches(phoneNumberRegex)) {
+
+            attributes.addFlashAttribute("erLogSoDienThoaiNumber", "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại bắt đầu bằng số 0 và có độ dài là 10 số.");
             return "/templates/Users/Layouts/DangNhap/Register";
+
         }
-        //check huyện
 
+        //Chọn ảnh
 
-        //check xã
+        try {
+
+            if (!file.isEmpty()) {
+                // Lưu file vào thư mục upload
+                String fileOriginal = file.getOriginalFilename();
+                String fileDest = context.getRealPath("/upload/" + fileOriginal);
+                file.transferTo(new File(fileDest));
+
+                // Cập nhật trường link trong đối tượng KhachHang
+                khachHang.setLink(fileOriginal);
+                System.out.println("Lưu ảnh thành công !");
+
+            }else{
+
+                model.addAttribute("imageNull", "Hình ảnh không được để trống !");
+                return "/templates/Users/Layouts/DangNhap/Register";
+
+            }
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+
 
 
         LocalDate ngayTao = LocalDate.now();
@@ -263,12 +347,9 @@ public class KhachHangController {
         gioHangRepository.save(gioHang);
         attributes.addFlashAttribute("message", "Đăng kí tài khoản thành công");
 
-        return "redirect:/KhachHang/loginViewDangNhap";
+        return "redirect:/khachHang/DangKyTaiKhoanThanhCong";
 
     }
-
-
-
 
     //Todo code edit khách hàng
     @RequestMapping("/KhachHang/edit/{id}")
@@ -580,7 +661,6 @@ public class KhachHangController {
         return "/templates/Users/Layouts/Log/thayDoiMatKhauKhachHangThanhCong";
 
     }
-
 
     //Todo code view thay đổi thông tin của khách hàng
      @GetMapping("/KhachHang/viewQuenMatKhau/*")
