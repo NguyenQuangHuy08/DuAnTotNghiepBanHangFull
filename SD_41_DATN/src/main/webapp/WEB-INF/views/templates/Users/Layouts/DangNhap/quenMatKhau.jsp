@@ -39,10 +39,9 @@
                                       *
                                       </span>
                                   </h5>
-
                             </div>
                             <div class="col-8">
-                                <input class="form-control" type="text" name="email" placeholder="Vui lòng nhập địa chỉ email để có thể">
+                                <input class="form-control" type="text" name="email" placeholder="Vui lòng nhập địa chỉ email">
                                 <div class="thongBao" style="color: red">
                                     ${loi}
                                     ${loiEmailNull}
@@ -58,6 +57,10 @@
             </form>
         </div>
     </form>
+
+
+
+
 
     <div class="col-12" style="margin-top: 20px">
         <div class="row" style="width: 1160px; margin-top: 65px">

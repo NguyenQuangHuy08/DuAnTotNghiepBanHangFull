@@ -89,7 +89,7 @@ public class DangNhapUserController {
 
         }
 
-            model.addAttribute("messageErol","Email hoặc mật khẩu không đúng!");
+            model.addAttribute("messageErol","Email hoặc mật khẩu không đúng hoặc Tài khoản này chưa được tạo!");
             return "/templates/Admin/Layouts/DangNhap/Login";
 
 

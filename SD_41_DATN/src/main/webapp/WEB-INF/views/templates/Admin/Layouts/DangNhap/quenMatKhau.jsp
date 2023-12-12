@@ -34,71 +34,33 @@
 <div class="limiter">
     <div class="container-login100">
         <div class="wrap-login100">
-            <div class="login100-pic js-tilt" data-tilt>
-                <img src="/images/img-01.jpg" alt="IMG">
-            </div>
-
-            <frm:form modelAttribute="user"
-                      action="${pageContext.request.contextPath}/UserLog/login"
-                      method="POST" class="login100-form validate-form">
-
+           <div class="container" style="border: 1px solid red">
+               <div class="row">
+                   <div class="col-5" style="border: 1px solid red">
+                       <img src="/images/img-01.jpg" alt="IMG">
+                   </div>
+                   <div class="col-7" style="border: 1px solid red">
                     <div class="row">
                         <div class="col-12">
-                            <h6 style="margin-left: 10px;margin-bottom: 10px;color: red">${message}</h6>
-                            <h5 style="margin-left: 10px;margin-bottom: 10px;color: red">${messageLogout}</h5>
+                            <p style="color: black;font-size: 17px">Vui lòng nhập email tạo tài khoản của bạn !</p>
+                        </div>
+                        <div class="col-12">
+                            <form method="post">
+
+                                <form method="post">
+
+                                    <input class="form-control" type="text" name="email" placeholder="Vui lòng nhập địa chỉ email!">
+
+                                    <button class="btn btn-primary" formaction="/Admin/QuenMatKhau" style="margin-left: 30px">Gửi mật khẩu mới</button>
+
+                                </form>
+
+                            </form>
                         </div>
                     </div>
-					<span class="login100-form-title" style="color: black; font-size: 30px; font-weight: bold" >
-                        Đăng nhập
-					</span>
-
-                <div class="wrap-input100 validate-input" data-validate = "....@email.com">
-                    <frm:input path="email" class="input100" type="text" name="email" placeholder="Email" style="font-weight: bold; font-size: 15px"/>
-
-                    <span class="focus-input100"></span>
-                    <span class="symbol-input100">
-							<i class="fa fa-envelope" aria-hidden="true"></i>
-					</span>
-                        <%--                    <div class="textTitle"><frm:errors class="errors" path="email" /></div>--%>
-                </div>
-                <div>
-                    <label>
-
-                        <h5></h5>
-
-                    </label>
-                </div>
-                <div class="wrap-input100 validate-input" data-validate = "Input type number or String">
-                    <frm:input path="matKhau" class="input100" type="password" name="pass" placeholder="Password" style="font-weight: bold; font-size: 15px"/>
-                    <span class="focus-input100"></span>
-                    <span class="symbol-input100">
-							<i class="fa fa-lock" aria-hidden="true"></i>
-                    </span>
-                </div>
-
-                <br>
-                <div class="label" style="color: red; font-size: 15px">
-                        <span style="color: red">${erLogLogin}</span>
-                        <span style="color: red">${messageTrangThai}</span>
-                        <span style="color: red">${messageErol}</span>
-                        <span style="color: red">${erUserNoNull}</span>
-                </div>
-
-                <div class="container-login100-form-btn">
-                    <button type="submit" class="login100-form-btn">
-                        Login
-                    </button>
-                </div>
-
-                <div class="text-center p-t-12">
-						<span class="txt1">
-						</span>
-                    <a class="txt2" href="/Admin/viewQuenMatKhau/2">
-                        <u style="font-size: 15px ; color: black">Quên mật khẩu</u>
-                    </a>
-                </div>
-
-            </frm:form>
+                   </div>
+               </div>
+           </div>
         </div>
     </div>
 </div>

@@ -663,7 +663,7 @@ public class KhachHangController {
     }
 
     //Todo code view thay đổi thông tin của khách hàng
-     @GetMapping("/KhachHang/viewQuenMatKhau/*")
+    @GetMapping("/KhachHang/viewQuenMatKhau/*")
     public String viewQuenMatKhau(HttpServletRequest request, Model model) {
         String url = request.getRequestURI();
         String[] p = url.split("/KhachHang/viewQuenMatKhau/");
