@@ -494,7 +494,11 @@ public class KhachHangController {
 
     //Todo code edit thông tin khách hàng
     @GetMapping("/TrangChu/ThongTinCaNhan")
-    public String thongTinKhachHang(HttpSession session, Model model, RedirectAttributes attributes) {
+    public String thongTinKhachHang(
+            HttpSession session,
+            Model model,
+            RedirectAttributes attributes) {
+
         if (session.getAttribute("khachHangLog") != null) {
 
             UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
@@ -628,6 +632,24 @@ public class KhachHangController {
 
                     }
 
+                    //Check mật khẩu
+                    if(khachHang.getMatKhau() == null
+                        || khachHang.getMatKhau().trim().length()==0
+                        || khachHang.getMatKhau().isEmpty()){
+
+                        attributes.addFlashAttribute("erCheckPassWordNull", "Mật khẩu không được để trống !");
+                        return "redirect:/TrangChu/ThongTinCaNhan";
+
+                    }
+
+                    if(khachHang.getMatKhau().trim().length() < 7){
+
+                        attributes.addFlashAttribute("erCheckMatKhauLenght", "Mật khẩu phải có độ dài từ 7 ký tự trở lên!");
+                        return "redirect:/TrangChu/ThongTinCaNhan";
+
+                    }
+
+
                     // Cập nhật thông tin từ form
                     khachHangDangNhap.setMatKhau(khachHang.getMatKhau());
                     khachHangDangNhap.setTenKhachHang(khachHang.getTenKhachHang());
@@ -652,6 +674,12 @@ public class KhachHangController {
         return "/templates/Users/Layouts/DangNhap/CaiDat";
 
     }
+
+
+
+
+
+
 
     //Todo code log thông báo thay đổi mật khẩu thành công
     @GetMapping("KhachHang/ThayDoiMatKhauThanhCong")
@@ -746,9 +774,5 @@ public class KhachHangController {
         }
 
     }
-
-
-
-
 
 }

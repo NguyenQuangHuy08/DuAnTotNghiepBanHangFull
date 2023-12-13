@@ -107,7 +107,11 @@
                                     Mật khẩu
                                     <span style="color: red">*</span>
                                 </label>
-                                <input class="form-control" type="password" id="matKhau" name="matKhau" value="${khachHang.matKhau}" />
+                                <input class="form-control" type="password" id="matKhau" name="matKhau" value="${khachHang.matKhau}"/>
+                                <div class="thongBao" style="color: red">
+                                    ${erCheckPassWordNull}
+                                    ${erCheckMatKhauLenght}
+                                </div>
                             </div>
                             <div class="col-6">
                                 <label for="tenKhachHang" style="color: black;margin-top: 20px">
@@ -120,12 +124,6 @@
                                     ${erCheckTen}
                                 </div>
                             </div>
-<%--                            <div class="col-6">--%>
-<%--                                <label for="gioiTinh" style="color: black;margin-top: 20px">--%>
-<%--                                    Giới tính:--%>
-<%--                                </label>--%>
-<%--                                <input  class="form-control" type="text" id="gioiTinh" name="gioiTinh" value="${khachHang.gioiTinh}" />--%>
-<%--                            </div>--%>
                             <div class="col-6">
                                 <label for="soDienThoai" style="color: black;margin-top: 20px">
                                     Số điện thoại:
@@ -155,13 +153,7 @@
                             <div class="col-3">
                                 <button style="margin-top: 40px;margin-left: 15px" type="submit" class="btn btn-primary">Lưu</button>
                             </div>
-<%--                            <div class="col-3">--%>
-<%--                                <a href="/TrangChu/listGiayTheThao">--%>
-<%--                                    <p style="border: 1px solid #0069D9;color: white;margin-top: 30px; width: 105px; margin-left: 20px; height: 37px; border-radius: 5px 5px 5px;padding-top: 5px;padding-left: 9px;background-color: #007BFF;font-size: 15px">--%>
-<%--                                        Đổi mật khẩu--%>
-<%--                                    </p>--%>
-<%--                                </a>--%>
-<%--                            </div>--%>
+
                         </div>
 
                     </div>

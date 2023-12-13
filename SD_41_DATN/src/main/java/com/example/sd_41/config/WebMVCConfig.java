@@ -142,7 +142,9 @@ public class WebMVCConfig implements WebMvcConfigurer {
                         "LotGiay/list",
                         "/LotGiay/create",
                         "/LotGiay/edit/{id}",
-                        "/LotGiay/delete/{id}"
+                        "/LotGiay/delete/{id}",
+                        //Thay đổi thông tin
+                        "/TrangChu/ThongTinCaNhan/Admin"
 
                         );
 

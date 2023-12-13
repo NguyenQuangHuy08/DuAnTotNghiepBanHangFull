@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.UUID;
+
 @Controller
 @RequestMapping(value = "/UserLog")
 public class DangNhapUserController {
@@ -78,6 +80,9 @@ public class DangNhapUserController {
             System.out.println("Đăng nhập thành công !");
             session.setAttribute("userLog",userData);
             session.setAttribute("maUser",maUser);
+            UUID idUser = userData.getId();
+            session.setAttribute("idUser",idUser);
+
 
             return "redirect:/UserLog/showSweetAlertLoginAdminSuccess";
 

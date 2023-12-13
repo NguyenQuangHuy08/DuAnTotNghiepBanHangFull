@@ -33,6 +33,9 @@ public class User {
     @Column(name = "email")
     private  String email	;
 
+    @Column(name = "Url_Image")
+    private String link;
+
 //    @NotBlank(message = "Không được để trống")
     @Column(name = "matKhau")
     private  String matKhau	;
