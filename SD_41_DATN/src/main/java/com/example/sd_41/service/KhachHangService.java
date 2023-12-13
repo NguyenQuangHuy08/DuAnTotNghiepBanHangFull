@@ -68,4 +68,9 @@ public class KhachHangService implements KhachHangImpl {
 
     }
 
+    //Todo code dành cho bán hàng tại quậy
+    public List<KhachHang> getAll() {
+        return khachHangRepository.findAll();
+    }
+
 }

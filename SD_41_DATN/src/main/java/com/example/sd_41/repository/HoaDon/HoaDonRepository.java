@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -40,5 +41,9 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
     //Todo code áp dụng cho chương trình khuyến mãi cho hóa đơn
     @Query("select sum(hdct.soLuong) from HoaDonChiTiet hdct where hdct.hoaDon.id = ?1")
     String tongSl(UUID id);
+
+    //Todo code bán hàng tại quầy
+    List<HoaDon> findAllByTrangThaiOrderByNgayTaoDesc(int trangThai);
+
 
 }
