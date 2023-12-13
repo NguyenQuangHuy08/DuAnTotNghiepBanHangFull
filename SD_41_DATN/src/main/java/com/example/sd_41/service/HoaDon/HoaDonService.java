@@ -1,13 +1,12 @@
 package com.example.sd_41.service.HoaDon;
 
-import com.example.sd_41.model.GiayTheThaoChiTiet;
-import com.example.sd_41.model.HoaDon;
-import com.example.sd_41.model.HoaDonChiTiet;
-import com.example.sd_41.model.KhachHang;
+import com.example.sd_41.model.*;
 import com.example.sd_41.repository.HoaDon.HoaDonChiTietRepository;
 import com.example.sd_41.repository.HoaDon.HoaDonRepository;
 import com.example.sd_41.repository.KhachHangRepository;
+import com.example.sd_41.repository.SanPham.AllGiayTheThao.UserRepository;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoChiTietRepository;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,7 +35,7 @@ public class HoaDonService implements HoaDonServiceImpl{
     @Autowired
     private GiayTheThaoChiTietRepository gttctRepo;
 
-    //
+
 
     @Override
     public Page<HoaDon> listHoaDonFindByKhachHangAndTrangThai(UUID idKhachHang, int trangThai, Integer pageNo, Integer size){
@@ -115,9 +114,12 @@ public class HoaDonService implements HoaDonServiceImpl{
 
         KhachHang kh = null;
         if (hd.getKhachHang() != null) {
+
             kh = khRepo.findById(hd.getKhachHang().getId()).get();
 
         }
+
+
         LocalTime localTime = LocalTime.now();
         hd.setKhachHang(kh);
         // int count = (int) hoaDonRepository.count();
@@ -128,36 +130,76 @@ public class HoaDonService implements HoaDonServiceImpl{
         hd.setMess("N/A");
         hd.setTrangThai(0);
         return hoaDonRepository.save(hd);
+
     }
 
 
-    public HoaDon thanhToan(UUID id) {
+    public String thanhToan(UUID id) {
         HoaDon hd = hoaDonRepository.findById(id).get();
         List<HoaDonChiTiet> listHdct = hdctRepo.findAllByHoaDon(hd);
         GiayTheThaoChiTiet gttct = null;
         int sum = 0;
+        boolean check = false;
+        String s = "Các sản phẩm: \n\n";
         for (HoaDonChiTiet hdct: listHdct) {
             int donGia = hdct.getDonGia().intValue();
             int soLuong = Integer.parseInt(hdct.getSoLuong());
             int tong = donGia * soLuong;
             sum += tong;
             gttct = gttctRepo.findById(hdct.getGiayTheThaoChiTiet().getId()).get();
-            gttct.setSoLuong(String.valueOf(Integer.parseInt(gttct.getSoLuong()) - soLuong));
+            int sl = Integer.parseInt(gttct.getSoLuong()) - soLuong;
+            if (sl < 0) {
+                check = true;
+                s += gttct.getGiayTheThao().getTenGiayTheThao()+"\n";
+            }
+            gttct.setSoLuong(String.valueOf(sl));
         }
         BigDecimal thanhTien = new BigDecimal(sum);
         hd.setThanhTien(thanhTien);
         hd.setNgayThanhToan(LocalDate.now().toString());
         hd.setNgaySua(LocalDate.now().toString());
         if (hd == null) {
-            return null;
+            return "Hóa đơn không tồn tại";
         }
-        if(listHdct.size()==0){
-            return null;
+        if (listHdct.size() == 0) {
+            return "Không thể thanh toán vì không có sản phẩm nào.\nVui lòng chọn sản phẩm để thanh toán.";
         }
-        hd.setTrangThai(1);
-        return hoaDonRepository.save(hd);
+        if (check == true) {
+            return s+"\nkhông thể thanh toán vì số lượng trong kho không đủ.\nVui lòng thay đổi số lượng hoặc chọn sản phẩm khác để thanh toán";
+        }
+
+        //Trạng thái hóa đơn là 3 là thanh toán thành công
+
+        hd.setTrangThai(3);
+        //1: là bán hàng tại quầy
+        //2: là bán hàng online
+        hd.setHinhThuc(1);
+        hoaDonRepository.save(hd);
+        return "Thanh toán thành công";
+
     }
 
+
+      //Todo code lưu idUser vào hóa đơn
+
+        public void luuIdUserVaoHoaDon(UUID hoaDonId, UUID idUser) {
+            Optional<HoaDon> hoaDonOptional = hoaDonRepository.findById(hoaDonId);
+
+            if (hoaDonOptional.isPresent()) {
+                HoaDon hoaDon = hoaDonOptional.get();
+
+                // Lấy đối tượng User từ idUser và lưu vào hóa đơn
+                User user = new User();
+                user.setId(idUser);
+                hoaDon.setUser(user);
+
+                // Lưu hóa đơn có chứa idUser vào cơ sở dữ liệu
+                hoaDonRepository.save(hoaDon);
+            } else {
+                // Xử lý khi không tìm thấy hóa đơn
+                throw new RuntimeException("Không tìm thấy hóa đơn với ID: " + hoaDonId);
+            }
+        }
 
 
 

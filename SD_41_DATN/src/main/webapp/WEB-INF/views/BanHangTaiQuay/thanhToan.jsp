@@ -104,11 +104,13 @@ uri="http://www.springframework.org/tags/form" prefix="sf"%>
                 <table class="table table-hover" style="text-align: center">
         <thead>
           <tr>
-            <th scope="col">STT</th>
-            <th scope="col">Tên</th>
-            <th scope="col">Số lượng</th>
-            <th scope="col">Đơn giá</th>
-            <th scope="col">Tổng</th>
+                <th scope="col">STT</th>
+                <th scope="col">Tên</th>
+                <th scope="col">Size</th>
+                <th scope="col">Màu sắc</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Đơn giá</th>
+                <th scope="col">Tổng</th>
           </tr>
         </thead>
         <tbody>
@@ -116,11 +118,13 @@ uri="http://www.springframework.org/tags/form" prefix="sf"%>
           <c:if test="${f:length(list)!=0}">
             <c:forEach items="${list}" var="hdct" varStatus="status">
               <tr>
-                <td>${status.index+1}</td>
-                <td >${hdct.giayTheThaoChiTiet.giayTheThao.tenGiayTheThao}</td>
-                <td>${hdct.soLuong}</td>
-                <td>${hdct.donGia}</td>
-                <td>${hdct.soLuong*hdct.donGia}</td>
+                     <td>${status.index+1}</td>
+                     <td >${hdct.giayTheThaoChiTiet.giayTheThao.tenGiayTheThao}</td>
+                     <td >${hdct.giayTheThaoChiTiet.size.size}</td>
+                     <td >${hdct.giayTheThaoChiTiet.mauSac.tenMauSac}</td>
+                     <td>${hdct.soLuong}</td>
+                     <td>${hdct.donGia}</td>
+                     <td>${hdct.soLuong*hdct.donGia}</td>
               </tr>
             </c:forEach>
           </c:if>
@@ -199,13 +203,19 @@ uri="http://www.springframework.org/tags/form" prefix="sf"%>
             return response.text();
           })
           .then((datas)=>{
-            if(datas.trim().length!=0) {
-              var data = JSON.parse(datas);
-              alert("Thanh toán thành công");
-              window.location.href = "${pageContext.request.contextPath}/BanHangTaiQuay";
-            } else {
-              alert("Không thể thanh toán vì không có sản phẩm nào.\nVui lòng chọn sản phẩm để thanh toán.");
-            }
+            <%--if(datas.trim().length!=0) {--%>
+            <%--  var data = JSON.parse(datas);--%>
+            <%--  alert("Thanh toán thành công");--%>
+            <%--  window.location.href = "${pageContext.request.contextPath}/BanHangTaiQuay";--%>
+            <%--} else {--%>
+            <%--  alert("Không thể thanh toán vì không có sản phẩm nào.\nVui lòng chọn sản phẩm để thanh toán.");--%>
+            <%--}--%>
+
+              alert(datas);
+              if(datas=="Thanh toán thành công"){
+                  window.location.href = "${pageContext.request.contextPath}/BanHangTaiQuay";
+              }
+
           })
           .catch(error => {
             console.error('Error during POST request:', error);

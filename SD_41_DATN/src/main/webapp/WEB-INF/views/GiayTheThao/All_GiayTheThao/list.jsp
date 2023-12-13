@@ -87,7 +87,6 @@
              }
         }
         <%--        Danh cho giá bán--%>
-
         #priceSlider {
             width: 300px;
             margin: 0 auto;
@@ -433,12 +432,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
-
 
         <br>
     </div>

@@ -150,7 +150,7 @@
                 <span>Thống kê</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="/BanHangTaiQuay">
                 <i class="fas fa-fw fa-table"></i>
                 <span>Bán hàng tại quầy</span></a>
         </li>

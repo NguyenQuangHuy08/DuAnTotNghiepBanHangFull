@@ -224,7 +224,7 @@
                                     >
 
                                         <a href="${pageContext.request.contextPath}/GiayTheThao/detailThongTinGiayTheThao/${listGiay.id}">
-                                            <div class="card" style="height: 300px">
+                                            <div class="card" style="height: 300px;width: 200px">
                                                 <img class="card-img-top" style="height: 200px"
                                                      src="/upload/${listGiay.image.get(0).link}" alt="">
                                                 <div class="card-body">

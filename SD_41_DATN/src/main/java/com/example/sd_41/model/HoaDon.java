@@ -51,6 +51,9 @@ public class HoaDon {
     @Column(name = "ngaySua")
     private String ngaySua;
 
+    @Column(name = "hinhThuc")
+    private int hinhThuc;
+
     @Column(name = "trangThai")
     private int trangThai;
 

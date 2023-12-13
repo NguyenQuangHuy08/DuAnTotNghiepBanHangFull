@@ -16,7 +16,9 @@ public class GiayTheThaoChiTietService {
 
     //Todo code bán hàng tại quầy
     public List<GiayTheThaoChiTiet> getAll(){
+
         return repo.findAll();
+
     }
 
 

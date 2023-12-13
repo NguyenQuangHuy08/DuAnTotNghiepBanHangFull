@@ -93,10 +93,8 @@ public class BanHangTaiQuayAPIController {
     }
 
     @PostMapping("/hd/pay/{id}")
-    public HoaDon pay(@PathVariable("id") UUID id) {
-
+    public String pay(@PathVariable("id") UUID id) {
         return hdService.thanhToan(id);
-
     }
 
 
