@@ -24,17 +24,17 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
 
     //Todo code dành cho thống kê
 
-    @Query("SELECT SUM(hd.thanhTien) FROM HoaDon hd WHERE hd.trangThai = 3")
+    @Query("SELECT SUM(hd.thanhTien) FROM HoaDon hd WHERE hd.trangThai = 4")
     BigDecimal tinhTongDoanhThu();
 
-    @Query("SELECT COUNT(hd.maHoaDon) FROM HoaDon hd WHERE hd.trangThai = 3")
+    @Query("SELECT COUNT(hd.maHoaDon) FROM HoaDon hd WHERE hd.trangThai = 4")
     Integer tongDonHang();
 
     //Sản phẩm bán chạy nhất
     @Query("SELECT h, gttct FROM HoaDon h " +
             "JOIN HoaDonChiTiet hdct ON h.id = hdct.hoaDon.id " +
             "JOIN GiayTheThaoChiTiet gttct ON hdct.giayTheThaoChiTiet.id = gttct.id " +
-            "WHERE h.trangThai = 3")
+            "WHERE h.trangThai = 4")
 
     String timSanPhamBanChayNhat();
 

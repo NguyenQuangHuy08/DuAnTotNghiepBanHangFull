@@ -168,9 +168,9 @@ public class HoaDonService implements HoaDonServiceImpl{
             return s+"\nkhông thể thanh toán vì số lượng trong kho không đủ.\nVui lòng thay đổi số lượng hoặc chọn sản phẩm khác để thanh toán";
         }
 
-        //Trạng thái hóa đơn là 3 là thanh toán thành công
+        //Trạng thái hóa đơn là 4 là thanh toán thành công
 
-        hd.setTrangThai(3);
+        hd.setTrangThai(4);
         //1: là bán hàng tại quầy
         //2: là bán hàng online
         hd.setHinhThuc(1);

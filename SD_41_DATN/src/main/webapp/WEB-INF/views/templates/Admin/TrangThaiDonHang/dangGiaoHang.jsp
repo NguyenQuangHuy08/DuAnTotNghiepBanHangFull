@@ -49,31 +49,34 @@
 
 <div class="container" style="">
 
-    <div class="vertical-menu">
-        <a href="/Admin/xacNhanDonHangKhachHang" style="color: black;font-size: 18px;font-weight: lighter;margin-left: 10px">Chờ xác nhận</a>
-        <a href="/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCong" style="color: black;font-size: 18px;font-weight: lighter;margin-left: 10px">Đang giao</a>
-        <a href="/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCongHoanThanh" style="color: black;font-size: 18px;font-weight: lighter;margin-left: 10px">Hoàn thành</a>
-        <a href="" style="color: black;font-size: 18px;font-weight: lighter;margin-left: 10px">Đã hủy</a>
+    <div class="vertical-menu" style="background-color: #bac8f3">
+        <a href="/Admin/xacNhanDonHangKhachHangAll" style="color: black">All trạng thái đơn hàng</a>
+        <a href="/Admin/xacNhanDonHangKhachHang">Chờ xác nhận</a>
+        <a href="/Admin/HoaDon/XacNhanHoaDonDangDongGoi">Đang đóng gói</a>
+        <a href="/Admin/HoaDon/XacNhanHoaDonKhachHangDangGiao">Đang giao</a>
+        <a href="/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCongHoanThanh">Hoàn thành</a>
+        <a href="/Admin/HoaDon/DonHangBiHuy">Đã hủy</a>
     </div>
 
-    <div style="margin-left: 100px; padding: 1px 16px;">
-
-        <h3 style="margin-top: 30px;margin-bottom: 30px">Các đơn hàng đang giao cho khách hàng</h3>
+    <div style="overflow-x: auto;width: 100%">
+        <h3 style="text-align: center;color: black;margin-bottom: 70px;margin-top: 10px">Các đơn hàng đang giao cho khách hàng</h3>
         <form method="post">
             <table class="table">
                 <tr>
-                    <td scope="col">Mã</td>
-                    <td scope="col">Khách hàng</td>
-                    <td scope="col">Ngày tạo</td>
-                    <td scope="col">Tổng tiền</td>
-                    <td scope="col">Ghi chú</td>
-                    <td scope="col">Action</td>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Mã hóa đơn</td>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Khách hàng</td>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 300px">Ngày thanh toán</td>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 170px">Tổng tiền</td>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 300px">Thông tin nhận hàng</td>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 210px;text-align: center">Ghi chú</td>
+                    <%--                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Hình thức</td>--%>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Action</td>
                 </tr>
                 <c:forEach items="${page.content}" var="list">
                     <tr>
-                        <td scope="row">${list.maHoaDon}</td>
-                        <td scope="row">${list.khachHang.tenKhachHang}</td>
-                        <td>
+                        <td style="font-size: 14px;color: black;font-weight: bold">${list.maHoaDon}</td>
+                        <td style="font-size: 14px;color: black;font-weight: bold">${list.khachHang.tenKhachHang}</td>
+                        <td style="font-size: 14px;color: black;font-weight: bold">
                             <script>
                                 var ngayThanhToan = "${list.ngayThanhToan}";
                                 var parts = ngayThanhToan.split('-');
@@ -81,13 +84,19 @@
                                 document.write(formattedDate);
                             </script>
                         </td>
-                        <td>
+                        <td style="font-size: 14px;color: black;font-weight: bold">
                             <fmt:formatNumber type="" value="${list.thanhTien}" pattern="#,##0.###" />
                         </td>
-                        <td>${list.ghiChu}</td>
+                        <td style="font-size: 14px;color: black;font-weight: bold">${list.ghiChu}</td>
+                        <td style="font-size: 14px; color: black; font-weight: bold">
+                            <c:choose>
+                                <c:when test="${not empty list.mess}">${list.mess}</c:when>
+                                <c:otherwise>N/A</c:otherwise>
+                            </c:choose>
+                        </td>
                         <td>
-                            <button formaction="/Admin/HoaDon/XacNhanHoaDonKhachHangThanhCong" name="thanhCong" value="${list.id}"
-                                    class="btn btn-primary me-2">Thành Công
+                            <button style="width: 70px;font-size: 15px;margin-top: 20px" formaction="/Admin/HoaDon/XacNhanHoaDonKhachHangThanhCong" name="thanhCong" value="${list.id}"
+                                    class="btn btn-primary">Done
                             </button>
                         </td>
                     </tr>

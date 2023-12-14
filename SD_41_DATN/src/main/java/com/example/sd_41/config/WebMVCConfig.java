@@ -49,7 +49,13 @@ public class WebMVCConfig implements WebMvcConfigurer {
                         //Khách hàng
                         "/KhachHang/list",
                         //Phiếu giao hàng
-                        "/PhieuGiaoHang/listPhieuGiaoHang"
+                        "/PhieuGiaoHang/listPhieuGiaoHang",
+                        //Xác nhận thông tin đơn hàng
+                        "/Admin/xacNhanDonHangKhachHangAll",
+                        "/Admin/xacNhanDonHangKhachHang",
+                        "/Admin/XacNhanHoaDonDangDongGoi",
+                        "/Admin/HoaDon/XacNhanHoaDonKhachHangDangGiao",
+                        "/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCongHoanThanh"
 
 
 

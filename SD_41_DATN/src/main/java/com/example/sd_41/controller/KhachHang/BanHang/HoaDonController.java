@@ -21,6 +21,8 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -61,14 +63,10 @@ public class HoaDonController {
     private GioHangChiTietRepository gioHangChiTietRepository;
 
     @Autowired
-    private ChuongTrinhGiamGiaChiTietHoaDonRepository chuongTrinhGiamGiaChiTietHoaDonRepository;
-
-    @Autowired
-    private ChuongTrinhGiamGiaHoaDonRepository chuongTrinhGiamGiaHoaDonRepository;
-
-    @Autowired
     ChuongTrinhGiamGiaHoaDonImpl chuongTrinhGiamGiaHoaDonImpl;
 
+    @Autowired
+    JavaMailSender mailSender;
 
 
     //Todo code view hóa đơn
@@ -877,6 +875,42 @@ public class HoaDonController {
 
         mav.addObject("page", page);
         return mav;
+
+    }
+
+    //Todo code khách hàng chờ đóng gói sản phẩm là không được hủy nữa
+    @GetMapping("/KhachHang/HoaDon/ChoDongGoi/*")
+    public ModelAndView choDongGoiPhiaKhachHang(
+
+            @RequestParam(value = "pageNo",required = false,defaultValue = "0") Integer pageNo,
+            HttpServletRequest request,
+            Model model
+
+    ){
+
+        String url = request.getRequestURI();
+        String [] parts = url.split("/KhachHang/HoaDon/ChoDongGoi/");
+        String ma = parts[1];
+
+        try {
+
+            KhachHang khachHang = khachHangRepository.findByMaKhachHang(ma);
+            model.addAttribute("maKH",khachHang.getMaKhachHang());
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+            model.addAttribute("maKH","2");
+
+        }
+
+        KhachHang khachHang = khachHangRepository.findByMaKhachHang(ma);
+        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByKhachHangAndTrangThai(khachHang.getId(),2,pageNo,5);
+        ModelAndView mav = new ModelAndView("/templates/Users/Layouts/TrangThaiDonHang/KhachHang/choDongGoiBenKhachHang");
+        mav.addObject("page",page);
+        return mav;
+
+
     }
 
     //Todo code đang giao hàng bên phía khách hàng
@@ -884,7 +918,8 @@ public class HoaDonController {
     public ModelAndView dangGiaoHangBenPhiaKhachHang(
             @RequestParam(value = "pageNo",required = false,defaultValue = "0") Integer pageNo,
             HttpServletRequest request,
-            Model model){
+            Model model
+    ){
 
         String url = request.getRequestURI();
         String [] parts = url.split("/KhachHang/HoaDon/DangGiaoHang/");
@@ -903,7 +938,7 @@ public class HoaDonController {
         }
 
         KhachHang khachHang = khachHangRepository.findByMaKhachHang(ma);
-        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByKhachHangAndTrangThai(khachHang.getId(),2,pageNo,5);
+        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByKhachHangAndTrangThai(khachHang.getId(),3,pageNo,5);
         ModelAndView mav = new ModelAndView("/templates/Users/Layouts/TrangThaiDonHang/KhachHang/dangGiaoHangBenPhiaKhachHang");
         mav.addObject("page",page);
         return mav;
@@ -930,7 +965,7 @@ public class HoaDonController {
         hd.setNgayTao(hoaDon.getNgayTao());
         hd.setNgayThanhToan(hoaDon.getNgayThanhToan());
         hd.setGhiChu(hoaDon.getGhiChu());
-        hd.setTrangThai(3);
+        hd.setTrangThai(4);
 
         hoaDonServiceImpl.update(hoaDon.getId(),hd);
 
@@ -963,7 +998,7 @@ public class HoaDonController {
         }
 
         KhachHang khachHang = khachHangRepository.findByMaKhachHang(ma);
-        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByKhachHangAndTrangThai(khachHang.getId(),3,pageNo,5);
+        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByKhachHangAndTrangThai(khachHang.getId(),4,pageNo,5);
         ModelAndView mav = new ModelAndView("/templates/Users/Layouts/TrangThaiDonHang/KhachHang/giaoHangThanhCongBenPhiaKhachHang");
 
         mav.addObject("page", page);
@@ -997,7 +1032,7 @@ public class HoaDonController {
         }
 
         KhachHang khachHang = khachHangRepository.findByMaKhachHang(ma);
-        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByKhachHangAndTrangThai(khachHang.getId(),4,pageNo,5);
+        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByKhachHangAndTrangThai(khachHang.getId(),5,pageNo,5);
         ModelAndView mav = new ModelAndView("/templates/Users/Layouts/TrangThaiDonHang/KhachHang/hoaDonHuyBenKhachHang");
 
         mav.addObject("page", page);
@@ -1037,7 +1072,7 @@ public class HoaDonController {
 
          */
         hd.setGhiChu(hoaDon.getGhiChu());
-        hd.setTrangThai(4);
+        hd.setTrangThai(5);
 
         hoaDonServiceImpl.update(hoaDon.getId(),hd);
 
@@ -1055,9 +1090,13 @@ public class HoaDonController {
 
     //Todo code All xác nhận bên phía admin
     @GetMapping("/Admin/xacNhanDonHangKhachHangAll")
-    public String showViewXacNhanDonHangAllKhachHang(){
+    public String showViewXacNhanDonHangAllKhachHang(Model model){
+
+
+        model.addAttribute("listHoaDon",hoaDonRepository.findAll());
 
         return "/templates/Admin/TrangThaiDonHang/viewHoaDonTrangThaiAll";
+
 
     }
 
@@ -1078,29 +1117,41 @@ public class HoaDonController {
 
     }
 
-    //Todo code xác nhân bên khách hàng
+    //Todo code xác nhân bên đơn bên admin
     @PostMapping("/Admin/HoaDon/XacNhanHoaDonKhachHang")
-    public String showHoaDonXacNhanBenKhachHang(HttpServletRequest request){
+    public String showHoaDonXacNhanBenKhachHang(HttpServletRequest request,
+                                                HttpSession session){
 
-        String huy = request.getParameter("huy");
 
-        HoaDon hoaDon = hoaDonServiceImpl.findId(UUID.fromString(huy));
-        HoaDon hd = new HoaDon();
 
-        hd.setMaHoaDon(hoaDon.getMaHoaDon());
-        hd.setThanhTien(hoaDon.getThanhTien());
-        hd.setNgayTao(hoaDon.getNgayTao());
-        hd.setNgayThanhToan(hoaDon.getNgayThanhToan());
-        hd.setGhiChu(hoaDon.getGhiChu());
-        hd.setTrangThai(2);
-        hoaDonServiceImpl.update(hoaDon.getId(),hd);
+            if (session.getAttribute("userLog") != null) {
 
-        return "redirect:/Admin/xacNhanDonHangKhachHangAll";
+                User user = (User) session.getAttribute("userLog");
+
+                String huy = request.getParameter("huy");
+
+                HoaDon hoaDon = hoaDonServiceImpl.findId(UUID.fromString(huy));
+                HoaDon hd = new HoaDon();
+
+                hd.setUser(user);
+                hd.setMaHoaDon(hoaDon.getMaHoaDon());
+                hd.setThanhTien(hoaDon.getThanhTien());
+                hd.setNgayTao(hoaDon.getNgayTao());
+                hd.setNgayThanhToan(hoaDon.getNgayThanhToan());
+                hd.setGhiChu(hoaDon.getGhiChu());
+                //Xác nhận đơn hàng sang đang giao hàng
+                hd.setTrangThai(2);
+                hoaDonServiceImpl.update(hoaDon.getId(), hd);
+
+            }
+
+//        return "redirect:/Admin/HoaDon/XacNhanHoaDonDangDongGoi";
+        return "redirect:/Admin/logXacNhanDonHang";
 
     }
 
     //Todo code xác nhận giao hàng thành công bên phía admin
-    @GetMapping("/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCong")
+    @GetMapping("/Admin/HoaDon/XacNhanHoaDonDangDongGoi")
     public ModelAndView showFormHoaDonXacNhanGiaoHangThanhCong(
 
             @RequestParam(value = "pageNo",required = false, defaultValue = "0") Integer pageNo,
@@ -1109,37 +1160,64 @@ public class HoaDonController {
     ){
 
         Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByTrangThai(pageNo,5,2);
-        ModelAndView mav = new ModelAndView("/templates/Admin/TrangThaiDonHang/dangGiaoHang");
+        ModelAndView mav = new ModelAndView("/templates/Admin/TrangThaiDonHang/dangDongGoi");
         mav.addObject("page", page);
         return mav;
 
     }
 
+
+
     //Todo code xác nhận giao hàng thành công bên phía Admin
-    @PostMapping("/Admin/HoaDon/XacNhanHoaDonKhachHangThanhCong")
-    public String adminGiaoHangThanhCong(
-            HttpServletRequest request
+    @PostMapping("/Admin/HoaDon/XacNhanHoaDonKhachHangDangGiao")
+    public String adminDangGiaoHang(
+
+            HttpServletRequest request,
+            HttpSession session
     ){
 
-        String thanhCong = request.getParameter("thanhCong");
+        if (session.getAttribute("userLog") != null) {
 
-        HoaDon hoaDon = hoaDonServiceImpl.findId(UUID.fromString(thanhCong));
-        HoaDon hd = new HoaDon();
+            User user = (User) session.getAttribute("userLog");
 
-        hd.setMaHoaDon(hoaDon.getMaHoaDon());
-        hd.setThanhTien(hoaDon.getThanhTien());
-        hd.setNgayThanhToan(hoaDon.getNgayThanhToan());
-        hd.setNgayTao(hoaDon.getNgayTao());
-        hd.setKhachHang(hoaDon.getKhachHang());
-        hoaDon.setTrangThai(3);
-        hd.setGhiChu(hoaDon.getGhiChu());
+            String thanhCong = request.getParameter("thanhCong");
 
-        hoaDonServiceImpl.update(hoaDon.getId(),hd);
+            HoaDon hoaDon = hoaDonServiceImpl.findId(UUID.fromString(thanhCong));
+            HoaDon hd = new HoaDon();
 
-        return "redirect:/Admin/xacNhanDonHangKhachHangAll";
+            System.out.println("Đơn hàng chuyển sang trạng thái giao hàng");
+            hd.setUser(user);
+            hd.setMaHoaDon(hoaDon.getMaHoaDon());
+            hd.setThanhTien(hoaDon.getThanhTien());
+            hd.setNgayThanhToan(hoaDon.getNgayThanhToan());
+            hd.setNgayTao(hoaDon.getNgayTao());
+            hd.setKhachHang(hoaDon.getKhachHang());
+            hd.setGhiChu(hoaDon.getGhiChu());
+            hd.setTrangThai(3);
+
+            hoaDonServiceImpl.update(hoaDon.getId(), hd);
+        }
+//        return "redirect:/Admin/HoaDon/XacNhanHoaDonKhachHangDangGiao";
+          return "redirect:/Admin/dongGoiThanhCong";
 
     }
 
+    //Todo code đang giao hàng
+    @GetMapping("/Admin/HoaDon/XacNhanHoaDonKhachHangDangGiao")
+    public ModelAndView showDangGiaoHang(
+
+            @RequestParam(value = "pageNo", required = false, defaultValue = "0") Integer pageNo,
+            HttpServletRequest request,
+            Model model
+
+    ){
+
+        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByTrangThai(pageNo,5,3);
+        ModelAndView mav = new ModelAndView("/templates/Admin/TrangThaiDonHang/dangGiaoHang");
+        mav.addObject("page", page);
+        return mav;
+
+    }
 
     //Todo code hoàn thành giao hàng
     @GetMapping("/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCongHoanThanh")
@@ -1151,12 +1229,198 @@ public class HoaDonController {
 
     ){
 
-        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByTrangThai(pageNo,5,3);
+        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByTrangThai(pageNo,5,4);
         ModelAndView mav = new ModelAndView("/templates/Admin/TrangThaiDonHang/hoanThanh");
         mav.addObject("page", page);
         return mav;
 
     }
+
+    //Todo code giao hàng thanh công admin xác nhận giao hàng thành công
+    @PostMapping("/Admin/HoaDon/XacNhanHoaDonKhachHangThanhCong")
+    public String adminXacNhanGiaoHangThanhCong(
+
+            HttpServletRequest request,
+            HttpSession session
+    ){
+
+        if (session.getAttribute("userLog") != null) {
+
+            User user = (User) session.getAttribute("userLog");
+
+
+            String thanhCong = request.getParameter("thanhCong");
+
+            HoaDon hoaDon = hoaDonServiceImpl.findId(UUID.fromString(thanhCong));
+            HoaDon hd = new HoaDon();
+
+            System.out.println("Đơn hàng chuyển sang trạng thái giao hàng");
+            hd.setUser(user);
+            hd.setMaHoaDon(hoaDon.getMaHoaDon());
+            hd.setThanhTien(hoaDon.getThanhTien());
+            hd.setNgayThanhToan(hoaDon.getNgayThanhToan());
+            hd.setNgayTao(hoaDon.getNgayTao());
+            hd.setKhachHang(hoaDon.getKhachHang());
+            hd.setGhiChu(hoaDon.getGhiChu());
+            hd.setTrangThai(4);
+
+            hoaDonServiceImpl.update(hoaDon.getId(), hd);
+
+        }
+
+//        return "redirect:/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCongHoanThanh";
+        return "redirect:/Admin/giaoHangThanhCong";
+
+    }
+
+
+    //Todo code đơn hàng bị hủy
+    @GetMapping("/Admin/HoaDon/DonHangBiHuy")
+    public ModelAndView donHangBiHuy(
+
+            @RequestParam(value = "pageNo", required = false, defaultValue = "0") Integer pageNo,
+            HttpServletRequest request,
+            Model model
+
+    ){
+
+        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByTrangThai(pageNo,5,5);
+        ModelAndView mav = new ModelAndView("/templates/Admin/TrangThaiDonHang/donHangBiHuy");
+        mav.addObject("page", page);
+        return mav;
+
+    }
+
+
+    //Todo code xác nhận hủy đơn hàng bên admin
+    @PostMapping("/Admin/HoaDon/HuyDonHangCuaKhachHang")
+    public String adminXacNhanHuyDonHangCuaKhachHang(
+
+            HttpServletRequest request,
+            HttpSession session
+    ){
+
+        if (session.getAttribute("userLog") != null) {
+
+            User user = (User) session.getAttribute("userLog");
+
+            String huyDonHang = request.getParameter("huyDonHang");
+
+            HoaDon hoaDon = hoaDonServiceImpl.findId(UUID.fromString(huyDonHang));
+            HoaDon hd = new HoaDon();
+
+            System.out.println("Đơn hàng bị hủy vì có một số lý do");
+            hd.setUser(user);
+            hd.setMaHoaDon(hoaDon.getMaHoaDon());
+            hd.setThanhTien(hoaDon.getThanhTien());
+            hd.setNgayThanhToan(hoaDon.getNgayThanhToan());
+            hd.setNgayTao(hoaDon.getNgayTao());
+            hd.setKhachHang(hoaDon.getKhachHang());
+            hd.setGhiChu(hoaDon.getGhiChu());
+            hd.setTrangThai(5);
+
+            //Gửi email cho khách hàng
+            String email = request.getParameter("email");
+            String maHoaDon = request.getParameter("maHoaDon");
+            String tenKhachHang = request.getParameter("tenKhachHang");
+            String ngayThanhToan = request.getParameter("ngayThanhToan");
+            String thanhTien = request.getParameter("thanhTien");
+
+
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(email);
+
+            message.setSubject("Cửa hàng bán giầy thể thao bóng đá BeeShoes xin thông báo");
+            message.setText(
+                            "Mã hóa đơn : " + maHoaDon +
+                            "\n" +
+                            "Ngày thanh toán :" + ngayThanhToan +
+                            "\n" +
+                            "Thành tiền : " + thanhTien +
+                            "\n" +
+                            "\n" +
+                            "Xin chào khách hàng : "+ tenKhachHang +"\n"+
+                            "Cảm ơn bạn đã quan tâm đến sản phẩm của shop, nhưng shop rất lấy làm tiếc vì sự chuẩn bị không chu đáo này xin quý khách thông cảm! Do số sản phẩm trong kho đã hết shop thông báo để quý khách biết và đơn hàng này shop xin hủy đơn!"+"\n" +
+                            "Cảm ơn quý khách hàng đã quan tâm!" + "\n" +
+                            "\n" +
+                            "\n" +
+                            "Xin cảm ơn,và hân hạnh phục phục lần sau!"
+
+            );
+
+
+            mailSender.send(message);
+
+            hoaDonServiceImpl.update(hoaDon.getId(), hd);
+
+        }
+
+        return "redirect:/Admin/HuyDonHangCuaKhachHangLog";
+
+    }
+
+
+
+    //Todo code log bên phía admin
+
+    //Admin
+    //Todo code log xác nhận đơn hàng thành công sang bên phía đang đóng gói
+    @GetMapping("/Admin/logXacNhanDonHang")
+    public String showLogXacNhanDonHangAlert(){
+
+        return "/templates/Users/Layouts/Log/logXacNhanDonHangThanhCong";
+
+    }
+
+    //Todo code log đóng gói sang đang giao
+    @GetMapping("/Admin/dongGoiThanhCong")
+    public String showLogDongGoiThanhCongAlert(){
+
+        return "/templates/Users/Layouts/Log/logDongGoiDonHangThanhCong";
+
+    }
+
+    //Todo code từ đang giao hàng sang nhận hàng thành công!
+    @GetMapping("/Admin/giaoHangThanhCong")
+    public String showLogGiaoHangThanhCongAlert(){
+
+        return "/templates/Users/Layouts/Log/logGiaoHangThanhCong";
+
+    }
+
+    @GetMapping("/Admin/HuyDonHangCuaKhachHangLog")
+    public String showHuyDonHangCuaKhachHangAlert(){
+
+        return "/templates/Users/Layouts/Log/logDonHangKhachHangBiHuy";
+
+    }
+    //Khách hàng
+
+    //Todo code log hủy đơn hàng bên khách hàng
+    @GetMapping("/KhachHang/huyDonHang")
+    public String showLogHuyDonHangAlert(){
+
+        return "/templates/Users/Layouts/Log/logHuyDonHangThanhCongBenKhachHang";
+
+    }
+
+    @GetMapping("/test")
+    public String test(
+
+            Model model,
+            HttpServletRequest request
+
+    ){
+
+        String idHoaDon = request.getParameter("idHoaDon");
+
+        System.out.println("ID hóa đơn "+ idHoaDon);
+
+        return "redirect:/Admin/xacNhanDonHangKhachHang";
+
+    }
+
+
 
 
 }

@@ -40,7 +40,10 @@
             margin-top: 16px; /* Thêm khoảng trắng giữa menu và nội dung */
             padding: 16px;
         }
+
+
     </style>
+
 </head>
 <body>
 
@@ -49,16 +52,68 @@
 <div class="container">
 
     <div class="vertical-menu" style="background-color: #bac8f3">
+        <a href="/Admin/xacNhanDonHangKhachHangAll" style="color: black">All trạng thái đơn hàng</a>
         <a href="/Admin/xacNhanDonHangKhachHang" style="color: black">Chờ xác nhận</a>
-        <a href="/Admin/xacNhanDonHangKhachHang" style="">Chờ đóng gói</a>
-        <a href="/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCong"> Đang giao</a>
-        <a href="#">Hoàn thành</a>
-        <a href="#">Đã hủy</a>
+        <a href="/Admin/HoaDon/XacNhanHoaDonDangDongGoi" style="">Đang đóng gói</a>
+        <a href="/Admin/HoaDon/XacNhanHoaDonKhachHangDangGiao"> Đang giao</a>
+        <a href="/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCongHoanThanh">Hoàn thành</a>
+        <a href="/Admin/HoaDon/DonHangBiHuy">Đã hủy</a>
     </div>
+
    <br>
-    <div style="border: 1px solid red;">
-        <h2>Nội dung trang web của bạn</h2>
-        <p>Đây là nơi bạn có thể thêm các phần tử và nội dung trang web của mình.</p>
+    <div style="overflow-x: auto;width: 100%">
+        <h3 style="text-align: center;color: black;margin-bottom: 50px;margin-top: 10px">All Trạng thái các đơn hàng</h3>
+        <table class="table table-striped;" style="border-radius: 10px 10px 10px">
+            <tr>
+                <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Mã hóa đơn</td>
+                <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Khách hàng</td>
+                <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 260px">Ngày thanh toán</td>
+                <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Tổng tiền</td>
+                <td scope="col" style="color: black;font-weight: bold;font-size: 17px;text-align: center;background-color: #bac8f3;width:300px">Thông tin nhận hàng</td>
+                <td scope="col" style="color: black;font-weight: bold;font-size: 17px;text-align: center;background-color: #bac8f3;width: 300px">Ghi chú</td>
+                <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Hình thức</td>
+                <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Trạng thái</td>
+
+            </tr>
+            <c:forEach items="${listHoaDon}" var="list">
+                <tr>
+                    <td style="font-size: 14px;color: black;font-weight: bold">${list.maHoaDon}</td>
+                    <td style="font-size: 14px;color: black;font-weight: bold">${list.khachHang.tenKhachHang}</td>
+                    <td style="font-size: 14px;color: black;font-weight: bold">
+                        <script>
+                            var ngayThanhToan = "${list.ngayThanhToan}";
+                            var parts = ngayThanhToan.split('-');
+                            var formattedDate = parts[1] + '-' + parts[2] + '-' + parts[0];
+                            document.write(formattedDate);
+                        </script>
+                    </td>
+                    <td style="font-size: 14px;color: black;font-weight: bold">
+                        <fmt:formatNumber type="" value="${list.thanhTien}" pattern="#,##0.###" /> VNĐ
+                    </td>
+                    <td style="font-size: 14px;color: black;font-weight: bold">${list.ghiChu}</td>
+                    <td style="font-size: 14px; color: black; font-weight: bold">
+                        <c:choose>
+                            <c:when test="${not empty list.mess}">${list.mess}</c:when>
+                            <c:otherwise>N/A</c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td style="font-size: 14px;color: black;font-weight: bold">${list.hinhThuc == 1 ? "Tại quầy" : "Online"}</td>
+                    <td style="font-size: 14px;color: black;font-weight: bold">
+                            <c:choose>
+                                <c:when test="${list.trangThai == 0}">Chưa thanh toán</c:when>
+                                <c:when test="${list.trangThai == 1}">Chờ xác nhận</c:when>
+                                <c:when test="${list.trangThai == 2}">Đang đóng gói hàng</c:when>
+                                <c:when test="${list.trangThai == 3}">Đang giao</c:when>
+                                <c:when test="${list.trangThai == 4}">Giao hàng thành công</c:when>
+                                <c:when test="${list.trangThai == 5}">Hủy đơn hàng</c:when>
+                                <c:otherwise>Trạng thái không xác định</c:otherwise>
+                            </c:choose>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+
+
     </div>
 
 </div>

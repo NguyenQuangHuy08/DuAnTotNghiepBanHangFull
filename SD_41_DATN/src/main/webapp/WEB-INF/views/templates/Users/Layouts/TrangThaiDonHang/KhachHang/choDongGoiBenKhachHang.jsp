@@ -46,7 +46,7 @@
     <div class="vertical-menu">
         <a href="/KhachHang/HoaDon/ChoThanhToan/${maKH}" style="color: black;font-size: 18px;font-weight: lighter;margin-left: 10px;margin-top: 10px">Chờ thanh toán</a>
         <a href="/KhachHang/HoaDon/ChoXacNhan/${maKH}" style="color: black;font-size: 18px;font-weight: lighter;margin-left: 10px">Chờ xác nhận</a>
-        <a href="#" style="color: black;font-size: 18px;font-weight: lighter;margin-left: 10px;margin-top: 10px">Chờ đóng gói</a>
+        <a href="/KhachHang/HoaDon/ChoDongGoi/${maKH}" style="color: black;font-size: 18px;font-weight: lighter;margin-left: 10px;margin-top: 10px">Chờ đóng gói</a>
         <a href="/KhachHang/HoaDon/DangGiaoHang/${maKH}" style="color: black;font-size: 18px;font-weight: lighter;margin-left: 10px">Đang giao</a>
         <a href="/KhachHang/HoaDon/GiaoHangThanhCong/${maKH}" style="color: black;font-size: 18px;font-weight: lighter;margin-left: 10px">Hoàn thành</a>
         <a href="/KhachHang/HoaDon/HuyDonHang/${maKH}" style="color: black;font-size: 18px;font-weight: lighter;margin-left: 10px">Đã hủy</a>
@@ -54,7 +54,7 @@
 
     <div style="margin-left: 180px; padding: 1px 16px;">
 
-        <h3 style="margin-top: 30px;margin-bottom: 30px">Nhân viên cửa hàng đang chuẩn bị đóng gói cho đơn hàng của bạn để!</h3>
+        <h3 style="margin-top: 30px;margin-bottom: 70px">Nhân viên đang chuẩn bị đơn hàng!</h3>
         <form method="post">
             <input type="hidden" name="idKH" value="${idKH}">
             <table class="table" style="">
@@ -63,7 +63,7 @@
                     <td scope="col" style="color: black;font-size: 17px">Ngày thanh toán</td>
                     <td scope="col"  style="color: black;font-size: 17px">Thành tiền</td>
                     <td scope="col"  style="color: black;font-size: 17px">Thông tin nhận hàng</td>
-                    <td scope="col"  style="color: black;font-size: 17px">Action</td>
+                    <td scope="col"  style="color: black;font-size: 17px">Ghi chú</td>
                 </tr>
                 <c:forEach items="${page.content}" var="list">
                     <tr>
@@ -80,13 +80,14 @@
                                     <fmt:formatNumber type="" value="${list.thanhTien}" pattern="#,##0.###" /> VNĐ
                         </td>
                         <td style="width: 300px">${list.ghiChu}</td>
-                        <td>
-                            <a href="/nguoiDung/HoaDon/${list.id}">
-                                <p style="font-size: 17px">
-                                    Mua hàng
-                                </p>
-                            </a>
-                        </td>
+                        <td style="width: 150px">${list.mess}</td>
+                    <%--                        <td>--%>
+<%--                            <a hre  f="/nguoiDung/HoaDon/${list.id}">--%>
+<%--                                <p style="font-size: 17px">--%>
+<%--                                    Mua hàng--%>
+<%--                                </p>--%>
+<%--                            </a>--%>
+<%--                        </td>--%>
                     </tr>
                 </c:forEach>
             </table>

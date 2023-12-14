@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đơn hàng đang giao cho khách hàng thành công</title>
+    <title>Đơn hàng bị hủy bên khách hàng</title>
     <style>
         .container {
             display: flex;
@@ -51,18 +51,18 @@
 
     <div class="vertical-menu" style="background-color: #bac8f3">
         <a href="/Admin/xacNhanDonHangKhachHangAll" style="color: black">All trạng thái đơn hàng</a>
-        <a href="/Admin/xacNhanDonHangKhachHang" style="color: black">Chờ xác nhận</a>
-        <a href="/Admin/HoaDon/XacNhanHoaDonDangDongGoi" style="">Đang đóng gói</a>
-        <a href="/Admin/HoaDon/XacNhanHoaDonKhachHangDangGiao"> Đang giao</a>
+        <a href="/Admin/xacNhanDonHangKhachHang">Chờ xác nhận</a>
+        <a href="/Admin/HoaDon/XacNhanHoaDonDangDongGoi">Đang đóng gói</a>
+        <a href="/Admin/HoaDon/XacNhanHoaDonKhachHangDangGiao">Đang giao</a>
         <a href="/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCongHoanThanh">Hoàn thành</a>
         <a href="/Admin/HoaDon/DonHangBiHuy">Đã hủy</a>
     </div>
 
     <div style="overflow-x: auto;width: 100%">
 
-        <h3 style="margin-top: 30px;margin-bottom: 60px;text-align: center;color: black">Các đơn hàng giao thành công cho khách hàng</h3>
+        <h3 style="margin-top: 30px;margin-bottom: 60px;text-align: center;color: black">Các đơn hàng bị hủy</h3>
         <form method="post">
-            <table class="table">
+            <table class="table table-striped;" style="border-radius: 10px 10px 10px">
                 <tr>
                     <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Mã hóa đơn</td>
                     <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Khách hàng</td>
@@ -70,7 +70,6 @@
                     <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 170px">Tổng tiền</td>
                     <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 300px">Thông tin nhận hàng</td>
                     <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 210px;text-align: center">Ghi chú</td>
-<%--                    <td scope="col">Action</td>--%>
                 </tr>
                 <c:forEach items="${page.content}" var="list">
                     <tr>
@@ -85,21 +84,23 @@
                             </script>
                         </td>
                         <td style="font-size: 14px;color: black;font-weight: bold">
-                            <fmt:formatNumber type="" value="${list.thanhTien}" pattern="#,##0.###" />
+                            <fmt:formatNumber type="" value="${list.thanhTien}" pattern="#,##0.###" /> VNĐ
                         </td>
-                        <td style="font-size: 14px;color: black;font-weight: bold">${list.ghiChu}</td>
+                        <td style="font-size: 14px;color: black;font-weight: bold;">${list.ghiChu}</td>
                         <td style="font-size: 14px; color: black; font-weight: bold">
                             <c:choose>
                                 <c:when test="${not empty list.mess}">${list.mess}</c:when>
                                 <c:otherwise>N/A</c:otherwise>
                             </c:choose>
-                        </td>
-                    <%--                        <td>--%>
-<%--                            <a href="/hoa-don/${list.id}">Mua lại</a>--%>
+                        </td>                            <%--                        <td>--%>
+<%--                            <button formaction="/Admin/HoaDon/XacNhanHoaDonKhachHang" name="huy" value="${list.id}"--%>
+<%--                                    class="btn btn-primary me-2">Xác nhận--%>
+<%--                            </button>--%>
 <%--                        </td>--%>
                     </tr>
                 </c:forEach>
             </table>
+            <br>
             <ul class="pagination">
                 <c:if test="${not page.first}">
                     <li class="page-item">
@@ -118,7 +119,6 @@
                 </c:if>
             </ul>
         </form>
-
 
     </div>
 

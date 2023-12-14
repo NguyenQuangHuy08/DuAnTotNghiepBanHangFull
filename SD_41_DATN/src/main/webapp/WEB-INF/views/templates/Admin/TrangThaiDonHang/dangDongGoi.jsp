@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đơn hàng đang giao cho khách hàng thành công</title>
+    <title>Đơn hàng đang được cửa hàng đóng gói</title>
     <style>
         .container {
             display: flex;
@@ -58,19 +58,19 @@
         <a href="/Admin/HoaDon/DonHangBiHuy">Đã hủy</a>
     </div>
 
-    <div style="overflow-x: auto;width: 100%">
+    <div>
 
-        <h3 style="margin-top: 30px;margin-bottom: 60px;text-align: center;color: black">Các đơn hàng giao thành công cho khách hàng</h3>
+        <h3 style="margin-top: 30px;margin-bottom: 70px;color: black;text-align: center">Các đơn hàng chờ được đóng gói</h3>
         <form method="post">
-            <table class="table">
+            <table class="table table-striped;" style="border-radius: 10px 10px 10px">
                 <tr>
-                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Mã hóa đơn</td>
-                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Khách hàng</td>
-                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 300px">Ngày thanh toán</td>
-                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 170px">Tổng tiền</td>
-                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 300px">Thông tin nhận hàng</td>
-                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 210px;text-align: center">Ghi chú</td>
-<%--                    <td scope="col">Action</td>--%>
+                    <td scope="col"  style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Mã hóa đơn</td>
+                    <td scope="col"  style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Khách hàng</td>
+                    <td scope="col"  style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Ngày thanh toán</td>
+                    <td scope="col"  style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Tổng tiền</td>
+                    <td scope="col"  style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 300px">Thông tin nhận hàng</td>
+                    <td scope="col"  style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Ghi chú</td>
+                    <td scope="col"  style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Action</td>
                 </tr>
                 <c:forEach items="${page.content}" var="list">
                     <tr>
@@ -85,7 +85,7 @@
                             </script>
                         </td>
                         <td style="font-size: 14px;color: black;font-weight: bold">
-                            <fmt:formatNumber type="" value="${list.thanhTien}" pattern="#,##0.###" />
+                            <fmt:formatNumber type="" value="${list.thanhTien}" pattern="#,##0.###" /> VNĐ
                         </td>
                         <td style="font-size: 14px;color: black;font-weight: bold">${list.ghiChu}</td>
                         <td style="font-size: 14px; color: black; font-weight: bold">
@@ -94,12 +94,17 @@
                                 <c:otherwise>N/A</c:otherwise>
                             </c:choose>
                         </td>
-                    <%--                        <td>--%>
-<%--                            <a href="/hoa-don/${list.id}">Mua lại</a>--%>
-<%--                        </td>--%>
+                        <td style="font-size: 14px;color: black;font-weight: bold;padding-top: 40px">
+                            <button formaction="/Admin/HoaDon/XacNhanHoaDonKhachHangDangGiao" name="thanhCong" value="${list.id}"
+                                    class="btn btn-primary me-2">Done
+                            </button>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>
+
+
+
             <ul class="pagination">
                 <c:if test="${not page.first}">
                     <li class="page-item">
