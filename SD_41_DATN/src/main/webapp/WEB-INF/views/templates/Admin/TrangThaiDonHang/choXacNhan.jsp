@@ -11,30 +11,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đơn hàng chờ xác nhận của khách hàng</title>
     <style>
-
+        .container {
+            display: flex;
+            flex-wrap: wrap; /* Cho phép các phần tử con xuống dòng khi không đủ không gian */
+        }
 
         .vertical-menu {
-            width: 200px;
-            background-color: #F8F9FC;
-            position: absolute;
-            left: 230px;
-            height: 80%;
-            overflow: auto;
+            display: flex;
+            flex-direction: row;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
         }
 
         .vertical-menu a {
-            background-color: #2C9FAF;
-            color: black;
-            display: block;
-            padding: 12px;
             text-decoration: none;
+            color: black;
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
+            margin: 5px;
         }
 
-        .vertical-menu a:hover {
-            background-color: #b1dfbb;
-            color: white;
+        .container > div {
+            width: 100%; /* Đảm bảo rằng nội dung chiếm toàn bộ chiều rộng khi xuống dòng */
+            margin-top: 16px; /* Thêm khoảng trắng giữa menu và nội dung */
+            padding: 16px;
         }
-
     </style>
 
 </head>
@@ -44,14 +49,15 @@
 
 <div class="container" style="">
 
-    <div class="vertical-menu">
-        <a href="/Admin/xacNhanDonHangKhachHang" style="color: black;font-size: 18px;font-weight: lighter;margin-left: 10px">Chờ xác nhận</a>
-        <a href="/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCong" style="color: black;font-size: 18px;font-weight: lighter;margin-left: 10px">Đang giao</a>
-        <a href="/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCongHoanThanh" style="color: black;font-size: 18px;font-weight: lighter;margin-left: 10px">Hoàn thành</a>
-        <a href="" style="color: black;font-size: 18px;font-weight: lighter;margin-left: 10px">Đã hủy</a>
+    <div class="vertical-menu" style="background-color: #bac8f3">
+        <a href="/Admin/xacNhanDonHangKhachHang">Chờ xác nhận</a>
+        <a href="/Admin/xacNhanDonHangKhachHang">Chờ xác nhận</a>
+        <a href="/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCong">Đang giao</a>
+        <a href="/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCongHoanThanh">Hoàn thành</a>
+        <a href="">Đã hủy</a>
     </div>
 
-    <div style="margin-left: 100px; padding: 1px 16px;">
+    <div style="margin-left: 0px; padding: 1px 16px;">
 
         <h3 style="margin-top: 30px;margin-bottom: 30px">Các đơn hàng chờ xác nhận</h3>
         <form method="post">

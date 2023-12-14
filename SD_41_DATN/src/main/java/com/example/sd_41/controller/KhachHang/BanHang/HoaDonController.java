@@ -814,7 +814,7 @@ public class HoaDonController {
 
     }
 
-    //Todo code trạng thái đơn hàng
+    //Todo code trạng thái đơn hàng cho hóa đơn
 //////////////////////////////////////////////////////////////////////////////
     //Bên khách hàng
 
@@ -848,6 +848,7 @@ public class HoaDonController {
         mav.addObject("page",page);
 
         return  mav;
+
     }
 
 
@@ -1026,14 +1027,19 @@ public class HoaDonController {
             2: là đang giao
             3: là giao hàng thành công
             4: là hủy đơn hàng
+
+            0: là chưa thanh toán xong
+            1: là chờ xác nhận
+            2: là đang đóng gói hàng
+            3: là đang giao
+            4: là giao hàng thành công
+            5: là hủy đơn hàng
+
          */
         hd.setGhiChu(hoaDon.getGhiChu());
         hd.setTrangThai(4);
 
         hoaDonServiceImpl.update(hoaDon.getId(),hd);
-
-//        return "redirect:/KhachHang/HoaDon/HuyDonHang"+idKH;
-//        return "redirect:/KhachHang/HoaDon/HuyDonHang?idKH=" + idKH;
 
         return "/templates/Users/Layouts/TrangThaiDonHang/KhachHang/hoaDonHuyBenKhachHang";
 

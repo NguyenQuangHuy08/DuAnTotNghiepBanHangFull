@@ -54,7 +54,7 @@
 
     <div style="margin-left: 180px; padding: 1px 16px;">
 
-        <h3 style="margin-top: 30px;margin-bottom: 30px">Các đơn hàng chờ thanh toán</h3>
+        <h3 style="margin-top: 30px;margin-bottom: 30px">Nhân viên cửa hàng đang chuẩn bị đóng gói cho đơn hàng của bạn để!</h3>
         <form method="post">
             <input type="hidden" name="idKH" value="${idKH}">
             <table class="table" style="">
