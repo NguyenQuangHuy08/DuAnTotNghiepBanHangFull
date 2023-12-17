@@ -1331,11 +1331,6 @@ public class HoaDonController {
             String thanhTien = request.getParameter("tongTienView");
             String thongTinNhanHang = request.getParameter("thongTienNhanHangView");
 
-            NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
-
-            // Sử dụng đối tượng NumberFormat để format số tiền
-            String formattedThanhTien = currencyFormat.format(thanhTien);
-
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(email);
 
@@ -1345,12 +1340,13 @@ public class HoaDonController {
                             "\n" +
                             "Ngày thanh toán :" + ngayThanhToan +
                             "\n" +
-                            "Thành tiền : " + formattedThanhTien +
+                            "Thành tiền : " + thanhTien +
                             "\n" +
                             "Thông tin địa chỉ nhận hàng :" +thongTinNhanHang +
                             "\n" +
                             "\n" +
-                            "Xin chào khách hàng : "+ tenKhachHang +"\n"+
+                            "Xin chào khách hàng : "+ tenKhachHang + "\n" +
+                            ".Có địa chỉ email là: "+ email +"\n"+
                             "Cảm ơn bạn đã quan tâm đến sản phẩm của shop, nhưng shop rất lấy làm tiếc vì sự chuẩn bị không chu đáo này xin quý khách thông cảm!" +
                             "Do số sản phẩm trong kho đã hết shop thông báo để quý khách biết và đơn hàng này shop xin hủy đơn!" +
                             "\n"+
