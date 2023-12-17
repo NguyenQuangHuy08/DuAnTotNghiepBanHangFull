@@ -36,9 +36,11 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @Controller
@@ -119,7 +121,9 @@ public class HoaDonController {
 
                 // Duyệt qua danh sách và lấy id của từng hóa đơn chi tiết
                 for (HoaDonChiTiet hoaDonChiTiet : hoaDonChiTietList) {
+
                     hoaDonChiTietIds.add(hoaDonChiTiet.getId());
+
                 }
 
 
@@ -1113,6 +1117,7 @@ public class HoaDonController {
         Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByTrangThai(pageNo,5,1);
         ModelAndView mav = new ModelAndView("/templates/Admin/TrangThaiDonHang/choXacNhan");
         mav.addObject("page",page);
+
         return mav;
 
     }
@@ -1319,13 +1324,17 @@ public class HoaDonController {
             hd.setGhiChu(hoaDon.getGhiChu());
             hd.setTrangThai(5);
 
-            //Gửi email cho khách hàng
-            String email = request.getParameter("email");
-            String maHoaDon = request.getParameter("maHoaDon");
-            String tenKhachHang = request.getParameter("tenKhachHang");
-            String ngayThanhToan = request.getParameter("ngayThanhToan");
-            String thanhTien = request.getParameter("thanhTien");
+            String email = request.getParameter("emailView");
+            String maHoaDon = request.getParameter("maHoaDonView");
+            String tenKhachHang = request.getParameter("khachHangView");
+            String ngayThanhToan = request.getParameter("ngayThanhToanView");
+            String thanhTien = request.getParameter("tongTienView");
+            String thongTinNhanHang = request.getParameter("thongTienNhanHangView");
 
+            NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
+
+            // Sử dụng đối tượng NumberFormat để format số tiền
+            String formattedThanhTien = currencyFormat.format(thanhTien);
 
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(email);
@@ -1336,14 +1345,17 @@ public class HoaDonController {
                             "\n" +
                             "Ngày thanh toán :" + ngayThanhToan +
                             "\n" +
-                            "Thành tiền : " + thanhTien +
+                            "Thành tiền : " + formattedThanhTien +
+                            "\n" +
+                            "Thông tin địa chỉ nhận hàng :" +thongTinNhanHang +
                             "\n" +
                             "\n" +
                             "Xin chào khách hàng : "+ tenKhachHang +"\n"+
-                            "Cảm ơn bạn đã quan tâm đến sản phẩm của shop, nhưng shop rất lấy làm tiếc vì sự chuẩn bị không chu đáo này xin quý khách thông cảm! Do số sản phẩm trong kho đã hết shop thông báo để quý khách biết và đơn hàng này shop xin hủy đơn!"+"\n" +
+                            "Cảm ơn bạn đã quan tâm đến sản phẩm của shop, nhưng shop rất lấy làm tiếc vì sự chuẩn bị không chu đáo này xin quý khách thông cảm!" +
+                            "Do số sản phẩm trong kho đã hết shop thông báo để quý khách biết và đơn hàng này shop xin hủy đơn!" +
+                            "\n"+
+                            "\n"+
                             "Cảm ơn quý khách hàng đã quan tâm!" + "\n" +
-                            "\n" +
-                            "\n" +
                             "Xin cảm ơn,và hân hạnh phục phục lần sau!"
 
             );
@@ -1358,7 +1370,6 @@ public class HoaDonController {
         return "redirect:/Admin/HuyDonHangCuaKhachHangLog";
 
     }
-
 
 
     //Todo code log bên phía admin
@@ -1404,7 +1415,7 @@ public class HoaDonController {
 
     }
 
-    @GetMapping("/test")
+    @PostMapping("/test")
     public String test(
 
             Model model,
@@ -1413,10 +1424,37 @@ public class HoaDonController {
     ){
 
         String idHoaDon = request.getParameter("idHoaDon");
+        UUID idHoaDonConvert = UUID.fromString(idHoaDon);
 
         System.out.println("ID hóa đơn "+ idHoaDon);
+        System.out.println("Id hóa đơn sau khi convert: "+idHoaDonConvert);
 
-        return "redirect:/Admin/xacNhanDonHangKhachHang";
+        List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon_Id(idHoaDonConvert);
+
+        if (!hoaDonChiTiets.isEmpty()) {
+            for (HoaDonChiTiet hoaDonChiTiet : hoaDonChiTiets) {
+
+                //Thông tin cần in ra
+                System.out.println();
+                model.addAttribute("idHoaDonConvert",idHoaDonConvert);
+                model.addAttribute("maHoaDonView",hoaDonChiTiet.getHoaDon().getMaHoaDon());
+                model.addAttribute("emailView",hoaDonChiTiet.getHoaDon().getKhachHang().getEmail());
+                model.addAttribute("khachHangView",hoaDonChiTiet.getHoaDon().getKhachHang().getTenKhachHang());
+                model.addAttribute("ngayThanhToanView",hoaDonChiTiet.getHoaDon().getNgayThanhToan());
+                model.addAttribute("tongTienView",hoaDonChiTiet.getHoaDon().getThanhTien());
+                model.addAttribute("thongTienNhanHangView",hoaDonChiTiet.getHoaDon().getGhiChu());
+                model.addAttribute("messView",hoaDonChiTiet.getHoaDon().getMess());
+                model.addAttribute("hinhThucView",hoaDonChiTiet.getHoaDon().getHinhThuc());
+
+                model.addAttribute("tenGiayTheThaoView",hoaDonChiTiet.getGiayTheThaoChiTiet().getGiayTheThao().getTenGiayTheThao());
+
+
+            }
+        }
+
+        model.addAttribute("hoaDonChiTiets",hoaDonChiTiets);
+
+        return "/templates/Users/Layouts/ChiTiet/ChiTietHoaDon";
 
     }
 
