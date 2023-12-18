@@ -92,25 +92,45 @@
     </table>
 
     <br>
+<%--    <h3 style="text-align: center;color: black;margin-bottom: 50px">Thông tin chi tiết sản phẩm</h3>--%>
+<%--    <c:forEach items="${hoaDonChiTiets}" var="list" varStatus="i">--%>
+<%--                <p>--%>
+<%--                    <span style="display: inline-block;color: black;font-size: 16px;margin-left: 15px">${i.index+1} :</span>--%>
+<%--                    <span style="display: inline-block;color: black;font-size: 16px">${list.giayTheThaoChiTiet.giayTheThao.tenGiayTheThao}</span>--%>
+<%--                    <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Size: ${list.giayTheThaoChiTiet.size.size}</span>--%>
+<%--                    <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Màu sắc: ${list.giayTheThaoChiTiet.mauSac.tenMauSac}</span>--%>
+<%--                    <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Số lượng mua: ${list.soLuong}</span>--%>
+<%--                    <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px;margin-top: 30px">Giá bán:--%>
+<%--                                    <fmt:formatNumber type="" value="${list.giayTheThaoChiTiet.giayTheThao.giaBan}" pattern="#,##0.###"/> VNĐ--%>
+<%--                    </span>--%>
+<%--                    <span style="display: inline-block;padding-left: 20px">--%>
+<%--                                    <img src="/upload/${list.giayTheThaoChiTiet.giayTheThao.image.get(0).link}" width="110px"--%>
+<%--                                         style="border-radius: 10px 10px 10px">--%>
+<%--                    </span>--%>
+<%--                </p>--%>
+<%--    </c:forEach>--%>
+
     <h3 style="text-align: center;color: black;margin-bottom: 50px">Thông tin chi tiết sản phẩm</h3>
     <c:forEach items="${hoaDonChiTiets}" var="list" varStatus="i">
+        <c:if test="${list.hoaDon.trangThai eq 1}">
         <p>
-<%--            <input type="hidden" name="idGiayTheTheThaoChiTiet" value="${list.giayTheThaoChiTiet.khachHangViewid}">--%>
-            <span style="display: inline-block;color: black;font-size: 16px;margin-left: 15px">${i.index+1} :</span>
-            <span style="display: inline-block;color: black;font-size: 16px">${list.giayTheThaoChiTiet.giayTheThao.tenGiayTheThao}</span>
-            <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Size: ${list.giayTheThaoChiTiet.size.size}</span>
-            <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Màu sắc: ${list.giayTheThaoChiTiet.mauSac.tenMauSac}</span>
-            <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Số lượng mua: ${list.soLuong}</span>
-            <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px;margin-top: 30px">Giá bán:
-                            <fmt:formatNumber type="" value="${list.giayTheThaoChiTiet.giayTheThao.giaBan}" pattern="#,##0.###"/> VNĐ
-
-                        </span>
-            <span style="display: inline-block;padding-left: 20px">
-                            <img src="/upload/${list.giayTheThaoChiTiet.giayTheThao.image.get(0).link}" width="110px"
-                                 style="border-radius: 10px 10px 10px">
+                <span style="display: inline-block;color: black;font-size: 16px;margin-left: 15px">${i.index+1} :</span>
+                <span style="display: inline-block;color: black;font-size: 16px">${list.giayTheThaoChiTiet.giayTheThao.tenGiayTheThao}</span>
+                <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Size: ${list.giayTheThaoChiTiet.size.size}</span>
+                <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Màu sắc: ${list.giayTheThaoChiTiet.mauSac.tenMauSac}</span>
+                <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Số lượng mua: ${list.soLuong}</span>
+                <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px;margin-top: 30px">Giá bán:
+                <fmt:formatNumber type="" value="${list.giayTheThaoChiTiet.giayTheThao.giaBan}" pattern="#,##0.###"/> VNĐ
             </span>
-        </p>
+                <span style="display: inline-block;padding-left: 20px">
+                <img src="/upload/${list.giayTheThaoChiTiet.giayTheThao.image.get(0).link}" width="110px"
+                     style="border-radius: 10px 10px 10px">
+            </span>
+            </p>
+        </c:if>
     </c:forEach>
+
+
 
     <br>
     <!-- Form mới -->
@@ -145,6 +165,21 @@
 
                     <button style="width: 130px;font-size: 15px;margin-top: 20px" formaction="/Admin/HoaDon/XacNhanHoaDonKhachHang" name="huy" value="${idHoaDonConvert}"
                             class="btn btn-primary">Xác nhận
+                    </button>
+                </form>
+            </div>
+            <div class="col-1">
+                <form method="post" action="/Admin/HoaDon/ThemThongTinSanPham">
+                    <input type="hidden" name="idHoaDonConvert" value="${idHoaDonConvert}" />
+<%--                    <input type="hidden" name="maHoaDonView" value="${maHoaDonView}">--%>
+<%--                    <input type="hidden" name="emailView" value="${emailView}">--%>
+<%--                    <input type="hidden" name="khachHangView" value="${khachHangView}">--%>
+<%--                    <input type="hidden" name="ngayThanhToanView" value="${ngayThanhToanView}">--%>
+<%--                    <input type="hidden" name="tongTienView" value="${tongTienView}">--%>
+<%--                    <input type="hidden" name="thongTienNhanHangView" value="${thongTienNhanHangView}">--%>
+
+                    <button style="width: 130px;font-size: 15px;margin-top: 20px" formaction="/Admin/HoaDon/ThemThongTinSanPham" name="themThongTin" value="${idHoaDonConvert}"
+                            class="btn btn-primary">Thêm thông tin
                     </button>
                 </form>
             </div>

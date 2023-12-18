@@ -6,12 +6,13 @@ import com.example.sd_41.controller.Utils.Constant;
 import com.example.sd_41.controller.Utils.Decode;
 import com.example.sd_41.model.*;
 import com.example.sd_41.repository.BanHang.GioHangChiTietRepository;
-import com.example.sd_41.repository.ChuongTrinhGiamGia.ChuongTrinhGiamGiaChiTietHoaDonRepository;
-import com.example.sd_41.repository.ChuongTrinhGiamGia.ChuongTrinhGiamGiaHoaDonRepository;
 import com.example.sd_41.repository.HoaDon.HoaDonChiTietRepository;
 import com.example.sd_41.repository.HoaDon.HoaDonRepository;
 import com.example.sd_41.repository.KhachHangRepository;
+import com.example.sd_41.repository.SanPham.AllGiayTheThao.MauSacRepository;
+import com.example.sd_41.repository.SanPham.AllGiayTheThao.SizeRepository;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoChiTietRepository;
+import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoRepository;
 import com.example.sd_41.service.HoaDon.HoaDonService;
 import com.example.sd_41.service.HoaDon.HoaDonServiceImpl;
 import com.example.sd_41.service.impl.ChuongTrinhGiamGiaHoaDonImpl;
@@ -21,6 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -37,11 +39,9 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 @Controller
@@ -60,7 +60,11 @@ public class HoaDonController {
     private HoaDonServiceImpl hoaDonServiceImpl;
 
     @Autowired
+//    @Qualifier("giayTheThaoChiTietRepository")
     private GiayTheThaoChiTietRepository giayTheThaoChiTietRepository;
+
+    @Autowired
+    private GiayTheThaoRepository giayTheThaoRepository;
 
     @Autowired
     private GioHangChiTietRepository gioHangChiTietRepository;
@@ -73,6 +77,13 @@ public class HoaDonController {
 
     @Autowired
     private HoaDonService hoaDonService;
+
+    @Autowired
+    private SizeRepository sizeRepository;
+
+    @Autowired
+    private MauSacRepository mauSacRepository;
+
 
 
     //Todo code view hóa đơn
@@ -1308,20 +1319,12 @@ public class HoaDonController {
     }
     //Todo code xóa đơn hàng bị hủy
 
-//    @PostMapping("/XoaHoaDon")
-//    public ModelAndView xoaHoaDon(@RequestParam("hoaDonId") UUID hoaDonId) {
-//
-//        hoaDonService.deleteHoaDon(hoaDonId);
-//        return new ModelAndView("redirect:/Admin/HoaDon/DonHangBiHuy");
-//
-//    }
-
     @PostMapping("/XoaHoaDon")
     public String xoaHoaDon(@RequestParam("hoaDonId") UUID hoaDonId) {
 
         hoaDonService.deleteHoaDon(hoaDonId);
+
         return "redirect:/XoaDonHangBiHuyThanhCong";
-//        return new ModelAndView("redirect:/Admin/HoaDon/DonHangBiHuy");
 
     }
 
@@ -1440,7 +1443,7 @@ public class HoaDonController {
     }
 
     @PostMapping("/HoaDon/ThongTinChiTietHoaDon")
-    public String test(
+    public String showThongTinHoaDonChiTiet(
 
             Model model,
             HttpServletRequest request
@@ -1454,6 +1457,7 @@ public class HoaDonController {
         System.out.println("Id hóa đơn sau khi convert: "+idHoaDonConvert);
 
         List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon_Id(idHoaDonConvert);
+//        List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon_IdAndTrangThai(idHoaDonConvert,1);
 
         if (!hoaDonChiTiets.isEmpty()) {
             for (HoaDonChiTiet hoaDonChiTiet : hoaDonChiTiets) {
@@ -1482,7 +1486,123 @@ public class HoaDonController {
 
     }
 
+    @GetMapping("/Admin/ThemSanPhamKhachHangThanhCong")
+    public String saveThemSanPhamChoKhachHangThanhCong(){
+
+        return "/templates/Users/Layouts/Log/themSanPhamChoKhachHangThanhCong";
+
+    }
 
 
+    @PostMapping("/Admin/HoaDon/ThemThongTinSanPham")
+    public String saveThemThongTinSanPham(
+            HttpServletRequest request,
+            Model model
+    ) {
+
+        String idHoaDonConvert = request.getParameter("idHoaDonConvert");
+        System.out.println("ID của hóa đơn là : " + idHoaDonConvert);
+        model.addAttribute("idHoaDonConvert", idHoaDonConvert);
+
+        //Id
+        if(idHoaDonConvert != null){
+
+            String giayTheThaoChiTietId = request.getParameter("giayTheThaoChiTietId");
+            System.out.println("Id của giầy thể thao là: " + giayTheThaoChiTietId);
+
+            String sizeId = request.getParameter("sizeId");
+            System.out.println("Id của size là: "+ sizeId);
+
+            String mauSacId = request.getParameter("mauSacId");
+            System.out.println("Id của màu sắc là: "+ mauSacId);
+
+            String soLuong = request.getParameter("soLuong");
+            System.out.println("Số lượng mua: "+soLuong);
+
+            if(giayTheThaoChiTietId != null && !giayTheThaoChiTietId.isEmpty()
+                && sizeId != null && !sizeId.isEmpty()
+                && mauSacId != null && !mauSacId.isEmpty()) {
+
+                UUID idGiayTheThaoConvert = UUID.fromString(giayTheThaoChiTietId);
+                UUID idSizeConvert = UUID.fromString(sizeId);
+                UUID idMauSacConvert = UUID.fromString(mauSacId);
+
+                UUID idGiayTheThaoChiTiet = giayTheThaoChiTietRepository.findIdByGiayTheThaoAndSizeAndMauSac(idGiayTheThaoConvert, idSizeConvert, idMauSacConvert);
+
+                System.out.println("Id giầy thể thao chi tiết : "+ idGiayTheThaoConvert);
+                System.out.println("Id của size: "+ idSizeConvert);
+                System.out.println("Id của màu săc: "+idMauSacConvert);
+
+                HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
+
+                HoaDon hoaDon = hoaDonRepository.findById(UUID.fromString(idHoaDonConvert)).orElse(null);
+                GiayTheThaoChiTiet giayTheThaoChiTiet= giayTheThaoChiTietRepository.findById(idGiayTheThaoChiTiet).orElse(null);
+
+                hoaDonChiTiet.setHoaDon(hoaDon);
+                hoaDonChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTiet);
+                hoaDonChiTiet.setGhiChu("Khách hàng yêu cầu thêm sản phẩm");
+                hoaDonChiTiet.setSoLuong(soLuong);
+
+                String giaBanString = giayTheThaoChiTiet.getGiayTheThao().getGiaBan();
+
+                BigDecimal giaBan = new BigDecimal(giaBanString);
+
+                int soLuongInt = Integer.parseInt(soLuong);
+                // Tính toán đơn giá
+                BigDecimal donGia = giaBan.multiply(BigDecimal.valueOf(soLuongInt));
+                hoaDonChiTiet.setDonGia(donGia);
+                hoaDonChiTiet.setTrangThai(1);
+
+                hoaDonChiTietRepository.save(hoaDonChiTiet);
+
+                BigDecimal totalDonGia = hoaDonRepository.calculateTotalDonGiaByHoaDonId(UUID.fromString(idHoaDonConvert));
+                System.out.println("Tổng đơn giá của hóa đơn có ID " + idHoaDonConvert + " là: " + totalDonGia);
+
+                HoaDon hoaDonToUpdate = hoaDonRepository.findById(UUID.fromString(idHoaDonConvert)).orElse(null);
+                hoaDonToUpdate.setThanhTien(totalDonGia);
+                hoaDonRepository.save(hoaDonToUpdate);
+
+                return "redirect:/Admin/ThemSanPhamKhachHangThanhCong";
+
+            }
+
+        }else{
+
+            System.out.println("Mã hóa đơn không được là null");
+
+        }
+
+        return "/templates/Users/Layouts/ChiTiet/ThemThongTinSanPham";
+
+    }
+
+
+
+
+
+
+
+
+
+    //Todo code list giầy thể thao chi tiết
+    @ModelAttribute("giayTheThaoChiTiet")
+    public List<GiayTheThaoChiTiet> getListGiayTheThaoChiTiet(){
+
+        return giayTheThaoChiTietRepository.findAll();
+
+    }
+
+    @ModelAttribute("size")
+    public List<Size> getListSize(){
+
+        return sizeRepository.findAll();
+    }
+
+    @ModelAttribute("mauSac")
+    public List<MauSac> getListMauSac(){
+
+        return mauSacRepository.findAll();
+
+    }
 
 }

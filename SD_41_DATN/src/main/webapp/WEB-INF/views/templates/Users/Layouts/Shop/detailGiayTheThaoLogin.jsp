@@ -411,6 +411,7 @@
                     <h6>Công dụng : </h6>
                 </div>
                 <div class="col-5">
+                <div class="col-5">
                     <span>${giayTheThao.congDung.tenCongDung}</span>
                 </div>
             </div>

@@ -50,6 +50,4 @@ public interface GiayTheThaoChiTietRepository extends JpaRepository<GiayTheThaoC
 
 
 
-
-
 }
