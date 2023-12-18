@@ -116,7 +116,7 @@
                             </c:choose>
                         </td>
                         <td>
-                            <button style="margin-top: 30px" formaction="/test" class="btn btn-primary">Views</button>
+                            <button style="margin-top: 30px" formaction="/HoaDon/ThongTinChiTietHoaDon" class="btn btn-primary">Views</button>
                         </td>
                     </tr>
                 </c:forEach>

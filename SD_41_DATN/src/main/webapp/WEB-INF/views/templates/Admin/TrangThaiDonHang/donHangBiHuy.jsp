@@ -70,6 +70,8 @@
                     <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 170px">Tổng tiền</td>
                     <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 300px">Thông tin nhận hàng</td>
                     <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 210px;text-align: center">Ghi chú</td>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 210px;text-align: center">Funstion</td>
+
                 </tr>
                 <c:forEach items="${page.content}" var="list">
                     <tr>
@@ -92,11 +94,11 @@
                                 <c:when test="${not empty list.mess}">${list.mess}</c:when>
                                 <c:otherwise>N/A</c:otherwise>
                             </c:choose>
-                        </td>                            <%--                        <td>--%>
-<%--                            <button formaction="/Admin/HoaDon/XacNhanHoaDonKhachHang" name="huy" value="${list.id}"--%>
-<%--                                    class="btn btn-primary me-2">Xác nhận--%>
-<%--                            </button>--%>
-<%--                        </td>--%>
+                        </td>
+                        <td>
+                            <input type="hidden" name="hoaDonId" value="${list.id}">
+                            <button style="margin-left: 30px;margin-top: 30px" formaction="/XoaHoaDon" value="${list.id}" class="btn btn-primary">Xóa</button>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>

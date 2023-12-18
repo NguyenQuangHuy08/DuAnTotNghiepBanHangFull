@@ -6,6 +6,7 @@ import com.example.sd_41.repository.HoaDon.HoaDonRepository;
 import com.example.sd_41.repository.KhachHangRepository;
 import com.example.sd_41.repository.SanPham.AllGiayTheThao.UserRepository;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoChiTietRepository;
+import jakarta.transaction.Transactional;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -201,6 +202,20 @@ public class HoaDonService implements HoaDonServiceImpl{
             }
         }
 
+        //Todo code xóa đơn hàng bị hủy cho trạng thái đơn hàng
+        @Transactional
+        public void deleteHoaDon(UUID hoaDonId) {
+            // Step 1: Xóa tất cả chi tiết hóa đơn liên quan
+            List<HoaDonChiTiet> chiTietList = hdctRepo.findByHoaDon_Id(hoaDonId);
+            for (HoaDonChiTiet chiTiet : chiTietList) {
+
+                hdctRepo.delete(chiTiet);
+
+            }
+
+            // Step 2: Xóa hóa đơn
+            hoaDonRepository.deleteById(hoaDonId);
+        }
 
 
 }

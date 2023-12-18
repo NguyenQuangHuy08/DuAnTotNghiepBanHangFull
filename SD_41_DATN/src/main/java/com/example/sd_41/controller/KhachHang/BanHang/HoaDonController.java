@@ -12,6 +12,7 @@ import com.example.sd_41.repository.HoaDon.HoaDonChiTietRepository;
 import com.example.sd_41.repository.HoaDon.HoaDonRepository;
 import com.example.sd_41.repository.KhachHangRepository;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoChiTietRepository;
+import com.example.sd_41.service.HoaDon.HoaDonService;
 import com.example.sd_41.service.HoaDon.HoaDonServiceImpl;
 import com.example.sd_41.service.impl.ChuongTrinhGiamGiaHoaDonImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -69,6 +70,9 @@ public class HoaDonController {
 
     @Autowired
     JavaMailSender mailSender;
+
+    @Autowired
+    private HoaDonService hoaDonService;
 
 
     //Todo code view hóa đơn
@@ -1150,7 +1154,6 @@ public class HoaDonController {
 
             }
 
-//        return "redirect:/Admin/HoaDon/XacNhanHoaDonDangDongGoi";
         return "redirect:/Admin/logXacNhanDonHang";
 
     }
@@ -1202,7 +1205,7 @@ public class HoaDonController {
 
             hoaDonServiceImpl.update(hoaDon.getId(), hd);
         }
-//        return "redirect:/Admin/HoaDon/XacNhanHoaDonKhachHangDangGiao";
+
           return "redirect:/Admin/dongGoiThanhCong";
 
     }
@@ -1297,6 +1300,31 @@ public class HoaDonController {
     }
 
 
+    @GetMapping("/XoaDonHangBiHuyThanhCong")
+    public String xoaDonHangBiHuyThanhCong(){
+
+        return "/templates/Users/Layouts/Log/xoaDonHangBiHuyThanhCong";
+
+    }
+    //Todo code xóa đơn hàng bị hủy
+
+//    @PostMapping("/XoaHoaDon")
+//    public ModelAndView xoaHoaDon(@RequestParam("hoaDonId") UUID hoaDonId) {
+//
+//        hoaDonService.deleteHoaDon(hoaDonId);
+//        return new ModelAndView("redirect:/Admin/HoaDon/DonHangBiHuy");
+//
+//    }
+
+    @PostMapping("/XoaHoaDon")
+    public String xoaHoaDon(@RequestParam("hoaDonId") UUID hoaDonId) {
+
+        hoaDonService.deleteHoaDon(hoaDonId);
+        return "redirect:/XoaDonHangBiHuyThanhCong";
+//        return new ModelAndView("redirect:/Admin/HoaDon/DonHangBiHuy");
+
+    }
+
     //Todo code xác nhận hủy đơn hàng bên admin
     @PostMapping("/Admin/HoaDon/HuyDonHangCuaKhachHang")
     public String adminXacNhanHuyDonHangCuaKhachHang(
@@ -1340,7 +1368,7 @@ public class HoaDonController {
                             "\n" +
                             "Ngày thanh toán :" + ngayThanhToan +
                             "\n" +
-                            "Thành tiền : " + thanhTien +
+                            "Thành tiền : " + thanhTien + "VNĐ" +
                             "\n" +
                             "Thông tin địa chỉ nhận hàng :" +thongTinNhanHang +
                             "\n" +
@@ -1411,7 +1439,7 @@ public class HoaDonController {
 
     }
 
-    @PostMapping("/test")
+    @PostMapping("/HoaDon/ThongTinChiTietHoaDon")
     public String test(
 
             Model model,

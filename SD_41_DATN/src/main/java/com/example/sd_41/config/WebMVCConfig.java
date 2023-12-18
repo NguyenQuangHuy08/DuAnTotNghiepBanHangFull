@@ -55,8 +55,9 @@ public class WebMVCConfig implements WebMvcConfigurer {
                         "/Admin/xacNhanDonHangKhachHang",
                         "/Admin/XacNhanHoaDonDangDongGoi",
                         "/Admin/HoaDon/XacNhanHoaDonKhachHangDangGiao",
-                        "/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCongHoanThanh"
-
+                        "/Admin/HoaDon/XacNhanHoaDonGiaoHangThanhCongHoanThanh",
+                        //Thay đổi thông tin cá nhân
+                        "/TrangChu/ThongTinCaNhan/Admin"
 
 
                 );
@@ -149,8 +150,8 @@ public class WebMVCConfig implements WebMvcConfigurer {
                         "/LotGiay/create",
                         "/LotGiay/edit/{id}",
                         "/LotGiay/delete/{id}",
-                        //Thay đổi thông tin
-                        "/TrangChu/ThongTinCaNhan/Admin"
+                        //Xóa đơn hàng khi hủy
+                        "/Admin/HoaDon/DonHangBiHuy"
 
                         );
 
