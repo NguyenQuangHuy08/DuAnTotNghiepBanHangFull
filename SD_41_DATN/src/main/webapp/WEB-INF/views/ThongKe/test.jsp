@@ -166,7 +166,6 @@
     </div>
 </div>
 
-<%@ include file="../templates/Admin/Layouts/GiayTheThao/_FooterGiayTheThao.jsp" %>
 
 <%--Js cho biểu đồ--%>
 

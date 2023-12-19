@@ -121,11 +121,23 @@
                     </tr>
                 </c:forEach>
             </table>
-
-
             <br>
             <ul class="pagination">
-                <!-- Các nút phân trang -->
+                <c:if test="${not page.first}">
+                    <li class="page-item">
+                        <a href="?pageNo=${page.number -1}">Pre</a>
+                    </li>
+                </c:if>
+                <c:forEach begin="0" end="${page.totalPages > 1 ? page.totalPages - 1 : 0}" var="i">
+                    <li class="page-item <c:if test='${i == page.number}'>active</c:if>">
+                        <a class="page-link" href="?pageNo=${i}">${i + 1}</a>
+                    </li>
+                </c:forEach>
+                <c:if test="${not page.last}">
+                    <li class="page-item">
+                        <a href="?pageNo=${page.number +1}">Next</a>
+                    </li>
+                </c:if>
             </ul>
         </form>
     </div>

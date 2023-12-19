@@ -102,9 +102,7 @@
                     </tr>
                 </c:forEach>
             </table>
-
-
-
+<%--            Phân trang--%>
             <ul class="pagination">
                 <c:if test="${not page.first}">
                     <li class="page-item">
