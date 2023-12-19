@@ -514,7 +514,7 @@
             // });
 
             data.forEach(function(hoaDon) {
-                if (hoaDon.trangThai === 3) {
+                if (hoaDon.trangThai === 4) {
                     // Đại diện cho hóa đơn
                     productNames.push(hoaDon.ngayThanhToan);
                     productTongTien.push(hoaDon.thanhTien);
