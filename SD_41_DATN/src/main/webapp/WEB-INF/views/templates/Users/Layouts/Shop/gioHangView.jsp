@@ -110,8 +110,12 @@
     </table>
         <div class="thongBaoEr" style="margin-top: 10px">
             <span style="color: red;font-size: 15px">${soLuongMax}</span>
-            <span>${soLuongMax1}</span>
+            <span style="color: red">${soLuongMax1}</span>
             <span style="color: red;font-size: 15px">${erCheckNun}</span>
+            <span style="color: red;font-size: 15px">${erCheckSoLuongAm}</span>
+            <span style="color: red;font-size: 15px">${erCheckSoLuongMax}</span>
+
+
         </div>
 
         <div style="margin-top: 30px">

@@ -255,6 +255,10 @@
                         <h6 style="color: red">${erCheckSizeAndMuaSacNotFind}</h6>
                         <h6 style="color: red">${erSoLuongAddToCartMax}</h6>
                         <h6 style="color: red">${erFailNotLoginKhachHang}</h6>
+                        <h6 style="color: red">${erSoLuongAddToCartMaxGioiHan}</h6>
+                        <h6 style="color: red">${soLuongMax}</h6>
+                        <h6 style="color: red">${soLuongMaxModel}</h6>
+
                     </div>
                     <input type="hidden" name="gia" value="${giayTheThao.giaBan * (100 - sale)/100}">
                     <input type="hidden" id="idGiayTheThao" name="idGiayTheThao" value="${giayTheThao.id}">
