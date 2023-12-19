@@ -11,11 +11,8 @@ import com.example.sd_41.repository.KhachHangRepository;
 import com.example.sd_41.repository.SanPham.AllGiayTheThao.*;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoChiTietRepository;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoRepository;
-
 import com.example.sd_41.service.GioHang.GioHangChiTietImpl;
 import com.example.sd_41.service.GioHang.GioHangChiTietService;
-import com.example.sd_41.service.KhachHangService;
-import com.oracle.wls.shaded.org.apache.xpath.operations.Mod;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -29,11 +26,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class TrangChuGiayTheThaoController {
@@ -520,9 +518,9 @@ public class TrangChuGiayTheThaoController {
                     try {
 
 
-                        if (checkSoLuongAddToCart < 0) {
+                        if (checkSoLuongAddToCart <= 0) {
 
-                            attributes.addFlashAttribute("erSoLuongAddToCartMin", "Số lượng không được âm !");
+                            attributes.addFlashAttribute("erSoLuongAddToCartMin", "Số lượng sản phẩm mua phải lớn hơn hoặc bằng 0!");
                             return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
 
                         }
@@ -530,8 +528,14 @@ public class TrangChuGiayTheThaoController {
 
                         if (checkSoLuongAddToCart > soLuongTonKho) {
 
-                            attributes.addFlashAttribute("erSoLuongAddToCartMax", "Số lượng trong kho chỉ còn " + soLuongTonKho + " đối với size và màu sắc này");
+                            attributes.addFlashAttribute("erSoLuongAddToCartMax", "Không mua được sản phẩm vì số lượng trong kho chỉ còn " + soLuongTonKho + " đối với size và màu sắc này");
+                            return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
 
+                        }
+
+                        if(checkSoLuongAddToCart > 5){
+
+                            attributes.addFlashAttribute("erSoLuongAddToCartMaxGioiHan", "Xin lỗi quý khách! số lượng mua cho một sản phẩm không lớn hơn 5!");
                             return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
 
                         }
@@ -555,22 +559,24 @@ public class TrangChuGiayTheThaoController {
                         int newQuantity = existingQuantity + Integer.parseInt(soLuong);
 
                         //Dùng cho set lại giá bán
-                        BigDecimal giaBanBigDeimal = new BigDecimal(giaBan);
+//                        BigDecimal giaBanBigDeimal = new BigDecimal(giaBan);
 
-                        if(newQuantity > soLuongTonKho){
+                        if(newQuantity > 5){
 
-                            attributes.addFlashAttribute("soLuongMax","Sản phẩm này trong kho chỉ còn"+ soLuongTonKho + "quý vị thông cảm");
-                            existingItem.setSoLuong(String.valueOf(soLuongTonKho));
+                            System.out.println("Sản phẩm cộng dồn");
+                            int soLuongMaxCongDon = 5;
+             //               existingItem.setSoLuong(String.valueOf(soLuongTonKho));
+                            existingItem.setSoLuong(String.valueOf(soLuongMaxCongDon));
                             //Set đơn giá cho sản phẩm đã có trong giỏ hàng
-                            existingItem.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(soLuongTonKho)));
-
+                            existingItem.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(soLuongMaxCongDon)));
+                            attributes.addFlashAttribute("soLuongMax","Xin lỗi quý khách chỉ được thêm số lượng tối đa là 5 cho một sản phẩm !");
+                            model.addAttribute("soLuongMaxModel","Xin lỗi quý khách chỉ được thêm số lượng tối đa là 5 cho một sản phẩm !");
                             gioHangChiTietRepository.save(existingItem);
 
                         }else{
 
                             //Dành cho sản phẩm chưa có trong giỏ hàng
                             existingItem.setSoLuong(String.valueOf(newQuantity));
-//                            existingItem.setDonGia(giaBanBigDeimal.multiply(BigDecimal.valueOf(soLuongTonKho)));
                             existingItem.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(newQuantity)));
                             gioHangChiTietRepository.save(existingItem);
 
@@ -583,8 +589,6 @@ public class TrangChuGiayTheThaoController {
                         gioHangChiTiet.setGioHang(gioHang);
                         gioHangChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTiet);
                         gioHangChiTiet.setSoLuong(String.valueOf(checkSoLuongAddToCart));
-//                        gioHangChiTiet.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(checkSoLuongAddToCart)));
-
                         BigDecimal giaBanBigDeimal = new BigDecimal(giaBan);
                         gioHangChiTiet.setDonGia(giaBanBigDeimal.multiply(BigDecimal.valueOf(checkSoLuongAddToCart)));
 
@@ -593,7 +597,6 @@ public class TrangChuGiayTheThaoController {
                     }
 
                       return "redirect:/GiayTheThao/NguoiDungSuccessLoginAddToCart";
-
 
                 }
 
@@ -657,6 +660,7 @@ public class TrangChuGiayTheThaoController {
                                      @RequestParam(value = "donGia", required = false) List<String> donGia,
 
                                      HttpSession session,
+                                     HttpServletRequest request,
                                      RedirectAttributes attributes) {
 
         // Đã lưu mã vào session
@@ -667,46 +671,149 @@ public class TrangChuGiayTheThaoController {
         if (chon == null || chon.isEmpty()) {
 
             attributes.addFlashAttribute("erCheckNun", "Xin lỗi hãy chọn ít nhất một sản phẩm để thanh toán !");
-//            return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+            return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
 
         } else {
-            HoaDon hoaDon = new HoaDon();
-            // Thêm vào Hóa đơn
-            LocalTime localTime = LocalTime.now();
-            LocalDate ngayThanhToan = LocalDate.now();
-            String ngayThanhToanToDate = ngayThanhToan.toString();
 
-            hoaDon.setMaHoaDon("MaHD" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
-            hoaDon.setKhachHang(khachHang);
-            hoaDon.setTrangThai(0);
-            hoaDon.setNgayThanhToan(ngayThanhToanToDate);
-            hoaDon.setNgayTao(ngayThanhToanToDate);
+            BigDecimal tongDonGiaHoaDon = BigDecimal.ZERO;
 
-            hoaDonRepository.save(hoaDon);
-
-            int thanhTien = 0;
-            // Thêm vào hóa đơn chi tiết
             for (String stt : chon) {
+
+               int soLuongChon = Integer.parseInt(soLuong.get(Integer.parseInt(stt)));
+
+               if(soLuongChon <=0){
+
+                   System.out.println("Xin lỗi số lượng mua không được nhỏ hơn hoặc bằng 0");
+                   attributes.addFlashAttribute("erCheckSoLuongAm", "Xin lỗi số lượng mua sản phẩm không được nhỏ hơn hoặc bằng 0 !");
+                   return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+
+               }else if(soLuongChon > 5){
+
+                   System.out.println("Xin lỗi số lượng mua không được lớn hơn 5");
+                   attributes.addFlashAttribute("erCheckSoLuongMax", "Xin lỗi quý khách số lượng mua cho một sản phẩm không quá hơn 5 !");
+                   return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+
+               }
+
+                //Thêm vào hóa đơn
+                HoaDon hoaDon = new HoaDon();
+                LocalTime localTime = LocalTime.now();
+                LocalDate ngayThanhToan = LocalDate.now();
+                String ngayThanhToanToDate = ngayThanhToan.toString();
+
+                hoaDon.setMaHoaDon("MaHD" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
+                hoaDon.setKhachHang(khachHang);
+                hoaDon.setTrangThai(0);
+                hoaDon.setNgayThanhToan(ngayThanhToanToDate);
+                hoaDon.setNgayTao(ngayThanhToanToDate);
+
+                hoaDonRepository.save(hoaDon);
 
                 HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
                 hoaDonChiTiet.setHoaDon(hoaDon);
                 hoaDonChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTietRepository.findById(idGiayChiTiet.get(Integer.parseInt(stt))).orElse(null));
-                hoaDonChiTiet.setSoLuong(String.valueOf(Integer.parseInt(soLuong.get(Integer.parseInt(stt)))));
-                BigDecimal gia = new BigDecimal(donGia.get(Integer.parseInt(stt)));
-                hoaDonChiTiet.setDonGia(gia);
-                hoaDonChiTiet.setTrangThai(1);
-                model.addAttribute("hoaDonChiTiet", hoaDonChiTiet);
 
-                hoaDonChiTietRepository.save(hoaDonChiTiet);
-                thanhTien += Integer.parseInt(donGia.get(Integer.parseInt(stt)));
+                //Todo code mới
+                GiayTheThaoChiTiet giayTheThaoChiTiet = giayTheThaoChiTietRepository.findById(idGiayChiTiet.get(Integer.parseInt(stt))).orElse(null);
+
+                System.out.println("Số lượng request trả về : "+ soLuong);
+
+                int soLuongMua = Integer.parseInt(soLuong.get(Integer.parseInt(stt)));
+                int soLuongCo = Integer.parseInt(giayTheThaoChiTiet.getSoLuong());
+
+                //Giỏ hàng chi tiết đã chon
+
+                if(giayTheThaoChiTiet != null) {
+                    if (soLuongMua > soLuongCo) {
+
+                        System.out.println("Er");
+                        attributes.addFlashAttribute("erSoLuong","Xin lỗi hiện tại sản phẩm này chỉ còn duy nhất "+soLuongCo + " đôi !");
+                        return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+
+                    }
+                    if(soLuongMua <= 0){
+
+                        System.out.println("Er");
+                        attributes.addFlashAttribute("erSoLuongAm","Xin lỗi số lượng mua không được âm !");
+                        return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+
+                    }
+                }
+
+                System.out.println("Số lượng mua int: "+ soLuongMua);
+                System.out.println("Số lượng có int : "+ soLuongCo);
+
+                //
+                System.out.println("Danh sách idGiayChiTiet đã chọn:");
+                System.out.println(idGiayChiTiet.get(Integer.parseInt(stt)));
+
+                System.out.println("Danh sách idGiayChiTiet đã chọn:");
+                UUID selectedGiayChiTietId = idGiayChiTiet.get(Integer.parseInt(stt));
+                System.out.println(selectedGiayChiTietId);
+
+                // Tìm và cập nhật GioHangChiTiet
+                GioHangChiTiet gioHangChiTietSetSoLuong = gioHangChiTietRepository.findByGiayTheThaoChiTiet_Id(selectedGiayChiTietId);
+
+                if (gioHangChiTietSetSoLuong != null) {
+                    // Cập nhật số lượng mua
+                    System.out.println("Set số lượng lại thành công !");
+                    gioHangChiTietSetSoLuong.setSoLuong(String.valueOf(soLuongMua));
+
+                    // Get the associated GiayTheThao
+                    GiayTheThaoChiTiet giayTheThaoChiTietSL = gioHangChiTietSetSoLuong.getGiayTheThaoChiTiet();
+
+                    if (giayTheThaoChiTietSL != null) {
+
+                        GiayTheThao giayTheThao = giayTheThaoChiTiet.getGiayTheThao();
+
+                        System.out.println("Id của GiayTheThao: " + giayTheThao.getId());
+                        String giaBanNew = giayTheThao.getGiaBan();
+
+                        // Convert the String to BigDecimal
+                        BigDecimal giaBan = new BigDecimal(giaBanNew);
+                        // Calculate DonGia
+                        BigDecimal donGiaNew = giaBan.multiply(BigDecimal.valueOf(soLuongMua));
+                        // Set the calculated value for DonGia
+                        gioHangChiTietSetSoLuong.setDonGia(donGiaNew);
+                        //Set cho đơn giá
+                        //set số lượng vào hóa đơn chi tiết
+                        hoaDonChiTiet.setSoLuong(String.valueOf(Integer.parseInt(soLuong.get(Integer.parseInt(stt)))));
+                        // Convert the String to BigDecimal
+                        BigDecimal giaBanHoaDonChiTiet = new BigDecimal(giaBanNew);
+
+                        BigDecimal donGiaHoaDonChiTiet = giaBanHoaDonChiTiet.multiply(BigDecimal.valueOf(soLuongMua));
+
+                        hoaDonChiTiet.setDonGia(donGiaHoaDonChiTiet);
+                        hoaDonChiTiet.setTrangThai(1);
+                        System.out.println("Đơn giá mới của hóa đơn là : "+donGiaHoaDonChiTiet);
+
+                        hoaDonChiTietRepository.save(hoaDonChiTiet);
+
+                        //Sau khi lưu đơn giá của hóa đơn chi tiết xong tôi muốn set thành tiền cho hóa đơn thành tiền
+                        //của hóa đơn sẽ là tổng đơn giá trong hóa đơn chi tiết
+
+
+                        tongDonGiaHoaDon = tongDonGiaHoaDon.add(donGiaHoaDonChiTiet);
+                        hoaDon.setThanhTien(tongDonGiaHoaDon);
+
+                        hoaDonRepository.save(hoaDon);
+
+                    }
+
+                    gioHangChiTietRepository.save(gioHangChiTietSetSoLuong);
+                    model.addAttribute("hoaDon", hoaDon);
+                    model.addAttribute("hoaDonChiTiet", hoaDonChiTiet);
+
+                    return "redirect:/nguoiDung/HoaDon/" + hoaDon.getId();
+
+                } else {
+
+                    System.out.println("Không tìm thấy GioHangChiTiet cho id: " + selectedGiayChiTietId);
+
+                }
 
             }
 
-            hoaDon.setThanhTien(BigDecimal.valueOf(thanhTien));
-            model.addAttribute("hoaDon", hoaDon);
-            hoaDonRepository.save(hoaDon);
-
-            return "redirect:/nguoiDung/HoaDon/" + hoaDon.getId();
         }
 
         return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
