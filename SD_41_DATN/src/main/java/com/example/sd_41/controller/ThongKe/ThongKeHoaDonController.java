@@ -45,6 +45,15 @@ public class ThongKeHoaDonController {
         Integer totalQuantity = giayTheThaoChiTietRepository.sumSoLuong();
         model.addAttribute("totalQuantity",totalQuantity);
 
+        //Tổng số lượng hóa đơn tại quầy đã bán
+        Integer tongHoaDonTaiQuay = hoaDonRepository.tongHoaDonTaiQuay();
+        model.addAttribute("tongHoaDonTaiQuay",tongHoaDonTaiQuay);
+
+        //Tổng số lượng hóa đơn online đã bán
+        Integer tongHoaDonOnline = hoaDonRepository.tongHoaDonOnline();
+        model.addAttribute("tongHoaDonOnline",tongHoaDonOnline);
+
+
         //sản phẩm bán chạy nhất
 
 //        String maSanPhamBanChayNhat = hoaDonRepository.timSanPhamBanChayNhat();

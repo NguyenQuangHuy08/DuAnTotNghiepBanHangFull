@@ -31,6 +31,12 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
     @Query("SELECT COUNT(hd.maHoaDon) FROM HoaDon hd WHERE hd.trangThai = 4")
     Integer tongDonHang();
 
+    @Query("SELECT COUNT(hd.maHoaDon) FROM HoaDon hd WHERE hd.trangThai = 4 AND hd.hinhThuc = 1")
+    Integer tongHoaDonTaiQuay();
+
+    @Query("SELECT COUNT(hd.maHoaDon) FROM HoaDon hd WHERE hd.trangThai = 4 AND hd.hinhThuc = 0")
+    Integer tongHoaDonOnline();
+
     //Sản phẩm bán chạy nhất
     @Query("SELECT h, gttct FROM HoaDon h " +
             "JOIN HoaDonChiTiet hdct ON h.id = hdct.hoaDon.id " +
