@@ -3,6 +3,7 @@ package com.example.sd_41.service;
 import com.example.sd_41.model.ChuongTrinhGiamGiaGiayTheThao;
 import com.example.sd_41.repository.ChuongTrinhGiamGia.ChuongTrinhGiamGiaGiayTheThaoRepository;
 import com.example.sd_41.service.impl.ChuongTrinhGiamGiaGiayTheThaoImpl;
+import lombok.SneakyThrows;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -97,5 +99,49 @@ public class ChuongTrinhGiamGiaGiayTheThaoService implements ChuongTrinhGiamGiaG
         }
         return this.repo.filterByTrangThaiAndDate(tt, nbd, nkt, pageable);
     }
+
+
+    @SneakyThrows
+    @Override
+    public void updateTrangThai() {
+        List<ChuongTrinhGiamGiaGiayTheThao> list = this.repo.findAll();
+        List<ChuongTrinhGiamGiaGiayTheThao> newList = new ArrayList<>();
+        List<ChuongTrinhGiamGiaGiayTheThao> listKichHoat = new ArrayList<>();
+
+        LocalDate currentDate = LocalDate.now();
+        for (ChuongTrinhGiamGiaGiayTheThao gg : list) {
+            if (gg.getTrangThai() != -1) {
+                LocalDate date = LocalDate.parse(gg.getNgayKetThuc());
+                int comparasion = date.compareTo(currentDate);
+                System.out.println("Ten chuong trinh: " + gg.getTenChuongTrinh() + "Ngay ket thuc: " + date
+                        + ", Ngay hien tai: " + currentDate);
+                if (comparasion < 0) {
+                    gg.setTrangThai(-1);
+                    System.out.println("Các trạng thái đã sửa: " + gg.getTenChuongTrinh());
+                    newList.add(gg);
+                }
+            }
+
+            if (gg.getTrangThai() == 0) {
+                LocalDate d = LocalDate.parse(gg.getNgayBatDau());
+                int comparasion2 = d.compareTo(currentDate);
+                if (comparasion2 <= 0) {
+                    gg.setTrangThai(1);
+                    listKichHoat.add(gg);
+                }
+            }
+
+        }
+        this.repo.saveAll(newList);
+        this.repo.saveAll(listKichHoat);
+    }
+
+    @Override
+    public Page<ChuongTrinhGiamGiaGiayTheThao> filterByTTChuaHetHan(Pageable pageable) {
+        Page<ChuongTrinhGiamGiaGiayTheThao> page2 = this.repo.filterByTTChuaHetHan(pageable);
+        return page2;
+    }
+
+
 
 }

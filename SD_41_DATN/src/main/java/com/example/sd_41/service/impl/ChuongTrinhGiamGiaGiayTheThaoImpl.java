@@ -30,4 +30,10 @@ public interface ChuongTrinhGiamGiaGiayTheThaoImpl {
 
     public Page<ChuongTrinhGiamGiaGiayTheThao> filterByTrangThaiAndDate(Pageable pageable, int tt, String nbd, String nkt);
 
+    public void updateTrangThai();
+
+
+    public Page<ChuongTrinhGiamGiaGiayTheThao> filterByTTChuaHetHan(Pageable pageable);
+
+
 }

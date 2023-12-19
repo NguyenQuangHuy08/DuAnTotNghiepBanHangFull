@@ -39,7 +39,8 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
     public String getGiamGiaSP(Model model, @RequestParam(name = "page", defaultValue = "1") int page) {
         Pageable pageable = PageRequest.of(page - 1, 10);
 
-        model.addAttribute("list", serviceSP.pagination(pageable));
+        this.serviceSP.updateTrangThai();
+        model.addAttribute("list", serviceSP.filterByTTChuaHetHan(pageable));
         model.addAttribute("title", "Chương trình khuyến mại sản phẩm");
         model.addAttribute("link", "sanPham");
         model.addAttribute("read", "sanPham?");
@@ -49,7 +50,7 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
 
     @GetMapping("search")
     public String searchSP(Model model, @RequestParam(name = "page", defaultValue = "1") int page,
-                           @RequestParam("name") String name) {
+            @RequestParam("name") String name) {
         Pageable pageable = PageRequest.of(page - 1, 10);
         model.addAttribute("list", this.serviceSP.search(pageable, name));
         model.addAttribute("read", "sanPham/search?name=" + name + "&");
@@ -61,9 +62,9 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
 
     @GetMapping("filter")
     public String filterHD(Model model, @RequestParam(name = "page", defaultValue = "1") int page,
-                           @RequestParam("trangThai") int trangThai,
-                           @RequestParam("ngayBatDau") String ngayBatDau,
-                           @RequestParam("ngayKetThuc") String ngayKetThuc) {
+            @RequestParam("trangThai") int trangThai,
+            @RequestParam("ngayBatDau") String ngayBatDau,
+            @RequestParam("ngayKetThuc") String ngayKetThuc) {
         Pageable pageable = PageRequest.of(page - 1, 10);
         model.addAttribute("list", this.serviceSP.filterByTrangThai(pageable, trangThai));
         // model.addAttribute("read", "hoaDon/search?name="+name+"&");
@@ -88,6 +89,7 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
     @GetMapping("updateForm")
     public String getupdateFormSP(@RequestParam("id") UUID id, Model model) {
         ChuongTrinhGiamGiaGiayTheThao ctgg = this.serviceSP.getOne(id);
+        ctgg.setNgaySua(LocalDate.now().toString());
         model.addAttribute("ctggSP", ctgg);
         model.addAttribute("action", "");
         model.addAttribute("button", "Sửa");
@@ -95,7 +97,8 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
     }
 
     @PostMapping("updateForm")
-    public String updateFormSP(@ModelAttribute("ctggSP") ChuongTrinhGiamGiaGiayTheThao gg, @RequestParam("id") UUID id) {
+    public String updateFormSP(@ModelAttribute("ctggSP") ChuongTrinhGiamGiaGiayTheThao gg,
+            @RequestParam("id") UUID id) {
 
         this.serviceSP.update(gg, id);
         return "redirect:/chuongTrinhGiamGia/sanPham";
@@ -128,6 +131,16 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
         model.addAttribute("list", list);
         model.addAttribute("id", id);
         return "giamGia/sanPham/detail";
+    }
+
+    @GetMapping("detailSP")
+    public String detailProductHistory(@RequestParam("id") UUID id, Model model) {
+        ChuongTrinhGiamGiaGiayTheThao ctggSP = this.serviceSP.getOne(id);
+        List<ChuongTrinhGiamGiaChiTietGiayTheThao> list = this.serviceCTSP.getAllByCTGG(ctggSP);
+        model.addAttribute("ctggSP", ctggSP);
+        model.addAttribute("list", list);
+        model.addAttribute("id", id);
+        return "giamGia/sanPham/detailSP";
     }
 
     @GetMapping("apply")
@@ -193,4 +206,12 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
         return "redirect:/chuongTrinhGiamGia/sanPham";
     }
 
+    @GetMapping("/history")
+    public String history(Model model, @RequestParam(name = "page", defaultValue = "1") int page) {
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        model.addAttribute("list", this.serviceSP.filterByTrangThai(pageable, -1));
+        model.addAttribute("link", "sanPham");
+        model.addAttribute("read", "sanPham/history?");
+        return "giamGia/sanPham/history";
+    }
 }

@@ -52,17 +52,51 @@
             max-height: 500px;
             overflow: auto;
         }
+
+        #textCodeCheck{
+            border: 1px solid grey;
+            background-color: rgb(237, 237, 237);
+            outline: none;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+
+        #search-input{
+            border: 1px solid grey;
+            outline: none;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            border-right: none;
+            
+        }
+        #search-btn{
+            border: 1px solid grey;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            border-left: none;
+            background-color: rgb(255, 255, 255);
+        }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
 </head>
 <body>
+   
 <header class="p-3 mb-3 border-bottom">
     <div class="container">
         <div
                 class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
         >
-            <a href="http://localhost:8080/BanHangTaiQuay" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none" id="banner">BeeShoes</a>
+            <a href="http://localhost:8080/TrangChu/Admin/home" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none" id="banner">BeeShoes</a>
+        
+            <div class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                
+                <input type="text"  id="textCodeCheck" readonly="true" >
 
-            <div class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"><input type="text" style="background-color: rgb(237, 237, 237);outline: none;" id="textCodeCheck" readonly="true" ></div>
+                    <span style="margin-right: 10px">Nhập tên sản phẩm cần tìm</span>
+                    <input type="search" name="search-name" id="search-input">
+
+                    <button id="search-btn"><i class="bi bi-search"></i></button>
+            </div>
 
 
 
@@ -86,11 +120,10 @@
                         class="dropdown-menu text-small"
                         aria-labelledby="dropdownUser1"
                 >
-                    <li><a class="dropdown-item" href="#">New project...</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    
+                    <li><a class="dropdown-item" href="/TrangChu/ThongTinCaNhan/Admin">Profile</a></li>
                     <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    <li><a class="dropdown-item" href="/UserLog/logout">Sign out</a></li>
                 </ul>
             </div>
         </div>
@@ -113,7 +146,7 @@
                         style="display: flex; flex-wrap: wrap"
                         id="listProducts"
                 >
-                    <c:forEach items="${list}" var="gtt">
+                    <!-- <c:forEach items="${list}" var="gtt">
                         <div class="card card-product" style="width: 9.8rem">
                             <img
                                     src="/upload/${gtt.giayTheThao.getAnhDau()}"
@@ -132,7 +165,7 @@
                                 <p class="card-text price-card-product">${gtt.giayTheThao.giaBan}</p>
                             </div>
                         </div>
-                    </c:forEach>
+                    </c:forEach> -->
                 </div>
             </div>
         </div>
@@ -297,12 +330,111 @@
 <script>
 
 
-    var priceProduct = document.getElementsByClassName("price-card-product");
-    var priceArray = Array.from(priceProduct);
-    priceArray.forEach((element) => {
-        var price = parseInt(element.textContent).toLocaleString("en-US");
-        element.textContent = price;
-    });
+    
+
+    function start() {
+        getAllProducts(renderProducts);
+        getAllHDCho(renderHDCho);
+        getAllKH(renderKH);
+        search();
+    }
+    start();
+    
+    function getAllProducts(callback) {
+        fetch("http://localhost:8080/api/gttct" )
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(callback)
+            .catch((error) => {
+                console.error(
+                    "There was a problem with the fetch operation:",
+                    error
+                );
+            });
+    }
+
+    function renderProducts(products) {
+        
+        var htmls = products.map((gtt) =>{
+            console.log();
+            return `
+                <div class="card card-product" style="width: 9.8rem">
+                            <img
+                                    src="/upload/`+gtt.giayTheThao.anhDau+`"
+                                    class="card-img-top img-product-card"
+                            />
+
+                            <div class="card-body product-card-body">
+                                <p class="card-text">
+                                    <a
+                                            href="#"
+                                            class="name-product"
+                                            onclick="addToCart(\``+gtt.id+`\`, \``+gtt.giayTheThao.tenGiayTheThao+`\`, \``+gtt.giayTheThao.giaBan+`\`, event)"
+                                    >`+gtt.giayTheThao.tenGiayTheThao+` `+gtt.mauSac.tenMauSac+` (`+gtt.soLuong+`)</a
+                                    >
+                                </p>
+                                <p class="card-text price-card-product">`+gtt.giayTheThao.giaBan+`</p>
+                            </div>
+                        </div>
+
+          `;
+        });
+        var html = htmls.join("");
+        document.getElementById("listProducts").innerHTML = html;
+        var priceProduct = document.getElementsByClassName("price-card-product");
+        var priceArray = Array.from(priceProduct);
+        priceArray.forEach((element) => {
+            var price = parseInt(element.textContent).toLocaleString("en-US");
+            element.textContent = price + " đ";
+        });
+        
+        var longTextElements = document.querySelectorAll(".name-product");
+        var maxLength = 20;
+
+        longTextElements.forEach(function (element) {
+            var originalText = element.innerText;
+
+            if (originalText.length > maxLength) {
+            var truncatedText = originalText.substring(0, maxLength) + "...";
+            element.innerText = truncatedText;
+            }
+        });
+
+    }
+
+    function search() {
+        
+        var btn_search = document.getElementById("search-btn");
+        btn_search.addEventListener('click', ()=>{
+            var name = document.getElementById("search-input").value;
+            
+            fetch('http://localhost:8080/api/gttct/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify([name]) 
+            })
+            .then(response => response.json()) 
+            .then(data => {
+                
+                if(data.length > 0){
+                    
+                    renderProducts(data);
+                } else {
+                    alert("Không tìm thấy");
+                }
+                
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    }
 
     function getAllHDCho(callback) {
         fetch("http://localhost:8080/api/hd/unpaid" )
@@ -374,7 +506,7 @@
 
     }
 
-    getAllHDCho(renderHDCho);
+    
 
 
 
@@ -464,7 +596,7 @@
         localStorage.setItem("idKH", idKH);
     }
 
-    getAllKH(renderKH);
+    
 
     function addToCart(idGTTCT,name, price, event) {
         event.preventDefault();

@@ -184,8 +184,6 @@
                 ><i class="fa fa-plus" style="color: #ffffff"></i> Chương trình
                     khuyến mại
                 </a>
-                <a href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/history" class="btn btn-primary">Lịch
-                    sử</a>
             </div>
         </div>
         <table class="table table-hover table-light">

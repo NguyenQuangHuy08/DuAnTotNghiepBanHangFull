@@ -1,8 +1,6 @@
 package com.example.sd_41.controller.BanHangTaiQuay;
 
-import com.example.sd_41.repository.HoaDon.HoaDonRepository;
 import com.example.sd_41.service.GiayTheThao.GiayTheThaoChiTietService;
-import com.example.sd_41.service.GiayTheThao.GiayTheThaoService;
 import com.example.sd_41.service.HoaDon.HoaDonChiTietServie;
 import com.example.sd_41.service.HoaDon.HoaDonService;
 import com.example.sd_41.service.KhachHangService;
@@ -19,8 +17,7 @@ import java.util.UUID;
 @Controller
 @RequestMapping("BanHangTaiQuay")
 public class BanHangTaiQuayController {
-    @Autowired
-    private GiayTheThaoService service;
+    
 
     @Autowired
     private GiayTheThaoChiTietService gttctService;
@@ -43,7 +40,7 @@ public class BanHangTaiQuayController {
         model.addAttribute("listHDC", hoaDonService.hoaDonCho());
         model.addAttribute("listKH", khachHangService.getAll());
 
-        return "BanHangTaiQuay/BanHangTaiQuay";
+        return "BanHangTaiQuay/BanHangTaiQuayTest";
 
     }
 

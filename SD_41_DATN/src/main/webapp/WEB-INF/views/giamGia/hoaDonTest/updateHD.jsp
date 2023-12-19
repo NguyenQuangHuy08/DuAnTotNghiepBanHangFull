@@ -7,39 +7,20 @@
 <html lang="en">
 <head>
     <title>Chương trình giảm giá</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        
+        .label{
+            margin-bottom: 10px;
+        }
+        
+    </style>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <style>
-        input.checkbox {
-            width: 22px;
-            height: 22px;
-        }
-        .label{
-            margin-bottom: 10px;
-        }
-        .item{
-            display: flex;
-            justify-content: space-between;
-            border: 1px solid black;
-            border-radius: 5px;
-            line-height: 30px;
-            width: 300px;
-            margin: 5px;
-        }
-        .cancel{
-            border: none;
-            outline: none;
-            background: white;
-        }
-        .cancel:hover{
-            background: whitesmoke;
-        }
-    </style>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <%@ include file="../../templates/Admin/Layouts/GiayTheThao/_HeaderGiayTheThao.jsp" %>
@@ -52,11 +33,13 @@
       </div>
     </section>
     <h1 style="line-height: 100px; text-align: center; color: red">
-        Chương trình giảm giá sản phẩm
+        Chương trình giảm giá hóa đơn
     </h1>
     <div>
+        
+
         <sf:form
-                modelAttribute="ctggSP"
+                modelAttribute="ctggHD"
                 action="${action}"
                 method="POST"
                 enctype="multipart/form-data"
@@ -87,7 +70,44 @@
                 </div>
             </div>
             <br>
-            
+            <div class="row">
+                <div class="col-6 label">
+                    <label class="label">Số lượng</label>
+                    <sf:input
+                            path="soLuongSanPham"
+                            type="number"
+                            cssClass="form-control input-number"
+                            min="0"
+                            value=" "
+                            id="soLuong"
+                    />
+                    <div>
+                        <span id="error-soLuong" style="color: red; margin-top: 10px"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <label class="label">Tổng tiền hóa đơn từ</label>
+                    <sf:input
+                            path="soTienHoaDon"
+                            type="number"
+                            cssClass="form-control input-number"
+                            min="0"
+
+                            id="tongTien"
+                    />
+                    <!-- <sf:input
+                            path="soTienHoaDon"
+                            type="number"
+                            cssClass="form-control input-number"
+                            min="0"
+                            id="tongTien"
+                    /> -->
+                    <div>
+                        <span id="error-tongTien" style="color: red; margin-top: 10px"></span>
+                    </div>
+                </div>
+            </div>
+            <br>
             <div class="row">
                 <div class="col-6">
                     <label class="label">Ngày bắt đầu</label>
@@ -137,39 +157,43 @@
                         </div>
                         <div class="form-check form-check-inline">
                             <sf:radiobutton class="form-check-input" path="trangThai" id="inlineRadio3" value="-1"></sf:radiobutton>
-                            <label class="form-check-label" for="inlineRadio3">Hết hạn</label>
+                            <label class="form-check-label" for="inlineRadio2">Hết hạn</label>
                         </div>
                     </div>
                 </div>
             </div>
             <p style="text-align: right">
-                <button type="submit"  style="margin-right: 0px; margin-bottom: 190px" class="btn btn-primary update">${button}</button>
+                <button type="submit"  style="margin-right: 0px;" class="btn btn-primary update">${button}</button>
             </p>
-
         </sf:form>
+
     </div>
-    <c:if test="${button=='Thêm'}">
+
+
+     <c:if test="${button=='Thêm'}">
         <hr>    
         <div>
             <h4>Thêm bằng file excel</h4>
             <form  action="importExcel" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".xlsx"  class="form-control" required>
+                <input type="file" name="file" accept=".xlsx"  class="form-control">
 
                 <button class="btn btn-primary" style="margin-top: 10px">Import</button>
             </form>
         </div>
      </c:if>   
+
 </div>
 
 <%@ include file="../../templates/Admin/Layouts/GiayTheThao/_FooterGiayTheThao.jsp" %>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+
+  
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script>
     var ghiChu = document.getElementsByClassName('ghiChu')[0];
     var ten = document.getElementsByClassName('ten')[0];
     var ngayBatDau = document.getElementById('ngayBatDau');
     var ngayKetThuc = document.getElementById('ngayKetThuc');
+    var soLuong = document.getElementById('soLuong');
     var tongTien = document.getElementById('tongTien');
     var phanTramGiam = document.getElementById('phanTramGiam');
 
@@ -177,8 +201,13 @@
     var error_ghiChu = document.getElementById('error-GhiChu');
     var error_ngayBatDau = document.getElementById('error-ngayBatDau');
     var error_ngayKetThuc = document.getElementById('error-ngayKetThuc');
+    var error_soLuong = document.getElementById('error-soLuong');
     var error_tongTien = document.getElementById('error-tongTien');
     var error_phanTramGiam = document.getElementById('error-phanTramGiam');
+
+    if(soLuong.value==0){
+        soLuong.value = "";
+    }
     
     if(phanTramGiam.value==0){
         phanTramGiam.value = "";
@@ -202,6 +231,15 @@
             error_ngayKetThuc.innerHTML="";
         });
 
+        soLuong.addEventListener("focus", function() {
+            error_soLuong.innerHTML="";
+            
+        });
+
+        tongTien.addEventListener("focus", function() {
+            error_tongTien.innerHTML="";
+        });
+
         phanTramGiam.addEventListener("focus", function() {
             error_phanTramGiam.innerHTML="";
         });
@@ -215,6 +253,8 @@
             var ghi_Chu = ghiChu.value.trim().length;
             var nBatDau = ngayBatDau.value;
             var nKetThuc = ngayKetThuc.value;
+            var sl = soLuong.value;
+            var tt = tongTien.value;
             var ptg = phanTramGiam.value; 
             
             var now = new Date(Date.now()).toISOString().slice(0, 10);
@@ -247,6 +287,15 @@
                         error_phanTramGiam.innerHTML = "Giá trị giảm phải lớn hơn 0 và nhỏ hơn 51";
                         checkValidate = false;
                     } 
+                    if(sl<=0){
+                        error_soLuong.innerHTML = "Số lượng phải lớn hơn 0";
+                        checkValidate = false;
+                    }
+                    if(tt<=0){
+                        error_tongTien.innerHTML = "Tổng tiển hóa đơn phải lớn hơn 0";
+                        checkValidate = false;
+                    }
+
 
                     if(!nBatDau){
                         error_ngayBatDau.innerHTML = "Nhập ngày bắt đầu";
@@ -287,59 +336,11 @@
     
     
     validateInput();
-
+    
     function goBack() {
         window.history.back();
-      }
-
-//     var listID = [];
-//   function addProducts(id) {
-//     var row = document.getElementById(id);
-//     var stt = row.getElementsByTagName("td")[1].innerText;
-//     var name = row.getElementsByTagName("td")[2].innerText;
-//     var gia = row.getElementsByTagName("td")[3].innerText;
-//     var product = {stt: stt, name: name, gia: gia};
+    }
     
-//     var length = listID.length;
-//     var check = false;
-    
-//     var isCheck = row.getElementsByTagName("td")[0].querySelector("input[type=checkbox]");
-//     if(isCheck.checked){
-//         renderProducts(product);
-//     } else {
-//         var div = document.getElementById('product - '+ stt);
-//         div.remove();
-//     }
-    
-//     // if(check){
-//     //     listID.push(stt);
-//     // }
-    
-//     }
-//     function deleteProduct(button) {
-//         var element = button.parentNode;
-//         element.remove();
-//     }
-//     function renderProducts(product) {
-//         var div = document.createElement("div");
-//         div.className = "col-3 item";
-//         div.id = 'product - '+ product.stt;
-        
-//         var span = document.createElement("span");
-//         span.innerText = product.name;
-        
-//         var button = document.createElement("button");
-//         button.className = "cancel";
-//         button.innerHTML = "&#x2715;";
-//         button.onclick = function() {
-//             deleteProduct(this);
-//         };
-        
-//         div.appendChild(span);
-//         div.appendChild(button);
-//         document.getElementsByClassName('products')[0].appendChild(div);
-//     }
-
 </script>
 </body>
 </html>

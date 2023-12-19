@@ -135,10 +135,6 @@
                             <sf:radiobutton class="form-check-input" path="trangThai" id="inlineRadio2" value="0"></sf:radiobutton>
                             <label class="form-check-label" for="inlineRadio2">Chưa kích hoạt</label>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <sf:radiobutton class="form-check-input" path="trangThai" id="inlineRadio3" value="-1"></sf:radiobutton>
-                            <label class="form-check-label" for="inlineRadio3">Hết hạn</label>
-                        </div>
                     </div>
                 </div>
             </div>

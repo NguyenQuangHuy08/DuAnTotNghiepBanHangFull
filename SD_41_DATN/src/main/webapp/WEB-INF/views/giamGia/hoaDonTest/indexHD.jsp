@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Chương trình giảm giá sản phẩm</title>
+    <title>Document</title>
     <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -20,6 +20,14 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
     <style>
+        body {
+            width: 100%;
+            background-color: rgb(238, 238, 238);
+        }
+
+        /* .promotion{
+
+  } */
 
         .btn-function {
             display: flex;
@@ -46,11 +54,6 @@
         /* search-input */
         .label-filter {
             font-weight: 500;
-
-        }
-
-        .title {
-            font-size: large;
         }
 
         #search-input {
@@ -71,10 +74,14 @@
             display: flex;
             justify-content: space-between;
         }
+
+        .title {
+            font-size: large;
+        }
     </style>
 </head>
 
-<body class="" style="width:100%">
+<body class="container-fluid">
 <%@ include file="../../templates/Admin/Layouts/GiayTheThao/_HeaderGiayTheThao.jsp" %>
 <section class="row">
     <div class="col-3 filter">
@@ -98,43 +105,45 @@
             <form
                     action="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/filter"
             >
-                <label for="search-input" class="form-label label-filter title">
-                    Trạng thái
-                </label>
-                <div class="form-check">
-                    <input
-                            class="form-check-input trangThai"
-                            type="radio"
-                            name="trangThai"
-                            id="all"
-                            value="2"
-                            checked
-                    />
-                    <label class="form-check-label" for="all"> Tất cả </label>
-                </div>
-                <div class="form-check">
-                    <input
-                            class="form-check-input trangThai"
-                            type="radio"
-                            name="trangThai"
-                            id="activated"
-                            value="1"
-                    />
-                    <label class="form-check-label" for="activated">
-                        Kích hoạt
+                <div>
+                    <label for="search-input" class="form-label label-filter title">
+                        Trạng thái
                     </label>
-                </div>
-                <div class="form-check">
-                    <input
-                            class="form-check-input trangThai"
-                            type="radio"
-                            name="trangThai"
-                            id="notYetApplied"
-                            value="0"
-                    />
-                    <label class="form-check-label" for="notYetApplied">
-                        Chưa áp dụng
-                    </label>
+                    <div class="form-check">
+                        <input
+                                class="form-check-input trangThai"
+                                type="radio"
+                                name="trangThai"
+                                id="all"
+                                value="2"
+                                checked
+                        />
+                        <label class="form-check-label" for="all"> Tất cả </label>
+                    </div>
+                    <div class="form-check">
+                        <input
+                                class="form-check-input trangThai"
+                                type="radio"
+                                name="trangThai"
+                                id="activated"
+                                value="1"
+                        />
+                        <label class="form-check-label" for="activated">
+                            Kích hoạt
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input
+                                class="form-check-input trangThai"
+                                type="radio"
+                                name="trangThai"
+                                id="notYetApplied"
+                                value="0"
+                        />
+                        <label class="form-check-label" for="notYetApplied">
+                            Chưa áp dụng
+                        </label>
+                    </div>
                 </div>
                 <div>
                     <label class="form-label label-filter title">Ngày tháng</label>
@@ -153,7 +162,7 @@
             </form>
         </div>
         <div class="mb-3">
-            <label class="form-label label-filter"> Chương trình giảm giá </label>
+            <label class="form-label label-filter title"> Chương trình giảm giá </label>
             <div>
                 <a
                         href="${pageContext.request.contextPath}/chuongTrinhGiamGia/hoaDon"
@@ -178,9 +187,8 @@
                 <h3>${title}</h3>
             </div>
             <div>
-                <a
-                        href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/createForm"
-                        class="btn btn-success"
+                <a href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/createForm"
+                   class="btn btn-success"
                 ><i class="fa fa-plus" style="color: #ffffff"></i> Chương trình
                     khuyến mại
                 </a>
@@ -223,16 +231,13 @@
                         <td style="text-align: left; max-width: 230px">
                                 ${gg.tenChuongTrinh}
                         </td>
-                        <td style="width: 100px;">${gg.phanTramGiam}</td>
+                        <td>${gg.phanTramGiam}</td>
                         <td><b>Từ:</b> ${gg.ngayBatDau} <br><b>Đến:</b> ${gg.ngayKetThuc}</td>
-
-                        <td>${hinhThuc}</td>
-                        <td style="width: 100px;">${gg.trangThai==1?"Kích hoạt":"Chưa áp dụng"}</td>
+                        <td style="width: 170px;">${hinhThuc}</td>
+                        <td>${gg.trangThai==1?"Kích hoạt":"Chưa áp dụng"}</td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/apply?id=${gg.id}"
-                               class="btn btn-primary">Áp dụng</a>
                             <a href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/detail?id=${gg.id}"
-                               class="btn btn-info">Chi tiết</a>
+                               class="btn btn-primary">Chi tiết</a>
                             <a
                                     href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/updateForm?id=${gg.id}"
                                     class="btn btn-success"
@@ -280,19 +285,20 @@
                 localStorage.setItem("selected", radioBtn[i].value);
             }
         }
-        localStorage.setItem("nbdSP", nbd.value);
-        localStorage.setItem("nktSP", nkt.value);
+
+        localStorage.setItem("nbd", nbd.value);
+        localStorage.setItem("nkt", nkt.value);
     }
 
     btnFilter.onclick = check;
 
-    function setCheckedRadio() {
+    function setStorage() {
         var radioBtn = document.getElementsByClassName("trangThai");
         var ngayBatDau = document.getElementById("ngayBatDau");
         var ngayKetThuc = document.getElementById("ngayKetThuc");
         var selected = localStorage.getItem("selected");
-        var nbd = localStorage.getItem("nbdSP");
-        var nkt = localStorage.getItem("nktSP");
+        var nbd = localStorage.getItem("nbd");
+        var nkt = localStorage.getItem("nkt");
         if (nbd) {
             ngayBatDau.value = nbd;
 
@@ -311,7 +317,7 @@
         }
     }
 
-    setCheckedRadio();
+    setStorage();
 
     // function setChecked() {
     //   var url = window.location.href.toString();

@@ -21,6 +21,11 @@ public class GiayTheThaoChiTietService {
 
     }
 
+    public List<GiayTheThaoChiTiet> searchByName(String name) {
+        System.out.println("Name: "+name);
+        return repo.findAllByNameProduct(name);
+    }
+
 
 
 }

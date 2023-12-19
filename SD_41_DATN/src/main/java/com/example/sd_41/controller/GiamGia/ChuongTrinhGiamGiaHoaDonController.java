@@ -86,6 +86,7 @@ public class ChuongTrinhGiamGiaHoaDonController {
     public String updateFormHD(@RequestParam("id") UUID id, Model model) {
         ChuongTrinhGiamGiaHoaDon hd = this.serviceHD.getOne(id);
         hd.setNgaySua(LocalDate.now().toString());
+        
         model.addAttribute("ctggHD", hd);
         model.addAttribute("button", "Sửa");
         return "giamGia/hoaDon/updateHD";

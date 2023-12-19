@@ -1,12 +1,11 @@
 package com.example.sd_41.controller.BanHangTaiQuay;
 
-import com.example.sd_41.model.HoaDon;
-import com.example.sd_41.model.HoaDonChiTiet;
-import com.example.sd_41.model.KhachHang;
-import com.example.sd_41.model.User;
+import com.example.sd_41.model.*;
+import com.example.sd_41.service.GiayTheThao.GiayTheThaoChiTietService;
 import com.example.sd_41.service.HoaDon.HoaDonChiTietServie;
 import com.example.sd_41.service.HoaDon.HoaDonService;
 import com.example.sd_41.service.KhachHangService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +23,22 @@ public class BanHangTaiQuayAPIController {
 
     @Autowired
     private KhachHangService khService;
+
+    @Autowired
+    private GiayTheThaoChiTietService gttctService;
+
+    @GetMapping("/gttct")
+    private List<GiayTheThaoChiTiet> getAllGttct() {
+        return gttctService.getAll();
+    }
+
+    @PostMapping("/gttct/search")
+    private List<GiayTheThaoChiTiet> searchByName(@RequestBody String name) {
+        System.out.println("Name: " + name);
+        List<GiayTheThaoChiTiet> result = gttctService.searchByName(name);
+        System.out.println("GTTCT: "+result.get(0).getGiayTheThao().getTenGiayTheThao());
+        return gttctService.searchByName(name);
+    }
 
     @GetMapping("/kh")
     public List<KhachHang> getAllKH() {
@@ -72,15 +87,20 @@ public class BanHangTaiQuayAPIController {
     }
 
     @PostMapping("/hd")
-    public HoaDon createHoaDon(@RequestBody String[] strings) {
+    public HoaDon createHoaDon(@RequestBody String[] strings, HttpSession session) {
         HoaDon hd = new HoaDon();
 
-        if (strings[0].length() != 0) {
-            UUID idUser = UUID.fromString(strings[0]);
-            User user = new User();
-            user.setId(idUser);
-            hd.setUser(user);
-        }
+        // if (strings[0].length() != 0) {
+        // UUID idUser = UUID.fromString(strings[0]);
+        // User user = new User();
+        // user.setId(idUser);
+        // hd.setUser(user);
+        // }
+
+        UUID idUser = (UUID) session.getAttribute("idUser");
+        User user = new User();
+        user.setId(idUser);
+        hd.setUser(user);
 
         if (strings[1].length() != 0) {
             UUID idKH = UUID.fromString(strings[1]);
@@ -96,8 +116,5 @@ public class BanHangTaiQuayAPIController {
     public String pay(@PathVariable("id") UUID id) {
         return hdService.thanhToan(id);
     }
-
-
-
 
 }

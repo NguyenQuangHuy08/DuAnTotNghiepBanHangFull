@@ -22,5 +22,8 @@ public interface ChuongTrinhGiamGiaGiayTheThaoRepository extends JpaRepository<C
     @Query("SELECT gg FROM ChuongTrinhGiamGiaGiayTheThao gg WHERE gg.ngayBatDau >= :ngayBatDau AND gg.ngayKetThuc <= :ngayKetThuc")
     Page<ChuongTrinhGiamGiaGiayTheThao> filterByDate(@Param("ngayBatDau") String nbd, @Param("ngayKetThuc") String nkt, Pageable pageable);
 
+    @Query("select gg from ChuongTrinhGiamGiaGiayTheThao gg where gg.trangThai not in (select ctgg.trangThai from ChuongTrinhGiamGiaGiayTheThao ctgg where ctgg.trangThai=-1)")
+    Page<ChuongTrinhGiamGiaGiayTheThao> filterByTTChuaHetHan(Pageable pageable);
+
 
 }
