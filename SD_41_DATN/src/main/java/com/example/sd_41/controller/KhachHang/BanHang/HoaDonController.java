@@ -22,7 +22,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -287,10 +286,31 @@ public class HoaDonController {
 
                                     //Hiện ra trang để quét mã QR
                                     System.out.println("Lưu lại thông tin hóa đơn khi thanh toán bằng momo");
-                                    BigDecimal thanhTienBigDecemal = new BigDecimal(thanhTienTong1);
+//                                    BigDecimal thanhTienBigDecemal = new BigDecimal(thanhTienTong1);
+//                                    hoaDon.setThanhTien(thanhTienBigDecemal);
+
+                                    String ship = request.getParameter("ship");
+
+                                    if (ship.matches("\\d*\\.?\\d*")) {
+                                        BigDecimal shipBigDecimal = new BigDecimal(ship);
+                                        System.out.println("Giá trị shipBigDecimal: " + shipBigDecimal);
+                                        hoaDon.setPhiShip(shipBigDecimal);
+
+                                        //Tính thành tiền
+                                        BigDecimal thanhTienBigDecemal = new BigDecimal(thanhTienTong1);
+
+                                        // Trừ giá trị ship từ tổng tiền
+                                        BigDecimal thanhTienSauShip = thanhTienBigDecemal.subtract(shipBigDecimal);
+                                        hoaDon.setThanhTien(thanhTienSauShip);
+
+
+                                    } else {
+
+                                        System.out.println("Chuỗi không hợp lệ");
+
+                                    }
 
                                     hoaDon.setTrangThai(1);
-                                    hoaDon.setThanhTien(thanhTienBigDecemal);
                                     hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoaiCuMomo + ", Địa chỉ giao hàng: " + diaChiCuMomo + "," + thanhPhoCuMomo + "," + quocGiaCuMomo);
                                     hoaDon.setMess(messCuMomo);
 
@@ -358,17 +378,38 @@ public class HoaDonController {
                                 String diaChiCu = request.getParameter("diaChi");
                                 String messCu = request.getParameter("mess");
                                 String thanhTienTong1 = request.getParameter("tongTien");
-//                            String idGiayTheThaoChiTiet = request.getParameter("idGiayTheTheThaoChiTiet");
+//                               String idGiayTheThaoChiTiet = request.getParameter("idGiayTheTheThaoChiTiet");
                                 String[] idGiayTheTheThaoChiTietArray = request.getParameterValues("idGiayTheTheThaoChiTiet");
 
-                                String ship = request.getParameter("ship");
+//                                String ship = request.getParameter("ship");
 
                                 //Todo gọi id để xóa giỏ hàng chi tiết
                                 String idGiayTheTheThaoChiTiet = request.getParameter("idGiayTheTheThaoChiTiet");
 
-                                System.out.println("Giá trị ship ban đầu: " + request.getParameter("ship"));
-                                ship = ship.trim();
-                                System.out.println("Giá trị ship sau khi cắt bỏ khoảng trắng: " + ship);
+//                                System.out.println("Giá trị ship ban đầu: " + request.getParameter("ship"));
+//                                ship = ship.trim();
+//                                System.out.println("Giá trị ship sau khi cắt bỏ khoảng trắng: " + ship);
+
+                                // Lấy giá trị ship từ request
+                                String ship = request.getParameter("ship");
+
+                                // Loại bỏ ký tự không mong muốn
+                                ship = ship.replaceAll("[^0-9]", "");
+
+                                // Kiểm tra xem chuỗi có giá trị không rỗng
+                                if (!ship.isEmpty()) {
+                                    // Chuyển đổi chuỗi thành số nguyên
+                                    int shipValue = Integer.parseInt(ship);
+
+                                    // In giá trị đã chuyển đổi
+                                    System.out.println("Giá trị ship sau khi chuyển đổi: " + shipValue);
+
+                                } else {
+                                    System.out.println("Không có giá trị ship hợp lệ.");
+                                }
+
+
+
 
 //                            System.out.println("Id của giầy thể thao chi tiết: "+ idGiayTheThaoChiTiet);
 
@@ -376,8 +417,19 @@ public class HoaDonController {
                                     BigDecimal shipBigDecimal = new BigDecimal(ship);
                                     System.out.println("Giá trị shipBigDecimal: " + shipBigDecimal);
                                     hoaDon.setPhiShip(shipBigDecimal);
+
+                                    //Tính thành tiền
+                                    BigDecimal thanhTienBigDecemal = new BigDecimal(thanhTienTong1);
+
+                                    // Trừ giá trị ship từ tổng tiền
+                                    BigDecimal thanhTienSauShip = thanhTienBigDecemal.subtract(shipBigDecimal);
+                                    hoaDon.setThanhTien(thanhTienSauShip);
+
+
                                 } else {
+
                                     System.out.println("Chuỗi không hợp lệ");
+
                                 }
 
                                 LocalDate ngayThanhToanCu = LocalDate.now();
@@ -386,8 +438,9 @@ public class HoaDonController {
                                 hoaDon.setTrangThai(1);
                                 hoaDon.setNgayThanhToan(ngayTaoCu);
                                 hoaDon.setNgayTao(ngayTaoCu);
-                                BigDecimal thanhTienBigDecemal = new BigDecimal(thanhTienTong1);
-                                hoaDon.setThanhTien(thanhTienBigDecemal);
+//                                BigDecimal thanhTienBigDecemal = new BigDecimal(thanhTienTong1);
+//
+//                                hoaDon.setThanhTien(thanhTienBigDecemal);
                                 hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoaiCu + ", Địa chỉ giao hàng: " + diaChiCu + "," + thanhPhoCu + "," + quocGiaCu);
                                 hoaDon.setMess(messCu);
 
@@ -525,10 +578,30 @@ public class HoaDonController {
 
                                     //Hiện ra trang để quét mã QR
                                     System.out.println("Lưu lại thông tin hóa đơn khi thanh toán bằng momo");
-                                    BigDecimal thanhTienBigDecemal = new BigDecimal(thanhTienMomo);
 
                                     hoaDon.setTrangThai(1);
-                                    hoaDon.setThanhTien(thanhTienBigDecemal);
+
+                                    String ship = request.getParameter("ship");
+                                    if (ship.matches("\\d*\\.?\\d*")) {
+                                        BigDecimal shipBigDecimal = new BigDecimal(ship);
+                                        System.out.println("Giá trị shipBigDecimal: " + shipBigDecimal);
+                                        hoaDon.setPhiShip(shipBigDecimal);
+
+                                        //Tính thành tiền
+                                        BigDecimal thanhTienBigDecemal = new BigDecimal(thanhTienMomo);
+
+                                        // Trừ giá trị ship từ tổng tiền
+                                        BigDecimal thanhTienSauShip = thanhTienBigDecemal.subtract(shipBigDecimal);
+                                        hoaDon.setThanhTien(thanhTienSauShip);
+
+
+                                    } else {
+
+                                        System.out.println("Chuỗi không hợp lệ");
+
+                                    }
+
+
                                     hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoaiMoiMomo + ", Địa chỉ giao hàng: " + diaChiMoiMomo + "," + thanhPhoMoiMomo + "," + quocGiaMoiMomo);
                                     hoaDon.setMess(messMoiMomo);
 
@@ -696,8 +769,30 @@ public class HoaDonController {
                                 hoaDon.setTrangThai(1);
                                 hoaDon.setGhiChu("Số điện thoại nhận hàng: " + soDienThoaiMoi + ", Địa chỉ giao hàng: " + diaChiMoi + "," + thanhPhoMoi + "," + quocGiaMoi);
                                 hoaDon.setMess(messMoi);
-                                BigDecimal thanhTienBigDecemal = new BigDecimal(thanhTien);
-                                hoaDon.setThanhTien(thanhTienBigDecemal);
+
+
+                                String ship = request.getParameter("ship");
+
+                                if (ship.matches("\\d*\\.?\\d*")) {
+                                    BigDecimal shipBigDecimal = new BigDecimal(ship);
+                                    System.out.println("Giá trị shipBigDecimal: " + shipBigDecimal);
+                                    hoaDon.setPhiShip(shipBigDecimal);
+
+                                    //Tính thành tiền
+                                    BigDecimal thanhTienBigDecemal = new BigDecimal(thanhTien);
+
+                                    // Trừ giá trị ship từ tổng tiền
+                                    BigDecimal thanhTienSauShip = thanhTienBigDecemal.subtract(shipBigDecimal);
+                                    hoaDon.setThanhTien(thanhTienSauShip);
+
+
+                                } else {
+
+                                    System.out.println("Chuỗi không hợp lệ");
+
+                                }
+
+
                                 //Lấy số lượng hiện tại trừ đi
 
                                 List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon_Id(hoaDonId);
@@ -721,6 +816,7 @@ public class HoaDonController {
                                 }
 
                                 hoaDonRepository.save(hoaDon);
+
                                 String[] idGiayTheTheThaoChiTietArrayCashMoi = request.getParameterValues("idGiayTheTheThaoChiTiet");
 
                                 if (idGiayTheTheThaoChiTietArrayCashMoi != null) {
