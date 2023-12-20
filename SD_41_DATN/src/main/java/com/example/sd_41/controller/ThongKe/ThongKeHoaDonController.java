@@ -45,7 +45,7 @@ public class ThongKeHoaDonController {
         Integer totalQuantity = giayTheThaoChiTietRepository.sumSoLuong();
         model.addAttribute("totalQuantity",totalQuantity);
 
-        //Tổng số lượng hóa đơn tại quầy đã bán
+        //
         Integer tongHoaDonTaiQuay = hoaDonRepository.tongHoaDonTaiQuay();
         model.addAttribute("tongHoaDonTaiQuay",tongHoaDonTaiQuay);
 
@@ -54,13 +54,8 @@ public class ThongKeHoaDonController {
         model.addAttribute("tongHoaDonOnline",tongHoaDonOnline);
 
 
-        //sản phẩm bán chạy nhất
 
-//        String maSanPhamBanChayNhat = hoaDonRepository.timSanPhamBanChayNhat();
-//        model.addAttribute("maSanPhamBanChayNhat",maSanPhamBanChayNhat);
-
-
-        return "/ThongKe/test";
+        return "ThongKe/test";
 
     }
 
@@ -73,6 +68,7 @@ public class ThongKeHoaDonController {
     @GetMapping("/thongke-data-hoadon")
     @ResponseBody
     public String thongKeDataHD() {
+
         List<HoaDon> hdct = hoaDonRepository.findAll();
 
         ObjectMapper objectMapper = new ObjectMapper();

@@ -48,7 +48,7 @@
             <th scope="col" style="text-align: center;color: black">Phân loại hàng</th>
             <th scope="col" style="text-align: center;color: black">Giá bán</th>
             <th scope="col" style="text-align: center;color: black">Số lượng</th>
-            <th scope="col" style="text-align: center;color: black">Đơn giá</th>
+<%--            <th scope="col" style="text-align: center;color: black">Đơn giá</th>--%>
             <th scope="col" style="text-align: center;color: black">Functions</th>
         </tr>
         </thead>
@@ -93,12 +93,12 @@
                     </td>
 
 
-                    <td style="padding-top: 20px; text-align: center; color: black;margin-right:40px ">
+<%--                    <td style="padding-top: 20px; text-align: center; color: black;margin-right:40px ">--%>
 
-                            <fmt:formatNumber type="" value="${gioHangChiTiet.donGia}" pattern="#,##0.###" /> VNĐ
-                            <input type="hidden" name="donGia" value="${gioHangChiTiet.donGia}">
+<%--                            <fmt:formatNumber type="" value="${gioHangChiTiet.donGia}" pattern="#,##0.###" /> VNĐ--%>
+<%--                            <input type="hidden" name="donGia" value="${gioHangChiTiet.donGia}">--%>
+<%--                    </td>--%>
 
-                    </td>
 <%--                    Xóa riêng--%>
                         <td>
                             <button formaction="/delete/${gioHangChiTiet.id}" class="btn" style="color: black">✖</button>
