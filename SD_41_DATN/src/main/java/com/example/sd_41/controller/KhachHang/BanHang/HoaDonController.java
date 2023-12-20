@@ -1553,7 +1553,6 @@ public class HoaDonController {
         System.out.println("Id hóa đơn sau khi convert: "+idHoaDonConvert);
 
         List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon_Id(idHoaDonConvert);
-//        List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon_IdAndTrangThai(idHoaDonConvert,1);
 
         if (!hoaDonChiTiets.isEmpty()) {
             for (HoaDonChiTiet hoaDonChiTiet : hoaDonChiTiets) {
@@ -1569,7 +1568,6 @@ public class HoaDonController {
                 model.addAttribute("thongTienNhanHangView",hoaDonChiTiet.getHoaDon().getGhiChu());
                 model.addAttribute("messView",hoaDonChiTiet.getHoaDon().getMess());
                 model.addAttribute("hinhThucView",hoaDonChiTiet.getHoaDon().getHinhThuc());
-
                 model.addAttribute("tenGiayTheThaoView",hoaDonChiTiet.getGiayTheThaoChiTiet().getGiayTheThao().getTenGiayTheThao());
 
 
@@ -1581,6 +1579,49 @@ public class HoaDonController {
         return "/templates/Users/Layouts/ChiTiet/ChiTietHoaDon";
 
     }
+
+    //Todo code trạng thái đơn hàng All bên Admin
+    @PostMapping("/HoaDon/Admin/TrangThaiDonHangAllView")
+    public String showTrangThaiDonHangAllView(HttpServletRequest request,Model model) {
+
+        String selectedIdHoaDon = request.getParameter("selectedIdHoaDon");
+        UUID selectedIdHoaDonConvert = UUID.fromString(selectedIdHoaDon);
+
+        System.out.println("Id là: " + selectedIdHoaDon);
+
+        List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon_Id(selectedIdHoaDonConvert);
+
+        if (!hoaDonChiTiets.isEmpty()) {
+            for (HoaDonChiTiet hoaDonChiTiet : hoaDonChiTiets) {
+
+                //Thông tin cần in ra
+                System.out.println();
+                model.addAttribute("idHoaDonConvert",selectedIdHoaDonConvert);
+                model.addAttribute("maHoaDonView",hoaDonChiTiet.getHoaDon().getMaHoaDon());
+//                model.addAttribute("khachHangView",hoaDonChiTiet.getHoaDon().getKhachHang().getTenKhachHang());
+
+                String khachHangView = hoaDonChiTiet.getHoaDon().getKhachHang() != null ?
+                        hoaDonChiTiet.getHoaDon().getKhachHang().getTenKhachHang() : "N/A";
+
+                model.addAttribute("khachHangView", khachHangView);
+
+                model.addAttribute("ngayThanhToanView",hoaDonChiTiet.getHoaDon().getNgayThanhToan());
+                model.addAttribute("tongTienView",hoaDonChiTiet.getHoaDon().getThanhTien());
+                model.addAttribute("thongTienNhanHangView",hoaDonChiTiet.getHoaDon().getGhiChu());
+                model.addAttribute("messView",hoaDonChiTiet.getHoaDon().getMess());
+                model.addAttribute("hinhThucView",hoaDonChiTiet.getHoaDon().getHinhThuc());
+                model.addAttribute("tenGiayTheThaoView",hoaDonChiTiet.getGiayTheThaoChiTiet().getGiayTheThao().getTenGiayTheThao());
+                model.addAttribute("trangThaiView",hoaDonChiTiet.getHoaDon().getTrangThai());
+
+
+            }
+        }
+
+        model.addAttribute("hoaDonChiTiets",hoaDonChiTiets);
+
+        return "/templates/Users/Layouts/ChiTiet/ChiTietHoaDonAllTrangThaiHoaDon";
+    }
+
 
     @GetMapping("/Admin/ThemSanPhamKhachHangThanhCong")
     public String saveThemSanPhamChoKhachHangThanhCong(){

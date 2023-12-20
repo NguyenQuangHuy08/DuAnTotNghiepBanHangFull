@@ -77,25 +77,25 @@
                         <td style="font-size: 14px;color: black;font-weight: bold">${list.maHoaDon}</td>
                         <td style="font-size: 14px;color: black;font-weight: bold">${list.khachHang.tenKhachHang}</td>
 
-                        <td  style="display: none">
-                            <input type="hidden" name="idHoaDon" value="${list.id}">
-                        </td>
+<%--                        <td  style="display: none">--%>
+<%--                            <input type="hidden" name="idHoaDon" value="${list.id}">--%>
+<%--                        </td>--%>
 
-                        <td  style="display: none">
-                            <input type="hidden" name="maHoaDon" value="${list.maHoaDon}">
-                        </td>
-                        <td  style="display: none">
-                            <input type="hidden" name="email" value="${list.khachHang.email}">
-                        </td>
-                        <td  style="display: none">
-                            <input type="hidden" name="tenKhachHang" value="${list.khachHang.tenKhachHang}">
-                        </td>
-                        <td  style="display: none">
-                            <input type="hidden" name="ngayThanhToan" value="${list.ngayThanhToan}">
-                        </td>
-                        <td  style="display: none">
-                            <input type="hidden" name="thanhTien" value="${list.thanhTien}">
-                        </td>
+<%--                        <td  style="display: none">--%>
+<%--                            <input type="hidden" name="maHoaDon" value="${list.maHoaDon}">--%>
+<%--                        </td>--%>
+<%--                        <td  style="display: none">--%>
+<%--                            <input type="hidden" name="email" value="${list.khachHang.email}">--%>
+<%--                        </td>--%>
+<%--                        <td  style="display: none">--%>
+<%--                            <input type="hidden" name="tenKhachHang" value="${list.khachHang.tenKhachHang}">--%>
+<%--                        </td>--%>
+<%--                        <td  style="display: none">--%>
+<%--                            <input type="hidden" name="ngayThanhToan" value="${list.ngayThanhToan}">--%>
+<%--                        </td>--%>
+<%--                        <td  style="display: none">--%>
+<%--                            <input type="hidden" name="thanhTien" value="${list.thanhTien}">--%>
+<%--                        </td>--%>
 
                         <td style="font-size: 14px;color: black;font-weight: bold">
                             <script>
@@ -116,7 +116,7 @@
                             </c:choose>
                         </td>
                         <td>
-                            <button style="margin-top: 30px" formaction="/HoaDon/ThongTinChiTietHoaDon" class="btn btn-primary">Views</button>
+                            <button style="margin-top: 30px" formaction="/HoaDon/ThongTinChiTietHoaDon" name="idHoaDon" value="${list.id}" class="btn btn-primary">Views</button>
                         </td>
                     </tr>
                 </c:forEach>

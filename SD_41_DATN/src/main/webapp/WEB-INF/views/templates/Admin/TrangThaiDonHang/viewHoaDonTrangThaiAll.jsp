@@ -63,55 +63,86 @@
    <br>
     <div style="overflow-x: auto;width: 100%">
         <h3 style="text-align: center;color: black;margin-bottom: 50px;margin-top: 10px">All Trạng thái các đơn hàng</h3>
-        <table class="table table-striped;" style="border-radius: 10px 10px 10px">
-            <tr>
-                <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Mã hóa đơn</td>
-                <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Khách hàng</td>
-                <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 260px">Ngày thanh toán</td>
-                <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Tổng tiền</td>
-                <td scope="col" style="color: black;font-weight: bold;font-size: 17px;text-align: center;background-color: #bac8f3;width:300px">Thông tin nhận hàng</td>
-                <td scope="col" style="color: black;font-weight: bold;font-size: 17px;text-align: center;background-color: #bac8f3;width: 300px">Ghi chú</td>
-                <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Hình thức</td>
-                <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Trạng thái</td>
-
-            </tr>
-            <c:forEach items="${listHoaDon}" var="list">
+        <form  method="post" action="/HoaDon/Admin/TrangThaiDonHangAllView">
+            <table class="table table-striped;" style="border-radius: 10px 10px 10px">
                 <tr>
-                    <td style="font-size: 14px;color: black;font-weight: bold">${list.maHoaDon}</td>
-                    <td style="font-size: 14px;color: black;font-weight: bold">${list.khachHang.tenKhachHang}</td>
-                    <td style="font-size: 14px;color: black;font-weight: bold">
-                        <script>
-                            var ngayThanhToan = "${list.ngayThanhToan}";
-                            var parts = ngayThanhToan.split('-');
-                            var formattedDate = parts[1] + '-' + parts[2] + '-' + parts[0];
-                            document.write(formattedDate);
-                        </script>
-                    </td>
-                    <td style="font-size: 14px;color: black;font-weight: bold">
-                        <fmt:formatNumber type="" value="${list.thanhTien}" pattern="#,##0.###" /> VNĐ
-                    </td>
-                    <td style="font-size: 14px;color: black;font-weight: bold">${list.ghiChu}</td>
-                    <td style="font-size: 14px; color: black; font-weight: bold">
-                        <c:choose>
-                            <c:when test="${not empty list.mess}">${list.mess}</c:when>
-                            <c:otherwise>N/A</c:otherwise>
-                        </c:choose>
-                    </td>
-                    <td style="font-size: 14px;color: black;font-weight: bold">${list.hinhThuc == 1 ? "Tại quầy" : "Online"}</td>
-                    <td style="font-size: 14px;color: black;font-weight: bold">
-                            <c:choose>
-                                <c:when test="${list.trangThai == 0}">Chưa thanh toán</c:when>
-                                <c:when test="${list.trangThai == 1}">Chờ xác nhận</c:when>
-                                <c:when test="${list.trangThai == 2}">Đang đóng gói hàng</c:when>
-                                <c:when test="${list.trangThai == 3}">Đang giao</c:when>
-                                <c:when test="${list.trangThai == 4}">Giao hàng thành công</c:when>
-                                <c:when test="${list.trangThai == 5}">Hủy đơn hàng</c:when>
-                                <c:otherwise>Trạng thái không xác định</c:otherwise>
-                            </c:choose>
-                    </td>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Mã hóa đơn</td>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Khách hàng</td>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 260px">Ngày thanh toán</td>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Tổng tiền</td>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;text-align: center;background-color: #bac8f3;width:300px">Thông tin nhận hàng</td>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;text-align: center;background-color: #bac8f3;width: 300px">Ghi chú</td>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Hình thức</td>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Trạng thái</td>
+                    <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Functions</td>
+
                 </tr>
-            </c:forEach>
-        </table>
+                <c:forEach items="${listHoaDon}" var="list">
+                    <tr>
+
+<%--                        <td style="">--%>
+<%--                            <input type="text" name="idHoaDonAllTrangThai" value="${list.id}">--%>
+<%--                        </td>--%>
+
+<%--                        <td style="display: none">--%>
+<%--                            <input type="hidden" name="maHoaDon" value="${list.maHoaDon}">--%>
+<%--                        </td>--%>
+<%--                        <td style="display: none">--%>
+<%--                            <input type="hidden" name="email" value="${list.khachHang.email}">--%>
+<%--                        </td>--%>
+<%--                        <td style="display: none">--%>
+<%--                            <input type="hidden" name="tenKhachHang" value="${list.khachHang.tenKhachHang}">--%>
+<%--                        </td>--%>
+<%--                        <td  style="display: none">--%>
+<%--                            <input type="hidden" name="ngayThanhToan" value="${list.ngayThanhToan}">--%>
+<%--                        </td>--%>
+<%--                        <td  style="display: none">--%>
+<%--                            <input type="hidden" name="thanhTien" value="${list.thanhTien}">--%>
+<%--                        </td>--%>
+
+
+                        <td style="font-size: 14px;color: black;font-weight: bold">${list.maHoaDon}</td>
+                        <td style="font-size: 14px;color: black;font-weight: bold">${list.khachHang.tenKhachHang}</td>
+                        <td style="font-size: 14px;color: black;font-weight: bold">
+                            <script>
+                                var ngayThanhToan = "${list.ngayThanhToan}";
+                                var parts = ngayThanhToan.split('-');
+                                var formattedDate = parts[1] + '-' + parts[2] + '-' + parts[0];
+                                document.write(formattedDate);
+                            </script>
+                        </td>
+                        <td style="font-size: 14px;color: black;font-weight: bold">
+                            <fmt:formatNumber type="" value="${list.thanhTien}" pattern="#,##0.###" /> VNĐ
+                        </td>
+                        <td style="font-size: 14px;color: black;font-weight: bold">${list.ghiChu}</td>
+                        <td style="font-size: 14px; color: black; font-weight: bold">
+                            <c:choose>
+                                <c:when test="${not empty list.mess}">${list.mess}</c:when>
+                                <c:otherwise>N/A</c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td style="font-size: 14px;color: black;font-weight: bold">${list.hinhThuc == 1 ? "Tại quầy" : "Online"}</td>
+                        <td style="font-size: 14px;color: black;font-weight: bold">
+                                <c:choose>
+                                    <c:when test="${list.trangThai == 0}">Chưa thanh toán</c:when>
+                                    <c:when test="${list.trangThai == 1}">Chờ xác nhận</c:when>
+                                    <c:when test="${list.trangThai == 2}">Đang đóng gói hàng</c:when>
+                                    <c:when test="${list.trangThai == 3}">Đang giao</c:when>
+                                    <c:when test="${list.trangThai == 4}">Giao hàng thành công</c:when>
+                                    <c:when test="${list.trangThai == 5}">Hủy đơn hàng</c:when>
+                                    <c:otherwise>Trạng thái không xác định</c:otherwise>
+                                </c:choose>
+                        </td>
+
+                         <td style="font-size: 14px;color: black;font-weight: bold">
+                             <button type="submit" name="selectedIdHoaDon" value="${list.id}" class="btn btn-primary">Views</button>
+                         </td>
+
+                    </tr>
+                </c:forEach>
+            </table>
+        </form>
+
 
 
     </div>
