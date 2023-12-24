@@ -453,173 +453,340 @@ public class TrangChuGiayTheThaoController {
     }
 
 
+//    //Todo code giỏ hàng cho giầy thể thao
+//    @PostMapping("GiayTheThao/NguoiDung/AddToCart/{id}")
+//    public String showAddToCartNguoiDung(Model model,
+//                                         HttpSession session,
+//                                         RedirectAttributes attributes,
+//                                         HttpServletRequest request
+//                                         ) {
+//        String mauSac = request.getParameter("mauSac");
+//        String size = request.getParameter("size");
+//        String soLuong = request.getParameter("soLuong");
+//        String idGiayTheThao = request.getParameter("idGiayTheThao");
+//        String giaBan = request.getParameter("gia");
+//        attributes.addFlashAttribute("giaBan", giaBan);
+//
+//        UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
+//
+//        if(idKhachHang != null) {
+//
+//            UUID giayTheThaoId = UUID.fromString(idGiayTheThao);
+//
+//            GiayTheThao giayTheThao = giayTheThaoRepository.findById(giayTheThaoId).orElse(null);
+//
+//            model.addAttribute("giayTheThao", giayTheThao);
+//
+//            //Check size và màu sắc khi chưa chọn gì
+//            if(size == null || mauSac == null){
+//
+//                attributes.addFlashAttribute("erCheckAddToCart","Vui lòng chọn dữ liệu để có thể mua hàng!");
+//                return "redirect:/GiayTheThao/detailThongTinGiayTheThao/"+giayTheThaoId;
+//
+//            }
+//            UUID sizeId = UUID.fromString(size);
+//            UUID mauSacId = UUID.fromString(mauSac);
+//            //Tìm kiếm id của giầy thể thao chi tiếtgiayTheThao
+//            UUID idGiayTheThaoChiTiet = giayTheThaoChiTietRepository.findIdByGiayTheThaoAndSizeAndMauSac(giayTheThaoId, sizeId, mauSacId);
+//
+//            if (idGiayTheThaoChiTiet != null) {
+//
+//                model.addAttribute("idGiayTheThaoChiTiet", idGiayTheThaoChiTiet);
+//
+//                GioHang gioHang = gioHangRepository.findByKhachHangId(idKhachHang);
+//
+//                model.addAttribute("khachHangView",session.getAttribute("khachHangLog"));
+//
+//                GiayTheThaoChiTiet giayTheThaoChiTiet = giayTheThaoChiTietRepository.findByGiayTheThaoAndSizeAndMauSac(giayTheThaoId, sizeId, mauSacId);
+//
+//                if (gioHang != null) {
+//
+//                    if (soLuong == null || soLuong.trim().length() == 0 || soLuong.isEmpty()) {
+//
+//                        attributes.addFlashAttribute("erCheckSoLuongAddToCart", "Không được để trống số lượng !");
+//                        return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
+//
+//                    }
+//
+//
+//                    int checkSoLuongAddToCart = Integer.parseInt(soLuong);
+//                    int soLuongTonKho = Integer.parseInt(giayTheThaoChiTiet.getSoLuong());
+//
+//                    try {
+//
+//
+//                        if (checkSoLuongAddToCart <= 0) {
+//
+//                            attributes.addFlashAttribute("erSoLuongAddToCartMin", "Số lượng sản phẩm mua phải lớn hơn hoặc bằng 0!");
+//                            return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
+//
+//                        }
+//
+//
+//                        if (checkSoLuongAddToCart > soLuongTonKho) {
+//
+//                            attributes.addFlashAttribute("erSoLuongAddToCartMax", "Không mua được sản phẩm vì số lượng trong kho chỉ còn " + soLuongTonKho + " đối với size và màu sắc này");
+//                            return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
+//
+//                        }
+//
+//                        if(checkSoLuongAddToCart > 5){
+//
+//                            attributes.addFlashAttribute("erSoLuongAddToCartMaxGioiHan", "Xin lỗi quý khách! số lượng mua cho một sản phẩm không lớn hơn 5!");
+//                            return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
+//
+//                        }
+//
+//                    } catch (NumberFormatException e) {
+//
+//                        e.printStackTrace();
+//                        attributes.addFlashAttribute("erCheckNumberSoLuongAddToCart", "Số lượng phải là số không được là chữ !");
+//                        return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
+//
+//                    }
+//
+//                    //Trường hợp check sản phẩm đã có
+//                    //Đây là số lượng
+//                    GioHangChiTiet existingItem = gioHangChiTietRepository.findByGioHangAndGiayTheThaoChiTiet(gioHang, giayTheThaoChiTiet);
+//
+//                    if (existingItem != null) {
+//
+//                        // Sản phẩm đã có trong giỏ hàng, cập nhật số lượng
+//                        int existingQuantity = Integer.parseInt(existingItem.getSoLuong());
+//                        int newQuantity = existingQuantity + Integer.parseInt(soLuong);
+//
+//                        if(newQuantity > 5){
+//
+//                            System.out.println("Sản phẩm cộng dồn");
+//                            int soLuongMaxCongDon = 5;
+//                            existingItem.setSoLuong(String.valueOf(soLuongMaxCongDon));
+//                            existingItem.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(soLuongMaxCongDon)));
+//                            attributes.addFlashAttribute("soLuongMax","Xin lỗi quý khách chỉ được thêm số lượng tối đa là 5 cho một sản phẩm !");
+//                            model.addAttribute("soLuongMaxModel","Xin lỗi quý khách chỉ được thêm số lượng tối đa là 5 cho một sản phẩm !");
+//                            gioHangChiTietRepository.save(existingItem);
+//
+//                        }else{
+//
+//                            //Dành cho sản phẩm chưa có trong giỏ hàng
+//                            existingItem.setSoLuong(String.valueOf(newQuantity));
+//                            existingItem.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(newQuantity)));
+//                            gioHangChiTietRepository.save(existingItem);
+//
+//                        }
+//
+//                    } else {
+//
+//                        // Sản phẩm chưa có trong giỏ hàng, thêm mới
+//                        GioHangChiTiet gioHangChiTiet = new GioHangChiTiet();
+//                        gioHangChiTiet.setGioHang(gioHang);
+//                        gioHangChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTiet);
+//                        gioHangChiTiet.setSoLuong(String.valueOf(checkSoLuongAddToCart));
+//                        BigDecimal giaBanBigDeimal = new BigDecimal(giaBan);
+//                        gioHangChiTiet.setDonGia(giaBanBigDeimal.multiply(BigDecimal.valueOf(checkSoLuongAddToCart)));
+//
+//                        gioHangChiTietRepository.save(gioHangChiTiet);
+//
+//                    }
+//
+//                      return "redirect:/GiayTheThao/NguoiDungSuccessLoginAddToCart";
+//
+//                }
+//
+//            } else {
+//
+//                attributes.addFlashAttribute("erCheckSizeAndMuaSacNotFind", "Xin lỗi hiện tại màu sắc này đã hết!");
+//                return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
+//
+//            }
+//
+//        }else {
+//
+//            System.out.println("Chưa đăng nhập tài khoản");
+//            return "redirect:/GiayTheThao/NguoiDungNotLoginAddToCart";
+//
+//        }
+//
+//            System.out.println("Đã đăng nhập tài khoản");
+//            model.addAttribute("successMessage", "Thêm sản phẩm vào giỏ hàng thành công!");
+//
+//            return "redirect:/GiayTheThao/NguoiDungSuccessLoginAddToCart";
+//
+//    }
+
+
     //Todo code giỏ hàng cho giầy thể thao
     @PostMapping("GiayTheThao/NguoiDung/AddToCart/{id}")
     public String showAddToCartNguoiDung(Model model,
                                          HttpSession session,
                                          RedirectAttributes attributes,
                                          HttpServletRequest request
-                                         ) {
-        //Lấy dữ liệu trả từ form
-        String mauSac = request.getParameter("mauSac");
-        String size = request.getParameter("size");
-        String soLuong = request.getParameter("soLuong");
-        String idGiayTheThao = request.getParameter("idGiayTheThao");
-        //Giá bán
-        String giaBan = request.getParameter("gia");
-        attributes.addFlashAttribute("giaBan", giaBan);
-//        session.setAttribute("giaBan",giaBan);
+    ) {
 
-        UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
+        if (session.getAttribute("khachHangLog") != null) {
 
-        if(idKhachHang != null) {
+            System.out.println("Đã đăng nhập tài khoản để thêm sản phẩm vào giỏ hàng!");
 
-            UUID giayTheThaoId = UUID.fromString(idGiayTheThao);
+            String mauSac = request.getParameter("mauSac");
+            String size = request.getParameter("size");
+            String soLuong = request.getParameter("soLuong");
+            String idGiayTheThao = request.getParameter("idGiayTheThao");
+            String giaBan = request.getParameter("gia");
+            attributes.addFlashAttribute("giaBan", giaBan);
 
-            GiayTheThao giayTheThao = giayTheThaoRepository.findById(giayTheThaoId).orElse(null);
+            UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
+            System.out.println("Id khách hàng đăng nhập là: "+ idKhachHang);
 
-            model.addAttribute("giayTheThao", giayTheThao);
+            if (idKhachHang != null) {
 
-            //Check size và màu sắc khi chưa chọn gì
-            if(size == null || mauSac == null){
+                UUID giayTheThaoId = UUID.fromString(idGiayTheThao);
 
-                attributes.addFlashAttribute("erCheckAddToCart","Vui lòng chọn dữ liệu để có thể mua hàng!");
-                return "redirect:/GiayTheThao/detailThongTinGiayTheThao/"+giayTheThaoId;
+                GiayTheThao giayTheThao = giayTheThaoRepository.findById(giayTheThaoId).orElse(null);
 
-            }
-            UUID sizeId = UUID.fromString(size);
-            UUID mauSacId = UUID.fromString(mauSac);
-            //Tìm kiếm id của giầy thể thao chi tiếtgiayTheThao
-            UUID idGiayTheThaoChiTiet = giayTheThaoChiTietRepository.findIdByGiayTheThaoAndSizeAndMauSac(giayTheThaoId, sizeId, mauSacId);
+                model.addAttribute("giayTheThao", giayTheThao);
 
-            if (idGiayTheThaoChiTiet != null) {
+                //Check size và màu sắc khi chưa chọn gì
+                if (size == null || mauSac == null) {
 
-                model.addAttribute("idGiayTheThaoChiTiet", idGiayTheThaoChiTiet);
+                    attributes.addFlashAttribute("erCheckAddToCart", "Vui lòng chọn dữ liệu để có thể mua hàng!");
+                    return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
 
-                GioHang gioHang = gioHangRepository.findByKhachHangId(idKhachHang);
+                }
+                UUID sizeId = UUID.fromString(size);
+                UUID mauSacId = UUID.fromString(mauSac);
+                //Tìm kiếm id của giầy thể thao chi tiếtgiayTheThao
+                UUID idGiayTheThaoChiTiet = giayTheThaoChiTietRepository.findIdByGiayTheThaoAndSizeAndMauSac(giayTheThaoId, sizeId, mauSacId);
 
-                model.addAttribute("khachHangView",session.getAttribute("khachHangLog"));
+                if (idGiayTheThaoChiTiet != null) {
 
-                GiayTheThaoChiTiet giayTheThaoChiTiet = giayTheThaoChiTietRepository.findByGiayTheThaoAndSizeAndMauSac(giayTheThaoId, sizeId, mauSacId);
+                    model.addAttribute("idGiayTheThaoChiTiet", idGiayTheThaoChiTiet);
 
-                if (gioHang != null) {
+                    GioHang gioHang = gioHangRepository.findByKhachHangId(idKhachHang);
 
-                    if (soLuong == null || soLuong.trim().length() == 0 || soLuong.isEmpty()) {
+                    model.addAttribute("khachHangView", session.getAttribute("khachHangLog"));
 
-                        attributes.addFlashAttribute("erCheckSoLuongAddToCart", "Không được để trống số lượng !");
-                        return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
+                    GiayTheThaoChiTiet giayTheThaoChiTiet = giayTheThaoChiTietRepository.findByGiayTheThaoAndSizeAndMauSac(giayTheThaoId, sizeId, mauSacId);
 
-                    }
+                    if (gioHang != null) {
 
+                        if (soLuong == null || soLuong.trim().length() == 0 || soLuong.isEmpty()) {
 
-                    int checkSoLuongAddToCart = Integer.parseInt(soLuong);
-                    int soLuongTonKho = Integer.parseInt(giayTheThaoChiTiet.getSoLuong());
-
-                    try {
-
-
-                        if (checkSoLuongAddToCart <= 0) {
-
-                            attributes.addFlashAttribute("erSoLuongAddToCartMin", "Số lượng sản phẩm mua phải lớn hơn hoặc bằng 0!");
+                            attributes.addFlashAttribute("erCheckSoLuongAddToCart", "Không được để trống số lượng !");
                             return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
 
                         }
 
 
-                        if (checkSoLuongAddToCart > soLuongTonKho) {
+                        int checkSoLuongAddToCart = Integer.parseInt(soLuong);
+                        int soLuongTonKho = Integer.parseInt(giayTheThaoChiTiet.getSoLuong());
 
-                            attributes.addFlashAttribute("erSoLuongAddToCartMax", "Không mua được sản phẩm vì số lượng trong kho chỉ còn " + soLuongTonKho + " đối với size và màu sắc này");
+                        try {
+
+
+                            if (checkSoLuongAddToCart <= 0) {
+
+                                attributes.addFlashAttribute("erSoLuongAddToCartMin", "Số lượng sản phẩm mua phải lớn hơn hoặc bằng 0!");
+                                return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
+
+                            }
+
+
+                            if (checkSoLuongAddToCart > soLuongTonKho) {
+
+                                attributes.addFlashAttribute("erSoLuongAddToCartMax", "Không mua được sản phẩm vì số lượng trong kho chỉ còn " + soLuongTonKho + " đối với size và màu sắc này");
+                                return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
+
+                            }
+
+                            if (checkSoLuongAddToCart > 5) {
+
+                                attributes.addFlashAttribute("erSoLuongAddToCartMaxGioiHan", "Xin lỗi quý khách! số lượng mua cho một sản phẩm không lớn hơn 5!");
+                                return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
+
+                            }
+
+                        } catch (NumberFormatException e) {
+
+                            e.printStackTrace();
+                            attributes.addFlashAttribute("erCheckNumberSoLuongAddToCart", "Số lượng phải là số không được là chữ !");
                             return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
 
                         }
 
-                        if(checkSoLuongAddToCart > 5){
+                        //Trường hợp check sản phẩm đã có
+                        //Đây là số lượng
+                        GioHangChiTiet existingItem = gioHangChiTietRepository.findByGioHangAndGiayTheThaoChiTiet(gioHang, giayTheThaoChiTiet);
 
-                            attributes.addFlashAttribute("erSoLuongAddToCartMaxGioiHan", "Xin lỗi quý khách! số lượng mua cho một sản phẩm không lớn hơn 5!");
-                            return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
+                        if (existingItem != null) {
 
-                        }
+                            // Sản phẩm đã có trong giỏ hàng, cập nhật số lượng
+                            int existingQuantity = Integer.parseInt(existingItem.getSoLuong());
+                            int newQuantity = existingQuantity + Integer.parseInt(soLuong);
 
-                    } catch (NumberFormatException e) {
+                            if (newQuantity > 5) {
 
-                        e.printStackTrace();
-                        attributes.addFlashAttribute("erCheckNumberSoLuongAddToCart", "Số lượng phải là số không được là chữ !");
-                        return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
+                                System.out.println("Sản phẩm cộng dồn");
+                                int soLuongMaxCongDon = 5;
+                                existingItem.setSoLuong(String.valueOf(soLuongMaxCongDon));
+                                existingItem.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(soLuongMaxCongDon)));
+                                attributes.addFlashAttribute("soLuongMax", "Xin lỗi quý khách chỉ được thêm số lượng tối đa là 5 cho một sản phẩm !");
+                                model.addAttribute("soLuongMaxModel", "Xin lỗi quý khách chỉ được thêm số lượng tối đa là 5 cho một sản phẩm !");
+                                gioHangChiTietRepository.save(existingItem);
 
-                    }
+                            } else {
 
-                    //Trường hợp check sản phẩm đã có
-                    //Đây là số lượng
-                    GioHangChiTiet existingItem = gioHangChiTietRepository.findByGioHangAndGiayTheThaoChiTiet(gioHang, giayTheThaoChiTiet);
+                                //Dành cho sản phẩm chưa có trong giỏ hàng
+                                existingItem.setSoLuong(String.valueOf(newQuantity));
+                                existingItem.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(newQuantity)));
+                                gioHangChiTietRepository.save(existingItem);
 
-                    if (existingItem != null) {
+                            }
 
-                        // Sản phẩm đã có trong giỏ hàng, cập nhật số lượng
-                        int existingQuantity = Integer.parseInt(existingItem.getSoLuong());
-                        int newQuantity = existingQuantity + Integer.parseInt(soLuong);
+                        } else {
 
-                        //Dùng cho set lại giá bán
-//                        BigDecimal giaBanBigDeimal = new BigDecimal(giaBan);
+                            // Sản phẩm chưa có trong giỏ hàng, thêm mới
+                            GioHangChiTiet gioHangChiTiet = new GioHangChiTiet();
+                            gioHangChiTiet.setGioHang(gioHang);
+                            gioHangChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTiet);
+                            gioHangChiTiet.setSoLuong(String.valueOf(checkSoLuongAddToCart));
+                            BigDecimal giaBanBigDeimal = new BigDecimal(giaBan);
+                            gioHangChiTiet.setDonGia(giaBanBigDeimal.multiply(BigDecimal.valueOf(checkSoLuongAddToCart)));
 
-                        if(newQuantity > 5){
-
-                            System.out.println("Sản phẩm cộng dồn");
-                            int soLuongMaxCongDon = 5;
-             //               existingItem.setSoLuong(String.valueOf(soLuongTonKho));
-                            existingItem.setSoLuong(String.valueOf(soLuongMaxCongDon));
-                            //Set đơn giá cho sản phẩm đã có trong giỏ hàng
-                            existingItem.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(soLuongMaxCongDon)));
-                            attributes.addFlashAttribute("soLuongMax","Xin lỗi quý khách chỉ được thêm số lượng tối đa là 5 cho một sản phẩm !");
-                            model.addAttribute("soLuongMaxModel","Xin lỗi quý khách chỉ được thêm số lượng tối đa là 5 cho một sản phẩm !");
-                            gioHangChiTietRepository.save(existingItem);
-
-                        }else{
-
-                            //Dành cho sản phẩm chưa có trong giỏ hàng
-                            existingItem.setSoLuong(String.valueOf(newQuantity));
-                            existingItem.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(newQuantity)));
-                            gioHangChiTietRepository.save(existingItem);
+                            gioHangChiTietRepository.save(gioHangChiTiet);
 
                         }
 
-                    } else {
-
-                        // Sản phẩm chưa có trong giỏ hàng, thêm mới
-                        GioHangChiTiet gioHangChiTiet = new GioHangChiTiet();
-                        gioHangChiTiet.setGioHang(gioHang);
-                        gioHangChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTiet);
-                        gioHangChiTiet.setSoLuong(String.valueOf(checkSoLuongAddToCart));
-                        BigDecimal giaBanBigDeimal = new BigDecimal(giaBan);
-                        gioHangChiTiet.setDonGia(giaBanBigDeimal.multiply(BigDecimal.valueOf(checkSoLuongAddToCart)));
-
-                        gioHangChiTietRepository.save(gioHangChiTiet);
+                        return "redirect:/GiayTheThao/NguoiDungSuccessLoginAddToCart";
 
                     }
 
-                      return "redirect:/GiayTheThao/NguoiDungSuccessLoginAddToCart";
+                } else {
+
+                    attributes.addFlashAttribute("erCheckSizeAndMuaSacNotFind", "Xin lỗi hiện tại màu sắc này đã hết!");
+                    return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
 
                 }
 
-            } else {
-
-                attributes.addFlashAttribute("erCheckSizeAndMuaSacNotFind", "Xin lỗi hiện tại màu sắc này đã hết!");
-                return "redirect:/GiayTheThao/detailThongTinGiayTheThao/" + giayTheThaoId;
-
             }
 
-        }else {
+//            else {
+//
+//                System.out.println("Chưa đăng nhập tài khoản");
+//                return "redirect:/GiayTheThao/NguoiDungNotLoginAddToCart";
+//
+//            }
 
-            System.out.println("Chưa đăng nhập tài khoản");
+        } else {
+
+            System.out.println("Chưa đăng nhập tài khoản để thêm sản phẩm vào giỏ hàng!");
             return "redirect:/GiayTheThao/NguoiDungNotLoginAddToCart";
 
         }
 
-            System.out.println("Đã đăng nhập tài khoản");
-            model.addAttribute("successMessage", "Thêm sản phẩm vào giỏ hàng thành công!");
 
-            return "redirect:/GiayTheThao/NguoiDungSuccessLoginAddToCart";
+        return "/templates/Users/Layouts/Log/AddToCartLogLogin";
 
     }
+
 
     //Todo code list giỏ hàng chi tiết
     @GetMapping("GiayTheThao/NguoiDung/ViewGioHang")
@@ -635,7 +802,23 @@ public class TrangChuGiayTheThaoController {
             String giaBan = (String) attributes.getAttribute("giaBan");
             model.addAttribute("giaBan",giaBan);
             attributes.addFlashAttribute("giaBan",giaBan);
-            List<GioHangChiTiet> listGioHangChiTiet = gioHangChiTietRepository.findAll();
+
+            UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
+//            List<GioHangChiTiet> listGioHangChiTiet = gioHangChiTietRepository.findAll();
+
+            GioHang gioHang = gioHangRepository.findByKhachHangId(idKhachHang);
+
+            gioHangRepository.findByKhachHangId(idKhachHang);
+            System.out.println("Id của khách hàng : "+ idKhachHang);
+            UUID idGioHang = gioHangRepository.findGioHangIdByKhachHangId(idKhachHang);
+            System.out.println("Id của giỏ hàng có id khách hàng "+ idKhachHang+" - "+" "+idGioHang);
+
+
+            List<GioHangChiTiet> listGioHangChiTiet = gioHangChiTietRepository.findByGioHangId(idGioHang);
+
+
+//            List<GioHangChiTiet> listGioHangChiTiet = gioHangChiTietRepository.findAll();
+
             model.addAttribute("listGioHangChiTiet",listGioHangChiTiet);
 
             return "/templates/Users/Layouts/Shop/gioHangView";
@@ -648,192 +831,6 @@ public class TrangChuGiayTheThaoController {
         }
 
     }
-
-
-//    //Todo code add giầy thể thao chi tiết vào giỏ hàng chi tiết
-//    @PostMapping("/GiayTheThao/nguoiDung/addHoaDon")
-//    public String nguoiDungAddHoaDon(Model model,
-//                                     @RequestParam(value = "chon", required = false) List<String> chon,
-//                                     @RequestParam(value = "idGiayChiTiet", required = false) List<UUID> idGiayChiTiet,
-//                                     @RequestParam(value = "soLuong", required = false) List<String> soLuong,
-//                                     @RequestParam(value = "donGia", required = false) List<String> donGia,
-//
-//                                     HttpSession session,
-//                                     HttpServletRequest request,
-//                                     RedirectAttributes attributes) {
-//
-//        // Đã lưu mã vào session
-//        UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
-//        KhachHang khachHang = khachHangRepository.findById(idKhachHang).orElse(null);
-//
-//        // Chọn là null
-//        if (chon == null || chon.isEmpty()) {
-//
-//            attributes.addFlashAttribute("erCheckNun", "Xin lỗi hãy chọn ít nhất một sản phẩm để thanh toán !");
-////            return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
-//
-//        } else {
-//            HoaDon hoaDon = new HoaDon();
-//            // Thêm vào Hóa đơn
-//            LocalTime localTime = LocalTime.now();
-//            LocalDate ngayThanhToan = LocalDate.now();
-//            String ngayThanhToanToDate = ngayThanhToan.toString();
-//
-//            hoaDon.setMaHoaDon("MaHD" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
-//            hoaDon.setKhachHang(khachHang);
-//            hoaDon.setTrangThai(0);
-//            hoaDon.setNgayThanhToan(ngayThanhToanToDate);
-//            hoaDon.setNgayTao(ngayThanhToanToDate);
-//
-//            hoaDonRepository.save(hoaDon);
-//
-//            int thanhTien = 0;
-//            BigDecimal tongDonGiaHoaDon = BigDecimal.ZERO;
-//
-//            // Thêm vào hóa đơn chi tiết
-//            for (String stt : chon) {
-//
-//                HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
-//                hoaDonChiTiet.setHoaDon(hoaDon);
-//                hoaDonChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTietRepository.findById(idGiayChiTiet.get(Integer.parseInt(stt))).orElse(null));
-//
-//                //Todo code mới
-//                GiayTheThaoChiTiet giayTheThaoChiTiet = giayTheThaoChiTietRepository.findById(idGiayChiTiet.get(Integer.parseInt(stt))).orElse(null);
-//
-//                System.out.println("Số lượng request trả về : "+ soLuong);
-//                int soLuongMua = Integer.parseInt(soLuong.get(Integer.parseInt(stt)));
-//                int soLuongCo = Integer.parseInt(giayTheThaoChiTiet.getSoLuong());
-//
-//                //Giỏ hàng chi tiết đã chon
-//
-//                String idGiayChiTietGioHang = request.getParameter("idGiayChiTiet");
-//
-//                if(giayTheThaoChiTiet != null) {
-//                    if (soLuongMua > soLuongCo) {
-//
-//                        System.out.println("Er");
-//                        attributes.addFlashAttribute("erSoLuong","Xin lỗi hiện tại sản phẩm này chỉ còn duy nhất "+soLuongCo + " đôi !");
-//                        return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
-//
-//                    }
-//                    if(soLuongMua <= 0){
-//
-//                        System.out.println("Er");
-//                        attributes.addFlashAttribute("erSoLuongAm","Xin lỗi số lượng mua không được âm !");
-//                        return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
-//
-//                    }
-//                }
-//
-//                System.out.println("Số lượng mua int: "+ soLuongMua);
-//                System.out.println("Số lượng có int : "+ soLuongCo);
-//
-//                //
-//                System.out.println("Danh sách idGiayChiTiet đã chọn:");
-//                System.out.println(idGiayChiTiet.get(Integer.parseInt(stt)));
-//
-//                System.out.println("Danh sách idGiayChiTiet đã chọn:");
-//                UUID selectedGiayChiTietId = idGiayChiTiet.get(Integer.parseInt(stt));
-//                System.out.println(selectedGiayChiTietId);
-//
-//                // Tìm và cập nhật GioHangChiTiet
-//                GioHangChiTiet gioHangChiTietSetSoLuong = gioHangChiTietRepository.findByGiayTheThaoChiTiet_Id(selectedGiayChiTietId);
-//
-//                if (gioHangChiTietSetSoLuong != null) {
-//                    // Cập nhật số lượng mua
-//                    System.out.println("Set số lượng lại thành công !");
-//                    gioHangChiTietSetSoLuong.setSoLuong(String.valueOf(soLuongMua));
-//
-//                    // Get the associated GiayTheThao
-//                    GiayTheThaoChiTiet giayTheThaoChiTietSL = gioHangChiTietSetSoLuong.getGiayTheThaoChiTiet();
-//
-//                    if (giayTheThaoChiTietSL != null) {
-//
-//                        GiayTheThao giayTheThao = giayTheThaoChiTiet.getGiayTheThao();
-//
-//                        System.out.println("Id của GiayTheThao: " + giayTheThao.getId());
-//
-//                        String giaBanNew = giayTheThao.getGiaBan();
-//
-//                        // Convert the String to BigDecimal
-//                        BigDecimal giaBan = new BigDecimal(giaBanNew);
-//
-//                        // Calculate DonGia
-//                        BigDecimal donGiaNew = giaBan.multiply(BigDecimal.valueOf(soLuongMua));
-//
-//                        // Set the calculated value for DonGia
-//                        gioHangChiTietSetSoLuong.setDonGia(donGiaNew);
-//
-//                        //Set cho đơn giá
-//
-//                        //set số lượng vào hóa đơn chi tiết
-//                        hoaDonChiTiet.setSoLuong(String.valueOf(Integer.parseInt(soLuong.get(Integer.parseInt(stt)))));
-//
-//
-//                        // Convert the String to BigDecimal
-//                        BigDecimal giaBanHoaDonChiTiet = new BigDecimal(giaBanNew);
-//
-//                        BigDecimal donGiaHoaDonChiTiet = giaBanHoaDonChiTiet.multiply(BigDecimal.valueOf(soLuongMua));
-//
-//                        hoaDonChiTiet.setDonGia(donGiaHoaDonChiTiet);
-//                        hoaDonChiTiet.setTrangThai(1);
-//                        System.out.println("Đơn giá mới của hóa đơn là : "+donGiaHoaDonChiTiet);
-//
-//                        hoaDonChiTietRepository.save(hoaDonChiTiet);
-//
-//                        //Sau khi lưu đơn giá của hóa đơn chi tiết xong tôi muốn set thành tiền cho hóa đơn thành tiền
-//                        //của hóa đơn sẽ là tổng đơn giá trong hóa đơn chi tiết
-//
-//
-//                        tongDonGiaHoaDon = tongDonGiaHoaDon.add(donGiaHoaDonChiTiet);
-//                        hoaDon.setThanhTien(tongDonGiaHoaDon);
-//
-//                        hoaDonRepository.save(hoaDon);
-//
-//                    }
-//
-//                    gioHangChiTietRepository.save(gioHangChiTietSetSoLuong);
-//
-//                } else {
-//
-//                    System.out.println("Không tìm thấy GioHangChiTiet cho id: " + selectedGiayChiTietId);
-//
-//                }
-//
-//
-////                //set số lượng vào hóa đơn chi tiết
-////                hoaDonChiTiet.setSoLuong(String.valueOf(Integer.parseInt(soLuong.get(Integer.parseInt(stt)))));
-////
-////
-////                // Convert the String to BigDecimal
-////                BigDecimal giaBan = new BigDecimal(giaBanNew);
-////
-////                BigDecimal donGiaNew = giaBan.multiply(BigDecimal.valueOf(soLuongMua));
-////
-////                hoaDonChiTiet.setDonGia(donGiaNew);
-//
-////                BigDecimal gia = new BigDecimal(donGia.get(Integer.parseInt(stt)));
-////                hoaDonChiTiet.setDonGia(gia);
-//
-////                hoaDonChiTiet.setTrangThai(1);
-//                model.addAttribute("hoaDonChiTiet", hoaDonChiTiet);
-////                hoaDonChiTietRepository.save(hoaDonChiTiet);
-//
-////                thanhTien += Integer.parseInt(donGia.get(Integer.parseInt(stt)));
-//
-//            }
-//
-//            //Bên
-////            hoaDon.setThanhTien(BigDecimal.valueOf(thanhTien));
-//            model.addAttribute("hoaDon", hoaDon);
-////            hoaDonRepository.save(hoaDon);
-//
-//            return "redirect:/nguoiDung/HoaDon/" + hoaDon.getId();
-//        }
-//
-//        return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
-//
-//    }
 
 
     //Todo code add giầy thể thao chi tiết vào giỏ hàng chi tiết

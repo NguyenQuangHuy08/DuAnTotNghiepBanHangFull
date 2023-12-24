@@ -6,6 +6,7 @@ import com.example.sd_41.model.GioHangChiTiet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -14,6 +15,8 @@ public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, 
     GioHangChiTiet findByGioHangAndGiayTheThaoChiTiet(GioHang gioHang, GiayTheThaoChiTiet giayTheThaoChiTiet);
 
     GioHangChiTiet findByGiayTheThaoChiTiet_Id(UUID idGiayTheThaoChiTiet);
+
+    List<GioHangChiTiet> findByGioHangId(UUID idGioHang);
 
 
 }
