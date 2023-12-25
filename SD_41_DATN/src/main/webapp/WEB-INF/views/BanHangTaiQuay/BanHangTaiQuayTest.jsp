@@ -67,7 +67,7 @@
             border-top-left-radius: 5px;
             border-bottom-left-radius: 5px;
             border-right: none;
-            
+
         }
         #search-btn{
             border: 1px solid grey;
@@ -76,26 +76,54 @@
             border-left: none;
             background-color: rgb(255, 255, 255);
         }
+        .card-product{
+            position: relative;
+
+        }
+        .notification{
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            border: 1px solid rgb(184, 184, 184);
+            border-right: none;
+            border-top: none;
+            border-bottom-left-radius: 10px;
+            width: 40px;
+            height: 30px;
+            background-color: red;
+            color: white;
+            box-shadow: -2px 2px 5px rgb(156, 156, 156);
+        }
+        .attribute{
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .showOrno{
+            cursor: pointer;
+            color: #cccccc;
+            font-size: smaller;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
 </head>
 <body>
-   
+
 <header class="p-3 mb-3 border-bottom">
     <div class="container">
         <div
                 class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
         >
             <a href="http://localhost:8080/TrangChu/Admin/home" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none" id="banner">BeeShoes</a>
-        
+
             <div class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                
+
                 <input type="text"  id="textCodeCheck" readonly="true" >
 
-                    <span style="margin-right: 10px">Nhập tên sản phẩm cần tìm</span>
-                    <input type="search" name="search-name" id="search-input">
+                <input type="search" name="search-name" id="search-input">
 
-                    <button id="search-btn"><i class="bi bi-search"></i></button>
+                <button id="search-btn"><i class="bi bi-search"></i></button>
             </div>
 
 
@@ -120,7 +148,7 @@
                         class="dropdown-menu text-small"
                         aria-labelledby="dropdownUser1"
                 >
-                    
+
                     <li><a class="dropdown-item" href="/TrangChu/ThongTinCaNhan/Admin">Profile</a></li>
                     <li><hr class="dropdown-divider" /></li>
                     <li><a class="dropdown-item" href="/UserLog/logout">Sign out</a></li>
@@ -330,7 +358,7 @@
 <script>
 
 
-    
+
 
     function start() {
         getAllProducts(renderProducts);
@@ -339,7 +367,7 @@
         search();
     }
     start();
-    
+
     function getAllProducts(callback) {
         fetch("http://localhost:8080/api/gttct" )
             .then((response) => {
@@ -358,11 +386,11 @@
     }
 
     function renderProducts(products) {
-        
+
         var htmls = products.map((gtt) =>{
-            console.log();
-            return `
-                <div class="card card-product" style="width: 9.8rem">
+            if(gtt.giayTheThao.tenGiayTheThao.length>20){
+                return `
+                <div class="card card-product" style="width: 9.8rem; ">
                             <img
                                     src="/upload/`+gtt.giayTheThao.anhDau+`"
                                     class="card-img-top img-product-card"
@@ -374,14 +402,52 @@
                                             href="#"
                                             class="name-product"
                                             onclick="addToCart(\``+gtt.id+`\`, \``+gtt.giayTheThao.tenGiayTheThao+`\`, \``+gtt.giayTheThao.giaBan+`\`, event)"
-                                    >`+gtt.giayTheThao.tenGiayTheThao+` `+gtt.mauSac.tenMauSac+` (`+gtt.soLuong+`)</a
+                                    >`+gtt.giayTheThao.tenGiayTheThao+`</a
                                     >
+                                    <span class="showOrno" onclick="showName(this, \``+gtt.giayTheThao.tenGiayTheThao+`\`)">Hiện</span>
+                                </p>
+                                <p class="attribute">
+                                    <span>Màu: `+gtt.mauSac.tenMauSac+`</span>
+                                    <span>Size: `+gtt.size.size+`</span>
                                 </p>
                                 <p class="card-text price-card-product">`+gtt.giayTheThao.giaBan+`</p>
                             </div>
+                            <div class="notification"><p style="text-align: center;">`+gtt.soLuong+`</p></div>
                         </div>
 
+
           `;
+            } else {
+                return `
+                <div class="card card-product" style="width: 9.8rem; ">
+                            <img
+                                    src="/upload/`+gtt.giayTheThao.anhDau+`"
+                                    class="card-img-top img-product-card"
+                            />
+
+                            <div class="card-body product-card-body">
+                                <p class="card-text">
+                                    <a
+                                            href="#"
+                                            class="name-product"
+                                            onclick="addToCart(\``+gtt.id+`\`, \``+gtt.giayTheThao.tenGiayTheThao+`\`, \``+gtt.giayTheThao.giaBan+`\`, event)"
+                                    >`+gtt.giayTheThao.tenGiayTheThao+`</a
+                                    >
+
+                                </p>
+                                <p class="attribute">
+                                    <span>Màu: `+gtt.mauSac.tenMauSac+`</span>
+                                    <span>Size: `+gtt.size.size+`</span>
+                                </p>
+                                <p class="card-text price-card-product">`+gtt.giayTheThao.giaBan+`</p>
+                            </div>
+                            <div class="notification"><p style="text-align: center;">`+gtt.soLuong+`</p></div>
+                        </div>
+
+
+          `;
+            }
+
         });
         var html = htmls.join("");
         document.getElementById("listProducts").innerHTML = html;
@@ -391,7 +457,7 @@
             var price = parseInt(element.textContent).toLocaleString("en-US");
             element.textContent = price + " đ";
         });
-        
+
         var longTextElements = document.querySelectorAll(".name-product");
         var maxLength = 20;
 
@@ -399,40 +465,61 @@
             var originalText = element.innerText;
 
             if (originalText.length > maxLength) {
-            var truncatedText = originalText.substring(0, maxLength) + "...";
-            element.innerText = truncatedText;
+                var truncatedText = originalText.substring(0, maxLength) + "...";
+                element.innerText = truncatedText;
             }
         });
 
+
     }
 
+    function showName(params, name) {
+        var values = params.innerText;
+        var previousElementSibling = params.previousElementSibling;
+        if(values=="Hiện"){
+            previousElementSibling.innerText=name;
+            params.innerText="Ẩn";
+        } else {
+            var maxLength = 20;
+            var originalText =  previousElementSibling.innerText;
+            if (originalText.length > maxLength) {
+                var truncatedText = originalText.substring(0, maxLength) + "...";
+                previousElementSibling.innerText = truncatedText;
+            }
+            params.innerText="Hiện";
+        }
+
+    }
+
+
+
     function search() {
-        
+
         var btn_search = document.getElementById("search-btn");
         btn_search.addEventListener('click', ()=>{
             var name = document.getElementById("search-input").value;
-            
+
             fetch('http://localhost:8080/api/gttct/search', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json' 
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify([name]) 
+                body: JSON.stringify([name])
             })
-            .then(response => response.json()) 
-            .then(data => {
-                
-                if(data.length > 0){
-                    
-                    renderProducts(data);
-                } else {
-                    alert("Không tìm thấy");
-                }
-                
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+
+                    if(data.length > 0){
+
+                        renderProducts(data);
+                    } else {
+                        alert("Không tìm thấy");
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         });
     }
 
@@ -506,7 +593,7 @@
 
     }
 
-    
+
 
 
 
@@ -596,7 +683,7 @@
         localStorage.setItem("idKH", idKH);
     }
 
-    
+
 
     function addToCart(idGTTCT,name, price, event) {
         event.preventDefault();

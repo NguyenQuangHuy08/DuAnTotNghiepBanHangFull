@@ -1,21 +1,30 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %> <%@ taglib
+        prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%@ taglib prefix="f"
+                                                                         uri="http://java.sun.com/jsp/jstl/functions" %> <%@ taglib
+        uri="http://www.springframework.org/tags/form" prefix="sf"%>
 
-<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bán hàng tại quầy</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"/>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+    />
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
-          integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous"/>
-    <link rel="stylesheet" type="text/css" href="../../../resources/css/BanHangTaiQuay.css"
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
+            integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e"
+            crossorigin="anonymous"
+    />
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="../../../resources/css/BanHangTaiQuay.css"
     />
     <style>
         .form-input-check {
@@ -44,138 +53,182 @@
             overflow: auto;
         }
 
-        /**/
-
-        .hide-row {
-            display: none;
+        #textCodeCheck{
+            border: 1px solid grey;
+            background-color: rgb(237, 237, 237);
+            outline: none;
+            margin-right: 10px;
+            border-radius: 5px;
         }
 
-    </style>
+        #search-input{
+            border: 1px solid grey;
+            outline: none;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            border-right: none;
 
+        }
+        #search-btn{
+            border: 1px solid grey;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            border-left: none;
+            background-color: rgb(255, 255, 255);
+        }
+        .card-product{
+            position: relative;
+
+        }
+        .notification{
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            border: 1px solid rgb(184, 184, 184);
+            border-right: none;
+            border-top: none;
+            border-bottom-left-radius: 10px;
+            width: 40px;
+            height: 30px;
+            background-color: red;
+            color: white;
+            box-shadow: -2px 2px 5px rgb(156, 156, 156);
+        }
+        .attribute{
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+        .showOrno{
+            cursor: pointer;
+            color: #cccccc;
+            font-size: smaller;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
 </head>
 <body>
 
-<%@ include file="../templates/Admin/Layouts/GiayTheThao/_HeaderGiayTheThao.jsp" %>
+<header class="p-3 mb-3 border-bottom">
+    <div class="container">
+        <div
+                class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+        >
+            <a href="http://localhost:8080/TrangChu/Admin/home" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none" id="banner">BeeShoes</a>
 
-<section style="margin-left: 20px;">
+            <div class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 
-    <div class="row" style="width: 100%">
-        <div class="col-8" style="border: 1px solid gray;border-radius: 10px 10px 10px">
+                <input type="text"  id="textCodeCheck" readonly="true" >
+
+                <input type="search" name="search-name" id="search-input">
+
+                <button id="search-btn"><i class="bi bi-search"></i></button>
+            </div>
+
+
+
+            <div class="dropdown text-end">
+                <a
+                        href="#"
+                        class="d-block link-dark text-decoration-none dropdown-toggle"
+                        id="dropdownUser1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                >
+                    <img
+                            src="https://github.com/mdo.png"
+                            alt="mdo"
+                            width="32"
+                            height="32"
+                            class="rounded-circle"
+                    />
+                </a>
+                <ul
+                        class="dropdown-menu text-small"
+                        aria-labelledby="dropdownUser1"
+                >
+
+                    <li><a class="dropdown-item" href="/TrangChu/ThongTinCaNhan/Admin">Profile</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li><a class="dropdown-item" href="/UserLog/logout">Sign out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-8">
             <div id="cart-detail">
-
-                <div class="row">
-                    <div class="col-12">
-                        <h5 style="color: black">
-                            <form id="filter-form">
-
-                                <%--                                <span style="color: black">--%>
-                                <%--                                    Tên giầy thể thao--%>
-                                <%--                                </span>--%>
-                                <input style="width: 500px; height: 30px;border-radius: 5px 5px 5px" type="text"
-                                       id="tenGiayTheThao" placeholder="Vui lòng nhập tên giầy thể thao để tìm kiếm">
-
-                            </form>
-                            <div id="noResults" style="display: none;color: red">
-                                Không có kết quả nào phù hợp.
-                            </div>
-
-                        </h5>
-                    </div>
-                    <div class="col-2">
-                        <h5 style="color: black">Mã hóa đơn</h5>
-                    </div>
-                    <div class="col-2">
-                        <div class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
-                             style="width: 500px">
-                            <input type="text"
-                                   style="background-color: rgb(237, 237, 237); outline: none; width: 9000px"
-                                   id="textCodeCheck" readonly="true">
-                        </div>
-                    </div>
-
-                    <hr style="color: black">
-
-                </div>
-
                 <table class="table table-hover">
                     <tbody id="cart-detail-product">
 
                     </tbody>
                 </table>
             </div>
-            <%--                All sản phẩm--%>
-            <div id="all-product" style="">
-                <div class="container-fluid" style="display: flex; flex-wrap: wrap" id="listProducts">
-                    <c:forEach items="${list}" var="gtt">
-                        <c:if test="${gtt.giayTheThao.trangThai eq 1}">
-                            <div class="product-item hide-row" data-tenGiayTheThao="${gtt.giayTheThao.tenGiayTheThao}"
-                                 style="width: 14rem;border: 1px solid #10707f;border-radius: 10px 10px 10px;margin-left: 15px;margin-bottom: 10px">
+            <div id="all-product">
+                <div
+                        class="container-fluid"
+                        style="display: flex; flex-wrap: wrap"
+                        id="listProducts"
+                >
+                    <!-- <c:forEach items="${list}" var="gtt">
+                        <div class="card card-product" style="width: 9.8rem">
+                            <img
+                                    src="/upload/${gtt.giayTheThao.getAnhDau()}"
+                                    class="card-img-top img-product-card"
+                            />
 
-                                <a href="GiayTheThao/update/${gtt.giayTheThao.id}">
-                                    <img src="/upload/${gtt.giayTheThao.getAnhDau()}"
-                                         class="card-img-top img-product-card" style="height: 140px; width: 100%"/>
-                                </a>
-                                <br>
-                                <a style="font-size: 15px;width: 220px;margin-left: 15px" href="#"
-                                   onclick="addToCart(`${gtt.id}`, `${gtt.giayTheThao.tenGiayTheThao}`, `${gtt.giayTheThao.giaBan}`, event)">
-                                        ${gtt.giayTheThao.tenGiayTheThao}
-                                </a>
-                                <br>
-                                <span style="color: black;margin-left: 15px">
-                                            Số lượng: ${gtt.soLuong}
-                                        </span>
-                                <br>
-                                <span style="color: black;margin-left: 15px">
-                                            Size: ${gtt.size.size}
-                                        </span>
-                                <br>
-                                <span style="color: black;margin-left: 15px">
-                                            Màu sắc: ${gtt.mauSac.tenMauSac}
-                                        </span>
-                                <p class="card-text"
-                                   style="color: red;font-size: 15px; font-weight: bold;margin-left: 15px">
-
-                                    <fmt:formatNumber type="" value="${gtt.giayTheThao.giaBan}" pattern="#,##0.###"/>
-                                    VNĐ
+                            <div class="card-body product-card-body">
+                                <p class="card-text">
+                                    <a
+                                            href="#"
+                                            class="name-product"
+                                            onclick="addToCart(`${gtt.id}`, `${gtt.giayTheThao.tenGiayTheThao}`, `${gtt.giayTheThao.giaBan}`, event)"
+                                    >${gtt.giayTheThao.tenGiayTheThao} (${gtt.soLuong})</a
+                                    >
                                 </p>
+                                <p class="card-text price-card-product">${gtt.giayTheThao.giaBan}</p>
                             </div>
-                        </c:if>
-                    </c:forEach>
+                        </div>
+                    </c:forEach> -->
                 </div>
             </div>
         </div>
-
-
-        <%--            Cho hóa đơn --%>
-        <div class="col-4" style="border: 1px solid gray;border-radius: 10px 10px 10px">
-            <div id="listSP">
-                <table class="table table-bordered">
+        <div class="col-4">
+            <div id="listSP" >
+                <table class="table table-hover" >
                     <thead>
                     <tr>
-                        <th scope="col" style="text-align: center">#</th>
-                        <th scope="col" style="text-align: center">Mã hóa đơn</th>
-                        <th scope="col" style="text-align: center">Nhân viên</th>
-                        <th scope="col" style="text-align: center">Khách hàng</th>
-                        <th scope="col" style="text-align: center;color: red;">✖</th>
+                        <th scope="col">STT</th>
+                        <th scope="col">Mã hóa đơn</th>
+                        <th scope="col">Nhân viên</th>
+                        <th scope="col">Khách hàng</th>
+                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody id="list-hdc">
                     <!-- <c:forEach items="${listHDC}" var="hdc" varStatus="status">
-                              <tr onclick="getHDC(`${hdc.id}`)">
-                                <td style="text-align: center" >${status.index+1}</td>
-                                <td style="text-align: center">${hdc.maHoaDon}</td>
-                                <td style="text-align: center">${hdc.khachHang.tenKhachHang}</td>
-                              </tr>
-                            </c:forEach> -->
+                  <tr onclick="getHDC(`${hdc.id}`)">
+                    <td>${status.index+1}</td>
+                    <td>${hdc.maHoaDon}</td>
+                    <td>${hdc.user.tenUser==null?"N/A":hdc.user.tenUser}</td>
+                    <td>${hdc.khachHang.tenKhachHang}</td>
+                  </tr>
+                </c:forEach> -->
+
                     </tbody>
                 </table>
             </div>
-
             <div class="button">
                 <!-- <button class="btn btn-primary" style="width: 100%;">Tạo hóa đơn mới</button> -->
-                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdropCheck"
-                        style="width: 100%;">Tạo mới hóa đơn
-                </button>
+                <button
+                        class="btn btn-success"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdropCheck"
+                        style="width: 100%;"
+                >Tạo mới hóa đơn</button>
                 <div
                         class="modal fade"
                         id="staticBackdropCheck"
@@ -211,7 +264,7 @@
                                     />
                                 </div>
 
-                                <div id="scroll-kh">
+                                <div  id="scroll-kh">
                                     <table class="table table-hover">
                                         <thead>
                                         <th></th>
@@ -249,98 +302,49 @@
                     </div>
                 </div>
                 <div class="button">
-                    <a href="#" class="btn btn-primary" id="redirect-pay-form" onclick="redirect(event)">Thanh
-                        Toán</a>
+                    <a href="#" class="btn btn-primary" id="redirect-pay-form" onclick="redirect(event)">Thanh Toán</a>
                 </div>
             </div>
         </div>
-    </div>
 </section>
 
-<%@ include file="../templates/Admin/Layouts/GiayTheThao/_FooterGiayTheThao.jsp" %>
+<div class="container-fluid">
+    <footer
+            class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top"
+    >
+        <div class="col-md-4 d-flex align-items-center">
+            <a
+                    href="/"
+                    class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1"
+            >
+                <svg class="bi" width="30" height="24">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+            </a>
+            <span class="mb-3 mb-md-0 text-body-secondary"
+            >© 2023 Company, Inc</span
+            >
+        </div>
 
-<%--Todo code tìm kiếm giầy thể thao theo tên--%>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
-
-
-
-<script>
-
-    //Todo code giá bán
-
-
-    function filterProducts() {
-        // Lấy giá trị từ các trường input và select
-        var tenGiayTheThao = document.getElementById('tenGiayTheThao').value.toLowerCase();
-
-        // Lấy danh sách sản phẩm
-        var products = document.getElementsByClassName('product-item');
-        var anyResults = false; // Biến kiểm tra có kết quả hay không
-
-        for (var i = 0; i < products.length; i++) {
-            var product = products[i];
-            var productTenGiayTheThao = product.getAttribute('data-tenGiayTheThao').toLowerCase();
-
-            // Kiểm tra xem sản phẩm phù hợp với bộ lọc hay không
-            if (
-                productTenGiayTheThao.includes(tenGiayTheThao)
-            ) {
-                // Hiển thị sản phẩm nếu nó phù hợp với bộ lọc
-                product.classList.remove('hide-row');
-                anyResults = true;
-            } else {
-                // Ẩn sản phẩm nếu không phù hợp
-                product.classList.add('hide-row');
-            }
-        }
-
-        // Hiển thị hoặc ẩn thông báo không có kết quả
-        var noResultsMessage = document.getElementById('noResults');
-        if (anyResults) {
-
-            noResultsMessage.style.display = 'none'; // Ẩn thông báo
-
-        } else {
-
-            noResultsMessage.style.display = 'block'; // Hiển thị thông báo
-        }
-    }
-
-    // Thêm sự kiện người nghe đầu vào và thay đổi cho tất cả các trường bộ lọc
-    document.getElementById('tenGiayTheThao').addEventListener('input', filterProducts);
-
-    // Áp dụng bộ lọc ban đầu
-    filterProducts();
-
-</script>
-
-
-<%--Định dạng tiền--%>
-
-<script>
-
-    function formatGiaBan() {
-        var giaBanInput = document.getElementById("giaBan");
-        var giaBanValue = giaBanInput.value;
-
-        // Loại bỏ dấu phẩy và khoảng trắng (nếu có)
-        var giaBanFormatted = giaBanValue.replace(/,/g, '').replace(/\s/g, '');
-
-        // Kiểm tra xem giá trị là một số
-        if (!isNaN(giaBanFormatted)) {
-            // Định dạng giá trị thành chuỗi có dấu phẩy
-            var formattedValue = giaBanFormatted.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-            // Cập nhật giá trị trên trường nhập
-            giaBanInput.value = formattedValue;
-        }
-    }
-
-</script>
-
-
-<%--Todo code bán hàng tại quầy--%>
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3">
+                <a class="text-body-secondary" href="#"
+                ><i class="bi bi-twitter" width="24" height="24"></i
+                ></a>
+            </li>
+            <li class="ms-3">
+                <a class="text-body-secondary" href="#"
+                ><i class="bi bi-instagram" width="24" height="24"></i
+                ></a>
+            </li>
+            <li class="ms-3">
+                <a class="text-body-secondary" href="#"
+                ><i class="bi bi-facebook" width="24" height="24"></i
+                ></a>
+            </li>
+        </ul>
+    </footer>
+</div>
 
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
@@ -350,14 +354,173 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="../../../resources/js/BanHangTaiQuay.js"></script>
-
 <script>
-    var priceProduct = document.getElementsByClassName("price-card-product");
-    var priceArray = Array.from(priceProduct);
-    priceArray.forEach((element) => {
-        var price = parseInt(element.textContent).toLocaleString("en-US");
-        element.textContent = price;
-    });
+
+
+
+
+    function start() {
+        getAllProducts(renderProducts);
+        getAllHDCho(renderHDCho);
+        getAllKH(renderKH);
+        search();
+    }
+    start();
+
+    function getAllProducts(callback) {
+        fetch("http://localhost:8080/api/gttct" )
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(callback)
+            .catch((error) => {
+                console.error(
+                    "There was a problem with the fetch operation:",
+                    error
+                );
+            });
+    }
+
+    function renderProducts(products) {
+
+        var htmls = products.map((gtt) =>{
+            if(gtt.giayTheThao.tenGiayTheThao.length>20){
+                return `
+                <div class="card card-product" style="width: 9.8rem; ">
+                            <img
+                                    src="/upload/`+gtt.giayTheThao.anhDau+`"
+                                    class="card-img-top img-product-card"
+                            />
+
+                            <div class="card-body product-card-body">
+                                <p class="card-text">
+                                    <a
+                                            href="#"
+                                            class="name-product"
+                                            onclick="addToCart(\``+gtt.id+`\`, \``+gtt.giayTheThao.tenGiayTheThao+`\`, \``+gtt.giayTheThao.giaBan+`\`, event)"
+                                    >`+gtt.giayTheThao.tenGiayTheThao+`</a
+                                    >
+                                    <span class="showOrno" onclick="showName(this, \``+gtt.giayTheThao.tenGiayTheThao+`\`)">Hiện</span>
+                                </p>
+                                <p class="attribute">
+                                    <span>Màu: `+gtt.mauSac.tenMauSac+`</span>
+                                    <span>Size: `+gtt.size.size+`</span>
+                                </p>
+                                <p class="card-text price-card-product">`+gtt.giayTheThao.giaBan+`</p>
+                            </div>
+                            <div class="notification"><p style="text-align: center;">`+gtt.soLuong+`</p></div>
+                        </div>
+
+
+          `;
+            } else {
+                return `
+                <div class="card card-product" style="width: 9.8rem; ">
+                            <img
+                                    src="/upload/`+gtt.giayTheThao.anhDau+`"
+                                    class="card-img-top img-product-card"
+                            />
+
+                            <div class="card-body product-card-body">
+                                <p class="card-text">
+                                    <a
+                                            href="#"
+                                            class="name-product"
+                                            onclick="addToCart(\``+gtt.id+`\`, \``+gtt.giayTheThao.tenGiayTheThao+`\`, \``+gtt.giayTheThao.giaBan+`\`, event)"
+                                    >`+gtt.giayTheThao.tenGiayTheThao+`</a
+                                    >
+
+                                </p>
+                                <p class="attribute">
+                                    <span>Màu: `+gtt.mauSac.tenMauSac+`</span>
+                                    <span>Size: `+gtt.size.size+`</span>
+                                </p>
+                                <p class="card-text price-card-product">`+gtt.giayTheThao.giaBan+`</p>
+                            </div>
+                            <div class="notification"><p style="text-align: center;">`+gtt.soLuong+`</p></div>
+                        </div>
+
+
+          `;
+            }
+
+        });
+        var html = htmls.join("");
+        document.getElementById("listProducts").innerHTML = html;
+        var priceProduct = document.getElementsByClassName("price-card-product");
+        var priceArray = Array.from(priceProduct);
+        priceArray.forEach((element) => {
+            var price = parseInt(element.textContent).toLocaleString("en-US");
+            element.textContent = price + " đ";
+        });
+
+        var longTextElements = document.querySelectorAll(".name-product");
+        var maxLength = 20;
+
+        longTextElements.forEach(function (element) {
+            var originalText = element.innerText;
+
+            if (originalText.length > maxLength) {
+                var truncatedText = originalText.substring(0, maxLength) + "...";
+                element.innerText = truncatedText;
+            }
+        });
+
+
+    }
+
+    function showName(params, name) {
+        var values = params.innerText;
+        var previousElementSibling = params.previousElementSibling;
+        if(values=="Hiện"){
+            previousElementSibling.innerText=name;
+            params.innerText="Ẩn";
+        } else {
+            var maxLength = 20;
+            var originalText =  previousElementSibling.innerText;
+            if (originalText.length > maxLength) {
+                var truncatedText = originalText.substring(0, maxLength) + "...";
+                previousElementSibling.innerText = truncatedText;
+            }
+            params.innerText="Hiện";
+        }
+
+    }
+
+
+
+    function search() {
+
+        var btn_search = document.getElementById("search-btn");
+        btn_search.addEventListener('click', ()=>{
+            var name = document.getElementById("search-input").value;
+
+            fetch('http://localhost:8080/api/gttct/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify([name])
+            })
+                .then(response => response.json())
+                .then(data => {
+
+                    if(data.length > 0){
+
+                        renderProducts(data);
+                    } else {
+                        alert("Không tìm thấy");
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    }
 
     function getAllHDCho(callback) {
         fetch("http://localhost:8080/api/hd/unpaid" )
@@ -429,7 +592,7 @@
 
     }
 
-    getAllHDCho(renderHDCho);
+
 
 
 
@@ -519,7 +682,7 @@
         localStorage.setItem("idKH", idKH);
     }
 
-    getAllKH(renderKH);
+
 
     function addToCart(idGTTCT,name, price, event) {
         event.preventDefault();
@@ -665,8 +828,6 @@
                   </td>
                   <td>`+(key+1)+`</td>
                   <td>`+ten+`</td>
-                  <td>`+hdct.giayTheThaoChiTiet.mauSac.tenMauSac+`</td>
-                  <td>`+hdct.giayTheThaoChiTiet.size.size+`</td>
                   <td class="unit-price">`+hdct.donGia+`</td>
                   <td class="col-qty">
                     <div class="quantity-box">
@@ -860,6 +1021,5 @@
     localStorage.setItem("idHD", "");
     localStorage.setItem("idKH", "");
 </script>
-
 </body>
 </html>

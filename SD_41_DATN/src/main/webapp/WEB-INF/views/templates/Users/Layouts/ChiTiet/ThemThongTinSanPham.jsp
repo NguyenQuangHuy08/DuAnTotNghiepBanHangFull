@@ -30,23 +30,27 @@
     <form method="post" action="/Admin/HoaDon/ThemThongTinSanPham">
 
             <div class="row">
-<%--                <div class="col-12">--%>
-<%--                    <label>Tên giày thể thao</label>--%>
-<%--                    <select class="form-control" name="giayTheThaoChiTietId">--%>
-<%--                        <c:forEach items="${giayTheThaoChiTiet}" var="giayTheThaoChiTiet">--%>
-<%--                                <option value="${giayTheThaoChiTiet.giayTheThao.id}">${giayTheThaoChiTiet.giayTheThao.tenGiayTheThao}</option>--%>
-<%--                        </c:forEach>--%>
-<%--                    </select>--%>
-<%--                </div>--%>
 
-            <div class="col-12">
-                <label>Tên giày thể thao</label>
-                <select class="form-control" name="giayTheThaoChiTietId" onchange="removeDuplicates(this)">
-                    <c:forEach items="${giayTheThaoChiTiet}" var="giayTheThaoChiTiet">
+<%--            <div class="col-12">--%>
+<%--                <label>Tên giày thể thao</label>--%>
+<%--                <select class="form-control" name="giayTheThaoChiTietId" onchange="removeDuplicates(this)">--%>
+<%--                    <c:forEach items="${giayTheThaoChiTiet}" var="giayTheThaoChiTiet">--%>
+<%--                        <option value="${giayTheThaoChiTiet.giayTheThao.id}">${giayTheThaoChiTiet.giayTheThao.tenGiayTheThao}</option>--%>
+<%--                    </c:forEach>--%>
+<%--                </select>--%>
+<%--            </div>--%>
+
+        <div class="col-12">
+            <label>Tên giày thể thao</label>
+            <select class="form-control" name="giayTheThaoChiTietId" onchange="removeDuplicates(this)">
+                <c:forEach items="${giayTheThaoChiTiet}" var="giayTheThaoChiTiet">
+                    <c:if test="${!values.contains(giayTheThaoChiTiet.giayTheThao.tenGiayTheThao)}">
                         <option value="${giayTheThaoChiTiet.giayTheThao.id}">${giayTheThaoChiTiet.giayTheThao.tenGiayTheThao}</option>
-                    </c:forEach>
-                </select>
-            </div>
+                    </c:if>
+                </c:forEach>
+            </select>
+        </div>
+
 
 
             </div>
@@ -88,15 +92,35 @@
 
 
     <input type="hidden" name="idHoaDonConvert" value="${idHoaDonConvert}" />
-        <button type="submit" class="btn btn-primary">Lưu</button>
+        <button style="margin-top: 30px" type="submit" class="btn btn-primary">Lưu</button>
     </form>
 
 
 </div>
 
 </body>
+<%--Loại bỏ các tên trùng lặp của giầy thể thao--%>
 
+<script>
+    var values = []; // Chuyển mảng values thành biến toàn cục
 
+    function removeDuplicates(selectElement) {
+        var options = selectElement.options;
+
+        for (var i = 0; i < options.length; i++) {
+            var optionValue = options[i].value;
+
+            // Nếu giá trị không tồn tại trong mảng, thêm vào mảng
+            if (values.indexOf(optionValue) === -1) {
+                values.push(optionValue);
+            } else {
+                // Nếu giá trị đã tồn tại, loại bỏ option
+                options[i].remove();
+                i--; // Giảm chỉ số vì option đã bị loại bỏ
+            }
+        }
+    }
+</script>
 
 
 </html>
