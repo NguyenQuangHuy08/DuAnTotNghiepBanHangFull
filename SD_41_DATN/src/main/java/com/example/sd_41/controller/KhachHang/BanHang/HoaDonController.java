@@ -1095,9 +1095,11 @@ public class HoaDonController {
         }
 
         KhachHang khachHang = khachHangRepository.findByMaKhachHang(ma);
+
         Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByKhachHangAndTrangThai(khachHang.getId(),2,pageNo,5);
         ModelAndView mav = new ModelAndView("/templates/Users/Layouts/TrangThaiDonHang/KhachHang/choDongGoiBenKhachHang");
         mav.addObject("page",page);
+
         return mav;
 
 
@@ -1230,21 +1232,24 @@ public class HoaDonController {
     }
 
     @PostMapping("/KhachHang/HoaDon/HuyDonHang")
-    public String huyDonHang(HttpServletRequest request){
+    public String huyDonHang(HttpServletRequest request,
+                             HttpSession session){
 
-        String huyDonHang = request.getParameter("huyDonHang");
-        String idKH = request.getParameter("idKH");
+        if(session.getAttribute("maKH") != null) {
 
-        HoaDon hoaDon = hoaDonServiceImpl.findId(UUID.fromString(huyDonHang));
-        //Tạo mới hóa đơn để lưu
-        HoaDon hd = new HoaDon();
-        LocalDate huyDon = LocalDate.now();
-        String huyDonHang4 = huyDon.toString();
+            String huyDonHang = request.getParameter("huyDonHang");
+            String idKH = request.getParameter("idKH");
 
-        hd.setMaHoaDon(hoaDon.getMaHoaDon());
-        hd.setThanhTien(hoaDon.getThanhTien());
-        hd.setKhachHang(hoaDon.getKhachHang());
-        hd.setNgayThanhToan(huyDonHang4);
+            HoaDon hoaDon = hoaDonServiceImpl.findId(UUID.fromString(huyDonHang));
+            //Tạo mới hóa đơn để lưu
+            HoaDon hd = new HoaDon();
+            LocalDate huyDon = LocalDate.now();
+            String huyDonHang4 = huyDon.toString();
+
+            hd.setMaHoaDon(hoaDon.getMaHoaDon());
+            hd.setThanhTien(hoaDon.getThanhTien());
+            hd.setKhachHang(hoaDon.getKhachHang());
+            hd.setNgayThanhToan(huyDonHang4);
 
         /*
             0: là chưa thanh toán xong
@@ -1261,12 +1266,21 @@ public class HoaDonController {
             5: là hủy đơn hàng
 
          */
-        hd.setGhiChu(hoaDon.getGhiChu());
-        hd.setTrangThai(5);
+            hd.setGhiChu(hoaDon.getGhiChu());
+            hd.setTrangThai(5);
 
-        hoaDonServiceImpl.update(hoaDon.getId(),hd);
+            hoaDonServiceImpl.update(hoaDon.getId(), hd);
 
-        return "/templates/Users/Layouts/TrangThaiDonHang/KhachHang/hoaDonHuyBenKhachHang";
+//        return "/templates/Users/Layouts/TrangThaiDonHang/KhachHang/hoaDonHuyBenKhachHang";
+
+        }else{
+
+            System.out.println("Chưa đăng nhập tài khoản !");
+            return "redirect:/TrangChu/listGiayTheThao";
+
+        }
+
+        return "redirect:/KhachHang/HoaDon/HuyDonHang/"+session.getAttribute("maKH");
 
     }
 
@@ -1292,21 +1306,45 @@ public class HoaDonController {
 
     //Todo code xác nhân đơn hàng bên phía admin
 
+//    @GetMapping("/Admin/xacNhanDonHangKhachHang")
+//    public ModelAndView adminXacNhanDonHangChoKhachHang(
+//            Model model,
+//            @RequestParam(value = "pageNo",required = false, defaultValue = "0") Integer pageNo,
+//            HttpServletRequest request
+//
+//    ){
+//
+//        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByTrangThai(pageNo,5,1);
+//        ModelAndView mav = new ModelAndView("/templates/Admin/TrangThaiDonHang/choXacNhan");
+//        mav.addObject("page",page);
+//
+//        return mav;
+//
+//    }
+
     @GetMapping("/Admin/xacNhanDonHangKhachHang")
     public ModelAndView adminXacNhanDonHangChoKhachHang(
             Model model,
-            @RequestParam(value = "pageNo",required = false, defaultValue = "0") Integer pageNo,
+            @RequestParam(value = "pageNo", required = false, defaultValue = "0") Integer pageNo,
             HttpServletRequest request
+    ) {
 
-    ){
+        // Sắp xếp danh sách đơn hàng theo ngày thanh toán tăng dần (cũ nhất lên đầu tiên)
+        List<HoaDon> sortedList = hoaDonServiceImpl.listHoaDonFindByTrangThai(pageNo, 5, 1)
+                .getContent()
+                .stream()
+                .sorted(Comparator.comparing(HoaDon::getNgayThanhToan))
+                .collect(Collectors.toList());
 
-        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByTrangThai(pageNo,5,1);
+        Page<HoaDon> page = new PageImpl<>(sortedList);
+
         ModelAndView mav = new ModelAndView("/templates/Admin/TrangThaiDonHang/choXacNhan");
-        mav.addObject("page",page);
+        mav.addObject("page", page);
 
         return mav;
-
     }
+
+
 
     //Todo code xác nhân bên đơn bên admin
     @PostMapping("/Admin/HoaDon/XacNhanHoaDonKhachHang")
