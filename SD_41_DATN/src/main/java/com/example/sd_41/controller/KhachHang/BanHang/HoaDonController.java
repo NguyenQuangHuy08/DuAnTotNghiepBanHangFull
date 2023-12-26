@@ -23,6 +23,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
@@ -40,8 +41,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 public class HoaDonController {
@@ -966,31 +969,66 @@ public class HoaDonController {
 
    //Todo code chờ xác nhận bên phía khác hàng
 
+//    @GetMapping("/KhachHang/HoaDon/ChoXacNhan/*")
+//    public ModelAndView hoaDonChoXacNhan(
+//            @RequestParam(value = "pageNo", required = false, defaultValue = "0") Integer pageNo,
+//            HttpServletRequest request, Model model){
+//
+//        String url = request.getRequestURI();
+//        String[] parts = url.split("/KhachHang/HoaDon/ChoXacNhan/");
+//        String ma = parts[1];
+//
+//        try {
+//
+//            KhachHang khachHang = khachHangRepository.findByMaKhachHang(ma);
+//            model.addAttribute("maKH", khachHang.getMaKhachHang());
+//
+//        }catch (Exception e){
+//            model.addAttribute("maKH", "2");
+//        }
+//        KhachHang khachHang = khachHangRepository.findByMaKhachHang(ma);
+//        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByKhachHangAndTrangThai(khachHang.getId(),1,pageNo,5);
+//        ModelAndView mav = new ModelAndView("/templates/Users/Layouts/TrangThaiDonHang/KhachHang/choXacNhanBenKhachHang");
+//
+//        mav.addObject("page", page);
+//        return mav;
+//
+//    }
+
+
     @GetMapping("/KhachHang/HoaDon/ChoXacNhan/*")
     public ModelAndView hoaDonChoXacNhan(
             @RequestParam(value = "pageNo", required = false, defaultValue = "0") Integer pageNo,
-            HttpServletRequest request, Model model){
+            HttpServletRequest request, Model model) {
 
         String url = request.getRequestURI();
         String[] parts = url.split("/KhachHang/HoaDon/ChoXacNhan/");
         String ma = parts[1];
 
         try {
-
             KhachHang khachHang = khachHangRepository.findByMaKhachHang(ma);
             model.addAttribute("maKH", khachHang.getMaKhachHang());
-
-        }catch (Exception e){
+        } catch (Exception e) {
             model.addAttribute("maKH", "2");
         }
-        KhachHang khachHang = khachHangRepository.findByMaKhachHang(ma);
-        Page<HoaDon> page = hoaDonServiceImpl.listHoaDonFindByKhachHangAndTrangThai(khachHang.getId(),1,pageNo,5);
-        ModelAndView mav = new ModelAndView("/templates/Users/Layouts/TrangThaiDonHang/KhachHang/choXacNhanBenKhachHang");
 
-        mav.addObject("page", page);
+        KhachHang khachHang = khachHangRepository.findByMaKhachHang(ma);
+
+        // Sắp xếp danh sách đơn hàng theo ngày thanh toán tăng dần (mới nhất lên đầu tiên)
+        List<HoaDon> sortedList = hoaDonServiceImpl.listHoaDonFindByKhachHangAndTrangThai(khachHang.getId(), 1, pageNo, 5)
+                .getContent()
+                .stream()
+                .sorted(Comparator.comparing(HoaDon::getNgayThanhToan))
+                .collect(Collectors.toList());
+
+        model.addAttribute("page", new PageImpl<>(sortedList));
+
+        ModelAndView mav = new ModelAndView("/templates/Users/Layouts/TrangThaiDonHang/KhachHang/choXacNhanBenKhachHang");
         return mav;
 
     }
+
+
 
 
     //Todo code view thông tin sản phẩm khách hàng mua bên phía khách hàng
