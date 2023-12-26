@@ -140,7 +140,6 @@ public class HoaDonController {
 
                 }
 
-
                 ///Hiện ra thông tin của các chương trình giảm giá
                 model.addAttribute("CTGG", chuongTrinhGiamGiaHoaDonImpl.findBySlandTt(sl, hoaDon.getThanhTien()));
 
@@ -993,6 +992,44 @@ public class HoaDonController {
 
     }
 
+
+    //Todo code view thông tin sản phẩm khách hàng mua bên phía khách hàng
+    @PostMapping("/KhachHang/viewThongTinSanPhamMuaChoXacNhan")
+    public String viewThongTinSanPhamMuaKhachHangChoXacNhan(Model model,
+                                                            HttpServletRequest request,
+                                                            HttpSession session){
+
+        if(session.getAttribute("maKH") != null){
+
+            model.addAttribute("maKhachHang",session.getAttribute("maKH"));
+
+            String idHoaDonViewThongTinSanPhamChoXacNhan = request.getParameter("idHoaDonViewThongTinSanPhamChoXacNhan");
+
+            System.out.println("Id của hóa đơn là : "+idHoaDonViewThongTinSanPhamChoXacNhan);
+
+            HoaDon hoaDonView = hoaDonRepository.findById(UUID.fromString(idHoaDonViewThongTinSanPhamChoXacNhan)).orElse(null);
+
+            model.addAttribute("hoaDonView",hoaDonView);
+
+            //Tìm kiếm hóa đơn chi tiết theo id của hóa đơn
+
+            //Từ hóa đơn tìm ra hóa đơn chi tiết
+            List<HoaDonChiTiet> hoaDonChiTietList = hoaDonChiTietRepository.findByHoaDon_Id(UUID.fromString(idHoaDonViewThongTinSanPhamChoXacNhan));
+            model.addAttribute("hoaDonChiTietList",hoaDonChiTietList);
+
+
+        }else{
+
+            System.out.println("Chưa đăng nhập tài khoản !");
+            return "redirect:/TrangChu/listGiayTheThao";
+
+        }
+
+        return "/templates/Users/Layouts/TrangThaiDonHang/KhachHang/viewThongTinSanPhamKhachHangMuaChoXacNhan";
+
+    }
+
+
     //Todo code khách hàng chờ đóng gói sản phẩm là không được hủy nữa
     @GetMapping("/KhachHang/HoaDon/ChoDongGoi/*")
     public ModelAndView choDongGoiPhiaKhachHang(
@@ -1579,6 +1616,7 @@ public class HoaDonController {
         return "/templates/Users/Layouts/ChiTiet/ChiTietHoaDon";
 
     }
+
 
     //Todo code trạng thái đơn hàng All bên Admin
     @PostMapping("/HoaDon/Admin/TrangThaiDonHangAllView")

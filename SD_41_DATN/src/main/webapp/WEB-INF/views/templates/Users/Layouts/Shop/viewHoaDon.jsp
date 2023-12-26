@@ -313,7 +313,7 @@
                                         <c:forEach items="${CTGG}" var="list">
 <%--                                            Hiện các mã khuyễn mãi còn để áp dụng--%>
                                             <c:if test="${list.trangThai == 1}">
-                                                <input style="margin-left: 15px" name="options" id="price" type="radio" value="${list.phanTramGiam}" onclick="updatePrice(this)"> ${list.tenChuongTrinh}<br>
+                                                <input style="margin-left: 15px" name="options" id="price" type="radio" value="${list.phanTramGiam}" onclick="updatePrice(this)"><span style="color: red">${list.tenChuongTrinh} </span> phần trăm giảm: <span style="color:  red">${list.phanTramGiam} %</span><br>
                                                 <c:set var="count" value="${count + 1}"/>
                                             </c:if>
                                         </c:forEach>

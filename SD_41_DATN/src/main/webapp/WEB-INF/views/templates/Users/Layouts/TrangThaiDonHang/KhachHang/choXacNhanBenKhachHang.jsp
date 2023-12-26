@@ -57,13 +57,13 @@
         <h3 style="margin-top: 30px;margin-bottom: 30px">Các đơn hàng chờ xác nhận</h3>
         <form method="post">
             <input type="hidden" name="idKH" value="${idKH}">
-            <table class="table" style="">
+            <table class="table" style="width: 100%">
                 <tr>
-                    <td scope="col" style="color: black;font-size: 17px">Mã hóa đơn</td>
-                    <td scope="col" style="color: black;font-size: 17px">Ngày thanh toán</td>
-                    <td scope="col"  style="color: black;font-size: 17px">Thành tiền</td>
-                    <td scope="col"  style="color: black;font-size: 17px">Thông tin nhận hàng</td>
-                    <td scope="col"  style="color: black;font-size: 17px">Action</td>
+                    <td scope="col" style="color: black;font-size: 15px;font-weight: bold">Mã hóa đơn</td>
+                    <td scope="col" style="color: black;font-size: 15px;font-weight: bold">Ngày thanh toán</td>
+                    <td scope="col"  style="color: black;font-size: 15px;font-weight: bold">Thành tiền</td>
+                    <td scope="col"  style="color: black;font-size: 15px;font-weight: bold">Thông tin nhận hàng</td>
+                    <td scope="col"  style="color: black;font-size: 15px;text-align: center;font-weight: bold">Actions</td>
                 </tr>
                 <c:forEach items="${page.content}" var="list">
                     <tr>
@@ -81,12 +81,14 @@
                         </td>
                         <td style="width: 300px">${list.ghiChu}</td>
                         <td>
-
                             <button type="submit" formaction="/KhachHang/HoaDon/HuyDonHang" name="huyDonHang" value="${list.id}"
                                     class="btn btn-primary me-2" method="post">Hủy
                             </button>
-
+                            <button style="" type="submit" formaction="/KhachHang/viewThongTinSanPhamMuaChoXacNhan" name="idHoaDonViewThongTinSanPhamChoXacNhan" value="${list.id}"
+                                    class="btn btn-primary me-2" method="post">View
+                            </button>
                         </td>
+
                     </tr>
                 </c:forEach>
             </table>

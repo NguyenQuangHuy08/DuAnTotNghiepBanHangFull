@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chờ thanh toán</title>
+    <title>Đơn hàng đang được giao tới khách hàng</title>
     <style>
 
 
@@ -59,16 +59,16 @@
             <input type="hidden" name="idKH" value="${idKH}">
             <table class="table" style="">
                 <tr>
-                    <td scope="col" style="color: black;font-size: 17px">Mã hóa đơn</td>
-                    <td scope="col" style="color: black;font-size: 17px">Ngày thanh toán</td>
-                    <td scope="col"  style="color: black;font-size: 17px">Thành tiền</td>
-                    <td scope="col"  style="color: black;font-size: 17px">Thông tin nhận hàng</td>
-                    <td scope="col"  style="color: black;font-size: 17px">Action</td>
+                    <td scope="col" style="color: black;font-size: 15px;font-weight: bold">Mã hóa đơn</td>
+                    <td scope="col" style="color: black;font-size: 15px;font-weight: bold">Ngày thanh toán</td>
+                    <td scope="col"  style="color: black;font-size: 15px;font-weight: bold">Thành tiền</td>
+                    <td scope="col"  style="color: black;font-size: 15px;font-weight: bold">Thông tin nhận hàng</td>
+                    <td scope="col"  style="color: black;font-size: 15px;font-weight: bold">Action</td>
                 </tr>
                 <c:forEach items="${page.content}" var="list">
                     <tr>
-                        <td scope="row">${list.maHoaDon}</td>
-                        <td style="padding-left: 40px">
+                        <td scope="row" style="color: black">${list.maHoaDon}</td>
+                        <td style="padding-left: 40px;color: black">
                             <script>
                                 var ngayThanhToan = "${list.ngayThanhToan}";
                                 var parts = ngayThanhToan.split('-');
@@ -76,13 +76,16 @@
                                 document.write(formattedDate);
                             </script>
                         </td>
-                        <td>
+                        <td style="color: black">
                                     <fmt:formatNumber type="" value="${list.thanhTien}" pattern="#,##0.###" /> VNĐ
                         </td>
-                        <td style="width: 300px">${list.ghiChu}</td>
+                        <td style="width: 300px;color: black">${list.ghiChu}</td>
                         <td>
                             <button formaction="/KhachHang/HoaDon/XacNhanGiaoHangThanhCong" name="thanhCong" value="${list.id}"
                                     class="btn btn-primary me-2">Thành Công
+                            </button>
+                            <button style="" type="submit" formaction="/KhachHang/viewThongTinSanPhamMuaChoXacNhan" name="idHoaDonViewThongTinSanPhamChoXacNhan" value="${list.id}"
+                                    class="btn btn-primary me-2" method="post">View
                             </button>
                         </td>
                     </tr>
