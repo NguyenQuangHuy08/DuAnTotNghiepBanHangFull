@@ -77,33 +77,13 @@
                         <td style="font-size: 14px;color: black;font-weight: bold">${list.maHoaDon}</td>
                         <td style="font-size: 14px;color: black;font-weight: bold">${list.khachHang.tenKhachHang}</td>
 
-<%--                        <td  style="display: none">--%>
-<%--                            <input type="hidden" name="idHoaDon" value="${list.id}">--%>
-<%--                        </td>--%>
-
-<%--                        <td  style="display: none">--%>
-<%--                            <input type="hidden" name="maHoaDon" value="${list.maHoaDon}">--%>
-<%--                        </td>--%>
-<%--                        <td  style="display: none">--%>
-<%--                            <input type="hidden" name="email" value="${list.khachHang.email}">--%>
-<%--                        </td>--%>
-<%--                        <td  style="display: none">--%>
-<%--                            <input type="hidden" name="tenKhachHang" value="${list.khachHang.tenKhachHang}">--%>
-<%--                        </td>--%>
-<%--                        <td  style="display: none">--%>
-<%--                            <input type="hidden" name="ngayThanhToan" value="${list.ngayThanhToan}">--%>
-<%--                        </td>--%>
-<%--                        <td  style="display: none">--%>
-<%--                            <input type="hidden" name="thanhTien" value="${list.thanhTien}">--%>
-<%--                        </td>--%>
-
                         <td style="font-size: 14px;color: black;font-weight: bold">
-                            <script>
-                                var ngayThanhToan = "${list.ngayThanhToan}";
-                                var parts = ngayThanhToan.split('-');
-                                var formattedDate = parts[1] + '-' + parts[2] + '-' + parts[0];
-                                document.write(formattedDate);
-                            </script>
+                            <c:set var="dateTimeString" value="${list.ngayThanhToan}"/>
+                            <fmt:parseDate value="${dateTimeString}" var="parsedDate"
+                                           pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+                            <fmt:formatDate value="${parsedDate}" var="formattedDate"
+                                            pattern="yyyy-MM-dd HH:mm:ss"/>
+                                ${formattedDate}
                         </td>
                         <td style="font-size: 14px;color: black;font-weight: bold">
                             <fmt:formatNumber type="" value="${list.thanhTien}" pattern="#,##0.###" /> VNĐ

@@ -3,6 +3,7 @@ package com.example.sd_41.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -43,16 +44,22 @@ public class HoaDon {
     private String mess;
 
     @Column(name = "ngayTao")
-    private String ngayTao;
+    private LocalDateTime ngayTao;
 
     @Column(name = "ngayThanhToan")
-    private String ngayThanhToan;
+    private LocalDateTime ngayThanhToan;
 
     @Column(name = "ngaySua")
-    private String ngaySua;
+    private LocalDateTime ngaySua;
 
     @Column(name = "hinhThuc")
     private int hinhThuc;
+
+    @Column(name = "hinhThucThanhToan")
+    private int hinhThucThanhToan;
+
+    @Column(name = "trangThaiMoney")
+    private int trangThaiMoney;
 
     @Column(name = "trangThai")
     private int trangThai;

@@ -137,6 +137,11 @@
                                             Đơn hàng
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/KhachHang/ViDienTu/ViewViDienTu/${maKH}" style="color: black;font-weight: bold">
+                                            Ví tiền
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         </div>

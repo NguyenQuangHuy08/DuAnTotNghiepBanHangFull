@@ -1,5 +1,9 @@
 package com.example.sd_41.controller.KhachHang.BanHang;
 
+import com.example.sd_41.controller.Momo.MomoModel;
+import com.example.sd_41.controller.Momo.ResultMoMo;
+import com.example.sd_41.controller.Utils.Constant;
+import com.example.sd_41.controller.Utils.Decode;
 import com.example.sd_41.model.*;
 import com.example.sd_41.repository.BanHang.GioHangChiTietRepository;
 import com.example.sd_41.repository.BanHang.GioHangRepository;
@@ -12,7 +16,11 @@ import com.example.sd_41.repository.SanPham.AllGiayTheThao.*;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoChiTietRepository;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoRepository;
 import com.example.sd_41.service.GioHang.GioHangChiTietImpl;
+import com.example.sd_41.service.ViTien.Impl.viTienServiceImpl;
+import com.example.sd_41.service.ViTien.Impl.giaoDichViChiTietServiceImpl;
 import com.example.sd_41.service.GioHang.GioHangChiTietService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -26,8 +34,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +104,13 @@ public class TrangChuGiayTheThaoController {
 
      @Autowired
      private ChuongTrinhGiamGiaChiTietGiayTheThaoRepository chuongTrinhGiamGiaChiTietGiayTheThaoRepository;
+
+     @Autowired
+     viTienServiceImpl viTienServiceImpl;
+
+     @Autowired
+     giaoDichViChiTietServiceImpl giaoDichViChiTietServiceImpl;
+
 
     //Todo code view giầy thể thao cho người dùng mua hàng phân trang cho người dùng ở luôn trang index by Giầy thể thao
 
@@ -688,8 +710,8 @@ public class TrangChuGiayTheThaoController {
             hoaDon.setMaHoaDon("MaHD" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
             hoaDon.setKhachHang(khachHang);
             hoaDon.setTrangThai(0);
-            hoaDon.setNgayThanhToan(ngayThanhToanToDate);
-            hoaDon.setNgayTao(ngayThanhToanToDate);
+            hoaDon.setNgayThanhToan(LocalDateTime.now());
+            hoaDon.setNgayTao(LocalDateTime.now());
 
             hoaDonRepository.save(hoaDon);
 
@@ -840,6 +862,159 @@ public class TrangChuGiayTheThaoController {
 
     }
 
+    //Todo code view ví điện tử
+    @GetMapping("/KhachHang/ViDienTu/ViewViDienTu/*")
+    public String showViewViDienTuChiTiet(Model model,
+                                          HttpServletRequest request,
+                                          HttpSession session){
+
+
+        String url = request.getRequestURI();
+        String[] parts = url.split("/KhachHang/ViDienTu/ViewViDienTu/");
+        String ma = parts[1];
+
+        try {
+
+            KhachHang khachHang = khachHangRepository.findByMaKhachHang(ma);
+            model.addAttribute("maKH", khachHang.getMaKhachHang());
+            model.addAttribute("tenKhachHang",khachHang.getTenKhachHang());
+
+            ViTien viTien = viTienServiceImpl.findByIdKhachHang(khachHang.getId());
+
+            model.addAttribute("viTien",viTien);
+            List<GiaoDichViChiTiet> giaoDichViChiTietList = giaoDichViChiTietServiceImpl.findAllByKhachHang(khachHang.getId());
+            model.addAttribute("giaoDichViChiTietList",giaoDichViChiTietList);
+
+            String addThanhCong = (String) session.getAttribute("napThanhCong");
+            String addThatBai = (String) session.getAttribute("napThatBai");
+
+            if (addThanhCong != null) {
+                model.addAttribute("themThanhCong", "2");
+            }
+            if (addThatBai != null) {
+                model.addAttribute("themThatBai", "2");
+            }
+
+            session.removeAttribute("napThanhCong");
+            session.removeAttribute("napThatBai");
+
+
+        } catch (Exception e) {
+
+            model.addAttribute("maKH", "2");
+
+        }
+
+
+        return "/templates/Users/Layouts/Shop/viDienTu";
+
+    }
+
+
+    //Todo code khách hàng nạp tiền vào ví điện tử để thanh toán
+    @PostMapping("/KhachHang/ViDienTu/NapTien/*")
+    public String khachHangViewNapTienVaoViDienTu(
+
+            Model model,
+            HttpSession session,
+            HttpServletRequest request
+    )throws JsonProcessingException {
+
+            if(session.getAttribute("khachHangLog") != null){
+                System.out.println("Đăng nhập tài khoản thành công !");
+
+                String url = request.getRequestURI();
+                String[] p = url.split("/KhachHang/ViDienTu/NapTien/");
+                String maKH = p[1];
+
+                KhachHang khachHang = khachHangRepository.findByMaKhachHang(maKH);
+
+                ViTien viTien = viTienServiceImpl.findByIdKhachHang(khachHang.getId());
+
+                String soTien = request.getParameter("soTien");
+                BigDecimal soTienBig = new BigDecimal(soTien);
+
+                GiaoDichViChiTiet giaoDichViChiTiet = new GiaoDichViChiTiet();
+
+                LocalTime localTime = LocalTime.now();
+                LocalDate ngayThanhToan = LocalDate.now();
+                String ngayThanhToanToDate = ngayThanhToan.toString();
+
+
+                giaoDichViChiTiet.setMaGiaoDichViChiTiet("GiaoDV" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
+                giaoDichViChiTiet.setViTien(viTien);
+                giaoDichViChiTiet.setNgayGiaoDich(LocalDateTime.now());
+                giaoDichViChiTiet.setDonGia(soTienBig);
+                giaoDichViChiTiet.setHinhThuc(1);
+                giaoDichViChiTiet.setTrangThai(0);
+
+                giaoDichViChiTietServiceImpl.add(giaoDichViChiTiet);
+
+                ObjectMapper mapper = new ObjectMapper();
+                String orderId = giaoDichViChiTiet.getMaGiaoDichViChiTiet();
+
+                MomoModel jsonRequest = new MomoModel();
+                jsonRequest.setPartnerCode(Constant.IDMOMO);
+                jsonRequest.setOrderId(orderId);
+                jsonRequest.setStoreId(orderId);
+                jsonRequest.setRedirectUrl(Constant.redirectUrl);
+                jsonRequest.setIpnUrl(Constant.ipnUrl);
+                jsonRequest.setAmount(soTien);
+                jsonRequest.setOrderInfo("Nạp tiền vào ví");
+                jsonRequest.setRequestId(orderId);
+                jsonRequest.setOrderType(Constant.orderType);
+                jsonRequest.setRequestType(Constant.requestType);
+                jsonRequest.setTransId("1");
+                jsonRequest.setResultCode("200");
+                jsonRequest.setMessage("");
+                jsonRequest.setPayType(Constant.payType);
+                jsonRequest.setResponseTime("300000");
+                jsonRequest.setExtraData("");
+
+                String decode = "accessKey=" + Constant.accessKey + "&amount=" + jsonRequest.amount + "&extraData="
+                        + jsonRequest.extraData + "&ipnUrl=" + Constant.ipnUrl + "&orderId=" + orderId + "&orderInfo="
+                        + jsonRequest.orderInfo + "&partnerCode=" + jsonRequest.getPartnerCode() + "&redirectUrl="
+                        + Constant.redirectUrl + "&requestId=" + jsonRequest.getRequestId() + "&requestType="
+                        + Constant.requestType;
+
+
+                String signature = Decode.encode(Constant.serectkey, decode);
+                jsonRequest.setSignature(signature);
+                String json = mapper.writeValueAsString(jsonRequest);
+                HttpClient client = HttpClient.newHttpClient();
+                ResultMoMo res = new ResultMoMo();
+
+                try {
+                    HttpRequest requestMomo = HttpRequest.newBuilder().uri(new URI(Constant.Url))
+                            .POST(HttpRequest.BodyPublishers.ofString(json)).headers("Content-Type", "application/json")
+                            .build();
+                    HttpResponse<String> response = client.send(requestMomo, HttpResponse.BodyHandlers.ofString());
+                    res = mapper.readValue(response.body(), ResultMoMo.class);
+                } catch (InterruptedException | URISyntaxException | IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                if (res == null) {
+
+                    System.out.println("Thanh toán thất bại !");
+                    session.setAttribute("error_momo", "Thanh toán thất bại");
+                    return "redirect:/TrangChu/listGiayTheThao";
+
+                } else {
+
+                    System.out.println("Thanh toán thành công !");
+                    return "redirect:" + res.payUrl;
+
+                }
+
+            }else{
+
+                System.out.println("Khách hàng chưa đăng nhập tài khoản");
+                return "redirect:/TrangChu/listGiayTheThao";
+
+            }
+
+    }
 
     //Finall dữ liệu trả về
 

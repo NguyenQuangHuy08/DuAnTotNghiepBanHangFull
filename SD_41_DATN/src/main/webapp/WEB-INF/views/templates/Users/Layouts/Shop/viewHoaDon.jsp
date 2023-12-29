@@ -330,22 +330,32 @@
                             <span style="color: red">${hinhThucThanhToanNull}</span>
 
                         </div>
-                        <h5 class="section-title position-relative text-uppercase mb-3"><span
-                                class="">Payment</span></h5>
+                        <h5 class="section-title position-relative text-uppercase mb-3">
+                            <span class="">Payment</span>
+                        </h5>
                         <div class="bg-light p-30">
                             <div class="form-group mb-4">
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" value="momo" name="payment"
-                                           id="banktransfer1">
+                                    <input type="radio" class="custom-control-input" value="momo" name="payment" id="banktransfer1">
                                     <label class="custom-control-label" for="banktransfer1" style="margin-top: 15px;margin-left: 15px">Thanh toán momo</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-radio">
                                     <input type="radio" class="custom-control-input" value="cash" name="payment" id="directcheck">
-                                    <label class="custom-control-label" for="directcheck" style="margin-left: 15px">Thanh toán khi nhận
-                                        hàng</label>
+                                    <label class="custom-control-label" for="directcheck" style="margin-left: 15px">
+                                        Thanh toán khi nhận hàng
+                                    </label>
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" value="vi" name="payment" id="vi">
+                                    <label class="custom-control-label" for="vi" style="margin-left: 15px">Thanh toán bằng ví điện tử</label>
+                                </div>
+                            </div>
+                            <div class="thongBao">
+                                <span style="color: red">${erVi}</span>
                             </div>
                             <button style="margin-top: 10px" type="submit" class="btn btn-block btn-primary font-weight-bold py-3">
                                 Đặt hàng

@@ -17,7 +17,7 @@
         icon: 'success',
         title: '<span style="font-size: 24px;">Thanh toán thành công! Vui lòng theo dõi đơn hàng của bạn !</span>',
         showConfirmButton: false, // Ẩn nút OK
-        timer: 1500, // Thời gian hiển thị thông báo (miligiây)
+        timer: 1800, // Thời gian hiển thị thông báo (miligiây)
 
     }).then(() => {
 

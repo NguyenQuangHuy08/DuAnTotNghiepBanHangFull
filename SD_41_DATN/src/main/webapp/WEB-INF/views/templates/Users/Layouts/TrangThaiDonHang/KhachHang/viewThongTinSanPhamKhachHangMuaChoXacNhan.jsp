@@ -51,7 +51,7 @@
     </a>
 
 
-    <h3 style="color: black;margin-top: 30px;margin-bottom: 40px">Thông tin sản phẩm mua</h3>
+    <h3 style="color: black;margin-top: 30px;margin-bottom: 40px;text-align: center">Thông tin sản phẩm mua</h3>
 
     <table class="table table-striped;" style="border-radius: 10px 10px 10px">
         <tr>
@@ -59,6 +59,7 @@
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Khách hàng</td>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 300px">Ngày thanh toán</td>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 170px">Tổng tiền</td>
+            <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 170px">Phí ship</td>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 300px">Thông tin nhận hàng</td>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 210px;text-align: center">Ghi chú</td>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Trạng thái</td>
@@ -69,16 +70,19 @@
 
             <td style="font-size: 17px;color: black;">
 
-                <script>
-                    var ngayThanhToan = "${hoaDonView.ngayThanhToan}";
-                    var parts = ngayThanhToan.split('-');
-                    var formattedDate = parts[1] + '-' + parts[2] + '-' + parts[0];
-                    document.write(formattedDate);
-                </script>
+                <c:set var="dateTimeString" value="${hoaDonView.ngayThanhToan}"/>
+                <fmt:parseDate value="${dateTimeString}" var="parsedDate"
+                               pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+                <fmt:formatDate value="${parsedDate}" var="formattedDate"
+                                pattern="yyyy-MM-dd HH:mm:ss"/>
+                ${formattedDate}
 
             </td>
             <td style="font-size: 17px;color: black">
-                <fmt:formatNumber type="" value="${hoaDonView.thanhTien}" pattern="#,##0.###" /> VNĐ
+                <fmt:formatNumber type="" value="${hoaDonView.thanhTien}" pattern="#,##0.###" />
+            </td>
+            <td style="font-size: 17px;color: black">
+                <fmt:formatNumber type="" value="${hoaDonView.phiShip}" pattern="#,##0.###" />
             </td>
             <td style="font-size: 17px;color: black">${hoaDonView.ghiChu}</td>
             <td style="font-size: 17px;color: black;font-weight: bold">${hoaDonView.mess}</td>

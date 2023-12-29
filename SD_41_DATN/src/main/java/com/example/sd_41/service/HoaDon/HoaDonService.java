@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
@@ -126,8 +127,8 @@ public class HoaDonService implements HoaDonServiceImpl{
         // int count = (int) hoaDonRepository.count();
         hd.setMaHoaDon("MaHD" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
         hd.setGhiChu("N/A");
-        hd.setNgayTao(LocalDate.now().toString());
-        hd.setNgaySua(LocalDate.now().toString());
+        hd.setNgayTao(LocalDateTime.now());
+        hd.setNgaySua(LocalDateTime.now());
         hd.setMess("N/A");
         hd.setTrangThai(0);
         return hoaDonRepository.save(hd);
@@ -157,8 +158,8 @@ public class HoaDonService implements HoaDonServiceImpl{
         }
         BigDecimal thanhTien = new BigDecimal(sum);
         hd.setThanhTien(thanhTien);
-        hd.setNgayThanhToan(LocalDate.now().toString());
-        hd.setNgaySua(LocalDate.now().toString());
+        hd.setNgayThanhToan(LocalDateTime.now());
+        hd.setNgaySua(LocalDateTime.now());
         if (hd == null) {
             return "Hóa đơn không tồn tại";
         }

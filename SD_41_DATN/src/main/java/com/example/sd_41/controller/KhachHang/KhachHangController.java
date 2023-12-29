@@ -2,10 +2,12 @@ package com.example.sd_41.controller.KhachHang;
 
 import com.example.sd_41.model.GioHang;
 import com.example.sd_41.model.KhachHang;
+import com.example.sd_41.model.ViTien;
 import com.example.sd_41.repository.BanHang.GioHangRepository;
 import com.example.sd_41.repository.KhachHangRepository;
 import com.example.sd_41.service.KhachHangImpl;
 import com.example.sd_41.service.KhachHangService;
+import com.example.sd_41.repository.ViTien.viTienRepository;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -27,6 +29,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -55,6 +58,9 @@ public class KhachHangController {
 
     @Autowired
     private KhachHangImpl khachHangImpl;
+
+    @Autowired
+    private viTienRepository viTienRepository;
 
     @Data
     public static class SearchKH{
@@ -340,6 +346,17 @@ public class KhachHangController {
         gioHang.setKhachHang(khachHang);
         session.setAttribute("gioHang",gioHang);
         gioHangRepository.save(gioHang);
+
+        ViTien viTien = new ViTien();
+
+        viTien.setMaViTien("MaViTien" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
+        viTien.setKhachHang(khachHang);
+        int thanhTienBanDau = 0;
+        viTien.setThanhTien(BigDecimal.valueOf(thanhTienBanDau));
+        viTien.setTrangThai(1);
+
+        viTienRepository.save(viTien);
+
         attributes.addFlashAttribute("message", "Đăng kí tài khoản thành công");
 
         return "redirect:/khachHang/DangKyTaiKhoanThanhCong";

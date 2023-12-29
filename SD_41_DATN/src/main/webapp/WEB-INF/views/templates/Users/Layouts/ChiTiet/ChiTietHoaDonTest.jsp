@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi tiết hóa đơn của all trạng thái hơn đơn</title>
+    <title>Chi tiết hóa đơn</title>
     <style>
         .modal {
             display: none;
@@ -59,7 +59,7 @@
 
     <div class="back">
 
-        <a href="/Admin/xacNhanDonHangKhachHangAll">
+        <a href="/Admin/xacNhanDonHangKhachHang">
             <button class="btn btn-primary">Back</button>
         </a>
 
@@ -167,7 +167,8 @@
         </div>
     </div>
 
-    <br>
+
+
     <h3 style="color: black;text-align: center;margin-bottom: 30px">Thông tin chi tiết hóa đơn</h3>
 
     <table class="table table-striped;" style="border-radius: 10px 10px 10px">
@@ -176,14 +177,13 @@
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Khách hàng</td>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 300px">Ngày thanh toán</td>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 170px">Tổng tiền</td>
-            <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 170px">Phí ship</td>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 300px">Thông tin nhận hàng</td>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 210px;text-align: center">Ghi chú</td>
+<%--            <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Hình thức</td>--%>
         </tr>
             <tr>
                 <td style="font-size: 14px;color: black;font-weight: bold">${maHoaDonView}</td>
                 <td style="font-size: 14px;color: black;font-weight: bold">${khachHangView}</td>
-
                 <td style="font-size: 14px;color: black;font-weight: bold">
                     <c:set var="dateTimeString" value="${ngayThanhToanView}"/>
                     <fmt:parseDate value="${dateTimeString}" var="parsedDate"
@@ -191,14 +191,14 @@
                     <fmt:formatDate value="${parsedDate}" var="formattedDate"
                                     pattern="yyyy-MM-dd HH:mm:ss"/>
                     ${formattedDate}
+                </td>
                 <td style="font-size: 14px;color: black;font-weight: bold">
                     <fmt:formatNumber type="" value="${tongTienView}" pattern="#,##0.###" /> VNĐ
                 </td>
-                <td style="font-size: 14px;color: black;font-weight: bold">
-                    <fmt:formatNumber type="" value="${phiShipView}" pattern="#,##0.###" /> VNĐ
-                </td>
                 <td style="font-size: 14px;color: black;font-weight: bold">${thongTienNhanHangView}</td>
                 <td style="font-size: 14px;color: black;font-weight: bold">${messView}</td>
+<%--                <td style="font-size: 14px;color: black;font-weight: bold">${hinhThucView == 0 ? "Online" : "Tại quầy"}</td>--%>
+
             </tr>
     </table>
 
@@ -206,6 +206,7 @@
 
     <h3 style="text-align: center;color: black;margin-bottom: 50px">Thông tin chi tiết sản phẩm</h3>
     <c:forEach items="${hoaDonChiTiets}" var="list" varStatus="i">
+        <c:if test="${list.hoaDon.trangThai eq 1}">
         <p>
                 <span style="display: inline-block;color: black;font-size: 16px;margin-left: 15px">${i.index+1} :</span>
                 <span style="display: inline-block;color: black;font-size: 16px">${list.giayTheThaoChiTiet.giayTheThao.tenGiayTheThao}</span>
@@ -220,8 +221,59 @@
                      style="border-radius: 10px 10px 10px">
             </span>
             </p>
+        </c:if>
     </c:forEach>
-    <div style="margin-bottom: 100px"></div>
+
+
+
+    <br>
+    <!-- Form mới -->
+    <div class="button" style="margin-bottom: 40px;margin-top: 20px;margin-left: 730px;margin-top: 30px">
+        <div class="row">
+            <div class="col-1">
+                <%--        Hủy đơn hàng--%>
+                <form method="post" action="/Admin/HoaDon/HuyDonHangCuaKhachHang">
+                    <input type="hidden" name="idHoaDonConvert" value="${idHoaDonConvert}" />
+                    <input type="hidden" name="maHoaDonView" value="${maHoaDonView}">
+                    <input type="hidden" name="emailView" value="${emailView}">
+                    <input type="hidden" name="khachHangView" value="${khachHangView}">
+                    <input type="hidden" name="ngayThanhToanView" value="${ngayThanhToanView}">
+                    <input type="hidden" name="tongTienView" value="${tongTienView}">
+                    <input type="hidden" name="thongTienNhanHangView" value="${thongTienNhanHangView}">
+
+                    <button style="width: 130px;font-size: 15px;margin-top: 20px" formaction="/Admin/HoaDon/HuyDonHangCuaKhachHang" name="huyDonHang" value="${idHoaDonConvert}"
+                            class="btn btn-primary">Hủy đơn hàng
+                    </button>
+                </form>
+            </div>
+            <div class="col-2"style="margin-left: 50px">
+                <%--        Xác nhận đơn hàng--%>
+                <form method="post" action="/Admin/HoaDon/XacNhanHoaDonKhachHang">
+                    <input type="hidden" name="idHoaDonConvert" value="${idHoaDonConvert}" />
+                    <input type="hidden" name="maHoaDonView" value="${maHoaDonView}">
+                    <input type="hidden" name="emailView" value="${emailView}">
+                    <input type="hidden" name="khachHangView" value="${khachHangView}">
+                    <input type="hidden" name="ngayThanhToanView" value="${ngayThanhToanView}">
+                    <input type="hidden" name="tongTienView" value="${tongTienView}">
+                    <input type="hidden" name="thongTienNhanHangView" value="${thongTienNhanHangView}">
+
+                    <button style="width: 130px;font-size: 15px;margin-top: 20px" formaction="/Admin/HoaDon/XacNhanHoaDonKhachHang" name="huy" value="${idHoaDonConvert}"
+                            class="btn btn-primary">Xác nhận
+                    </button>
+                </form>
+            </div>
+            <div class="col-1" style="">
+                <form method="post" action="/Admin/HoaDon/ThemThongTinSanPham">
+                    <input type="hidden" name="idHoaDonConvert" value="${idHoaDonConvert}" />
+                    <button style="width: 130px;font-size: 15px;margin-top: 20px" formaction="/Admin/HoaDon/ThemThongTinSanPham" name="themThongTin" value="${idHoaDonConvert}"
+                            class="btn btn-primary">Thêm thông tin
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 
 </div>
 

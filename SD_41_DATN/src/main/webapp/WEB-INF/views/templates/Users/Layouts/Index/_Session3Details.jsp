@@ -245,41 +245,6 @@
                                 </c:if>
                             </c:forEach>
                         </div>
-
-                        <%--                Todo code phân trang giầy thể thao--%>
-
-<%--                        <div class="row">--%>
-<%--                            <div class="col-12" style="">--%>
-<%--                                <ul class="pagination" style="margin-left: 400px">--%>
-<%--                                    <c:choose>--%>
-<%--                                        <c:when test="${currentPage > 1}">--%>
-<%--                                            <li class="page-item">--%>
-<%--                                                <a href="/TrangChu/listGiayTheThao/Details?pageNum=${currentPage - 1}"--%>
-<%--                                                   class="page-link"--%>
-<%--                                                   style="border: 1px solid red;width: 100px">Previous</a>--%>
-<%--                                            </li>--%>
-<%--                                        </c:when>--%>
-<%--                                        <c:otherwise>--%>
-<%--                                            <!-- Ẩn nút "Previous" khi trang hiện tại là trang đầu tiên -->--%>
-<%--                                        </c:otherwise>--%>
-<%--                                    </c:choose>--%>
-
-<%--                                    <c:forEach var="pageNumber" items="${pageNumbers}">--%>
-<%--                                        <li class="page-item ${pageNumber == currentPage ? 'active' : ''}">--%>
-<%--                                            <a href="/TrangChu/listGiayTheThao/Details?pageNum=${pageNumber}"--%>
-<%--                                               class="page-link">${pageNumber}</a>--%>
-<%--                                        </li>--%>
-<%--                                    </c:forEach>--%>
-
-<%--                                    <c:if test="${currentPage < totalPage}">--%>
-<%--                                        <li class="page-item">--%>
-<%--                                            <a href="/TrangChu/listGiayTheThao/Details?pageNum=${currentPage + 1}"--%>
-<%--                                               class="page-link" style="border: 1px solid red; width: 50px">Next</a>--%>
-<%--                                        </li>--%>
-<%--                                    </c:if>--%>
-<%--                                </ul>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
                     </div>
                 </div>
             </div>

@@ -10,52 +10,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi tiết hóa đơn</title>
+
+    <link rel="stylesheet" href="../../../resources/css/add_formHuy.css">
+
     <style>
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
+        .boderForm {
+            max-width: 800px;
+            margin: 0px auto;
+            text-align: center;
             padding: 20px;
-            border: 1px solid #888;
-            width: 60%;
-            position: relative;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 5px;
         }
 
-        .close {
-            color: #aaa;
-            position: absolute;
-            top: 0;
-            right: 0;
-            font-size: 28px;
-            font-weight: bold;
-            padding: 10px;
-            cursor: pointer;
-            z-index: 2; /* Thêm dòng này để đẩy lên trên form */
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
     </style>
 
 </head>
 <body>
 <%@ include file="../../../../templates/Admin/Layouts/GiayTheThao/_HeaderGiayTheThaoHoaDon.jsp" %>
-<div class="container" style="padding-top: 90px">
+<div class="container" style="margin-top: 50px">
 
     <div class="back">
 
@@ -65,28 +41,145 @@
 
     </div>
 
-    <h3 style="color: black;text-align: center;margin-bottom: 30px">Thông tin chi tiết hóa đơn</h3>
+    <div class="row" style="margin-top: 20px">
+        <div class="col-12" style="">
 
+            <div class="row">
+                <%--        Trạng thái đơn hàng--%>
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="font-size: 14px">
+                                        Trạng thái đơn hàng
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" style="margin-top: 17px;font-size: 17px">
+                                        <c:choose>
+                                            <c:when test="${trangThaiView == 0}">Chưa thanh toán</c:when>
+                                            <c:when test="${trangThaiView == 1}">Chờ xác nhận</c:when>
+                                            <c:when test="${trangThaiView == 2}">Đang đóng gói hàng</c:when>
+                                            <c:when test="${trangThaiView == 3}">Đang giao</c:when>
+                                            <c:when test="${trangThaiView == 4}">Giao hàng thành công</c:when>
+                                            <c:when test="${trangThaiView == 5}">Hủy đơn hàng</c:when>
+                                            <c:otherwise>Trạng thái không xác định</c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <%--                                        <i class="fa fa-shopping-cart fa-2x text-gray-300"></i>--%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%--        Trạng thái thanh toán--%>
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="font-size: 14px">
+                                        Trạng thái thanh toán
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" style="margin-top: 17px;font-size: 17px">
+                                        ${trangThaiMoney == 1 ? "Đã thanh toán " : "Chưa thanh toán"}
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <%--                                        <i class="fa fa-shopping-cart fa-2x text-gray-300"></i>--%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%--        Hình thức thanh toán--%>
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="font-size: 14px">
+                                        Hình thức thanh toán
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" style="margin-top: 17px;font-size: 17px">
+                                        ${hinhThucView == 0 ? "Online" : "Tại quầy"}
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <%--                                        <i class="fa fa-shopping-cart fa-2x text-gray-300"></i>--%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%--        Loại hình thức thanh toán--%>
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="font-size: 14px">
+                                        Loại hình thức thanh toán
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" style="margin-top: 17px;font-size: 17px">
+                                        <c:choose>
+                                            <c:when test="${hinhThucThanhToan == 0}">Tại quầy</c:when>
+                                            <c:when test="${hinhThucThanhToan == 1}">Ví điện tử</c:when>
+                                            <c:when test="${hinhThucThanhToan == 2}">Momo</c:when>
+                                            <c:when test="${hinhThucThanhToan == 3}">Nhận hàng</c:when>
+                                            <c:otherwise>Trạng thái không xác định</c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <%--                                        <i class="fa fa-shopping-cart fa-2x text-gray-300"></i>--%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+    <h3 style="color: black;text-align: center;margin-bottom: 30px">Thông tin chi tiết hóa đơn</h3>
+    <br>
     <table class="table table-striped;" style="border-radius: 10px 10px 10px">
         <tr>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Mã hóa đơn</td>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Khách hàng</td>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 300px">Ngày thanh toán</td>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 170px">Tổng tiền</td>
+            <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 170px">Phí ship</td>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 300px">Thông tin nhận hàng</td>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 210px;text-align: center">Ghi chú</td>
-            <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Hình thức</td>
+<%--            <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Hình thức</td>--%>
         </tr>
             <tr>
                 <td style="font-size: 14px;color: black;font-weight: bold">${maHoaDonView}</td>
                 <td style="font-size: 14px;color: black;font-weight: bold">${khachHangView}</td>
-                <td style="font-size: 14px;color: black;font-weight: bold">${ngayThanhToanView}</td>
+                <td style="font-size: 14px;color: black;font-weight: bold">
+
+                    <c:set var="dateTimeString" value="${ngayThanhToanView}"/>
+                    <fmt:parseDate value="${dateTimeString}" var="parsedDate"
+                                   pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+                    <fmt:formatDate value="${parsedDate}" var="formattedDate"
+                                    pattern="yyyy-MM-dd HH:mm:ss"/>
+                    ${formattedDate}
+
+                </td>
                 <td style="font-size: 14px;color: black;font-weight: bold">
                     <fmt:formatNumber type="" value="${tongTienView}" pattern="#,##0.###" /> VNĐ
                 </td>
+                <td style="font-size: 14px;color: black;font-weight: bold">
+                    <fmt:formatNumber type="" value="${phiShipView}" pattern="#,##0.###" /> VNĐ
+                </td>
                 <td style="font-size: 14px;color: black;font-weight: bold">${thongTienNhanHangView}</td>
                 <td style="font-size: 14px;color: black;font-weight: bold">${messView}</td>
-                <td style="font-size: 14px;color: black;font-weight: bold">${hinhThucView == 0 ? "Online" : "Tại quầy"}</td>
+<%--                <td style="font-size: 14px;color: black;font-weight: bold">${hinhThucView == 0 ? "Online" : "Tại quầy"}</td>--%>
 
             </tr>
     </table>
@@ -119,21 +212,27 @@
     <!-- Form mới -->
     <div class="button" style="margin-bottom: 40px;margin-top: 20px;margin-left: 730px;margin-top: 30px">
         <div class="row">
-            <div class="col-1">
-                <%--        Hủy đơn hàng--%>
-                <form method="post" action="/Admin/HoaDon/HuyDonHangCuaKhachHang">
-                    <input type="hidden" name="idHoaDonConvert" value="${idHoaDonConvert}" />
-                    <input type="hidden" name="maHoaDonView" value="${maHoaDonView}">
-                    <input type="hidden" name="emailView" value="${emailView}">
-                    <input type="hidden" name="khachHangView" value="${khachHangView}">
-                    <input type="hidden" name="ngayThanhToanView" value="${ngayThanhToanView}">
-                    <input type="hidden" name="tongTienView" value="${tongTienView}">
-                    <input type="hidden" name="thongTienNhanHangView" value="${thongTienNhanHangView}">
+<%--            <div class="col-1">--%>
+<%--                &lt;%&ndash;        Hủy đơn hàng&ndash;%&gt;--%>
+<%--                <form method="post" action="/Admin/HoaDon/HuyDonHangCuaKhachHang">--%>
+<%--                    <input type="hidden" name="idHoaDonConvert" value="${idHoaDonConvert}" />--%>
+<%--                    <input type="hidden" name="maHoaDonView" value="${maHoaDonView}">--%>
+<%--                    <input type="hidden" name="emailView" value="${emailView}">--%>
+<%--                    <input type="hidden" name="khachHangView" value="${khachHangView}">--%>
+<%--                    <input type="hidden" name="ngayThanhToanView" value="${ngayThanhToanView}">--%>
+<%--                    <input type="hidden" name="tongTienView" value="${tongTienView}">--%>
+<%--                    <input type="hidden" name="thongTienNhanHangView" value="${thongTienNhanHangView}">--%>
 
-                    <button style="width: 130px;font-size: 15px;margin-top: 20px" formaction="/Admin/HoaDon/HuyDonHangCuaKhachHang" name="huyDonHang" value="${idHoaDonConvert}"
-                            class="btn btn-primary">Hủy đơn hàng
-                    </button>
-                </form>
+<%--                    <button style="width: 130px;font-size: 15px;margin-top: 20px" formaction="/Admin/HoaDon/HuyDonHangCuaKhachHang" name="huyDonHang" value="${idHoaDonConvert}"--%>
+<%--                            class="btn btn-primary">Hủy đơn hàng--%>
+<%--                    </button>--%>
+<%--                </form>--%>
+<%--            </div>--%>
+
+            <div class="col-1">
+                <button class="btn btn-primary" id="addButton" onclick="clickThem()" style="width: 130px;font-size: 15px;margin-top: 20px">
+                    Hủy đơn hàng
+                </button>
             </div>
             <div class="col-2"style="margin-left: 50px">
                 <%--        Xác nhận đơn hàng--%>
@@ -161,10 +260,119 @@
             </div>
         </div>
     </div>
+    <br>
+    <div class="row">
+<%--        <div class="">--%>
+<%--            <div style="margin-left: 30px" class="col-4 btn-nap-rut" id="addButton" onclick="clickThem()">--%>
+<%--                Hủy đơn hàng--%>
+<%--            </div>--%>
+<%--        </div>--%>
+        <div class="col-4">
+            <%--                Hủy đơn hàng test--%>
+            <div id="addFormContainer" style="display: none;">
+                <div class="container-fluid">
+                    <div class="boderForm">
+                        <form method="post" id="addForm">
+                            <br>
+                            <h3 style="text-align: center;color: black">Lý do hủy đơn hàng ! <span style="color: red">*</span></h3>
+                            <br>
+                            <div class="form-group">
+<%--                                <input type="text" name="soTien" class="form-control" id="soTien" placeholder="Nhập lý do muốn hủy đơn hàng">--%>
+                            <br>
+                            <textarea name="lyDo" class="form-control" id="soTien" placeholder="Nhập lý do muốn hủy đơn hàng "></textarea>
+                            <br>
+                            <span style="margin-top: 10px" id="errorSoTien" class="text-danger"></span>
+                            </div>
+                            <br>
 
+                            <input type="hidden" name="idHoaDonConvert" value="${idHoaDonConvert}" />
+                            <input type="hidden" name="maHoaDonView" value="${maHoaDonView}">
+                            <input type="hidden" name="emailView" value="${emailView}">
+                            <input type="hidden" name="khachHangView" value="${khachHangView}">
+                            <input type="hidden" name="ngayThanhToanView" value="${ngayThanhToanView}">
+                            <input type="hidden" name="tongTienView" value="${tongTienView}">
+                            <input type="hidden" name="thongTienNhanHangView" value="${thongTienNhanHangView}">
+
+                            <button class="btn btn-success" formaction="/Admin/HoaDon/HuyDonHangCuaKhachHang" name="huyDonHang" value="${idHoaDonConvert}" type="submit" onclick="addProduct()" id="idThem">Hủy đơn hàng</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 
 
 </div>
+
+<%--mã js--%>
+
+<script>
+    var addButton = document.getElementById("addButton");
+    var addFormContainer = document.getElementById("addFormContainer");
+
+    // Add an event listener to the button
+    addButton.addEventListener("click", function () {
+        // Toggle the visibility of the form container
+        if (addFormContainer.style.display === "none" || addFormContainer.style.display === "") {
+            addFormContainer.style.display = "block";
+        } else {
+            addFormContainer.style.display = "none";
+        }
+    });
+
+    // Add an event listener to the background overlay
+    addFormContainer.addEventListener("click", function (event) {
+        // Check if the click occurred outside the form
+        if (event.target === addFormContainer) {
+            // Hide the form
+            addFormContainer.style.display = "none";
+        }
+    });
+
+    function addProduct() {
+        var soTienInput = document.getElementById("soTien").value;
+
+         if (soTienInput.trim() === "") {
+            // Check if the input is empty
+            document.getElementById("errorSoTien").innerHTML = "Không được để trống số lý do hủy đơn hàng!";
+            event.preventDefault();
+        }
+    }
+
+</script>
+
+<%--JS cho phần thông báo nạp tiền--%>
+
+<%--<script>--%>
+<%--    var themThanhCong = "${themThanhCong}";--%>
+<%--    if (themThanhCong == "2") {--%>
+<%--        Swal.fire({--%>
+<%--            position: 'top-end', // Vị trí của thông báo--%>
+<%--            toast: true, // Thiết lập kiểu thông báo là "toast"--%>
+<%--            showConfirmButton: false, // Không hiển thị nút xác nhận--%>
+<%--            timer: 3000, // Thời gian hiển thị (đơn vị là milliseconds)--%>
+<%--            width: '300px', // Đặt chiều rộng của thông báo--%>
+<%--            text: 'Đơn hàng được hủy thành công!',--%>
+<%--            icon: 'success',--%>
+<%--        });--%>
+<%--    }--%>
+
+<%--    var themThatBai = "${themThatBai}";--%>
+<%--    if (themThatBai == "2") {--%>
+<%--        Swal.fire({--%>
+<%--            position: 'top-end', // Vị trí của thông báo--%>
+<%--            toast: true, // Thiết lập kiểu thông báo là "toast"--%>
+<%--            showConfirmButton: false, // Không hiển thị nút xác nhận--%>
+<%--            timer: 3000, // Thời gian hiển thị (đơn vị là milliseconds)--%>
+<%--            width: '300px', // Đặt chiều rộng của thông báo--%>
+<%--            text: 'Đơn hàng được hủy thất bại!',--%>
+<%--            icon: 'error',--%>
+<%--        });--%>
+<%--    }--%>
+<%--</script>--%>
 
 </body>
 </html>

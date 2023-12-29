@@ -2,6 +2,8 @@ package com.example.sd_41.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -9,34 +11,27 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
-@Builder
 @Entity
-@Table(name = "HoaDonChiTiet")
-public class HoaDonChiTiet {
+@Table(name = "ViTien")
+public class ViTien {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "Id_HoaDonChiTiet")
+    @Column(name = "Id_ViTien")
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "Id_HoaDon")
-    private HoaDon hoaDon;
+    @JoinColumn(name = "Id_KhachHang")
+    private KhachHang khachHang;
 
-    @ManyToOne
-    @JoinColumn(name = "Id_GiayTheThaoChiTiet")
-    private GiayTheThaoChiTiet giayTheThaoChiTiet;
+    @Column(name = "maViTien")
+    private String maViTien;
 
-    @Column(name = "soLuong")
-    private String soLuong;
-
-    @Column(name = "donGia")
-    private BigDecimal donGia;
-
-    @Column(name = "ghiChu")
-    private String ghiChu;
+    @Column(name = "thanhTien")
+    private BigDecimal thanhTien;
 
     @Column(name = "ngayTao")
     private LocalDateTime ngayTao;
