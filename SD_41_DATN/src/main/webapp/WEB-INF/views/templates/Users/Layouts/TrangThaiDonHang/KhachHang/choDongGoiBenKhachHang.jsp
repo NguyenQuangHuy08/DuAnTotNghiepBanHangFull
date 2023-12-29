@@ -70,18 +70,24 @@
                     <tr>
                         <td scope="row" style="color: black">${list.maHoaDon}</td>
                         <td style="padding-left: 40px; color: black">
-                            <script>
-                                var ngayThanhToan = "${list.ngayThanhToan}";
-                                var parts = ngayThanhToan.split('-');
-                                var formattedDate = parts[1] + '-' + parts[2] + '-' + parts[0];
-                                document.write(formattedDate);
-                            </script>
+                            <c:set var="dateTimeString" value="${list.ngayThanhToan}"/>
+                            <fmt:parseDate value="${dateTimeString}" var="parsedDate"
+                                           pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+                            <fmt:formatDate value="${parsedDate}" var="formattedDate"
+                                            pattern="yyyy-MM-dd HH:mm:ss"/>
+                            ${formattedDate}
+
                         </td>
                         <td style="color: black">
                                     <fmt:formatNumber type="" value="${list.thanhTien}" pattern="#,##0.###" /> VNĐ
                         </td>
                         <td style="width: 300px;color: black">${list.ghiChu}</td>
-                        <td style="width: 150px;color: black">${list.mess}</td>
+                        <td style="width: 150px;color: black">
+                                    <c:choose>
+                                        <c:when test="${not empty list.mess}">${list.mess}</c:when>
+                                        <c:otherwise>N/A</c:otherwise>
+                                    </c:choose>
+                        </td>
                        <td>
                            <button style="" type="submit" formaction="/KhachHang/viewThongTinSanPhamMuaChoXacNhan" name="idHoaDonViewThongTinSanPhamChoXacNhan" value="${list.id}"
                                    class="btn btn-primary me-2" method="post">View

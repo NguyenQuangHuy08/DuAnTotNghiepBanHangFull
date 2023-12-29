@@ -69,7 +69,16 @@
                 <c:forEach items="${page.content}" var="list">
                     <tr>
                         <td scope="row">${list.maHoaDon}</td>
-                        <td style="padding-left: 40px">${list.ngayThanhToan}</td>
+                        <td style="padding-left: 40px">
+
+                            <c:set var="dateTimeString" value="${list.ngayThanhToan}"/>
+                            <fmt:parseDate value="${dateTimeString}" var="parsedDate"
+                                           pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+                            <fmt:formatDate value="${parsedDate}" var="formattedDate"
+                                            pattern="yyyy-MM-dd HH:mm:ss"/>
+                                ${formattedDate}
+
+                        </td>
                         <td>
                             <fmt:formatNumber type="" value="${list.thanhTien}" pattern="#,##0.###" /> VNĐ
                         </td>

@@ -178,8 +178,14 @@
                     <fmt:formatNumber type="" value="${phiShipView}" pattern="#,##0.###" /> VNĐ
                 </td>
                 <td style="font-size: 14px;color: black;font-weight: bold">${thongTienNhanHangView}</td>
-                <td style="font-size: 14px;color: black;font-weight: bold">${messView}</td>
-<%--                <td style="font-size: 14px;color: black;font-weight: bold">${hinhThucView == 0 ? "Online" : "Tại quầy"}</td>--%>
+                <td style="font-size: 14px;color: black;font-weight: bold">
+
+                        <c:choose>
+                            <c:when test="${not empty list.mess}">${messView}</c:when>
+                            <c:otherwise>N/A</c:otherwise>
+                        </c:choose>
+
+                </td>
 
             </tr>
     </table>

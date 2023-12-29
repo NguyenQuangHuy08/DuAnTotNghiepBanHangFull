@@ -53,7 +53,7 @@
 
     <h3 style="color: black;margin-top: 30px;margin-bottom: 40px;text-align: center">Thông tin sản phẩm mua</h3>
 
-    <table class="table table-striped;" style="border-radius: 10px 10px 10px">
+    <table class="table table-striped;" style="border-radius: 10px 10px 10px;border: 1px solid #FAFAFA ; background-color: #FAFAFA">
         <tr>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 130px">Mã hóa đơn</td>
             <td scope="col" style="color: black;font-weight: bold;font-size: 17px;background-color: #bac8f3;width: 200px">Khách hàng</td>
@@ -84,8 +84,15 @@
             <td style="font-size: 17px;color: black">
                 <fmt:formatNumber type="" value="${hoaDonView.phiShip}" pattern="#,##0.###" />
             </td>
-            <td style="font-size: 17px;color: black">${hoaDonView.ghiChu}</td>
-            <td style="font-size: 17px;color: black;font-weight: bold">${hoaDonView.mess}</td>
+            <td style="font-size: 17px;color: black">
+                ${hoaDonView.ghiChu}
+            </td>
+            <td style="font-size: 17px;color: black;">
+                    <c:choose>
+                        <c:when test="${not empty list.mess}">${hoaDonView.mess}</c:when>
+                        <c:otherwise>N/A</c:otherwise>
+                    </c:choose>
+            </td>
             <td style="font-size: 17px;color: black">
                 <c:choose>
                     <c:when test="${hoaDonView.trangThai == 0}">Chưa thanh toán</c:when>
@@ -104,7 +111,7 @@
 
     <h3 style="text-align: center;color: black;margin-bottom: 50px">Thông tin chi tiết sản phẩm</h3>
     <c:forEach items="${hoaDonChiTietList}" var="list" varStatus="i">
-        <p>
+        <p style="border: 1px solid #FAFAFA; background-color: #FAFAFA;border-radius: 5px 5px 5px;height: 100px">
             <span style="display: inline-block;color: black;font-size: 16px;margin-left: 15px">${i.index+1} :</span>
             <span style="display: inline-block;color: black;font-size: 16px">${list.giayTheThaoChiTiet.giayTheThao.tenGiayTheThao}</span>
             <span style="display: inline-block;padding-left: 20px;color: black;font-size: 16px">Size: ${list.giayTheThaoChiTiet.size.size}</span>
@@ -115,7 +122,7 @@
             </span>
             <span style="display: inline-block;padding-left: 20px">
                 <img src="/upload/${list.giayTheThaoChiTiet.giayTheThao.image.get(0).link}" width="110px"
-                     style="border-radius: 10px 10px 10px">
+                     style="border-radius: 10px 10px 10px;margin-top: 5px">
             </span>
         </p>
     </c:forEach>
