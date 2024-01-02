@@ -1765,83 +1765,14 @@ public class HoaDonController {
 
     }
 
-//    //Todo code xác nhận hủy đơn hàng bên admin
-//    @PostMapping("/Admin/HoaDon/HuyDonHangCuaKhachHang")
-//    public String adminXacNhanHuyDonHangCuaKhachHang(
-//
-//            HttpServletRequest request,
-//            HttpSession session
-//    ){
-//
-//        if (session.getAttribute("userLog") != null) {
-//
-//            User user = (User) session.getAttribute("userLog");
-//
-//            String huyDonHang = request.getParameter("huyDonHang");
-//
-//            HoaDon hoaDon = hoaDonServiceImpl.findId(UUID.fromString(huyDonHang));
-//            HoaDon hd = new HoaDon();
-//
-//            System.out.println("Đơn hàng bị hủy vì có một số lý do");
-//            hd.setUser(user);
-//            hd.setMaHoaDon(hoaDon.getMaHoaDon());
-//            hd.setThanhTien(hoaDon.getThanhTien());
-//            hd.setNgayThanhToan(hoaDon.getNgayThanhToan());
-//            hd.setNgayTao(hoaDon.getNgayTao());
-//            hd.setKhachHang(hoaDon.getKhachHang());
-//            hd.setGhiChu(hoaDon.getGhiChu());
-//            hd.setTrangThai(5);
-//
-//            String email = request.getParameter("emailView");
-//            String maHoaDon = request.getParameter("maHoaDonView");
-//            String tenKhachHang = request.getParameter("khachHangView");
-//            String ngayThanhToan = request.getParameter("ngayThanhToanView");
-//            String thanhTien = request.getParameter("tongTienView");
-//            String thongTinNhanHang = request.getParameter("thongTienNhanHangView");
-//
-//            SimpleMailMessage message = new SimpleMailMessage();
-//            message.setTo(email);
-//
-//            message.setSubject("Cửa hàng bán giầy thể thao bóng đá BeeShoes xin thông báo");
-//            message.setText(
-//                            "Mã hóa đơn : " + maHoaDon +
-//                            "\n" +
-//                            "Ngày thanh toán :" + ngayThanhToan +
-//                            "\n" +
-//                            "Thành tiền : " + thanhTien + "VNĐ" +
-//                            "\n" +
-//                            "Thông tin địa chỉ nhận hàng :" +thongTinNhanHang +
-//                            "\n" +
-//                            "\n" +
-//                            "Xin chào khách hàng : "+ tenKhachHang + "\n" +
-//                            ".Có địa chỉ email là: "+ email +"\n"+
-//                            "Cảm ơn bạn đã quan tâm đến sản phẩm của shop, nhưng shop rất lấy làm tiếc vì sự chuẩn bị không chu đáo này xin quý khách thông cảm!" +
-//                            "Do số sản phẩm trong kho đã hết shop thông báo để quý khách biết và đơn hàng này shop xin hủy đơn!" +
-//                            "\n"+
-//                            "\n"+
-//                            "Cảm ơn quý khách hàng đã quan tâm!" + "\n" +
-//                            "Xin cảm ơn,và hân hạnh phục phục lần sau!"
-//
-//            );
-//
-//
-//            mailSender.send(message);
-//
-//            hoaDonServiceImpl.update(hoaDon.getId(), hd);
-//
-//        }
-//
-//        return "redirect:/Admin/HuyDonHangCuaKhachHangLog";
-//
-//    }
-
 
     //Todo code xác nhận hủy đơn hàng bên admin
     @PostMapping("/Admin/HoaDon/HuyDonHangCuaKhachHang")
     public String adminXacNhanHuyDonHangCuaKhachHang(
 
             HttpServletRequest request,
-            HttpSession session
+            HttpSession session,
+            Model model
     ){
 
         if (session.getAttribute("userLog") != null) {
@@ -1953,6 +1884,38 @@ public class HoaDonController {
             mailSender.send(message);
 
             hoaDonServiceImpl.update(hoaDon.getId(), hd);
+
+            //Trả lại số lượng cho bên sản phẩm
+
+            List<HoaDonChiTiet> hoaDonChiTietList = hoaDonChiTietRepository.findByHoaDon_Id(UUID.fromString(huyDonHang));
+            model.addAttribute("hoaDonChiTietList",hoaDonChiTietList);
+
+            //Tìm hóa đơn để tính số lượng
+
+            for (HoaDonChiTiet hoaDonChiTiet : hoaDonChiTietList){
+
+                //Số lượng khách hàng mua
+
+                String soLuongKhachHangMuaToString = hoaDonChiTiet.getSoLuong();
+                int soLuongKhachHangMuaConvertInt = Integer.parseInt(soLuongKhachHangMuaToString);
+                System.out.println("Số lượng khách hàng mua: "+ soLuongKhachHangMuaConvertInt);
+
+                //Số lượng có trong kho
+                GiayTheThaoChiTiet giayTheThaoChiTiet = hoaDonChiTiet.getGiayTheThaoChiTiet();
+                String soLuongCoToString = giayTheThaoChiTiet.getSoLuong();
+                int soLuongCoConvertInt = Integer.parseInt(soLuongCoToString);
+
+                System.out.println("Số lượng sản phẩm có: "+ soLuongCoConvertInt);
+
+                giayTheThaoChiTiet.setSoLuong(Integer.toString(soLuongKhachHangMuaConvertInt + soLuongCoConvertInt));
+
+                giayTheThaoChiTietRepository.save(giayTheThaoChiTiet);
+
+                System.out.println("Số lượng sau khi hoàn: "+ soLuongKhachHangMuaConvertInt + soLuongCoConvertInt);
+
+
+            }
+
 
         }
 
