@@ -1429,7 +1429,8 @@ public class HoaDonController {
 
     @PostMapping("/KhachHang/HoaDon/HuyDonHang")
     public String huyDonHang(HttpServletRequest request,
-                             HttpSession session){
+                             HttpSession session,
+                             Model model){
 
         if(session.getAttribute("maKH") != null) {
 
@@ -1438,10 +1439,12 @@ public class HoaDonController {
 
             HoaDon hoaDon = hoaDonServiceImpl.findId(UUID.fromString(huyDonHang));
             //Tạo mới hóa đơn để lưu
+
+            System.out.println("Id của hóa đơn hủy là: "+huyDonHang);
+            System.out.println("Id của khách hàng hủy: "+ idKH);
+
+
             HoaDon hd = new HoaDon();
-            LocalDate huyDon = LocalDate.now();
-            String huyDonHang4 = huyDon.toString();
-            LocalDateTime now = LocalDateTime.now();
 
             hd.setMaHoaDon(hoaDon.getMaHoaDon());
             hd.setThanhTien(hoaDon.getThanhTien());
@@ -1463,7 +1466,40 @@ public class HoaDonController {
 
             hoaDonServiceImpl.update(hoaDon.getId(), hd);
 
-//        return "/templates/Users/Layouts/TrangThaiDonHang/KhachHang/hoaDonHuyBenKhachHang";
+            //Nếu mà hủy đơn hàng thí số lượng của giầy thể thao đó sẽ được trả về
+
+
+            List<HoaDonChiTiet> hoaDonChiTietList = hoaDonChiTietRepository.findByHoaDon_Id(UUID.fromString(huyDonHang));
+            model.addAttribute("hoaDonChiTietList",hoaDonChiTietList);
+
+            //Tìm hóa đơn để tính số lượng
+
+            for(HoaDonChiTiet hoaDonChiTiet : hoaDonChiTietList){
+
+                //Số lượng khách hàng mua
+                String soLuongKhachHangMua = hoaDonChiTiet.getSoLuong();
+                int soLuongMuaConvertInt = Integer.parseInt(soLuongKhachHangMua);
+
+                System.out.println("Số lượng khách hàng mua: "+ soLuongMuaConvertInt);
+
+
+                //Số lượng trong kho có
+                GiayTheThaoChiTiet giayTheThaoChiTiet = hoaDonChiTiet.getGiayTheThaoChiTiet();
+                String soLuongCo = giayTheThaoChiTiet.getSoLuong();
+                int soLuongCoConvertInt = Integer.parseInt(soLuongCo);
+
+                System.out.println("Số lượng trong kho có: "+ soLuongCoConvertInt);
+
+                giayTheThaoChiTiet.setSoLuong(Integer.toString(soLuongMuaConvertInt + soLuongCoConvertInt));
+
+
+                giayTheThaoChiTietRepository.save(giayTheThaoChiTiet);
+
+                int tongSoLuongCong  = soLuongMuaConvertInt + soLuongCoConvertInt;
+
+                System.out.println("Số lượng sau khi trả lại: "+ tongSoLuongCong);
+
+            }
 
         }else{
 
@@ -2057,6 +2093,7 @@ public class HoaDonController {
         model.addAttribute("hoaDonChiTiets",hoaDonChiTiets);
 
         return "/templates/Users/Layouts/ChiTiet/ChiTietHoaDonAllTrangThaiHoaDon";
+
     }
 
 

@@ -77,12 +77,12 @@
                         <td style="font-size: 14px;color: black;font-weight: bold">${list.maHoaDon}</td>
                         <td style="font-size: 14px;color: black;font-weight: bold">${list.khachHang.tenKhachHang}</td>
                         <td style="font-size: 14px;color: black;font-weight: bold">
-                            <script>
-                                var ngayThanhToan = "${list.ngayThanhToan}";
-                                var parts = ngayThanhToan.split('-');
-                                var formattedDate = parts[1] + '-' + parts[2] + '-' + parts[0];
-                                document.write(formattedDate);
-                            </script>
+                            <c:set var="dateTimeString" value="${list.ngayThanhToan}"/>
+                            <fmt:parseDate value="${dateTimeString}" var="parsedDate"
+                                           pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+                            <fmt:formatDate value="${parsedDate}" var="formattedDate"
+                                            pattern="yyyy-MM-dd HH:mm:ss"/>
+                                ${formattedDate}
                         </td>
                         <td style="font-size: 14px;color: black;font-weight: bold">
                             <fmt:formatNumber type="" value="${list.thanhTien}" pattern="#,##0.###" /> VNĐ
@@ -98,6 +98,7 @@
                             <button formaction="/Admin/HoaDon/XacNhanHoaDonKhachHangDangGiao" name="thanhCong" value="${list.id}"
                                     class="btn btn-primary me-2">Done
                             </button>
+                            <button style="margin-top: 30px" formaction="/HoaDon/ThongTinChiTietHoaDonAllTrangThai" name="idHoaDon" value="${list.id}" class="btn btn-primary">Views</button>
                         </td>
                     </tr>
                 </c:forEach>
