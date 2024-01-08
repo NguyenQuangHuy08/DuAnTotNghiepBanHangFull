@@ -46,14 +46,14 @@
         >
             <div class="row">
                 <div class="col-6 label">
-                    <label class="label">Tên chương trình giảm giá</label>
+                    <label class="label" style="color: black;font-weight: bold;font-size: 17px">Tên chương trình giảm giá <span style="color: red">*</span></label>
                     <sf:input path="tenChuongTrinh"  cssClass="form-control ten"/>
                     <div>
                         <span id="error-ten" style="color: red; margin-top: 10px"></span>
                     </div>
                 </div>
                 <div class="col-6">
-                    <label class="label">Giá trị giảm &lt;= 50 (%)</label>
+                    <label class="label" style="font-size: 17px;font-weight: bold;color: black">Giá trị giảm &lt;= 50 (%) <span style="color: red">*</span></label>
                     <sf:input
                             path="phanTramGiam"
                             type="number"
@@ -72,7 +72,7 @@
             <br>
             <div class="row">
                 <div class="col-6 label">
-                    <label class="label">Số lượng</label>
+                    <label class="label" style="color: black;font-weight: bold;font-size: 17px">Số lượng <span style="color: red">*</span></label>
                     <sf:input
                             path="soLuongSanPham"
                             type="number"
@@ -86,7 +86,7 @@
                     </div>
                 </div>
                 <div class="col-6">
-                    <label class="label">Tổng tiền hóa đơn từ</label>
+                    <label class="label" style="color: black;font-size: 17px;font-weight: bold">Tổng tiền hóa đơn từ <span style="color: red">*</span></label>
                     <sf:input
                             path="soTienHoaDon"
                             type="number"
@@ -110,14 +110,14 @@
             <br>
             <div class="row">
                 <div class="col-6">
-                    <label class="label">Ngày bắt đầu</label>
+                    <label class="label" style="color: black;font-weight: bold;font-size: 17px">Ngày bắt đầu <span style="color: red">*</span></label>
                     <sf:input path="ngayBatDau" cssClass="form-control" id="ngayBatDau" type="date"/>
                     <div>
                         <span id="error-ngayBatDau" style="color: red; margin-top: 10px"></span>
                     </div>
                 </div>
                 <div class="col-6">
-                    <label class="label">Ngày kết thúc</label>
+                    <label class="label" style="font-size: 17px; font-weight: bold;color: black">Ngày kết thúc <span style="color: red">*</span></label>
                     <sf:input path="ngayKetThuc" cssClass="form-control" id="ngayKetThuc" type="date"/>
                     <div>
                         <span id="error-ngayKetThuc" style="color: red; margin-top: 10px"></span>
@@ -125,27 +125,27 @@
                 </div>
             </div>
             <br>
-            <div class="row">
-                <div class="col-6">
-                    <label class="label">Ngày tạo</label>
-                    <sf:input path="ngayTao" cssClass="form-control" cssStyle="background-color: #e5e5e5" type="date" readonly="true" />
-                </div>
-                <div class="col-6">
-                    <label class="label">Ngày sửa</label>
-                    <sf:input path="ngaySua" cssClass="form-control" cssStyle="background-color: #e5e5e5" type="date" readonly="true" />
-                </div>
-            </div>
+<%--            <div class="row">--%>
+<%--                <div class="col-6">--%>
+<%--                    <label class="label">Ngày tạo</label>--%>
+<%--                    <sf:input path="ngayTao" cssClass="form-control" cssStyle="background-color: #e5e5e5" type="date" readonly="true" />--%>
+<%--                </div>--%>
+<%--                <div class="col-6">--%>
+<%--                    <label class="label">Ngày sửa</label>--%>
+<%--                    <sf:input path="ngaySua" cssClass="form-control" cssStyle="background-color: #e5e5e5" type="date" readonly="true" />--%>
+<%--                </div>--%>
+<%--            </div>--%>
             <br>
             <div class="row">
                 <div class="col-6">
-                    <label class="label">Ghi chú </label>
+                    <label class="label" style="color: black;font-weight: bold;font-size: 17px">Ghi chú <span style="color: red">*</span></label>
                     <sf:textarea path="ghiChu" cssClass="form-control ghiChu" rows="4"></sf:textarea>
                     <div>
                         <span id="error-GhiChu" style="color: red; margin-top: 10px"></span>
                     </div>
                 </div>
                 <div class="col-6">
-                    <label class="label">Trạng thái</label>
+                    <label class="label" style="color: black;font-size: 17px;font-weight: bold">Trạng thái <span style="color: red">*</span></label>
                     <div style="margin-top: 8px">
                         <div class="form-check form-check-inline">
                             <sf:radiobutton class="form-check-input" path="trangThai" id="inlineRadio1" value="1"></sf:radiobutton>
@@ -170,17 +170,17 @@
     </div>
 
 
-     <c:if test="${button=='Thêm'}">
-        <hr>    
-        <div>
-            <h4>Thêm bằng file excel</h4>
-            <form  action="importExcel" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".xlsx"  class="form-control">
+<%--     <c:if test="${button=='Thêm'}">--%>
+<%--        <hr>    --%>
+<%--        <div>--%>
+<%--            <h4>Thêm bằng file excel</h4>--%>
+<%--            <form  action="importExcel" method="post" enctype="multipart/form-data">--%>
+<%--                <input type="file" name="file" accept=".xlsx"  class="form-control">--%>
 
-                <button class="btn btn-primary" style="margin-top: 10px">Import</button>
-            </form>
-        </div>
-     </c:if>   
+<%--                <button class="btn btn-primary" style="margin-top: 10px">Import</button>--%>
+<%--            </form>--%>
+<%--        </div>--%>
+<%--     </c:if>   --%>
 
 </div>
 

@@ -74,15 +74,18 @@
     </style>
 </head>
 
-<body class="" style="width:100%">
+<body>
 <%@ include file="../../templates/Admin/Layouts/GiayTheThao/_HeaderGiayTheThao.jsp" %>
-<section class="row">
+
+<div class="row" style="width: 100%">
+
+    <%--    Done --%>
     <div class="col-3 filter">
         <div class="mb-3">
             <form
                     action="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/search"
             >
-                <label for="search-input" class="form-label label-filter title"
+                <label for="search-input" class="form-label label-filter title" style="color: black;font-weight: bold;font-size: 17px"
                 >Tìm kiếm</label
                 >
                 <input
@@ -98,7 +101,7 @@
             <form
                     action="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/filter"
             >
-                <label for="search-input" class="form-label label-filter title">
+                <label for="search-input" class="form-label label-filter title" style="color: black;font-weight: bold;font-size: 17px">
                     Trạng thái
                 </label>
                 <div class="form-check">
@@ -137,12 +140,13 @@
                     </label>
                 </div>
                 <div>
-                    <label class="form-label label-filter title">Ngày tháng</label>
+                    <br>
+                    <label class="form-label label-filter title"style="color: black;font-weight: bold;font-size: 17px">Ngày tháng</label>
                     <div>
-                        <label for="ngayBatDau" class="label-filter">Từ: </label>
+                        <label for="ngayBatDau" class="label-filter" style="color: black;font-weight: bold;font-size: 15px">Từ: </label>
                         <input type="date" name="ngayBatDau" class="form-control" id="ngayBatDau">
                         <br>
-                        <label for="ngayKetThuc" class="label-filter">Đến: </label>
+                        <label for="ngayKetThuc" class="label-filter" style="color: black;font-weight: bold;font-size: 15px">Đến: </label>
                         <input type="date" name="ngayKetThuc" class="form-control" id="ngayKetThuc">
                         <br>
                     </div>
@@ -153,29 +157,29 @@
             </form>
         </div>
         <div class="mb-3">
-            <label class="form-label label-filter"> Chương trình giảm giá </label>
+            <label class="form-label label-filter" style="color: black;font-weight: bold;font-size: 17px"> Chương trình
+                giảm giá </label>
             <div>
-                <a
-                        href="${pageContext.request.contextPath}/chuongTrinhGiamGia/hoaDon"
-                        class="btn btn-success"
-                >Hoá đơn</a
-                >
-                <a
-                        href="${pageContext.request.contextPath}/chuongTrinhGiamGia/sanPham"
-                        class="btn btn-success"
-                >Sản phẩm</a
-                >
+                <div class="row">
+                    <div class="col-1">
+                        <a href="${pageContext.request.contextPath}/chuongTrinhGiamGia/hoaDon" class="btn btn-success">Hoá đơn</a>
+                    </div>
+                    <div class="col-1">
+                        <a href="${pageContext.request.contextPath}/chuongTrinhGiamGia/sanPham" class="btn btn-success">Sản phẩm</a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="mb-3" id="quality-row">
-            <span>Số bản ghi:</span>
+            <span style="color: black;font-weight: bold;font-size: 17px">Số bản ghi:</span>
             <span>${list.getTotalElements()}</span>
         </div>
     </div>
-    <div class="col-9 promotion">
+
+    <div class="col-9 promotion" style="width: 100%">
         <div class="btn-function">
             <div>
-                <h3>${title}</h3>
+                <h3 style="color: black;font-weight: bold;font-size: 25px">${title}</h3>
             </div>
             <div>
                 <a
@@ -188,72 +192,57 @@
                     sử</a>
             </div>
         </div>
-        <table class="table table-hover table-light">
-            <thead>
-            <th>STT</th>
-            <th>Tên chương trình</th>
-            <th>Giá trị giảm(%)</th>
-            <!-- <th>Số lượng</th> -->
-            <th>Thời gian áp dụng</th>
-            <th>Hình thức</th>
-            <th>Trạng thái</th>
-            <th>Chức năng</th>
-            </thead>
-            <tbody>
-            <!-- <tr>
-              <td colspan="7">
-                <a href="#" class="btn btn-success"
-                  ><i class="fa fa-check-circle"></i> Cập nhật</a
-                >
-                <a href="#" class="btn btn-danger"><i class="fa fa-trash" style="color: #ffffff;"></i> Xóa</a>
-              </td>
-            </tr> -->
+        <table class="table table-hover table-light" style="width:100%">
+                    <thead style="background-color:#80bdff">
+                        <th style="background-color:#80bdff;width: 5px">STT</th>
+                        <th style="background-color:#80bdff;width: 15px">Tên chương trình</th>
+                        <th style="background-color:#80bdff">Giá trị giảm(%)</th>
+                        <!-- <th>Số lượng</th> -->
+                        <th style="background-color:#80bdff">Thời gian áp dụng</th>
+                        <th style="background-color:#80bdff">Hình thức</th>
+                        <th style="background-color:#80bdff;    ">Trạng thái</th>
+                        <th style="background-color:#80bdff;text-align: center">Chức năng</th>
+                    </thead>
+                    <tbody>
 
-            <c:if test="${f:length(list.getContent())==0}">
-                <span>Không có dữ liệu</span>
-            </c:if>
-            <c:if test="${f:length(list.getContent())!=0}">
-                <c:forEach
-                        items="${list.getContent()}"
-                        var="gg"
-                        varStatus="status"
-                >
-                    <tr class="${gg.id}">
-                        <td>${status.index+1}</td>
-                        <td style="text-align: left; max-width: 230px">
-                                ${gg.tenChuongTrinh}
-                        </td>
-                        <td style="width: 100px;">${gg.phanTramGiam}</td>
-                        <td><b>Từ:</b> ${gg.ngayBatDau} <br><b>Đến:</b> ${gg.ngayKetThuc}</td>
-
-                        <td>${hinhThuc}</td>
-                        <td style="width: 100px;">${gg.trangThai==1?"Kích hoạt":"Chưa áp dụng"}</td>
-                        <td>
-                            <a href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/apply?id=${gg.id}"
-                               class="btn btn-primary">Áp dụng</a>
-                            <a href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/detail?id=${gg.id}"
-                               class="btn btn-info">Chi tiết</a>
-                            <a
-                                    href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/updateForm?id=${gg.id}"
-                                    class="btn btn-success"
-                            >Sửa</a
+                        <c:if test="${f:length(list.getContent())==0}">
+                            <span>Không có dữ liệu</span>
+                        </c:if>
+                        <c:if test="${f:length(list.getContent())!=0}">
+                            <c:forEach
+                                    items="${list.getContent()}"
+                                    var="gg"
+                                    varStatus="status"
                             >
-                        </td>
-                    </tr>
-                </c:forEach>
-            </c:if>
+                                <tr class="${gg.id}">
+                                    <td style="width: 5px">${status.index+1}</td>
+                                    <td style="text-align: left; max-width: 230px">
+                                            ${gg.tenChuongTrinh}
+                                    </td>
+                                    <td style="width: 100px;">${gg.phanTramGiam} %</td>
+                                    <td><b>Từ:</b> ${gg.ngayBatDau} <br><b>Đến:</b> ${gg.ngayKetThuc}</td>
 
-            <!-- <tr>
-              <td>1</td>
-              <td>Khuyến mại ngày 18/10</td>
-              <td>100%</td>
-              <td>12/10/2023</td>
-              <td>20/10/2023</td>
-              <td>Hóa đơn - Giảm giá hóa đơn</td>
-              <td>Kích hoạt</td>
-            </tr> -->
+                                    <td>${hinhThuc}</td>
+                                    <td style="width: 100px;">${gg.trangThai==1?"Kích hoạt":"Chưa áp dụng"}</td>
+                                    <td>
+                                        <a href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/apply?id=${gg.id}"
+                                           class="btn btn-primary">Áp dụng</a>
+                                        <a href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/detail?id=${gg.id}"
+                                           class="btn btn-info">Chi tiết</a>
+                                        <a
+                                                href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/updateForm?id=${gg.id}"
+                                                class="btn btn-success"
+                                        >Sửa</a
+                                        >
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </c:if>
             </tbody>
         </table>
+
+
+    <%--        Todo code phân trang cho chương trình khuyến mại sản phẩm--%>
         <ul class="pagination" style="margin-left: 500px">
             <c:forEach begin="1" end="${list.getTotalPages()}" var="i">
                 <li class="page-item">
@@ -266,7 +255,12 @@
             </c:forEach>
         </ul>
     </div>
-</section>
+
+</div>
+
+
+
+
 <%@ include file="../../templates/Admin/Layouts/GiayTheThao/_FooterGiayTheThao.jsp" %>
 <script>
     var btnFilter = document.getElementById("btnFilter");

@@ -3,13 +3,13 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
 <!-- Footer -->
-<footer style="height: 10px" class="sticky-footer bg-white">
-    <div class="container my-auto">
-        <div class="copyright text-center my-auto">
-            <span style="text-align: center;width: 2000px;">Copyright &copy; Your Website 2023</span>
-        </div>
-    </div>
-</footer>
+<%--<footer style="height: 10px" class="sticky-footer bg-white">--%>
+<%--    <div class="container my-auto">--%>
+<%--        <div class="copyright text-center my-auto">--%>
+<%--&lt;%&ndash;            <span style="text-align: center;width: 2000px;">Copyright &copy; Your Website 2023</span>&ndash;%&gt;--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</footer>--%>
 </div>
 </div>
 <a class="scroll-to-top rounded" href="#page-top">

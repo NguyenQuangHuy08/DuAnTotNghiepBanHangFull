@@ -6,7 +6,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Lịch sử chương trình giảm giá sản phẩm</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -18,11 +18,6 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
     <style>
-      body {
-        width: 100%;
-        background-color: rgb(238, 238, 238);
-      }
-
       /* .promotion{
 
 } */
@@ -75,68 +70,69 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     </style>
   </head>
 
-  <body class="container-fluid">
+  <body>
   <%@ include file="../../templates/Admin/Layouts/GiayTheThao/_HeaderGiayTheThao.jsp" %>
+
+  <div class="container">
     <section>
-      
       <div >
         <div class="btn-function">
           <div>
             <button
-              class="btn btn-primary"
-              onclick="goBack()"
-              style="font-size: 20px;"
-              ><i class="fa fa-angle-double-left"> Quay lại</i></button
+                    class="btn btn-primary"
+                    onclick="goBack()"
+                    style="font-size: 20px;"
+            ><i class="fa fa-angle-double-left"> Quay lại</i></button
             >
           </div>
           <div>
             <h3 style="color: red;font-weight: bold;">Lịch sử</h3>
           </div>
-          
+
         </div>
         <table class="table table-hover table-light">
           <thead>
-            <th>STT</th>
-            <th>Tên chương trình</th>
-            <th>Giá trị giảm(%)</th>
-            <!-- <th>Số lượng</th> -->
-            <th>Thời gian áp dụng</th>
-            <th>Hình thức</th>
-            <th>Trạng thái</th>
-            <th>Chức năng</th>
+          <th>STT</th>
+          <th>Tên chương trình</th>
+          <th>Giá trị giảm(%)</th>
+          <!-- <th>Số lượng</th> -->
+          <th>Thời gian áp dụng</th>
+          <th>Hình thức</th>
+          <th>Trạng thái</th>
+          <th>Chức năng</th>
           </thead>
           <tbody>
 
 
-            <c:if test="${f:length(list.getContent())==0}">
-              <span>Không có dữ liệu</span>
-            </c:if>
-            <c:if test="${f:length(list.getContent())!=0}">
-              <c:forEach
-                items="${list.getContent()}"
-                var="gg"
-                varStatus="status"
-              >
-                <tr class="${gg.id}">
-                  <td>${status.index+1}</td>
-                  <td style="text-align: left; max-width: 230px">
+          <c:if test="${f:length(list.getContent())==0}">
+            <span>Không có dữ liệu</span>
+          </c:if>
+          <c:if test="${f:length(list.getContent())!=0}">
+            <c:forEach
+                    items="${list.getContent()}"
+                    var="gg"
+                    varStatus="status"
+            >
+              <tr class="${gg.id}">
+                <td>${status.index+1}</td>
+                <td style="text-align: left; max-width: 230px">
                     ${gg.tenChuongTrinh}
-                  </td>
-                  <td>${gg.phanTramGiam}</td>
-                  <td> <b>Từ:</b> ${gg.ngayBatDau} <br><b>Đến:</b> ${gg.ngayKetThuc}</td>
-                  <td>Giảm giá hóa đơn</td>
-                  <td>Hết hạn</td>
-                  <td>
-                    <a href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/detailSP?id=${gg.id}" class="btn btn-primary">Chi tiết</a>
-                    <a
-                      href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/updateForm?id=${gg.id}"
-                      class="btn btn-success"
-                      >Sửa</a
-                    >
-                  </td>
-                </tr>
-              </c:forEach>
-            </c:if>
+                </td>
+                <td>${gg.phanTramGiam}</td>
+                <td> <b>Từ:</b> ${gg.ngayBatDau} <br><b>Đến:</b> ${gg.ngayKetThuc}</td>
+                <td>Giảm giá hóa đơn</td>
+                <td>Hết hạn</td>
+                <td>
+                  <a href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/detailSP?id=${gg.id}" class="btn btn-primary">Chi tiết</a>
+                  <a
+                          href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/updateForm?id=${gg.id}"
+                          class="btn btn-success"
+                  >Sửa</a
+                  >
+                </td>
+              </tr>
+            </c:forEach>
+          </c:if>
 
 
           </tbody>
@@ -145,15 +141,17 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           <c:forEach begin="1" end="${list.getTotalPages()}" var="i">
             <li class="page-item">
               <a
-                href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${read}page=${i}"
-                class="page-link"
-                >${i}</a
+                      href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${read}page=${i}"
+                      class="page-link"
+              >${i}</a
               >
             </li>
           </c:forEach>
         </ul>
       </div>
     </section>
+  </div>
+
   <%@ include file="../../templates/Admin/Layouts/GiayTheThao/_FooterGiayTheThao.jsp" %>
     <script>
       function goBack() {

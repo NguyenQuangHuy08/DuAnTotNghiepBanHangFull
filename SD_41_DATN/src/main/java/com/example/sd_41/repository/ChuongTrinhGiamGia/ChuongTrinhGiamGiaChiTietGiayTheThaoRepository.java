@@ -26,5 +26,4 @@ public interface ChuongTrinhGiamGiaChiTietGiayTheThaoRepository extends JpaRepos
     List<ChuongTrinhGiamGiaChiTietGiayTheThao> findByGiayTheThao_Id(UUID idGiayTheThao);
 
 
-
 }
