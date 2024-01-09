@@ -46,6 +46,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -54,62 +55,62 @@ public class TrangChuGiayTheThaoController {
     @Autowired
     ServletContext context;
 
-     @Autowired
-     private GiayTheThaoChiTietRepository giayTheThaoChiTietRepository;
+    @Autowired
+    private GiayTheThaoChiTietRepository giayTheThaoChiTietRepository;
 
-     @Autowired
-     private GiayTheThaoRepository giayTheThaoRepository;
+    @Autowired
+    private GiayTheThaoRepository giayTheThaoRepository;
 
-     @Autowired
-     private ImageRepository imageRepository;
+    @Autowired
+    private ImageRepository imageRepository;
 
-     @Autowired
-     private GioHangRepository gioHangRepository;
+    @Autowired
+    private GioHangRepository gioHangRepository;
 
-     @Autowired
-     private GioHangChiTietRepository gioHangChiTietRepository;
+    @Autowired
+    private GioHangChiTietRepository gioHangChiTietRepository;
 
-     @Autowired
-     private HoaDonRepository hoaDonRepository;
+    @Autowired
+    private HoaDonRepository hoaDonRepository;
 
-     @Autowired
-     private HoaDonChiTietRepository hoaDonChiTietRepository;
+    @Autowired
+    private HoaDonChiTietRepository hoaDonChiTietRepository;
 
-     @Autowired
-     private KhachHangRepository khachHangRepository;
+    @Autowired
+    private KhachHangRepository khachHangRepository;
 
-     @Autowired
-     private GioHangChiTietService gioHangChiTietService;
+    @Autowired
+    private GioHangChiTietService gioHangChiTietService;
 
-     @Autowired
-     private ThuongHieuRepository thuongHieuRepository;
+    @Autowired
+    private ThuongHieuRepository thuongHieuRepository;
 
-     @Autowired
-     private CongDungRepository congDungRepository;
+    @Autowired
+    private CongDungRepository congDungRepository;
 
-     @Autowired
-     private TrongLuongRepository trongLuongRepository;
+    @Autowired
+    private TrongLuongRepository trongLuongRepository;
 
-     @Autowired
-     private FormRepository formRepository;
+    @Autowired
+    private FormRepository formRepository;
 
-     @Autowired
-     private SizeRepository sizeRepository;
+    @Autowired
+    private SizeRepository sizeRepository;
 
-     @Autowired
-     private MauSacRepository mauSacRepository;
+    @Autowired
+    private MauSacRepository mauSacRepository;
 
-     @Autowired
-     private ChatLieuRepository chatLieuRepository;
+    @Autowired
+    private ChatLieuRepository chatLieuRepository;
 
-     @Autowired
-     private ChuongTrinhGiamGiaChiTietGiayTheThaoRepository chuongTrinhGiamGiaChiTietGiayTheThaoRepository;
+    @Autowired
+    private ChuongTrinhGiamGiaChiTietGiayTheThaoRepository chuongTrinhGiamGiaChiTietGiayTheThaoRepository;
 
-     @Autowired
-     viTienServiceImpl viTienServiceImpl;
+    @Autowired
+    viTienServiceImpl viTienServiceImpl;
 
-     @Autowired
-     giaoDichViChiTietServiceImpl giaoDichViChiTietServiceImpl;
+    @Autowired
+    giaoDichViChiTietServiceImpl giaoDichViChiTietServiceImpl;
 
 
     //Todo code view giầy thể thao cho người dùng mua hàng phân trang cho người dùng ở luôn trang index by Giầy thể thao
@@ -161,8 +162,8 @@ public class TrangChuGiayTheThaoController {
 
         //Todo code list các sản phẩm giầy thể thao có chương trình khuyến mãi
 
-      List<ChuongTrinhGiamGiaChiTietGiayTheThao> listSale = chuongTrinhGiamGiaChiTietGiayTheThaoRepository.findAll();
-      model.addAttribute("listSale",listSale);
+        List<ChuongTrinhGiamGiaChiTietGiayTheThao> listSale = chuongTrinhGiamGiaChiTietGiayTheThaoRepository.findAll();
+        model.addAttribute("listSale", listSale);
 
 
     }
@@ -222,21 +223,21 @@ public class TrangChuGiayTheThaoController {
     @RequestMapping(value = "TrangChu/listGiayTheThao")
     public String showListViewGiayTheThao(Model model,
                                           HttpSession session,
-                                          @RequestParam(name = "pageNum",required = false,defaultValue = "1")Integer pageNum,
-                                          @RequestParam(name = "pageSize",required = false,defaultValue = "9")Integer pageSize){
+                                          @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                                          @RequestParam(name = "pageSize", required = false, defaultValue = "9") Integer pageSize) {
 
-        if(session.getAttribute("khachHangLog") != null) {
+        if (session.getAttribute("khachHangLog") != null) {
 
             System.out.println("Tài khoản khách hàng đã được đăng nhập");
-            model.addAttribute("maKH",session.getAttribute("maKH"));
-            giaoDienTrangChuListGiayTheThao(model,pageNum,pageSize,giayTheThaoRepository);
+            model.addAttribute("maKH", session.getAttribute("maKH"));
+            giaoDienTrangChuListGiayTheThao(model, pageNum, pageSize, giayTheThaoRepository);
 
             return "/templates/Users/indexLogin";
 
-        }else {
+        } else {
 
             System.out.println("Tài khoản khách hàng chưa được đăn nhập");
-            giaoDienTrangChuListGiayTheThao(model,pageNum,pageSize,giayTheThaoRepository);
+            giaoDienTrangChuListGiayTheThao(model, pageNum, pageSize, giayTheThaoRepository);
             return "/templates/Users/index";
 
         }
@@ -247,23 +248,23 @@ public class TrangChuGiayTheThaoController {
     @RequestMapping(value = "TrangChu/listGiayTheThao/Details")
     public String showListViewGiayTheThaoDetailsAndLoc(Model model,
                                                        HttpSession session,
-                                                       @RequestParam(name = "pageNum",required = false,defaultValue = "1") Integer pageNum,
-                                                       @RequestParam(name = "pageSize",required = false,defaultValue = "25") Integer pageSize
-                                                       ){
+                                                       @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                                                       @RequestParam(name = "pageSize", required = false, defaultValue = "25") Integer pageSize
+    ) {
 
 
-        if(session.getAttribute("khachHangLog") != null){
+        if (session.getAttribute("khachHangLog") != null) {
 
             System.out.println("Tài khoản của khách hàng đã được đang nhập");
-            model.addAttribute("maKH",session.getAttribute("maKH"));
-            giaoDienTrangChuListGiayTheThaoDetails(model,pageNum,pageSize,giayTheThaoRepository);
+            model.addAttribute("maKH", session.getAttribute("maKH"));
+            giaoDienTrangChuListGiayTheThaoDetails(model, pageNum, pageSize, giayTheThaoRepository);
 
             return "/templates/Users/indexLoginDetails";
 
-        }else {
+        } else {
 
             System.out.println("Khách hàng chưa đăng nhập tài khoản !");
-            giaoDienTrangChuListGiayTheThao(model,pageNum,pageSize,giayTheThaoRepository);
+            giaoDienTrangChuListGiayTheThao(model, pageNum, pageSize, giayTheThaoRepository);
 
             return "/templates/Users/index";
 
@@ -352,34 +353,33 @@ public class TrangChuGiayTheThaoController {
 
         //Todo code giảm giá bên details
 
-        try{
+        try {
 
             //Tim kiếm giầy thể thao được áp dụng cho giảm giá
             List<ChuongTrinhGiamGiaChiTietGiayTheThao> listSale = chuongTrinhGiamGiaChiTietGiayTheThaoRepository.findByGiayTheThao_Id(id);
 
-            for(ChuongTrinhGiamGiaChiTietGiayTheThao sale : listSale){
+            for (ChuongTrinhGiamGiaChiTietGiayTheThao sale : listSale) {
 
                 //Trạng thái đã kích hoạt
                 //Trạng thái 1 là đã được kích hoạt
-                if(sale.getTrangThai() == 1){
+                if (sale.getTrangThai() == 1) {
 
-                    model.addAttribute("sale",sale.getChuongTrinhGiamGiaGiayTheThao().getPhanTramGiam());
+                    model.addAttribute("sale", sale.getChuongTrinhGiamGiaGiayTheThao().getPhanTramGiam());
 
-                }else {
+                } else {
 
-                    model.addAttribute("sale",0);
+                    model.addAttribute("sale", 0);
 
                 }
 
             }
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
-            model.addAttribute("sale",null);
+            model.addAttribute("sale", null);
             model.addAttribute("giayTheThao", giayTheThao);
-
 
         }
 
@@ -389,23 +389,22 @@ public class TrangChuGiayTheThaoController {
 
     @RequestMapping(value = "GiayTheThao/listGiayTheThaoDealsOfTheWeek")
     public String listGiayTheThaoDealsOfTheWeek(Model model,
-                                                @RequestParam(value = "pageNum",required = false,defaultValue = "1")Integer pageNum,
-                                                @RequestParam(value = "pageSize",required = false,defaultValue = "12") Integer pageSize){
+                                                @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                                                @RequestParam(value = "pageSize", required = false, defaultValue = "12") Integer pageSize) {
 
         List<GiayTheThaoChiTiet> lstGiayTheThaoDealsOfTheWeek = giayTheThaoChiTietRepository.findAll();
-        model.addAttribute("lstGiayTheThaoDealsOfTheWeek",lstGiayTheThaoDealsOfTheWeek);
+        model.addAttribute("lstGiayTheThaoDealsOfTheWeek", lstGiayTheThaoDealsOfTheWeek);
 
-        Pageable pageable = PageRequest.of(pageNum-1,pageSize);
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<GiayTheThaoChiTiet> page = giayTheThaoChiTietRepository.findAll(pageable);
 
-        model.addAttribute("totalPage",page.getTotalPages());
-        model.addAttribute("listPage",page.getContent());
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("listPage", page.getContent());
 
 
         return "/templates/Users/index";
 
     }
-
 
 
     //Todo code lọc
@@ -415,16 +414,15 @@ public class TrangChuGiayTheThaoController {
             @PathVariable UUID idMauSac,
             @PathVariable UUID idSize) {
 
-        System.out.println("Mã giầy thể thao :"+idGiayTheThao);
-        System.out.println("Mã màu sắc: "+idMauSac);
-        System.out.println("Mã size"+idSize);
+        System.out.println("Mã giầy thể thao :" + idGiayTheThao);
+        System.out.println("Mã màu sắc: " + idMauSac);
+        System.out.println("Mã size" + idSize);
 
         GiayTheThaoChiTiet giayTheThaoChiTiet = giayTheThaoChiTietRepository.findIdByIdGiayTheThaoMsSize(idGiayTheThao, idMauSac, idSize);
 
         return ResponseEntity.ok(giayTheThaoChiTiet.getSoLuong());
 
     }
-
 
 
     //Todo code detail giầy thể thao chi tiết
@@ -435,18 +433,18 @@ public class TrangChuGiayTheThaoController {
                                            HttpSession session,
                                            HttpServletRequest request) {
 
-        if(session.getAttribute("khachHangLog") != null){
+        if (session.getAttribute("khachHangLog") != null) {
 
             System.out.println("Đã đăng nhập tài khoản!");
 
-            detailGiayTheThaoChiTietTrangChu(model,id,pageNum,pageSize);
+            detailGiayTheThaoChiTietTrangChu(model, id, pageNum, pageSize);
             return "/templates/Users/Layouts/Shop/detailGiayTheThaoLogin";
 
 
-        }else {
+        } else {
 
             System.out.println("Chưa đăng nhập tài khoản!");
-            detailGiayTheThaoChiTietTrangChu(model,id,pageNum,pageSize);
+            detailGiayTheThaoChiTietTrangChu(model, id, pageNum, pageSize);
             return "/templates/Users/Layouts/Shop/detailGiayTheThao";
 
         }
@@ -456,7 +454,7 @@ public class TrangChuGiayTheThaoController {
     //Todo code log not login chưa đăng nhập mà add to cart giỏ hàng
 
     @GetMapping("GiayTheThao/NguoiDungNotLoginAddToCart")
-    public String nguoiDungNotLoginAddToCart(){
+    public String nguoiDungNotLoginAddToCart() {
 
         return "/templates/Users/Layouts/Log/AddToCartLogNotLogin";
 
@@ -464,7 +462,7 @@ public class TrangChuGiayTheThaoController {
 
     //Todo code log succcess login đã đăng nhập khi mà add to cart giỏ hàng
     @GetMapping("GiayTheThao/NguoiDungSuccessLoginAddToCart")
-    public String nguoiDungSuccessLoginAddToCart(){
+    public String nguoiDungSuccessLoginAddToCart() {
 
         //Trả về đường dẫn hiện swal
         return "/templates/Users/Layouts/Log/AddToCartLogLogin";
@@ -492,7 +490,7 @@ public class TrangChuGiayTheThaoController {
             attributes.addFlashAttribute("giaBan", giaBan);
 
             UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
-            System.out.println("Id khách hàng đăng nhập là: "+ idKhachHang);
+            System.out.println("Id khách hàng đăng nhập là: " + idKhachHang);
 
             if (idKhachHang != null) {
 
@@ -644,31 +642,100 @@ public class TrangChuGiayTheThaoController {
     public String nguoiDungViewShowListGioHang(Model model, RedirectAttributes attributes,
                                                HttpSession session
 
-                                               ){
+    ) {
 
-        if(session.getAttribute("khachHangLog") != null){
+        if (session.getAttribute("khachHangLog") != null) {
 
             System.out.println("Đã đăng nhập tài khoản!");
 //          Lấy dữ liệu từ trong db
             String giaBan = (String) attributes.getAttribute("giaBan");
-            model.addAttribute("giaBan",giaBan);
-            attributes.addFlashAttribute("giaBan",giaBan);
+            model.addAttribute("giaBan", giaBan);
+            attributes.addFlashAttribute("giaBan", giaBan);
 
             UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
             GioHang gioHang = gioHangRepository.findByKhachHangId(idKhachHang);
 
             gioHangRepository.findByKhachHangId(idKhachHang);
-            System.out.println("Id của khách hàng : "+ idKhachHang);
+            System.out.println("Id của khách hàng : " + idKhachHang);
             UUID idGioHang = gioHangRepository.findGioHangIdByKhachHangId(idKhachHang);
-            System.out.println("Id của giỏ hàng có id khách hàng "+ idKhachHang+" - "+" "+idGioHang);
+            System.out.println("Id của giỏ hàng có id khách hàng " + idKhachHang + " - " + " " + idGioHang);
 
             List<GioHangChiTiet> listGioHangChiTiet = gioHangChiTietRepository.findByGioHangId(idGioHang);
 
-            model.addAttribute("listGioHangChiTiet",listGioHangChiTiet);
+            model.addAttribute("listGioHangChiTiet", listGioHangChiTiet);
 
+
+            //Todo code mới
+
+            List<UUID> listIdGiayTheThao = new ArrayList<>();
+
+            for (GioHangChiTiet gioHangChiTiet : listGioHangChiTiet) {
+
+                UUID idGiayTheThao = gioHangChiTiet.getGiayTheThaoChiTiet().getGiayTheThao().getId();
+                listIdGiayTheThao.add(idGiayTheThao);
+
+            }
+
+            System.out.println("Danh sách ID giày thể thao trong giỏ hàng:");
+            for (UUID idGiayTheThao : listIdGiayTheThao) {
+
+                System.out.println(idGiayTheThao);
+
+                List<ChuongTrinhGiamGiaChiTietGiayTheThao> listChuongTrinhGiamGiaChiTietGiayTheThao = chuongTrinhGiamGiaChiTietGiayTheThaoRepository.findByGiayTheThao_Id(idGiayTheThao);
+
+                List<UUID> idChuongTrinhGiamGia = new ArrayList<>();
+
+                for (ChuongTrinhGiamGiaChiTietGiayTheThao chuongTrinhGiamGiaChiTietGiayTheThao : listChuongTrinhGiamGiaChiTietGiayTheThao) {
+
+                    //hiện ra các chương trình giảm giá cho sản phẩm
+                    System.out.println("Chương trình giảm giá cho các sản phẩm:");
+                    UUID idChuongTrinhGiamGiaChiTiet = chuongTrinhGiamGiaChiTietGiayTheThao.getId();
+                    idChuongTrinhGiamGia.add(idChuongTrinhGiamGiaChiTiet);
+
+                }
+
+                System.out.println("ID all chương trình giảm giá chi tiết");
+                for (UUID idChuongTrinhGiamGiaChiTiet : idChuongTrinhGiamGia) {
+
+                    System.out.println(idChuongTrinhGiamGiaChiTiet);
+
+
+                }
+
+//                try{
+//
+//                    //Tim kiếm giầy thể thao được áp dụng cho giảm giá
+//                    List<ChuongTrinhGiamGiaChiTietGiayTheThao> listSale = chuongTrinhGiamGiaChiTietGiayTheThaoRepository.findByGiayTheThao_Id(idGiayTheThao);
+//
+//                    for(ChuongTrinhGiamGiaChiTietGiayTheThao sale : listSale){
+//
+//                        //Trạng thái đã kích hoạt
+//                        //Trạng thái 1 là đã được kích hoạt
+//                        if(sale.getGiayTheThao().getTrangThai() == 1){
+//
+//                            model.addAttribute("sale",sale.getChuongTrinhGiamGiaGiayTheThao().getPhanTramGiam());
+//
+//                        }else {
+//
+//                            model.addAttribute("sale",0);
+//
+//                        }
+//
+//                    }
+//
+//
+//                }catch (Exception e){
+//
+//                    e.printStackTrace();
+//                    model.addAttribute("sale",null);
+//
+//                }
+
+
+            }
             return "/templates/Users/Layouts/Shop/gioHangView";
 
-        }else {
+        } else {
 
             System.out.println("Chưa đăng nhập tài khoản!");
             return "redirect:/GiayTheThao/NguoiDungNotLoginAddToCart";
@@ -676,6 +743,172 @@ public class TrangChuGiayTheThaoController {
         }
 
     }
+
+
+ ////   Todo code add giầy thể thao chi tiết vào giỏ hàng chi tiết
+
+//    @PostMapping("/GiayTheThao/nguoiDung/addHoaDon")
+//    public String nguoiDungAddHoaDon(Model model,
+//                                     @RequestParam(value = "chon", required = false) List<String> chon,
+//                                     @RequestParam(value = "idGiayChiTiet", required = false) List<UUID> idGiayChiTiet,
+//                                     @RequestParam(value = "soLuong", required = false) List<String> soLuong,
+//                                     @RequestParam(value = "donGia", required = false) List<String> donGia,
+//
+//                                     HttpSession session,
+//                                     HttpServletRequest request,
+//                                     RedirectAttributes attributes) {
+//
+//        // Đã lưu mã vào session
+//        UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
+//        KhachHang khachHang = khachHangRepository.findById(idKhachHang).orElse(null);
+//
+//        // Chọn là null
+//        if (chon == null || chon.isEmpty()) {
+//
+//            attributes.addFlashAttribute("erCheckNun", "Xin lỗi hãy chọn ít nhất một sản phẩm để thanh toán !");
+//
+//        } else {
+//            HoaDon hoaDon = new HoaDon();
+//            // Thêm vào Hóa đơn
+//            LocalTime localTime = LocalTime.now();
+//            LocalDate ngayThanhToan = LocalDate.now();
+//            String ngayThanhToanToDate = ngayThanhToan.toString();
+//
+//            hoaDon.setMaHoaDon("MaHD" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
+//            hoaDon.setKhachHang(khachHang);
+//            hoaDon.setTrangThai(0);
+//            hoaDon.setNgayThanhToan(LocalDateTime.now());
+//            hoaDon.setNgayTao(LocalDateTime.now());
+//
+//            hoaDonRepository.save(hoaDon);
+//
+//            BigDecimal tongDonGiaHoaDon = BigDecimal.ZERO;
+//
+//            // Thêm vào hóa đơn chi tiết
+//            for (String stt : chon) {
+//
+//                HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
+//                hoaDonChiTiet.setHoaDon(hoaDon);
+//                hoaDonChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTietRepository.findById(idGiayChiTiet.get(Integer.parseInt(stt))).orElse(null));
+//
+//                //Todo code mới
+//                GiayTheThaoChiTiet giayTheThaoChiTiet = giayTheThaoChiTietRepository.findById(idGiayChiTiet.get(Integer.parseInt(stt))).orElse(null);
+//
+//                System.out.println("Số lượng request trả về : "+ soLuong);
+//                int soLuongMua = Integer.parseInt(soLuong.get(Integer.parseInt(stt)));
+//                int soLuongCo = Integer.parseInt(giayTheThaoChiTiet.getSoLuong());
+//
+//                //Giỏ hàng chi tiết đã chon
+//
+//                String idGiayChiTietGioHang = request.getParameter("idGiayChiTiet");
+//
+//                if(giayTheThaoChiTiet != null) {
+//                    if (soLuongMua > soLuongCo) {
+//
+//                        System.out.println("Er");
+//                        attributes.addFlashAttribute("erSoLuong","Xin lỗi hiện tại sản phẩm này chỉ còn duy nhất "+soLuongCo + " đôi !");
+//                        return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+//
+//                    }
+//                    if(soLuongMua <= 0){
+//
+//                        System.out.println("Er");
+//                        attributes.addFlashAttribute("erSoLuongAm","Xin lỗi số lượng mua không được âm !");
+//                        return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+//
+//                    }
+//                }
+//
+//                System.out.println("Số lượng mua int: "+ soLuongMua);
+//                System.out.println("Số lượng có int : "+ soLuongCo);
+//
+//                //
+//                System.out.println("Danh sách idGiayChiTiet đã chọn:");
+//                System.out.println(idGiayChiTiet.get(Integer.parseInt(stt)));
+//
+//                System.out.println("Danh sách idGiayChiTiet đã chọn:");
+//                UUID selectedGiayChiTietId = idGiayChiTiet.get(Integer.parseInt(stt));
+//                System.out.println(selectedGiayChiTietId);
+//
+//                // Tìm và cập nhật GioHangChiTiet
+//                GioHangChiTiet gioHangChiTietSetSoLuong = gioHangChiTietRepository.findByGiayTheThaoChiTiet_Id(selectedGiayChiTietId);
+//
+//                if (gioHangChiTietSetSoLuong != null) {
+//                    // Cập nhật số lượng mua
+//                    System.out.println("Set số lượng lại thành công !");
+//                    gioHangChiTietSetSoLuong.setSoLuong(String.valueOf(soLuongMua));
+//
+//                    // Get the associated GiayTheThao
+//                    GiayTheThaoChiTiet giayTheThaoChiTietSL = gioHangChiTietSetSoLuong.getGiayTheThaoChiTiet();
+//
+//                    if (giayTheThaoChiTietSL != null) {
+//
+//                        GiayTheThao giayTheThao = giayTheThaoChiTiet.getGiayTheThao();
+//
+//                        System.out.println("Id của GiayTheThao: " + giayTheThao.getId());
+//
+//                        String giaBanNew = giayTheThao.getGiaBan();
+//
+//                        // Convert the String to BigDecimal
+//                        BigDecimal giaBan = new BigDecimal(giaBanNew);
+//
+//                        // Calculate DonGia
+//                        BigDecimal donGiaNew = giaBan.multiply(BigDecimal.valueOf(soLuongMua));
+//
+//                        // Set the calculated value for DonGia
+//                        gioHangChiTietSetSoLuong.setDonGia(donGiaNew);
+//
+//                        //Set cho đơn giá
+//
+//                        //set số lượng vào hóa đơn chi tiết
+//                        hoaDonChiTiet.setSoLuong(String.valueOf(Integer.parseInt(soLuong.get(Integer.parseInt(stt)))));
+//
+//
+//                        // Convert the String to BigDecimal
+//                        BigDecimal giaBanHoaDonChiTiet = new BigDecimal(giaBanNew);
+//
+//                        BigDecimal donGiaHoaDonChiTiet = giaBanHoaDonChiTiet.multiply(BigDecimal.valueOf(soLuongMua));
+//
+//                        hoaDonChiTiet.setDonGia(donGiaHoaDonChiTiet);
+//                        hoaDonChiTiet.setTrangThai(1);
+//                        System.out.println("Đơn giá mới của hóa đơn là : "+donGiaHoaDonChiTiet);
+//
+//                        hoaDonChiTietRepository.save(hoaDonChiTiet);
+//
+//                        //Sau khi lưu đơn giá của hóa đơn chi tiết xong tôi muốn set thành tiền cho hóa đơn thành tiền
+//                        //của hóa đơn sẽ là tổng đơn giá trong hóa đơn chi tiết
+//
+//
+//                        tongDonGiaHoaDon = tongDonGiaHoaDon.add(donGiaHoaDonChiTiet);
+//                        hoaDon.setThanhTien(tongDonGiaHoaDon);
+//
+//                        hoaDonRepository.save(hoaDon);
+//
+//                    }
+//
+//                    gioHangChiTietRepository.save(gioHangChiTietSetSoLuong);
+//
+//                } else {
+//
+//                    System.out.println("Không tìm thấy GioHangChiTiet cho id: " + selectedGiayChiTietId);
+//
+//                }
+//
+//                model.addAttribute("hoaDonChiTiet", hoaDonChiTiet);
+//
+//            }
+//
+//            //Bên
+//            model.addAttribute("hoaDon", hoaDon);
+//
+//            return "redirect:/nguoiDung/HoaDon/" + hoaDon.getId();
+//        }
+//
+//        return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+//
+//    }
+//
+
 
 
     //Todo code add giầy thể thao chi tiết vào giỏ hàng chi tiết
@@ -698,9 +931,9 @@ public class TrangChuGiayTheThaoController {
         if (chon == null || chon.isEmpty()) {
 
             attributes.addFlashAttribute("erCheckNun", "Xin lỗi hãy chọn ít nhất một sản phẩm để thanh toán !");
-//            return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
 
         } else {
+
             HoaDon hoaDon = new HoaDon();
             // Thêm vào Hóa đơn
             LocalTime localTime = LocalTime.now();
@@ -720,121 +953,130 @@ public class TrangChuGiayTheThaoController {
             // Thêm vào hóa đơn chi tiết
             for (String stt : chon) {
 
-                HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
-                hoaDonChiTiet.setHoaDon(hoaDon);
-                hoaDonChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTietRepository.findById(idGiayChiTiet.get(Integer.parseInt(stt))).orElse(null));
+                UUID selectedGiayChiTietIdChon = idGiayChiTiet.get(Integer.parseInt(stt));
+                Optional<GiayTheThaoChiTiet> optionalGiayTheThaoChiTiet = giayTheThaoChiTietRepository.findById(selectedGiayChiTietIdChon);
 
-                //Todo code mới
-                GiayTheThaoChiTiet giayTheThaoChiTiet = giayTheThaoChiTietRepository.findById(idGiayChiTiet.get(Integer.parseInt(stt))).orElse(null);
+                if (optionalGiayTheThaoChiTiet.isPresent()) {
 
-                System.out.println("Số lượng request trả về : "+ soLuong);
-                int soLuongMua = Integer.parseInt(soLuong.get(Integer.parseInt(stt)));
-                int soLuongCo = Integer.parseInt(giayTheThaoChiTiet.getSoLuong());
+                    GiayTheThaoChiTiet giayTheThaoChiTietNew = optionalGiayTheThaoChiTiet.get();
 
-                //Giỏ hàng chi tiết đã chon
+                    List<GioHang> gioHangList = gioHangRepository.findByKhachHang_Id(idKhachHang);
 
-                String idGiayChiTietGioHang = request.getParameter("idGiayChiTiet");
+                    // In ra thông tin về các giỏ hàng của khách hàng
 
-                if(giayTheThaoChiTiet != null) {
-                    if (soLuongMua > soLuongCo) {
+                    HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
 
-                        System.out.println("Er");
-                        attributes.addFlashAttribute("erSoLuong","Xin lỗi hiện tại sản phẩm này chỉ còn duy nhất "+soLuongCo + " đôi !");
-                        return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+                    hoaDonChiTiet.setHoaDon(hoaDon);
+                    hoaDonChiTiet.setGiayTheThaoChiTiet(giayTheThaoChiTietNew);
 
+                    System.out.println("Số lượng request trả về : "+ soLuong);
+                    int soLuongMua = Integer.parseInt(soLuong.get(Integer.parseInt(stt)));
+                    int soLuongCo = Integer.parseInt(giayTheThaoChiTietNew.getSoLuong());
+
+                    String idGiayChiTietGioHang = request.getParameter("idGiayChiTiet");
+
+                    if(giayTheThaoChiTietNew != null){
+
+                        if (soLuongMua > soLuongCo) {
+
+                            System.out.println("Er");
+                            attributes.addFlashAttribute("erSoLuong","Xin lỗi hiện tại sản phẩm này chỉ còn duy nhất "+soLuongCo + " đôi !");
+                            return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+
+                        }
+
+                        if(soLuongMua <= 0){
+
+                            System.out.println("Er");
+                            attributes.addFlashAttribute("erSoLuongAm","Xin lỗi số lượng mua không được âm !");
+                            return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+
+                        }
                     }
-                    if(soLuongMua <= 0){
-
-                        System.out.println("Er");
-                        attributes.addFlashAttribute("erSoLuongAm","Xin lỗi số lượng mua không được âm !");
-                        return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
-
-                    }
-                }
-
-                System.out.println("Số lượng mua int: "+ soLuongMua);
-                System.out.println("Số lượng có int : "+ soLuongCo);
-
-                //
-                System.out.println("Danh sách idGiayChiTiet đã chọn:");
-                System.out.println(idGiayChiTiet.get(Integer.parseInt(stt)));
-
-                System.out.println("Danh sách idGiayChiTiet đã chọn:");
-                UUID selectedGiayChiTietId = idGiayChiTiet.get(Integer.parseInt(stt));
-                System.out.println(selectedGiayChiTietId);
-
-                // Tìm và cập nhật GioHangChiTiet
-                GioHangChiTiet gioHangChiTietSetSoLuong = gioHangChiTietRepository.findByGiayTheThaoChiTiet_Id(selectedGiayChiTietId);
-
-                if (gioHangChiTietSetSoLuong != null) {
-                    // Cập nhật số lượng mua
-                    System.out.println("Set số lượng lại thành công !");
-                    gioHangChiTietSetSoLuong.setSoLuong(String.valueOf(soLuongMua));
-
-                    // Get the associated GiayTheThao
-                    GiayTheThaoChiTiet giayTheThaoChiTietSL = gioHangChiTietSetSoLuong.getGiayTheThaoChiTiet();
-
-                    if (giayTheThaoChiTietSL != null) {
-
-                        GiayTheThao giayTheThao = giayTheThaoChiTiet.getGiayTheThao();
-
-                        System.out.println("Id của GiayTheThao: " + giayTheThao.getId());
-
-                        String giaBanNew = giayTheThao.getGiaBan();
-
-                        // Convert the String to BigDecimal
-                        BigDecimal giaBan = new BigDecimal(giaBanNew);
-
-                        // Calculate DonGia
-                        BigDecimal donGiaNew = giaBan.multiply(BigDecimal.valueOf(soLuongMua));
-
-                        // Set the calculated value for DonGia
-                        gioHangChiTietSetSoLuong.setDonGia(donGiaNew);
-
-                        //Set cho đơn giá
-
-                        //set số lượng vào hóa đơn chi tiết
-                        hoaDonChiTiet.setSoLuong(String.valueOf(Integer.parseInt(soLuong.get(Integer.parseInt(stt)))));
 
 
-                        // Convert the String to BigDecimal
-                        BigDecimal giaBanHoaDonChiTiet = new BigDecimal(giaBanNew);
+                    System.out.println("Danh sách Id giầy thể thao chi tiết đã chọn !");
 
-                        BigDecimal donGiaHoaDonChiTiet = giaBanHoaDonChiTiet.multiply(BigDecimal.valueOf(soLuongMua));
+                    UUID selectedGiayChiTietId = idGiayChiTiet.get(Integer.parseInt(stt));
+                    System.out.println(selectedGiayChiTietId);
 
-                        hoaDonChiTiet.setDonGia(donGiaHoaDonChiTiet);
-                        hoaDonChiTiet.setTrangThai(1);
-                        System.out.println("Đơn giá mới của hóa đơn là : "+donGiaHoaDonChiTiet);
+//                    Optional<GioHangChiTiet> optionalGioHangChiTiet = gioHangChiTietRepository.findById(selectedGiayChiTietId);
+                    for (GioHang gioHang : gioHangList) {
+
+
+                        System.out.println("Id Gio Hang: " + gioHang.getId());
+                        System.out.println("Selected Giay Chi Tiet Id: " + selectedGiayChiTietId);
+
+                        // In ra các thông tin khác nếu cần
+                        Optional<GioHangChiTiet> optionalGioHangChiTiet = gioHangChiTietRepository.findByGioHang_Id_AndGiayTheThaoChiTiet_Id(gioHang.getId(),selectedGiayChiTietId);
+
+                        if(optionalGioHangChiTiet.isPresent()){
+
+                            GioHangChiTiet gioHangChiTiet = optionalGioHangChiTiet.get();
+                            System.out.println("Done");
+
+                            if(gioHangChiTiet != null){
+
+                                GiayTheThao giayTheThao = giayTheThaoChiTietNew.getGiayTheThao();
+                                String giaBanNew = giayTheThao.getGiaBan();
+
+                                BigDecimal giaBan = new BigDecimal(giaBanNew);
+                                BigDecimal donGiaNew = giaBan.multiply(BigDecimal.valueOf(soLuongMua));
+
+                                gioHangChiTiet.setSoLuong(String.valueOf(soLuongMua));
+                                gioHangChiTiet.setDonGia(donGiaNew);
+
+                                hoaDonChiTiet.setSoLuong(String.valueOf(Integer.parseInt(soLuong.get(Integer.parseInt(stt)))));
+
+                                BigDecimal giaBanHoaDonChiTiet = new BigDecimal(giaBanNew);
+                                BigDecimal donGiaHoaDonChiTiet = giaBanHoaDonChiTiet.multiply(BigDecimal.valueOf(soLuongMua));
+
+                                hoaDonChiTiet.setDonGia(donGiaHoaDonChiTiet);
+                                hoaDonChiTiet.setTrangThai(1);
+
+                                hoaDonChiTietRepository.save(hoaDonChiTiet);
+                                model.addAttribute("hoaDonChiTiet", hoaDonChiTiet);
+
+                                tongDonGiaHoaDon = tongDonGiaHoaDon.add(donGiaHoaDonChiTiet);
+                                hoaDon.setThanhTien(tongDonGiaHoaDon);
+
+                                hoaDonRepository.save(hoaDon);
+                                gioHangChiTietRepository.save(gioHangChiTiet);
+
+                            }else{
+
+                                System.out.println("Không có dữ liệu");
+                                return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+
+                            }
+
+
+                        } else {
+
+                            System.out.println("Không tìm thấy GioHangChiTiet cho id: " + selectedGiayChiTietId);
+                            return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+
+                        }
 
                         hoaDonChiTietRepository.save(hoaDonChiTiet);
 
-                        //Sau khi lưu đơn giá của hóa đơn chi tiết xong tôi muốn set thành tiền cho hóa đơn thành tiền
-                        //của hóa đơn sẽ là tổng đơn giá trong hóa đơn chi tiết
-
-
-                        tongDonGiaHoaDon = tongDonGiaHoaDon.add(donGiaHoaDonChiTiet);
-                        hoaDon.setThanhTien(tongDonGiaHoaDon);
-
-                        hoaDonRepository.save(hoaDon);
-
                     }
 
-                    gioHangChiTietRepository.save(gioHangChiTietSetSoLuong);
+
+
 
                 } else {
 
-                    System.out.println("Không tìm thấy GioHangChiTiet cho id: " + selectedGiayChiTietId);
+                    attributes.addFlashAttribute("erGiayChiTiet", "Không tìm thấy giày chi tiết với id: " + selectedGiayChiTietIdChon);
+                    return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
 
                 }
 
-                model.addAttribute("hoaDonChiTiet", hoaDonChiTiet);
+                model.addAttribute("hoaDon", hoaDon);
+                return "redirect:/nguoiDung/HoaDon/" + hoaDon.getId();
 
             }
 
-            //Bên
-            model.addAttribute("hoaDon", hoaDon);
-
-            return "redirect:/nguoiDung/HoaDon/" + hoaDon.getId();
         }
 
         return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
@@ -842,20 +1084,24 @@ public class TrangChuGiayTheThaoController {
     }
 
 
+
+
+
+
     //Todo code delete sản phẩm chi tiết trong giỏ hàng
     @PostMapping("delete/{id}")
     public String deleteProduct(Model model,
-                                @PathVariable("id") UUID id){
+                                @PathVariable("id") UUID id) {
 
         gioHangChiTietService.delete(id);
-        model.addAttribute("viewDelete","Xóa giỏ hàng chi tiết thành công");
+        model.addAttribute("viewDelete", "Xóa giỏ hàng chi tiết thành công");
         return "redirect:/GiayTheThao/NguoiDung/delete";
 
     }
 
     //Todo code thông báo xóa sản phẩm giầy thành công
     @GetMapping("GiayTheThao/NguoiDung/delete")
-    public String nguoiDungXoaGiayTheThaoGioHangChiTiet(){
+    public String nguoiDungXoaGiayTheThaoGioHangChiTiet() {
 
         //Trả về đường dẫn hiện swal
         return "/templates/Users/Layouts/Log/XoaGioHang";
@@ -866,7 +1112,7 @@ public class TrangChuGiayTheThaoController {
     @GetMapping("/KhachHang/ViDienTu/ViewViDienTu/*")
     public String showViewViDienTuChiTiet(Model model,
                                           HttpServletRequest request,
-                                          HttpSession session){
+                                          HttpSession session) {
 
 
         String url = request.getRequestURI();
@@ -877,13 +1123,13 @@ public class TrangChuGiayTheThaoController {
 
             KhachHang khachHang = khachHangRepository.findByMaKhachHang(ma);
             model.addAttribute("maKH", khachHang.getMaKhachHang());
-            model.addAttribute("tenKhachHang",khachHang.getTenKhachHang());
+            model.addAttribute("tenKhachHang", khachHang.getTenKhachHang());
 
             ViTien viTien = viTienServiceImpl.findByIdKhachHang(khachHang.getId());
 
-            model.addAttribute("viTien",viTien);
+            model.addAttribute("viTien", viTien);
             List<GiaoDichViChiTiet> giaoDichViChiTietList = giaoDichViChiTietServiceImpl.findAllByKhachHang(khachHang.getId());
-            model.addAttribute("giaoDichViChiTietList",giaoDichViChiTietList);
+            model.addAttribute("giaoDichViChiTietList", giaoDichViChiTietList);
 
             String addThanhCong = (String) session.getAttribute("napThanhCong");
             String addThatBai = (String) session.getAttribute("napThatBai");
@@ -918,136 +1164,136 @@ public class TrangChuGiayTheThaoController {
             Model model,
             HttpSession session,
             HttpServletRequest request
-    )throws JsonProcessingException {
+    ) throws JsonProcessingException {
 
-            if(session.getAttribute("khachHangLog") != null){
-                System.out.println("Đăng nhập tài khoản thành công !");
+        if (session.getAttribute("khachHangLog") != null) {
+            System.out.println("Đăng nhập tài khoản thành công !");
 
-                String url = request.getRequestURI();
-                String[] p = url.split("/KhachHang/ViDienTu/NapTien/");
-                String maKH = p[1];
+            String url = request.getRequestURI();
+            String[] p = url.split("/KhachHang/ViDienTu/NapTien/");
+            String maKH = p[1];
 
-                KhachHang khachHang = khachHangRepository.findByMaKhachHang(maKH);
+            KhachHang khachHang = khachHangRepository.findByMaKhachHang(maKH);
 
-                ViTien viTien = viTienServiceImpl.findByIdKhachHang(khachHang.getId());
+            ViTien viTien = viTienServiceImpl.findByIdKhachHang(khachHang.getId());
 
-                String soTien = request.getParameter("soTien");
-                BigDecimal soTienBig = new BigDecimal(soTien);
+            String soTien = request.getParameter("soTien");
+            BigDecimal soTienBig = new BigDecimal(soTien);
 
-                GiaoDichViChiTiet giaoDichViChiTiet = new GiaoDichViChiTiet();
+            GiaoDichViChiTiet giaoDichViChiTiet = new GiaoDichViChiTiet();
 
-                LocalTime localTime = LocalTime.now();
-                LocalDate ngayThanhToan = LocalDate.now();
-                String ngayThanhToanToDate = ngayThanhToan.toString();
-
-
-                giaoDichViChiTiet.setMaGiaoDichViChiTiet("GiaoDV" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
-                giaoDichViChiTiet.setViTien(viTien);
-                giaoDichViChiTiet.setNgayGiaoDich(LocalDateTime.now());
-                giaoDichViChiTiet.setDonGia(soTienBig);
-                giaoDichViChiTiet.setHinhThuc(1);
-                giaoDichViChiTiet.setTrangThai(0);
-
-                giaoDichViChiTietServiceImpl.add(giaoDichViChiTiet);
-
-                ObjectMapper mapper = new ObjectMapper();
-                String orderId = giaoDichViChiTiet.getMaGiaoDichViChiTiet();
-
-                MomoModel jsonRequest = new MomoModel();
-                jsonRequest.setPartnerCode(Constant.IDMOMO);
-                jsonRequest.setOrderId(orderId);
-                jsonRequest.setStoreId(orderId);
-                jsonRequest.setRedirectUrl(Constant.redirectUrl);
-                jsonRequest.setIpnUrl(Constant.ipnUrl);
-                jsonRequest.setAmount(soTien);
-                jsonRequest.setOrderInfo("Nạp tiền vào ví");
-                jsonRequest.setRequestId(orderId);
-                jsonRequest.setOrderType(Constant.orderType);
-                jsonRequest.setRequestType(Constant.requestType);
-                jsonRequest.setTransId("1");
-                jsonRequest.setResultCode("200");
-                jsonRequest.setMessage("");
-                jsonRequest.setPayType(Constant.payType);
-                jsonRequest.setResponseTime("300000");
-                jsonRequest.setExtraData("");
-
-                String decode = "accessKey=" + Constant.accessKey + "&amount=" + jsonRequest.amount + "&extraData="
-                        + jsonRequest.extraData + "&ipnUrl=" + Constant.ipnUrl + "&orderId=" + orderId + "&orderInfo="
-                        + jsonRequest.orderInfo + "&partnerCode=" + jsonRequest.getPartnerCode() + "&redirectUrl="
-                        + Constant.redirectUrl + "&requestId=" + jsonRequest.getRequestId() + "&requestType="
-                        + Constant.requestType;
+            LocalTime localTime = LocalTime.now();
+            LocalDate ngayThanhToan = LocalDate.now();
+            String ngayThanhToanToDate = ngayThanhToan.toString();
 
 
-                String signature = Decode.encode(Constant.serectkey, decode);
-                jsonRequest.setSignature(signature);
-                String json = mapper.writeValueAsString(jsonRequest);
-                HttpClient client = HttpClient.newHttpClient();
-                ResultMoMo res = new ResultMoMo();
+            giaoDichViChiTiet.setMaGiaoDichViChiTiet("GiaoDV" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
+            giaoDichViChiTiet.setViTien(viTien);
+            giaoDichViChiTiet.setNgayGiaoDich(LocalDateTime.now());
+            giaoDichViChiTiet.setDonGia(soTienBig);
+            giaoDichViChiTiet.setHinhThuc(1);
+            giaoDichViChiTiet.setTrangThai(0);
 
-                try {
-                    HttpRequest requestMomo = HttpRequest.newBuilder().uri(new URI(Constant.Url))
-                            .POST(HttpRequest.BodyPublishers.ofString(json)).headers("Content-Type", "application/json")
-                            .build();
-                    HttpResponse<String> response = client.send(requestMomo, HttpResponse.BodyHandlers.ofString());
-                    res = mapper.readValue(response.body(), ResultMoMo.class);
-                } catch (InterruptedException | URISyntaxException | IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                if (res == null) {
+            giaoDichViChiTietServiceImpl.add(giaoDichViChiTiet);
 
-                    System.out.println("Thanh toán thất bại !");
-                    session.setAttribute("error_momo", "Thanh toán thất bại");
-                    return "redirect:/TrangChu/listGiayTheThao";
+            ObjectMapper mapper = new ObjectMapper();
+            String orderId = giaoDichViChiTiet.getMaGiaoDichViChiTiet();
 
-                } else {
+            MomoModel jsonRequest = new MomoModel();
+            jsonRequest.setPartnerCode(Constant.IDMOMO);
+            jsonRequest.setOrderId(orderId);
+            jsonRequest.setStoreId(orderId);
+            jsonRequest.setRedirectUrl(Constant.redirectUrl);
+            jsonRequest.setIpnUrl(Constant.ipnUrl);
+            jsonRequest.setAmount(soTien);
+            jsonRequest.setOrderInfo("Nạp tiền vào ví");
+            jsonRequest.setRequestId(orderId);
+            jsonRequest.setOrderType(Constant.orderType);
+            jsonRequest.setRequestType(Constant.requestType);
+            jsonRequest.setTransId("1");
+            jsonRequest.setResultCode("200");
+            jsonRequest.setMessage("");
+            jsonRequest.setPayType(Constant.payType);
+            jsonRequest.setResponseTime("300000");
+            jsonRequest.setExtraData("");
 
-                    System.out.println("Thanh toán thành công !");
-                    return "redirect:" + res.payUrl;
+            String decode = "accessKey=" + Constant.accessKey + "&amount=" + jsonRequest.amount + "&extraData="
+                    + jsonRequest.extraData + "&ipnUrl=" + Constant.ipnUrl + "&orderId=" + orderId + "&orderInfo="
+                    + jsonRequest.orderInfo + "&partnerCode=" + jsonRequest.getPartnerCode() + "&redirectUrl="
+                    + Constant.redirectUrl + "&requestId=" + jsonRequest.getRequestId() + "&requestType="
+                    + Constant.requestType;
 
-                }
 
-            }else{
+            String signature = Decode.encode(Constant.serectkey, decode);
+            jsonRequest.setSignature(signature);
+            String json = mapper.writeValueAsString(jsonRequest);
+            HttpClient client = HttpClient.newHttpClient();
+            ResultMoMo res = new ResultMoMo();
 
-                System.out.println("Khách hàng chưa đăng nhập tài khoản");
+            try {
+                HttpRequest requestMomo = HttpRequest.newBuilder().uri(new URI(Constant.Url))
+                        .POST(HttpRequest.BodyPublishers.ofString(json)).headers("Content-Type", "application/json")
+                        .build();
+                HttpResponse<String> response = client.send(requestMomo, HttpResponse.BodyHandlers.ofString());
+                res = mapper.readValue(response.body(), ResultMoMo.class);
+            } catch (InterruptedException | URISyntaxException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            if (res == null) {
+
+                System.out.println("Thanh toán thất bại !");
+                session.setAttribute("error_momo", "Thanh toán thất bại");
                 return "redirect:/TrangChu/listGiayTheThao";
 
+            } else {
+
+                System.out.println("Thanh toán thành công !");
+                return "redirect:" + res.payUrl;
+
             }
+
+        } else {
+
+            System.out.println("Khách hàng chưa đăng nhập tài khoản");
+            return "redirect:/TrangChu/listGiayTheThao";
+
+        }
 
     }
 
     //Finall dữ liệu trả về
 
     @ModelAttribute("thuongHieu")
-    public List<ThuongHieu> getListThuongHieu(){
+    public List<ThuongHieu> getListThuongHieu() {
 
         return thuongHieuRepository.findAll();
 
     }
 
     @ModelAttribute("form")
-    public List<Form> getListForm(){
+    public List<Form> getListForm() {
 
         return formRepository.findAll();
 
     }
 
     @ModelAttribute("chatLieu")
-    public List<ChatLieu> getListChatLieu(){
+    public List<ChatLieu> getListChatLieu() {
 
         return chatLieuRepository.findAll();
 
     }
 
     @ModelAttribute("congDung")
-    public List<CongDung> getListCongDung(){
+    public List<CongDung> getListCongDung() {
 
         return congDungRepository.findAll();
 
     }
 
     @ModelAttribute("trongLuong")
-    public List<TrongLuong> getListTrongLuong(){
+    public List<TrongLuong> getListTrongLuong() {
 
         return trongLuongRepository.findAll();
 
@@ -1055,13 +1301,13 @@ public class TrangChuGiayTheThaoController {
 
 
     @ModelAttribute("size")
-    public List<Size> getListSize(){
+    public List<Size> getListSize() {
 
         return sizeRepository.findAll();
     }
 
     @ModelAttribute("mauSac")
-    public List<MauSac> getListMauSac(){
+    public List<MauSac> getListMauSac() {
 
         return mauSacRepository.findAll();
 

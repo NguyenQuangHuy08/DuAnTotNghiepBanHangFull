@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -17,6 +18,9 @@ public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, 
     GioHangChiTiet findByGiayTheThaoChiTiet_Id(UUID idGiayTheThaoChiTiet);
 
     List<GioHangChiTiet> findByGioHangId(UUID idGioHang);
+
+    Optional<GioHangChiTiet> findByGioHang_Id_AndGiayTheThaoChiTiet_Id(UUID gioHangId, UUID giayTheThaoChiTietId);
+
 
 
 }

@@ -44,6 +44,11 @@
 
                                                     <span style="color: red"> Đ </span>
                                                     <fmt:formatNumber type="" value="${listGiay.giaBan}" pattern="#,##0.###" /> VNĐ
+<%--                                                    <del>--%>
+<%--                                                        <fmt:formatNumber type="" value="${listGiay.giaBan}" pattern="#,##0.###" /> VNĐ--%>
+<%--                                                    </del>--%>
+<%--                                                    <fmt:formatNumber type="" value="${listGiay.giaBan * (100 - listSale.chuongTrinhGiamGiaGiayTheThao.phanTramGiam)/100}" pattern="#,##0.###" /> VNĐ--%>
+
 
                                                 </h6>
                                                     <%--                                            <h6 class="l-through">$210.00</h6>--%>
@@ -113,8 +118,10 @@
                         <h3 style="color: black" style="margin-bottom: 100px;margin-top: 100px;text-align: center">SALE</h3>
                     </div>
 
+<%--                    Chỉ hiện ra các loại giầy thể thao còn trong trạng thái sale--%>
+
                     <c:forEach var="listSale" items="${listSale}">
-                        <c:if test="${listSale.trangThai == 1}">
+                        <c:if test="${listSale.trangThai == 1 && listSale.chuongTrinhGiamGiaGiayTheThao.trangThai ==1}">
                             <a href="${pageContext.request.contextPath}/GiayTheThao/detailThongTinGiayTheThao/${listSale.giayTheThao.id}">
                                 <div class="col-lg-3 col-md-6">
                                     <div class="single-product">

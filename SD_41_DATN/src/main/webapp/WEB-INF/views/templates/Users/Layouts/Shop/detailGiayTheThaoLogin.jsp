@@ -140,10 +140,11 @@
                 </h5>
 
                 <p style="color: black;margin-top: 30px;font-size: 18px">
-                    Giá bán:  <span style="color: red">
+                    <span style="color: black">Giá bán:</span>
+                             <%--   <span style="color: red">
                                 <fmt:formatNumber  type="" value="${giayTheThao.giaBan}" pattern="#,##0.###" />
-                              </span>
-                    VNĐ
+                              </span>--%>
+<%--                    VNĐ--%>
 
 <%--                    Todo sủa code ở đây--%>
 
@@ -154,13 +155,13 @@
                         <c:when test="${sale != 1}">
                             <div class="gia">
                                 <p>
-                                    <del>
+                                    <del style="font-size: 15px">
 <%--                                            Đây là giá bán ban đầu khi chưa được giảm--%>
                                             <fmt:formatNumber  type="" value="${giayTheThao.giaBan}" pattern="#,##0.###" /> VNĐ
 
                                     </del>
 <%--                                            Đây là giá bán khi đã được giảm    --%>
-                                    <strong>
+                                    <strong style="font-size: 17px; color: black;margin-left: 10px">
 
                                             <fmt:formatNumber  type="" value="${giayTheThao.giaBan * (100 - sale )/100}" pattern="#,##0.###" /> VNĐ
 
