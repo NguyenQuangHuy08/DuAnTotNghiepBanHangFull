@@ -910,8 +910,8 @@ public class TrangChuGiayTheThaoController {
 //
 
 
+     //Todo code
 
-    //Todo code add giầy thể thao chi tiết vào giỏ hàng chi tiết
     @PostMapping("/GiayTheThao/nguoiDung/addHoaDon")
     public String nguoiDungAddHoaDon(Model model,
                                      @RequestParam(value = "chon", required = false) List<String> chon,
@@ -933,7 +933,6 @@ public class TrangChuGiayTheThaoController {
             attributes.addFlashAttribute("erCheckNun", "Xin lỗi hãy chọn ít nhất một sản phẩm để thanh toán !");
 
         } else {
-
             HoaDon hoaDon = new HoaDon();
             // Thêm vào Hóa đơn
             LocalTime localTime = LocalTime.now();
@@ -953,16 +952,15 @@ public class TrangChuGiayTheThaoController {
             // Thêm vào hóa đơn chi tiết
             for (String stt : chon) {
 
-                UUID selectedGiayChiTietIdChon = idGiayChiTiet.get(Integer.parseInt(stt));
-                Optional<GiayTheThaoChiTiet> optionalGiayTheThaoChiTiet = giayTheThaoChiTietRepository.findById(selectedGiayChiTietIdChon);
+                System.out.println("Danh sách idGiayChiTiet đã chọn:");
+                UUID selectedGiayChiTietId = idGiayChiTiet.get(Integer.parseInt(stt));
+                System.out.println(selectedGiayChiTietId);
+                Optional<GiayTheThaoChiTiet> optionalGiayTheThaoChiTiet = giayTheThaoChiTietRepository.findById(selectedGiayChiTietId);
 
-                if (optionalGiayTheThaoChiTiet.isPresent()) {
+                if(optionalGiayTheThaoChiTiet.isPresent()){
 
                     GiayTheThaoChiTiet giayTheThaoChiTietNew = optionalGiayTheThaoChiTiet.get();
-
                     List<GioHang> gioHangList = gioHangRepository.findByKhachHang_Id(idKhachHang);
-
-                    // In ra thông tin về các giỏ hàng của khách hàng
 
                     HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
 
@@ -973,7 +971,11 @@ public class TrangChuGiayTheThaoController {
                     int soLuongMua = Integer.parseInt(soLuong.get(Integer.parseInt(stt)));
                     int soLuongCo = Integer.parseInt(giayTheThaoChiTietNew.getSoLuong());
 
+                    System.out.println("Số lượng mua: "+ soLuongMua);
+                    System.out.println("Số lương có: "+soLuongCo);
+
                     String idGiayChiTietGioHang = request.getParameter("idGiayChiTiet");
+                    System.out.println("Check id giầy thể thao chi tiết: "+ idGiayChiTietGioHang);
 
                     if(giayTheThaoChiTietNew != null){
 
@@ -995,25 +997,19 @@ public class TrangChuGiayTheThaoController {
                     }
 
 
-                    System.out.println("Danh sách Id giầy thể thao chi tiết đã chọn !");
-
-                    UUID selectedGiayChiTietId = idGiayChiTiet.get(Integer.parseInt(stt));
-                    System.out.println(selectedGiayChiTietId);
-
-//                    Optional<GioHangChiTiet> optionalGioHangChiTiet = gioHangChiTietRepository.findById(selectedGiayChiTietId);
-                    for (GioHang gioHang : gioHangList) {
-
+                    for (GioHang gioHang : gioHangList){
 
                         System.out.println("Id Gio Hang: " + gioHang.getId());
                         System.out.println("Selected Giay Chi Tiet Id: " + selectedGiayChiTietId);
 
-                        // In ra các thông tin khác nếu cần
+                        //Đang bị sai ở đây
+
+//                        Optional<GioHangChiTiet> optionalGioHangChiTiet = gioHangChiTietRepository.findById(selectedGiayChiTietId);
                         Optional<GioHangChiTiet> optionalGioHangChiTiet = gioHangChiTietRepository.findByGioHang_Id_AndGiayTheThaoChiTiet_Id(gioHang.getId(),selectedGiayChiTietId);
 
                         if(optionalGioHangChiTiet.isPresent()){
 
                             GioHangChiTiet gioHangChiTiet = optionalGioHangChiTiet.get();
-                            System.out.println("Done");
 
                             if(gioHangChiTiet != null){
 
@@ -1050,38 +1046,33 @@ public class TrangChuGiayTheThaoController {
 
                             }
 
-
-                        } else {
-
-                            System.out.println("Không tìm thấy GioHangChiTiet cho id: " + selectedGiayChiTietId);
-                            return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
-
                         }
-
-                        hoaDonChiTietRepository.save(hoaDonChiTiet);
 
                     }
 
-
-
-
-                } else {
-
-                    attributes.addFlashAttribute("erGiayChiTiet", "Không tìm thấy giày chi tiết với id: " + selectedGiayChiTietIdChon);
-                    return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
+                    hoaDonChiTietRepository.save(hoaDonChiTiet);
 
                 }
 
-                model.addAttribute("hoaDon", hoaDon);
-                return "redirect:/nguoiDung/HoaDon/" + hoaDon.getId();
-
             }
 
+            model.addAttribute("hoaDon", hoaDon);
+
+            return "redirect:/nguoiDung/HoaDon/" + hoaDon.getId();
         }
 
         return "redirect:/GiayTheThao/NguoiDung/ViewGioHang";
 
     }
+
+
+
+
+
+
+
+
+
 
 
 
