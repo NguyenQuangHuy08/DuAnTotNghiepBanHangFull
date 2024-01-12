@@ -1,9 +1,5 @@
 package com.example.sd_41.controller.KhachHang.BanHang;
 
-import com.example.sd_41.controller.Momo.MomoModel;
-import com.example.sd_41.controller.Momo.ResultMoMo;
-import com.example.sd_41.controller.Utils.Constant;
-import com.example.sd_41.controller.Utils.Decode;
 import com.example.sd_41.model.*;
 import com.example.sd_41.repository.BanHang.GioHangChiTietRepository;
 import com.example.sd_41.repository.HoaDon.HoaDonChiTietRepository;
@@ -17,7 +13,7 @@ import com.example.sd_41.service.HoaDon.HoaDonService;
 import com.example.sd_41.service.HoaDon.HoaDonServiceImpl;
 import com.example.sd_41.service.impl.ChuongTrinhGiamGiaHoaDonImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.sd_41.repository.BanHang.GioHangRepository;
 import com.example.sd_41.service.ViTien.Impl.giaoDichViChiTietServiceImpl;
 import com.example.sd_41.service.ViTien.Impl.viTienServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,10 +39,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -91,6 +84,9 @@ public class HoaDonController {
 
     @Autowired
     giaoDichViChiTietServiceImpl giaoDichViChiTietServiceImpl;
+
+    @Autowired
+    private GioHangRepository gioHangRepository;
 
     @Autowired
     viTienServiceImpl viTienServiceImpl;
@@ -284,7 +280,10 @@ public class HoaDonController {
                                 //Lấy số lượng hiện tại trừ đi
 
                                 List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepository.findByHoaDon_Id(hoaDonId);
+                                List<UUID> giayTheThaoChiTietIdsToDelete = new ArrayList<>();
+
                                 model.addAttribute("hoaDonChiTiets", hoaDonChiTiets);
+
 
                                 //Tìm hóa đơn để tính số lượng
                                 for (HoaDonChiTiet hoaDonChiTietList : hoaDonChiTiets) {
@@ -301,28 +300,37 @@ public class HoaDonController {
                                     giayTheThaoChiTiet.setSoLuong(Integer.toString(soLuongCo - soLuongMua));
                                     giayTheThaoChiTietRepository.save(giayTheThaoChiTiet);
 
+                                    UUID giayTheThaoChiTietId = hoaDonChiTietList.getGiayTheThaoChiTiet().getId();
+                                    giayTheThaoChiTietIdsToDelete.add(giayTheThaoChiTietId);
+
                                 }
 
-                                hoaDonRepository.save(hoaDon);
+                                UUID idKhachHang = (UUID) session.getAttribute("idKhachHang");
+                                List<GioHang> gioHangList = gioHangRepository.findByKhachHang_Id(idKhachHang);
 
-//                                String[] idGiayTheTheThaoChiTietArrayCashCu = request.getParameterValues("idGiayTheTheThaoChiTiet");
+                                System.out.println("Danh sách ID của giỏ hàng cho khách hàng có ID là " + idKhachHang + ":");
+
+                                for (GioHang gioHang : gioHangList) {
+
+                                    System.out.println(gioHang.getId());
+
+                                    for (UUID giayTheThaoChiTietIdToDelete : giayTheThaoChiTietIdsToDelete) {
+
+                                        gioHangChiTietRepository.deleteByGioHang_IdAndGiayTheThaoChiTiet_Id(gioHang.getId(),giayTheThaoChiTietIdToDelete);
+
+                                    }
+
+                                }
+
+
+//                                for (UUID giayTheThaoChiTietIdToDelete : giayTheThaoChiTietIdsToDelete) {
 //
-//                                if (idGiayTheTheThaoChiTietArrayCashCu != null) {
-//                                    for (String idGiayTheTheThaoChiTietCashCu : idGiayTheTheThaoChiTietArrayCashCu) {
-//                                        UUID giayTheThaoChiTietId = UUID.fromString(idGiayTheTheThaoChiTietCashCu);
+//                                    gioHangChiTietRepository.deleteByGioHang_IdAndGiayTheThaoChiTiet_Id(,giayTheThaoChiTietIdToDelete);
 //
-//                                        // Tìm giỏ hàng chi tiết để xóa
-//                                        GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findByGiayTheThaoChiTiet_Id(giayTheThaoChiTietId);
-//
-//                                        // Kiểm tra xem giỏ hàng chi tiết có tồn tại hay không
-//                                        if (gioHangChiTiet != null) {
-//                                            // Xóa giỏ hàng chi tiết
-//                                            gioHangChiTietRepository.delete(gioHangChiTiet);
-//
-//                                        }
-//                                    }
 //                                }
 
+
+                                hoaDonRepository.save(hoaDon);
 
 
                                 model.addAttribute("idKH", hoaDon.getKhachHang().getId());

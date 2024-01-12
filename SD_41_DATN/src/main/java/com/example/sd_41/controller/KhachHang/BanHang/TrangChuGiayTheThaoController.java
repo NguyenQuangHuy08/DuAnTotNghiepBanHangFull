@@ -1002,9 +1002,6 @@ public class TrangChuGiayTheThaoController {
                         System.out.println("Id Gio Hang: " + gioHang.getId());
                         System.out.println("Selected Giay Chi Tiet Id: " + selectedGiayChiTietId);
 
-                        //Đang bị sai ở đây
-
-//                        Optional<GioHangChiTiet> optionalGioHangChiTiet = gioHangChiTietRepository.findById(selectedGiayChiTietId);
                         Optional<GioHangChiTiet> optionalGioHangChiTiet = gioHangChiTietRepository.findByGioHang_Id_AndGiayTheThaoChiTiet_Id(gioHang.getId(),selectedGiayChiTietId);
 
                         if(optionalGioHangChiTiet.isPresent()){
