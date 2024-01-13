@@ -2346,13 +2346,6 @@ public class HoaDonController {
     }
 
 
-
-
-
-
-
-
-
     //Todo code list giầy thể thao chi tiết
     @ModelAttribute("giayTheThaoChiTiet")
     public List<GiayTheThaoChiTiet> getListGiayTheThaoChiTiet(){

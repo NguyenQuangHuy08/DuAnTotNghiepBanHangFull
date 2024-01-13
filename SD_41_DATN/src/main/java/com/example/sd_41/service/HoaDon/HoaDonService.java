@@ -177,6 +177,7 @@ public class HoaDonService implements HoaDonServiceImpl{
         //Trạng thái hóa đơn là 4 là thanh toán thành công
 
         hd.setTrangThai(4);
+        hd.setTrangThaiMoney(1);
         //1: là bán hàng tại quầy
         //2: là bán hàng online
         hd.setHinhThuc(1);

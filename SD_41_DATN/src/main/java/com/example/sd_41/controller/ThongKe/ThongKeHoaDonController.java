@@ -6,6 +6,7 @@ import com.example.sd_41.repository.HoaDon.HoaDonRepository;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoChiTietRepository;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,45 +62,25 @@ public class ThongKeHoaDonController {
 
 
 
-    //Trả dữ liệu về dạng json
-
-    //Todo code thống kê data hóa đơn
+   //Thống kê hóa đơn
 
     @GetMapping("/thongke-data-hoadon")
     @ResponseBody
     public String thongKeDataHD() {
-
         List<HoaDon> hdct = hoaDonRepository.findAll();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        try {
+        // Thêm module để hỗ trợ Java 8 date/time
+        objectMapper.registerModule(new JavaTimeModule());
 
+        try {
             String jsonData = objectMapper.writeValueAsString(hdct);
             return jsonData;
-
         } catch (Exception e) {
-
             e.printStackTrace();
             return "";
-
         }
     }
-
-//    //Todo code
-//    @GetMapping("/thongke-data-hoadon")
-//    @ResponseBody
-//    public String thongKeDataHD() {
-//        List<HoaDon> hdct = hoaDonRepository.findAll();
-//
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        try {
-//            String jsonData = objectMapper.writeValueAsString(hdct);
-//            return jsonData;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return "";
-//        }
-//    }
 
 
 

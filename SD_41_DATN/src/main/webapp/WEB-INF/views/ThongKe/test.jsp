@@ -58,31 +58,31 @@
                     </div>
                 </div>
 
-                                <div class="col-xl-3 col-md-6 mb-4">
-                                    <div class="card border-left-primary shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                        Đã bán tại quầy / online
-                                                    </div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800"
-                                                         style="margin-top: 20px">
-                                                        ${tongHoaDonTaiQuay} / ${tongHoaDonOnline}
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Đã bán tại quầy / online
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                         style="margin-top: 20px">
+                                        ${tongHoaDonTaiQuay} / ${tongHoaDonOnline}
 
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <i class="fa fa-shopping-cart fa-2x text-gray-300"></i>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
+                                <div class="col-auto">
+                                    <i class="fa fa-shopping-cart fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
 
-            <%--                <div class="col-xl-3 col-md-6 mb-4">--%>
+                <%--                <div class="col-xl-3 col-md-6 mb-4">--%>
                 <%--                    <div class="card border-left-success shadow h-100 py-2">--%>
                 <%--                        <div class="card-body">--%>
                 <%--                            <div class="row no-gutters align-items-center">--%>
@@ -167,7 +167,7 @@
 </div>
 
 <%--<%@ include file="../templates/Admin/Layouts/GiayTheThao/_FooterGiayTheThao.jsp" %>--%>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -388,6 +388,7 @@
 
 <%--Thống kê hóa đơn--%>
 
+
 <script>
     $(document).ready(function() {
         var currentChart;
@@ -399,7 +400,7 @@
 
             var ctx = document.getElementById('productChart1').getContext('2d');
             var chartData = {
-                labels: productNames,
+                labels: productNames.map(formatDate),
                 datasets: [{
                     label: 'Tổng tiền',
                     data: productTongTien,
@@ -453,8 +454,8 @@
                         },
                         elements: {
                             line: {
-                                tension: 0.4, // Điều chỉnh độ đoạn của đường
-                                borderWidth: 2, // Độ dày của đường
+                                tension: 0.4,
+                                borderWidth: 2,
                                 fill: true,
                             }
                         }
@@ -464,25 +465,9 @@
                 currentChart = new Chart(ctx, {
                     type: 'pie',
                     data: {
-                        labels: productNames,
+                        labels: productNames.map(formatDate),
                         datasets: [{
                             data: productTongTien,
-                            // backgroundColor: [
-                            //     'rgba(255, 99, 132, 0.2)',
-                            //     'rgba(54, 162, 235, 0.2)',
-                            //     'rgba(255, 206, 86, 0.2)',
-                            //     'rgba(75, 192, 192, 0.2)',
-                            //     'rgba(153, 102, 255, 0.2)',
-                            //     'rgba(255, 159, 64, 0.2)'
-                            // ],
-                            // borderColor: [
-                            //     'rgba(255, 99, 132, 1)',
-                            //     'rgba(54, 162, 235, 1)',
-                            //     'rgba(255, 206, 86, 1)',
-                            //     'rgba(75, 192, 192, 1)',
-                            //     'rgba(153, 102, 255, 1)',
-                            //     'rgba(255, 159, 64, 1)'
-                            // ],
                             backgroundColor: [
                                 'rgba(75, 192, 192, 0.2)',
                                 'rgba(153, 102, 255, 0.2)',
@@ -529,10 +514,18 @@
                                 position: 'right'
                             }
                         },
-
                         aspectRatio: 3
                     }
                 });
+            }
+        }
+
+        function formatDate(dateString) {
+            var date = moment(dateString, 'YYYY-MM-DDTHH:mm:ss');
+            if (date.isValid()) {
+                return date.format('DD/MM/YYYY');
+            } else {
+                return 'Invalid date';
             }
         }
 
@@ -540,22 +533,14 @@
         var productTongTien = [];
 
         $.getJSON('/thongke-data-hoadon', function(data) {
-            // data.forEach(function(product) {
-            //     //đại diện cho hóa đơn
-            //     productNames.push(product.ngayThanhToan)
-            //     productTongTien.push(product.thanhTien);
-            //
-            // });
-
             data.forEach(function(hoaDon) {
                 if (hoaDon.trangThai === 4) {
-                    // Đại diện cho hóa đơn
                     productNames.push(hoaDon.ngayThanhToan);
                     productTongTien.push(hoaDon.thanhTien);
                 }
             });
 
-            changeChartType('bar'); // Hiển thị biểu đồ bar mặc định khi trang được tải
+            changeChartType('bar');
 
             $('#barChartButton1').click(function() {
                 changeChartType('bar');
