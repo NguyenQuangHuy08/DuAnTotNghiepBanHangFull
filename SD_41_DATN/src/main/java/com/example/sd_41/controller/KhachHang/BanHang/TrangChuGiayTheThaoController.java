@@ -719,7 +719,14 @@ public class TrangChuGiayTheThaoController {
             attributes.addFlashAttribute("erCheckNun", "Xin lỗi hãy chọn ít nhất một sản phẩm để thanh toán !");
         } else {
             HoaDon hoaDon = new HoaDon();
-            hoaDon.setMaHoaDon(UUID.randomUUID().toString()); // Đổi thành UUID ngẫu nhiên
+
+            // Thêm vào Hóa đơn
+            LocalTime localTime = LocalTime.now();
+            LocalDate ngayThanhToan = LocalDate.now();
+            String ngayThanhToanToDate = ngayThanhToan.toString();
+
+            hoaDon.setMaHoaDon("MaHD" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
+            
             hoaDon.setKhachHang(khachHang);
             hoaDon.setTrangThai(0);
             hoaDon.setNgayThanhToan(LocalDateTime.now());
