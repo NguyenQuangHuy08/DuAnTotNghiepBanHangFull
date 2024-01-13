@@ -76,8 +76,9 @@
                     </td>
                     <td style="padding-top: 20px; text-align: center; color: black">
 
-                                <fmt:formatNumber type="" value="${gioHangChiTiet.giayTheThaoChiTiet.giayTheThao.giaBan * (100 - sale)/100}" pattern="#,##0.###" /> VNĐ
-<%--                                    <fmt:formatNumber type="" value="${giaBan}" pattern="#,##0.###" /> VNĐ--%>
+<%--                                <fmt:formatNumber type="" value="${gioHangChiTiet.giayTheThaoChiTiet.giayTheThao.giaBan * (100 - sale)/100}" pattern="#,##0.###" /> VNĐ--%>
+                                <fmt:formatNumber type="" value="${gioHangChiTiet.giayTheThaoChiTiet.giayTheThao.giaBan * (100 - saleList[i.index])/100}" pattern="#,##0.###" /> VNĐ
+
 
                     </td>
 <%--                    <td style="padding-top: 20px; text-align: center; color: black">--%>

@@ -140,45 +140,52 @@
                 </h5>
 
                 <p style="color: black;margin-top: 30px;font-size: 18px">
-                    <span style="color: black">Giá bán:</span>
-                             <%--   <span style="color: red">
-                                <fmt:formatNumber  type="" value="${giayTheThao.giaBan}" pattern="#,##0.###" />
-                              </span>--%>
-<%--                    VNĐ--%>
+                    <%--   <span style="color: red">
+                       <fmt:formatNumber  type="" value="${giayTheThao.giaBan}" pattern="#,##0.###" />
+                     </span>--%>
+                    <%--                    VNĐ--%>
 
-<%--                    Todo sủa code ở đây--%>
+                    <%--                    Todo sủa code ở đây--%>
 
-<%--                    Đang gặp vấn đề là sản phẩm không áp dụng cũng được giảm giá 10%--%>
+                    <%--                    Đang gặp vấn đề là sản phẩm không áp dụng cũng được giảm giá 10%--%>
                     <c:choose>
-<%--                        Trường hợp này là có sale--%>
-<%--                    Nếu mà sale khác 1--%>
-                        <c:when test="${sale != 1}">
-                            <div class="gia">
-                                <p>
-                                    <del style="font-size: 15px">
-<%--                                            Đây là giá bán ban đầu khi chưa được giảm--%>
-                                            <fmt:formatNumber  type="" value="${giayTheThao.giaBan}" pattern="#,##0.###" /> VNĐ
+                        <%--                        Trường hợp này là có sale--%>
+                        <%--                    Nếu mà sale khác 1--%>
+                    <c:when test="${sale == 1}">
+                <div class="gia">
+                    <p>
+                        <del style="font-size: 15px">
+                                <%--                                            Đây là giá bán ban đầu khi chưa được giảm--%>
+                                    <span style="color: black;font-weight: bold;font-size: 17px">
+                                                    Giá bán:
+                                    </span>
+                                    <span style="color: red;font-size: 18px; font-weight: bold">
+                                                      <fmt:formatNumber type="" value="${giayTheThao.giaBan}" pattern="#,##0.###"/> VNĐ
+                                    </span>
 
-                                    </del>
-<%--                                            Đây là giá bán khi đã được giảm    --%>
-                                    <strong style="font-size: 17px; color: black;margin-left: 10px">
-
-                                            <fmt:formatNumber  type="" value="${giayTheThao.giaBan * (100 - sale )/100}" pattern="#,##0.###" /> VNĐ
-
-                                    </strong>
-                                </p>
-                            </div>
-                        </c:when>
-                        <c:when test="${sale == 1}">
-                            <div class="gia">
-                                <p>
-                                    <strong>
-                                        <fmt:formatNumber  type="" value="${giayTheThao.giaBan}" pattern="#,##0.###" /> VNĐ
-                                    </strong>
-                                </p>
-                            </div>
-                        </c:when>
-                    </c:choose>
+                        </del>
+                            <%--                                            Đây là giá bán khi đã được giảm    --%>
+                        <strong style="font-size: 17px; color: black;margin-left: 10px">
+                                <span style="font-size: 19px">
+                                                                <fmt:formatNumber type="" value="${giayTheThao.giaBan * (100 - sale )/100}" pattern="#,##0.###"/> VNĐ
+                                </span>
+                        </strong>
+                    </p>
+                </div>
+                </c:when>
+                <c:when test="${sale != 1}">
+                    <div class="gia">
+                        <p style="">
+                                <span style="color: black;font-weight: bold;font-size: 17px">
+                                                    Giá bán:
+                                </span>
+                                <span style="color: red;font-size: 18px; font-weight: bold">
+                                                    <fmt:formatNumber type="" value="${giayTheThao.giaBan}" pattern="#,##0.###"/> VNĐ
+                                </span>
+                        </p>
+                    </div>
+                </c:when>
+                </c:choose>
 
                 </p>
 
@@ -202,7 +209,8 @@
                             <div class="col-9">
                                         <span style="color: black; font-size: 17px;">
                                             <c:forEach items="${uniqueSizes}" var="size">
-                                                <input class="custom-radio" type="radio" name="size" value="${size.id}" id="size-${size.id}">
+                                                <input class="custom-radio" type="radio" name="size" value="${size.id}"
+                                                       id="size-${size.id}">
                                                 <label style="margin-top: 1px" for="size-${size.id}">
                                                     <span>
                                                             ${size.size}
@@ -221,7 +229,8 @@
                         <div class="col-9">
                                 <span style="color: black; font-size: 17px">
                                     <c:forEach items="${uniqueMauSac}" var="mauSac">
-                                        <input class="custom-radio" style="margin-left: 20px" type="radio" name="mauSac" value="${mauSac.id}" id="mauSac-${mauSac.id}">
+                                        <input class="custom-radio" style="margin-left: 20px" type="radio" name="mauSac"
+                                               value="${mauSac.id}" id="mauSac-${mauSac.id}">
                                         <label style="margin-top: 1px" for="mauSac-${mauSac.id}">
                                              <span>
                                                      ${mauSac.tenMauSac}
@@ -267,7 +276,8 @@
                     <input type="hidden" name="idGiayTheThaoChiTiet" value="${idGiayTheThaoChiTiet}">
                     <div class="button_MuaHang" style="margin-top: 80px; margin-left: 90px">
                         <a style="text-decoration: none">
-                            <button style="margin-bottom: 10px; margin-right: 40px" type="submit" class="btn btn-primary">
+                            <button style="margin-bottom: 10px; margin-right: 40px" type="submit"
+                                    class="btn btn-primary">
                                 <span style="color: black; font-size: 22px; font-weight: bold">
                                     🛒
                                 </span>
@@ -416,154 +426,155 @@
                     <h6>Công dụng : </h6>
                 </div>
                 <div class="col-5">
-                <div class="col-5">
-                    <span>${giayTheThao.congDung.tenCongDung}</span>
+                    <div class="col-5">
+                        <span>${giayTheThao.congDung.tenCongDung}</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-12" style="margin-top: 20px;border: 0px solid #FAFAFA; background: #FAFAFA; width: 1160px">
-            <h4 style="height: 40px; margin-top: 30px; font-size: 20px">
-                <span style=" color: red;width: 50px;margin-right: 5px">❤</span>Thông tin cửa hàng!
-            </h4>
-        </div>
-        <div class="col-12" style="margin-top: 20px">
-            <span style="margin-bottom: 10px">-Tất cả sản phẩm mình đều hỗ trợ cho khách xem hàng, quý khách cứ bảo là shop cho kiểm tra hàng rồi shiper sẽ gọi cho shop.  Nhưng nhiều shiper khó tính họ theo đúng quy định của shopee là không được đồng kiểm. Nên quý khách thông cảm.</span>
-            <br>
-            <span>- Nến anh/chị nhận được sản phẩm lỗi hoặc do nhầm lẫn. Mong các bạn nhắn tin cho shop khắc phục trước khi đánh giá sản phẩm ạ ❤ Shop cam kết sẽ luôn có trách nhiệm với sản phẩm đã bán❤.</span>
-            <br>
-            <span style="margin-bottom: 10px">🔶QUY ĐỊNH ĐỔI TRẢ HÀNG: Quý khách có quyền đổi trả hàng trong vòng 07 ngày kể từ ngày nhận hàng (với điều kiện GIÀY CÒN MỚI NGUYÊN-CHƯA QUA SỬ DỤNG) cho những trường hợp sau:
+            <div class="col-12" style="margin-top: 20px;border: 0px solid #FAFAFA; background: #FAFAFA; width: 1160px">
+                <h4 style="height: 40px; margin-top: 30px; font-size: 20px">
+                    <span style=" color: red;width: 50px;margin-right: 5px">❤</span>Thông tin cửa hàng!
+                </h4>
+            </div>
+            <div class="col-12" style="margin-top: 20px">
+                <span style="margin-bottom: 10px">-Tất cả sản phẩm mình đều hỗ trợ cho khách xem hàng, quý khách cứ bảo là shop cho kiểm tra hàng rồi shiper sẽ gọi cho shop.  Nhưng nhiều shiper khó tính họ theo đúng quy định của shopee là không được đồng kiểm. Nên quý khách thông cảm.</span>
+                <br>
+                <span>- Nến anh/chị nhận được sản phẩm lỗi hoặc do nhầm lẫn. Mong các bạn nhắn tin cho shop khắc phục trước khi đánh giá sản phẩm ạ ❤ Shop cam kết sẽ luôn có trách nhiệm với sản phẩm đã bán❤.</span>
+                <br>
+                <span style="margin-bottom: 10px">🔶QUY ĐỊNH ĐỔI TRẢ HÀNG: Quý khách có quyền đổi trả hàng trong vòng 07 ngày kể từ ngày nhận hàng (với điều kiện GIÀY CÒN MỚI NGUYÊN-CHƯA QUA SỬ DỤNG) cho những trường hợp sau:
 ✔️Hàng lỗi nghiêm trọng do sản xuất; hàng giao sai mẫu, nhầm size. Anh/chị vui lòng inbox lại Shop để được hướng dẫn trả hàng/hoàn tiền và Shopee sẽ hỗ trợ 100% phí ship.
 ✔️Trường hợp anh/chị đổi giày do muốn đổi size, đổi mẫu khác thì cũng xin inbox lại shop để được hướng dẫn. Nếu anh/chị không đến đổi trực tiếp được thì chi phí ship 2 chiều sẽ chịu 100% để thuê bên vận chuyển, bưu điện đi đổi hộ.
 Vì vậy, anh/chị vui lòng đọc kỹ quy định đổi trả hàng ạ😊
 - Hãy inbox Chat với shop nếu anh/chị cần tư vấn ạ.</span>
-        </div>
+            </div>
 
-        <div class="col-12" style="margin-top: 30px">
-            <h2 style="text-align: center;margin-bottom: 30px">Thông tin của các sản phẩm khác!</h2>
-        </div>
-        <div class="row">
-            <c:forEach var="listGiay" items="${listPage}">
-                <c:if test="${listGiay.trangThai == 1}">
-                    <a href="${pageContext.request.contextPath}/GiayTheThao/detailThongTinGiayTheThao/${listGiay.id}">
-                        <div class="col-lg-3 col-md-6">
-                            <div class="single-product">
-                                <img class="img-fluid" style="height: 200px" src="/upload/${listGiay.image.get(0).link}"
-                                     alt="">
-                                <div class="product-details">
-                                    <h6 style="text-align: center">${listGiay.tenGiayTheThao}</h6>
-                                    <div class="price">
-                                        <h6 style="text-align: center">
+            <div class="col-12" style="margin-top: 30px">
+                <h2 style="text-align: center;margin-bottom: 30px">Thông tin của các sản phẩm khác!</h2>
+            </div>
+            <div class="row">
+                <c:forEach var="listGiay" items="${listPage}">
+                    <c:if test="${listGiay.trangThai == 1}">
+                        <a href="${pageContext.request.contextPath}/GiayTheThao/detailThongTinGiayTheThao/${listGiay.id}">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="single-product">
+                                    <img class="img-fluid" style="height: 200px"
+                                         src="/upload/${listGiay.image.get(0).link}"
+                                         alt="">
+                                    <div class="product-details">
+                                        <h6 style="text-align: center">${listGiay.tenGiayTheThao}</h6>
+                                        <div class="price">
+                                            <h6 style="text-align: center">
 
-                                            <span style="color: red"> Đ </span>
-                                            <fmt:formatNumber type="" value="${listGiay.giaBan}" pattern="#,##0.###"/>
-                                            VNĐ
+                                                <span style="color: red"> Đ </span>
+                                                <fmt:formatNumber type="" value="${listGiay.giaBan}"
+                                                                  pattern="#,##0.###"/>
+                                                VNĐ
 
-                                        </h6>
-                                            <%--                                            <h6 class="l-through">$210.00</h6>--%>
-                                    </div>
-                                    <div class="prd-bottom">
-                                        <a href="" class="social-info">
-                                            <span class="ti-bag"></span>
-                                            <p class="hover-text">add to bag</p>
-                                        </a>
-                                        <a href="" class="social-info">
-                                            <span class="lnr lnr-heart"></span>
-                                            <p class="hover-text">Wishlist</p>
-                                        </a>
-                                        <a href="" class="social-info">
-                                            <span class="lnr lnr-sync"></span>
-                                            <p class="hover-text">compare</p>
-                                        </a>
-                                        <a href="${pageContext.request.contextPath}/GiayTheThao/detailThongTinGiayTheThao/${listGiay.id}"
-                                           class="social-info">
-                                            <span class="lnr lnr-move"></span>
-                                            <p class="hover-text">view more</p>
-                                        </a>
+                                            </h6>
+                                                <%--                                            <h6 class="l-through">$210.00</h6>--%>
+                                        </div>
+                                        <div class="prd-bottom">
+                                            <a href="" class="social-info">
+                                                <span class="ti-bag"></span>
+                                                <p class="hover-text">add to bag</p>
+                                            </a>
+                                            <a href="" class="social-info">
+                                                <span class="lnr lnr-heart"></span>
+                                                <p class="hover-text">Wishlist</p>
+                                            </a>
+                                            <a href="" class="social-info">
+                                                <span class="lnr lnr-sync"></span>
+                                                <p class="hover-text">compare</p>
+                                            </a>
+                                            <a href="${pageContext.request.contextPath}/GiayTheThao/detailThongTinGiayTheThao/${listGiay.id}"
+                                               class="social-info">
+                                                <span class="lnr lnr-move"></span>
+                                                <p class="hover-text">view more</p>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                </c:if>
-            </c:forEach>
+                        </a>
+                    </c:if>
+                </c:forEach>
+            </div>
+
+
         </div>
-
-
     </div>
-</div>
 
-<div style="margin-top: 30px"></div>
+    <div style="margin-top: 30px"></div>
 
-<script>
-    var mauSacAndSizeDiv = document.getElementById("mauSacAndSize");
-    mauSacAndSizeDiv.style.display = "none";
+    <script>
+        var mauSacAndSizeDiv = document.getElementById("mauSacAndSize");
+        mauSacAndSizeDiv.style.display = "none";
 
-    function updateProductAvailability() {
-        var selectedColor = document.querySelector("input[name='mauSac']:checked");
-        var selectedSize = document.querySelector("input[name='size']:checked");
+        function updateProductAvailability() {
+            var selectedColor = document.querySelector("input[name='mauSac']:checked");
+            var selectedSize = document.querySelector("input[name='size']:checked");
 
-        if (selectedColor && selectedSize) {
-            var colorId = selectedColor.value;
-            var sizeId = selectedSize.value;
+            if (selectedColor && selectedSize) {
+                var colorId = selectedColor.value;
+                var sizeId = selectedSize.value;
 
-            // Kiểm tra sự tồn tại của phần tử 'idGiayTheThao'
-            var idGiayTheThaoElement = document.getElementById("idGiayTheThao");
+                // Kiểm tra sự tồn tại của phần tử 'idGiayTheThao'
+                var idGiayTheThaoElement = document.getElementById("idGiayTheThao");
 
-            if (idGiayTheThaoElement) {
-                var idGiayTheThao = idGiayTheThaoElement.value;
+                if (idGiayTheThaoElement) {
+                    var idGiayTheThao = idGiayTheThaoElement.value;
 
-                console.log("Id của giày thể thao", idGiayTheThao);
-                console.log("Id size", sizeId);
-                console.log("Id màu sắc", colorId);
+                    console.log("Id của giày thể thao", idGiayTheThao);
+                    console.log("Id size", sizeId);
+                    console.log("Id màu sắc", colorId);
 
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", "/find/" + idGiayTheThao + "/" + colorId + "/" + sizeId, true);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", "/find/" + idGiayTheThao + "/" + colorId + "/" + sizeId, true);
 
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        var response = JSON.parse(xhr.responseText);
-                        if (response > 0) {
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            var response = JSON.parse(xhr.responseText);
+                            if (response > 0) {
 
-                            document.getElementById("soLuongTonStr").textContent = "Số lượng sản phẩm còn lại: " + response;
-                            document.getElementById("soLuongTon").value = response;
+                                document.getElementById("soLuongTonStr").textContent = "Số lượng sản phẩm còn lại: " + response;
+                                document.getElementById("soLuongTon").value = response;
 
+                            } else {
+                                document.getElementById("soLuongTonStr").textContent = "Đã hết sản phẩm";
+                                document.getElementById("soLuongTon").value = 0;
+                            }
                         } else {
                             document.getElementById("soLuongTonStr").textContent = "Đã hết sản phẩm";
                             document.getElementById("soLuongTon").value = 0;
                         }
-                    } else {
-                        document.getElementById("soLuongTonStr").textContent = "Đã hết sản phẩm";
-                        document.getElementById("soLuongTon").value = 0;
-                    }
-                };
+                    };
 
-                xhr.send();
+                    xhr.send();
 
-                mauSacAndSizeDiv.style.display = "block";
-            } else {
-                console.error("Element with ID 'idGiayTheThao' not found in the DOM");
+                    mauSacAndSizeDiv.style.display = "block";
+                } else {
+                    console.error("Element with ID 'idGiayTheThao' not found in the DOM");
+                }
             }
         }
-    }
 
-    var colorInputs = document.querySelectorAll("input[name='mauSac']");
-    var sizeInputs = document.querySelectorAll("input[name='size']");
+        var colorInputs = document.querySelectorAll("input[name='mauSac']");
+        var sizeInputs = document.querySelectorAll("input[name='size']");
 
-    colorInputs.forEach(function (input) {
-        input.addEventListener("change", updateProductAvailability);
-    });
+        colorInputs.forEach(function (input) {
+            input.addEventListener("change", updateProductAvailability);
+        });
 
-    sizeInputs.forEach(function (input) {
-        input.addEventListener("change", updateProductAvailability);
-    });
+        sizeInputs.forEach(function (input) {
+            input.addEventListener("change", updateProductAvailability);
+        });
 
-</script>
-
+    </script>
 
 
-<%@ include file="../../Layouts/Index/_Session4.jsp" %>
-<%--   Footer--%>
-<%@ include file="../../Layouts/Index/_Footer.jsp" %>
+    <%@ include file="../../Layouts/Index/_Session4.jsp" %>
+    <%--   Footer--%>
+    <%@ include file="../../Layouts/Index/_Footer.jsp" %>
 
 </body>
 

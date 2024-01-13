@@ -1044,14 +1044,6 @@ public class HoaDonController {
 
                                 if (hoaDon != null) {
 
-//                                    String tenKhachHangCu = request.getParameter("tenKhachHang");
-//                                    String soDienThoaiCu = request.getParameter("soDienThoai");
-//                                    String quocGiaCu = request.getParameter("quocGia");
-//                                    String thanhPhoCu = request.getParameter("thanhPho");
-//                                    String diaChiCu = request.getParameter("diaChi");
-//                                    String messCu = request.getParameter("mess");
-//                                    String thanhTienTong1 = request.getParameter("tongTien");
-
                                     String tenKhachHangMoiMomo = request.getParameter("ten1");
                                     String emailMoiMomo = request.getParameter("email1");
                                     String soDienThoaiMoiMomo = request.getParameter("sdt1");
