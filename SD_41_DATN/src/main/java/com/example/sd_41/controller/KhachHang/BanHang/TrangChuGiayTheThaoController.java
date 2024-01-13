@@ -351,37 +351,32 @@ public class TrangChuGiayTheThaoController {
         model.addAttribute("pageNumbers", pageNumbers);
         model.addAttribute("currentPage", currentPage);
 
-        //Todo code giảm giá bên details
 
         try {
-
-            //Tim kiếm giầy thể thao được áp dụng cho giảm giá
+            double maxSale = 0.0; // Sử dụng một biến để lưu giữ giá trị lớn nhất của sale
             List<ChuongTrinhGiamGiaChiTietGiayTheThao> listSale = chuongTrinhGiamGiaChiTietGiayTheThaoRepository.findByGiayTheThao_Id(id);
 
             for (ChuongTrinhGiamGiaChiTietGiayTheThao sale : listSale) {
-
-                //Trạng thái đã kích hoạt
-                //Trạng thái 1 là đã được kích hoạt
-                if (sale.getTrangThai() == 1) {
-
-                    model.addAttribute("sale", sale.getChuongTrinhGiamGiaGiayTheThao().getPhanTramGiam());
-
-                } else {
-
-                    model.addAttribute("sale", 0);
-
+                if (sale.getTrangThai() == 1 && sale.getChuongTrinhGiamGiaGiayTheThao().getTrangThai() == 1) {
+                    double currentSale = sale.getChuongTrinhGiamGiaGiayTheThao().getPhanTramGiam();
+                    if (currentSale > maxSale) {
+                        maxSale = currentSale;
+                    }
                 }
-
             }
 
-
+            if (maxSale > 0) {
+                model.addAttribute("sale", maxSale);
+            } else {
+                model.addAttribute("sale", 0);
+            }
         } catch (Exception e) {
-
             e.printStackTrace();
             model.addAttribute("sale", null);
             model.addAttribute("giayTheThao", giayTheThao);
-
         }
+
+
 
     }
 

@@ -8,9 +8,14 @@
     .pagination .page-item.disabled a{
 
         background-color: red;
-
-
     }
+
+     .single-product {
+         display: inline-block; /* Hiển thị sản phẩm cùng một hàng */
+         margin: 10px; /* Độ lề giữa các sản phẩm */
+         vertical-align: top; /* Hiển thị sản phẩm ở phía trên của dòng */
+     }
+
 </style>
 
 <section class="owl-carousel active-product-area section_gap">
@@ -29,7 +34,6 @@
                 </div>
             </div>
             <div class="row">
-                <%--                listGiay.soLuong > 0 &&--%>
                     <%--                Todo code list giầy thể thao--%>
                     <c:forEach var="listGiay" items="${listPage}">
                         <c:if test="${listGiay.trangThai == 1}">
@@ -44,14 +48,8 @@
 
                                                     <span style="color: red"> Đ </span>
                                                     <fmt:formatNumber type="" value="${listGiay.giaBan}" pattern="#,##0.###" /> VNĐ
-<%--                                                    <del>--%>
-<%--                                                        <fmt:formatNumber type="" value="${listGiay.giaBan}" pattern="#,##0.###" /> VNĐ--%>
-<%--                                                    </del>--%>
-<%--                                                    <fmt:formatNumber type="" value="${listGiay.giaBan * (100 - listSale.chuongTrinhGiamGiaGiayTheThao.phanTramGiam)/100}" pattern="#,##0.###" /> VNĐ--%>
-
 
                                                 </h6>
-                                                    <%--                                            <h6 class="l-through">$210.00</h6>--%>
                                             </div>
                                             <div class="prd-bottom">
 
@@ -117,34 +115,50 @@
                     <div class="col-12" style="text-align: center;margin-top: 60px; margin-bottom: 80px">
                         <h3 style="color: black" style="margin-bottom: 100px;margin-top: 100px;text-align: center">SALE</h3>
                     </div>
-
-<%--                    Chỉ hiện ra các loại giầy thể thao còn trong trạng thái sale--%>
-
-                    <c:forEach var="listSale" items="${listSale}">
+                    <c:forEach var="listSale"  items="${listSale}">
                         <c:if test="${listSale.trangThai == 1 && listSale.chuongTrinhGiamGiaGiayTheThao.trangThai ==1}">
-                            <a href="${pageContext.request.contextPath}/GiayTheThao/detailThongTinGiayTheThao/${listSale.giayTheThao.id}">
-                                <div class="col-lg-3 col-md-6">
-                                    <div class="single-product">
-                                        <img class="img-fluid" style="height: 200px;width: 1300px" src="/upload/${listSale.giayTheThao.image.get(0).link}" alt="">
-                                        <div class="product-details">
-                                            <h6 style="text-align: center">${listSale.giayTheThao.tenGiayTheThao}</h6>
-                                            <div class="price">
-                                                <h6 style="text-align: center">
+                            <a href="${pageContext.request.contextPath}/GiayTheThao/detailThongTinGiayTheThao/${listSale.giayTheThao.id}">                                    <div class="col-lg-3 col-md-6">
+                                        <div class="single-product">
+                                            <img class="img-fluid" style="height: 200px" src="/upload/${listSale.giayTheThao.image.get(0).link}" alt="">
+                                            <div class="product-details">
+                                                <h6 style="text-align: center">${listSale.giayTheThao.tenGiayTheThao}</h6>
+                                                <div class="price">
+                                                    <h6 style="text-align: center">
+                                                        <span style="color: red"> Đ </span>
+                                                        <del>
+                                                            <fmt:formatNumber type="" value="${listSale.giayTheThao.giaBan}" pattern="#,##0.###" /> VNĐ
+                                                        </del>
+                                                        <fmt:formatNumber type="" value="${listSale.giayTheThao.giaBan * (100 - listSale.chuongTrinhGiamGiaGiayTheThao.phanTramGiam)/100}" pattern="#,##0.###" /> VNĐ
 
-                                                    <span style="color: red"> Đ </span>
-                                                    <del>
-                                                        <fmt:formatNumber type="" value="${listSale.giayTheThao.giaBan}" pattern="#,##0.###" /> VNĐ
-                                                    </del>
-                                                    <fmt:formatNumber type="" value="${listSale.giayTheThao.giaBan * (100 - listSale.chuongTrinhGiamGiaGiayTheThao.phanTramGiam)/100}" pattern="#,##0.###" /> VNĐ
+                                                    </h6>
+                                                </div>
+                                                <div class="prd-bottom">
 
-                                                </h6>
+                                                    <a href="" class="social-info">
+                                                        <span class="ti-bag"></span>
+                                                        <p class="hover-text">add to bag</p>
+                                                    </a>
+                                                    <a href="" class="social-info">
+                                                        <span class="lnr lnr-heart"></span>
+                                                        <p class="hover-text">Wishlist</p>
+                                                    </a>
+                                                    <a href="" class="social-info">
+                                                        <span class="lnr lnr-sync"></span>
+                                                        <p class="hover-text">compare</p>
+                                                    </a>
+                                                    <a href="${pageContext.request.contextPath}/GiayTheThao/detailThongTinGiayTheThao/${listGiay.id}" class="social-info">
+                                                        <span class="lnr lnr-move"></span>
+                                                        <p class="hover-text">view more</p>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </a>
-                        </c:if>
-                    </c:forEach>
+                                </a>
+                            </c:if>
+                        </c:forEach>
+
+
 
 
 

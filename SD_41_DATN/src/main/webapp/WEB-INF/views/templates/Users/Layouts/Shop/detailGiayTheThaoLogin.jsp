@@ -140,51 +140,44 @@
                 </h5>
 
                 <p style="color: black;margin-top: 30px;font-size: 18px">
-                    <%--   <span style="color: red">
-                       <fmt:formatNumber  type="" value="${giayTheThao.giaBan}" pattern="#,##0.###" />
-                     </span>--%>
-                    <%--                    VNĐ--%>
 
-                    <%--                    Todo sủa code ở đây--%>
-
-                    <%--                    Đang gặp vấn đề là sản phẩm không áp dụng cũng được giảm giá 10%--%>
                     <c:choose>
-                        <%--                        Trường hợp này là có sale--%>
-                        <%--                    Nếu mà sale khác 1--%>
-                    <c:when test="${sale == 1}">
-                <div class="gia">
-                    <p>
-                        <del style="font-size: 15px">
-                                <%--                                            Đây là giá bán ban đầu khi chưa được giảm--%>
-                                    <span style="color: black;font-weight: bold;font-size: 17px">
-                                                    Giá bán:
-                                    </span>
-                                    <span style="color: red;font-size: 18px; font-weight: bold">
-                                                      <fmt:formatNumber type="" value="${giayTheThao.giaBan}" pattern="#,##0.###"/> VNĐ
-                                    </span>
+                            <c:when test="${sale ne null and sale ne 1}">
+                                    <div class="gia">
+                                        <p>
 
-                        </del>
-                            <%--                                            Đây là giá bán khi đã được giảm    --%>
-                        <strong style="font-size: 17px; color: black;margin-left: 10px">
-                                <span style="font-size: 19px">
-                                                                <fmt:formatNumber type="" value="${giayTheThao.giaBan * (100 - sale )/100}" pattern="#,##0.###"/> VNĐ
-                                </span>
-                        </strong>
-                    </p>
-                </div>
-                </c:when>
-                <c:when test="${sale != 1}">
-                    <div class="gia">
-                        <p style="">
-                                <span style="color: black;font-weight: bold;font-size: 17px">
+                                                                    <span style="color: black;font-weight: bold;font-size: 17px">
+                                                                        Giá bán:
+                                                                    </span>
+                                            <del style="font-size: 15px">
+                                                <span style="color: red;font-size: 18px; font-weight: bold">
+                                                                        <fmt:formatNumber type="" value="${giayTheThao.giaBan}"
+                                                                                          pattern="#,##0.###"/> VNĐ
+                                                                    </span>
+                                            </del>
+                                            <strong style="font-size: 17px; color: black;margin-left: 10px">
+                                                                    <span style="font-size: 19px">
+                                                                        <fmt:formatNumber type=""
+                                                                                          value="${giayTheThao.giaBan * (100 - sale )/100}"
+                                                                                          pattern="#,##0.###"/> VNĐ
+                                                                    </span>
+                                            </strong>
+                                        </p>
+                                    </div>
+                            </c:when>
+                                <c:when test="${sale == -1}">
+                                    <div class="gia">
+                                        <p style="">
+                                            <span style="color: black;font-weight: bold;font-size: 17px">
                                                     Giá bán:
-                                </span>
-                                <span style="color: red;font-size: 18px; font-weight: bold">
-                                                    <fmt:formatNumber type="" value="${giayTheThao.giaBan}" pattern="#,##0.###"/> VNĐ
-                                </span>
-                        </p>
-                    </div>
-                </c:when>
+                                            </span>
+                                            <span style="color: red;font-size: 18px; font-weight: bold">
+                                                        <fmt:formatNumber type="" value="${giayTheThao.giaBan}" pattern="#,##0.###"/> VNĐ
+                                            </span>
+                                        </p>
+                                    </div>
+                              </c:when>
+
                 </c:choose>
 
                 </p>
