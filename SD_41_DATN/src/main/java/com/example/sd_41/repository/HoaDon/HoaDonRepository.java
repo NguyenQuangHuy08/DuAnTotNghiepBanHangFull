@@ -50,7 +50,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
     String tongSl(UUID id);
 
     //Todo code bán hàng tại quầy
-    List<HoaDon> findAllByTrangThaiOrderByNgayTaoDesc(int trangThai);
+    List<HoaDon> findAllByTrangThaiAndHinhThucOrderByNgayTaoDesc(int trangThai, int hinhThuc);
 
     //Todo code thêm sản phẩm cho hóa đơn
     @Query("SELECT COALESCE(SUM(hdct.donGia), 0) FROM HoaDonChiTiet hdct WHERE hdct.hoaDon.id = :hoaDonId")

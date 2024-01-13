@@ -33,12 +33,21 @@ public class BanHangTaiQuayAPIController {
     }
 
     @PostMapping("/gttct/search")
-    private List<GiayTheThaoChiTiet> searchByName(@RequestBody String name) {
-        System.out.println("Name: " + name);
-        List<GiayTheThaoChiTiet> result = gttctService.searchByName(name);
-        System.out.println("GTTCT: "+result.get(0).getGiayTheThao().getTenGiayTheThao());
-        return gttctService.searchByName(name);
+    private List<GiayTheThaoChiTiet> searchByName(@RequestBody String[] name) {
+//        System.out.println("Name: " + name);
+        List<GiayTheThaoChiTiet> result = gttctService.searchByName(name[0]);
+//        System.out.println("GTTCT: "+result.get(0).getGiayTheThao(). getTenGiayTheThao());
+        return result;
     }
+
+    @PostMapping("/kh/search")
+    private List<KhachHang> searchByTen(@RequestBody String[] name) {
+//        System.out.println("Name: " + name);
+        List<KhachHang> result = khService.findKhachHang(name[0]);
+//        System.out.println(": "+result.get(0).getGiayTheThao().getTenGiayTheThao());
+        return result;
+    }
+
 
     @GetMapping("/kh")
     public List<KhachHang> getAllKH() {
@@ -116,5 +125,10 @@ public class BanHangTaiQuayAPIController {
     public String pay(@PathVariable("id") UUID id) {
         return hdService.thanhToan(id);
     }
+
+@GetMapping("/hd/{id}")
+    public HoaDon Hd(@PathVariable("id") UUID id){
+        return hdService.findId(id);
+}
 
 }

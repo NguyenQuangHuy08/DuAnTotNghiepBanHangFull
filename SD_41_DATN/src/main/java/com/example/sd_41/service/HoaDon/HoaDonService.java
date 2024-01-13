@@ -98,7 +98,7 @@ public class HoaDonService implements HoaDonServiceImpl{
 //    @Override
     public List<HoaDon> hoaDonCho() {
 
-        return hoaDonRepository.findAllByTrangThaiOrderByNgayTaoDesc(0);
+        return hoaDonRepository.findAllByTrangThaiAndHinhThucOrderByNgayTaoDesc(0, 1);
 
     }
 
@@ -126,11 +126,15 @@ public class HoaDonService implements HoaDonServiceImpl{
         hd.setKhachHang(kh);
         // int count = (int) hoaDonRepository.count();
         hd.setMaHoaDon("MaHD" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
+        hd.setHinhThuc(1);
         hd.setGhiChu("N/A");
         hd.setNgayTao(LocalDateTime.now());
         hd.setNgaySua(LocalDateTime.now());
+        hd.setPhiShip(new BigDecimal(0));
         hd.setMess("N/A");
         hd.setTrangThai(0);
+
+
         return hoaDonRepository.save(hd);
 
     }

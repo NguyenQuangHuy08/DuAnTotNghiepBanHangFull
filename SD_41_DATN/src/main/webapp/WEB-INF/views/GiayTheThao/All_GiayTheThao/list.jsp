@@ -304,7 +304,7 @@
                             <th scope="col" style="text-align: center;color: black">Giới tính</th>
                             <th scope="col" style="text-align: center;color: black">Giá bán VNĐ</th>
                             <th scope="col" style="text-align: center;color: black">Thương hiệu</th>
-                            <th scope="col" style="text-align: center;color: black">Functions</th>
+                            <th scope="col" style="text-align: center;color: black;width: 225px">Functions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -321,8 +321,9 @@
                                     <td style="padding-top: 20px; text-align: center; color: black"><fmt:formatNumber type="" value="${giayTheThao.giaBan}" pattern="#,##0.###" /> VNĐ</td>
                                     <td style="padding-top: 20px; text-align: center; color: black">${giayTheThao.thuongHieu.tenThuongHieu}</td>
                                     <td>
-                                        <a class="col-sm-4" href="${pageContext.request.contextPath}/GiayTheThao/update/${giayTheThao.id}"><button class="btn btn-primary" style="margin-left: 10px; float: left;margin-top: 24px">Edit</button></a>
-                                        <a class="col-sm-4" href="${pageContext.request.contextPath}/GiayTheThao/update/${giayTheThao.id}"><button class="btn btn-primary" style="margin-top: 0px" >Detail</button></a>
+                                        <a class="col-sm-4" href="${pageContext.request.contextPath}/GiayTheThao/update/${giayTheThao.id}"><button class="btn btn-primary" >Edit</button></a>
+
+                                        <a class="col-sm-4" href="${pageContext.request.contextPath}/GiayTheThao/update/${giayTheThao.id}"><button class="btn btn-primary"  >Detail</button></a>
                                     </td>
                                 </tr>
                             </c:if>

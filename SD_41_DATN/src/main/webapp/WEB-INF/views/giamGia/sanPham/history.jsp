@@ -120,7 +120,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 </td>
                 <td>${gg.phanTramGiam}</td>
                 <td> <b>Từ:</b> ${gg.ngayBatDau} <br><b>Đến:</b> ${gg.ngayKetThuc}</td>
-                <td>Giảm giá hóa đơn</td>
+                <td>Giảm giá sản phẩm</td>
                 <td>Hết hạn</td>
                 <td>
                   <a href="${pageContext.request.contextPath}/chuongTrinhGiamGia/${link}/detailSP?id=${gg.id}" class="btn btn-primary">Chi tiết</a>

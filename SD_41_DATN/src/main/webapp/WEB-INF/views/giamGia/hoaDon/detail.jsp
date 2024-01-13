@@ -80,7 +80,7 @@
             </div>
             <div class="row row-info">
                 <div class="col-2">
-                    <label class="label name" style="color: black;font-weight: bold;font-size: 17px">Số lượng tồn:</label>
+                    <label class="label name" style="color: black;font-weight: bold;font-size: 17px">Số lượng sản phẩm:</label>
                 </div>
                 <div class="col-10">${ctggHD.soLuongSanPham}</div>
             </div>
@@ -108,14 +108,14 @@
                 <div class="col-2"><label class="label name" style="color: black;font-weight: bold;font-size: 17px">Ghi chú:</label></div>
                 <div class="col-10"><p style="width: 80%">${ctggHD.ghiChu}</p></div>
             </div>
-<%--            <div class="row row-info">--%>
-<%--                <div class="col-2"><label class="label name">Ngày tạo:</label></div>--%>
-<%--                <div class="col-10">${ctggHD.ngayTao}</div>--%>
-<%--            </div>--%>
-<%--            <div class="row row-info">--%>
-<%--                <div class="col-2"><label class="label name">Ngày sửa:</label></div>--%>
-<%--                <div class="col-10">${ctggHD.ngaySua}</div>--%>
-<%--            </div>--%>
+            <div class="row row-info">
+                <div class="col-2"><label class="label name" style="color: black;font-weight: bold;font-size: 17px">Ngày tạo:</label></div>
+                <div class="col-10">${ctggHD.ngayTao}</div>
+            </div>
+            <div class="row row-info">
+                <div class="col-2"><label class="label name" style="color: black;font-weight: bold;font-size: 17px">Ngày sửa:</label></div>
+                <div class="col-10">${ctggHD.ngaySua}</div>
+            </div>
         </div>
     </section>
     <section>

@@ -36,7 +36,7 @@ public class GiayTheThaoService implements GiayTheThaoImpl{
 
     @Override
     public List<GiayTheThao> getAllWithoutInCTGGCTSP(UUID id) {
-        return this.giayTheThaoRepository.getAllWithoutInCTGGCTSP(id);
+        return this.giayTheThaoRepository.getAllWithoutInCTGGCTSP();
     }
 
     @Override

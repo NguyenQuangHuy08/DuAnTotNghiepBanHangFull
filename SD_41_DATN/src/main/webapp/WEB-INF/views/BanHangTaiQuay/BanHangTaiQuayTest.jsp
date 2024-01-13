@@ -105,6 +105,22 @@
             color: #cccccc;
             font-size: smaller;
         }
+        .a{
+            font-weight: bold;
+        }
+        #textCodeCheck{
+            cursor: pointer;
+        }
+        #reset{
+            margin-left: 10px;
+            background: white;
+            border-radius: 5px;
+            outline: none;
+            border: 1px solid gray;
+
+
+
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
 </head>
@@ -119,11 +135,80 @@
 
             <div class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 
-                <input type="text"  id="textCodeCheck" readonly="true" >
+                <input type="text"  id="textCodeCheck" readonly="true">
+
+                <!-- Modal -->
+                <div
+                        class="modal fade"
+                        id="showInforCheck"
+                        data-bs-backdrop="static"
+                        data-bs-keyboard="false"
+                        tabindex="-1"
+                        aria-labelledby="staticBackdropLabel"
+                        aria-hidden="true"
+                >
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                                    Thông tin hóa đơn
+                                </h1>
+                                <button
+                                        type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                ></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-borderless">
+                                    <tbody id="infor_Check">
+                                    <tr>
+                                        <td class="a">Mã hóa đơn:</td>
+                                        <td id="checkCode"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="a">Nhân viên:</td>
+                                        <td id="checkStaff"></td>
+                                    </tr>
+                                    <tr id="inforCustomer">
+                                        <td class="a">Khách hàng:</td>
+                                        <td id="checkCustomer"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="a">Ngày tạo:</td>
+                                        <td id="checkTimeCreate"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="a">Trạng thái:</td>
+                                        <td>Chưa thành toán</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="a">Hình thức:</td>
+                                        <td>Bán hàng tại quầy</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button
+                                        type="button"
+                                        class="btn btn-secondary"
+                                        data-bs-dismiss="modal"
+                                >
+                                    Thoát
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <input type="search" name="search-name" id="search-input">
 
+
                 <button id="search-btn"><i class="bi bi-search"></i></button>
+                <button id="reset"><i class="bi bi-arrow-clockwise"></i></button>
             </div>
 
 
@@ -365,8 +450,98 @@
         getAllHDCho(renderHDCho);
         getAllKH(renderKH);
         search();
+        showInforCheck();
+        searchCustomer();
+        document.getElementById("reset").addEventListener("click", ()=>{
+            getAllProducts(renderProducts);
+        });
     }
     start();
+
+    function showInforCheck(){
+        var inforCheckInput = document.getElementById('textCodeCheck');
+
+        inforCheckInput.addEventListener('click', function() {
+
+            var idHD = localStorage.getItem("idHD");
+            if(inforCheckInput.value!=''){
+                getHDByID(idHD, (hd)=>{
+                    var checkCode = document.getElementById("checkCode");
+                    var staff = document.getElementById('checkStaff');
+                    var customer = document.getElementById("checkCustomer");
+                    var timeCreate = document.getElementById("checkTimeCreate");
+
+                    checkCode.innerText = inforCheckInput.value;
+                    staff.innerText=hd.user.tenUser;
+                    if(hd.khachHang!=null){
+
+                        customer.innerHTML = `
+                            <br/>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td class="a">Tên: </td>
+                                    <td>`+hd.khachHang.tenKhachHang+`</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="a">Giới tính: </td>
+                                    <td>`+hd.khachHang.gioiTinh+`</td>
+
+                                </tr>
+                                <tr>
+
+                                    <td class="a">Ngày sinh: </td>
+                                    <td>`+hd.khachHang.ngaySinh+`</td>
+
+                                </tr>
+                                <tr>
+
+                                    <td class="a">Số điện thoại: </td>
+                                    <td>`+hd.khachHang.soDienThoai+`</td>
+
+                                </tr>
+                                <tr>
+
+                                    <td class="a">Email: </td>
+                                    <td>`+hd.khachHang.email+`</td>
+
+                                </tr>
+                                <tr>
+
+                                    <td class="a">Địa chỉ: </td>
+                                    <td>`+hd.khachHang.diaChi +`, `+hd.khachHang.thanhPho+` - `+hd.khachHang.huyen+` - `+hd.khachHang.xa+`</td>
+                                </tr>
+                            </table>
+                        `;
+
+                    } else {
+                        customer.innerText="Khách hàng lẻ";
+
+                    }
+                    timeCreate.innerText = hd.ngayTao;
+                })
+                $('#showInforCheck').modal('show');
+            }
+        });
+    }
+
+    function getHDByID(id,callback){
+        fetch("http://localhost:8080/api/hd/"+id)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(callback)
+            .catch((error) => {
+                console.error(
+                    "There was a problem with the fetch operation:",
+                    error
+                );
+            });
+
+    }
 
     function getAllProducts(callback) {
         fetch("http://localhost:8080/api/gttct" )
@@ -581,6 +756,7 @@
                 getAllHDCho(renderHDCho);
                 localStorage.setItem("idHD","");
                 document.getElementById("textCodeCheck").value="";
+                document.getElementById("cart-detail-product").innerHTML = "";
 
             })
             .catch((error) => {
@@ -655,7 +831,45 @@
             });
     }
 
+    function searchCustomer() {
+        var inputSearchClient = document.getElementById('search-client');
+        inputSearchClient.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                console.log(inputSearchClient.value, "  this is name");
+                getAllKHByName(renderKH, inputSearchClient.value);
+            }
+        });
+
+    }
+
+    function getAllKHByName(callback, name) {
+
+        fetch("http://localhost:8080/api/kh/search",
+            {
+                method: "Post",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify([name])
+            }
+        )
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(callback)
+            .catch((error) => {
+                console.error(
+                    "There was a problem with the fetch operation:",
+                    error
+                );
+            });
+    }
+
     function renderKH(customers) {
+        console.log(customers);
         var htmls = customers.map((customer, key) =>{
             return `
                 <tr id="`+customer.id+`" onclick="setLocalStorageKH(\``+customer.id+`\`, `+(key+1)+`)" >
@@ -746,8 +960,10 @@
                                 ></i>
                               </td>
                               <td>1</td>
-                              <td>`+name+`</td>
+                              <td class="name_product">`+name+`</td>
                               <td class="unit-price">`+price+`</td>
+                              <td>`+data.giayTheThaoChiTiet.mauSac.tenMauSac+`</td>
+                            <td>`+data.giayTheThaoChiTiet.size.size+`</td>
                               <td class="col-qty">
                                 <div class="quantity-box">
                                   <a
@@ -770,7 +986,9 @@
                               <td class="total-price">`+price+`</td>
 
                 `;
+
                         table.appendChild(newRow);
+                        truncatedText();
                     }} else {
                     alert("Sản phẩm trong kho đã hết");
                     console.log(data);
@@ -784,6 +1002,20 @@
             });
 
 
+    }
+
+    function truncatedText() {
+        var longTextElements = document.querySelectorAll(".name_product");
+        var maxLength = 20;
+
+        longTextElements.forEach(function (element) {
+            var originalText = element.innerText;
+
+            if (originalText.length > maxLength) {
+                var truncatedText = originalText.substring(0, maxLength) + "...";
+                element.innerText = truncatedText;
+            }
+        });
     }
 
     function getHDC(id) {
@@ -828,8 +1060,10 @@
                     ></i>
                   </td>
                   <td>`+(key+1)+`</td>
-                  <td>`+ten+`</td>
+                  <td class="name_product">`+ten+`</td>
                   <td class="unit-price">`+hdct.donGia+`</td>
+                  <td>`+hdct.giayTheThaoChiTiet.mauSac.tenMauSac+`</td>
+                  <td>`+hdct.giayTheThaoChiTiet.size.size+`</td>
                   <td class="col-qty">
                     <div class="quantity-box">
                       <a
@@ -856,6 +1090,17 @@
         });
         var html = htmls.join('');
         document.getElementById('cart-detail-product').innerHTML=html;
+        var longTextElements = document.querySelectorAll(".name_product");
+        var maxLength = 20;
+
+        longTextElements.forEach(function (element) {
+            var originalText = element.innerText;
+
+            if (originalText.length > maxLength) {
+                var truncatedText = originalText.substring(0, maxLength) + "...";
+                element.innerText = truncatedText;
+            }
+        });
     }
 
     function addQty(id, element) {

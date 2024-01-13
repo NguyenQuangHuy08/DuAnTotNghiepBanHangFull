@@ -22,7 +22,17 @@ public interface GiayTheThaoRepository extends JpaRepository<GiayTheThao, UUID> 
     //Tìm kiếm tên giầy thể thao
     List<GiayTheThao> findByTenGiayTheThao(String tenGiayTheThao);
 
-    @Query("SELECT g FROM GiayTheThao g WHERE g.id NOT IN (SELECT c.giayTheThao.id FROM ChuongTrinhGiamGiaChiTietGiayTheThao c where c.chuongTrinhGiamGiaGiayTheThao.id=:id)")
-    List<GiayTheThao> getAllWithoutInCTGGCTSP(@Param("id") UUID id);
+    @Query("SELECT giay\r\n" + //
+            "FROM GiayTheThao giay\r\n" + //
+            "WHERE giay.id NOT IN (\r\n" + //
+            "    SELECT giayCT.id\r\n" + //
+            "    FROM ChuongTrinhGiamGiaChiTietGiayTheThao ct\r\n" + //
+            "    JOIN ct.giayTheThao giayCT\r\n" + //
+            "    JOIN ct.chuongTrinhGiamGiaGiayTheThao chuongTrinh\r\n" + //
+            "    WHERE chuongTrinh.trangThai != -1\r\n" + //
+            ")")
+    List<GiayTheThao> getAllWithoutInCTGGCTSP();
+
+
 
 }

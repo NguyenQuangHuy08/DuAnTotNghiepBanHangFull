@@ -44,6 +44,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
                 .addPathPatterns(
                         //Trang chủ
                         "/TrangChu/Admin/home",
+                        "/BanHangTaiQuay",
                         //Giầy thể thao
                         "/GiayTheThao/listGiayTheThao",
                         //Khách hàng
@@ -67,6 +68,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
                 .addPathPatterns(
                         //Todo gắn link check phân quyền admin
                         //Giầy thể thao
+                        "/BanHangTaiQuay",
                         "/GiayTheThao/create",
                         "/GiayTheThao/update/{id}",
                         "/GiayTheThao/exportPDF",

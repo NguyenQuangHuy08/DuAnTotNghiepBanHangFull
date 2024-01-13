@@ -125,16 +125,16 @@
                 </div>
             </div>
             <br>
-<%--            <div class="row">--%>
-<%--                <div class="col-6">--%>
-<%--                    <label class="label">Ngày tạo</label>--%>
-<%--                    <sf:input path="ngayTao" cssClass="form-control" cssStyle="background-color: #e5e5e5" type="date" readonly="true" />--%>
-<%--                </div>--%>
-<%--                <div class="col-6">--%>
-<%--                    <label class="label">Ngày sửa</label>--%>
-<%--                    <sf:input path="ngaySua" cssClass="form-control" cssStyle="background-color: #e5e5e5" type="date" readonly="true" />--%>
-<%--                </div>--%>
-<%--            </div>--%>
+            <div class="row" style="display:none">
+                <div class="col-6">
+                    <label class="label" >Ngày tạo</label>
+                    <sf:input path="ngayTao" cssClass="form-control" cssStyle="background-color: #e5e5e5" type="date" readonly="true" />
+                </div>
+                <div class="col-6">
+                    <label class="label">Ngày sửa</label>
+                    <sf:input path="ngaySua" cssClass="form-control" cssStyle="background-color: #e5e5e5" type="date" readonly="true" />
+                </div>
+            </div>
             <br>
             <div class="row">
                 <div class="col-6">

@@ -47,7 +47,7 @@ public interface GiayTheThaoChiTietRepository extends JpaRepository<GiayTheThaoC
     @Query("select p from GiayTheThaoChiTiet p where p.giayTheThao.id = ?1 and p.mauSac.id = ?2 and p.size.id = ?3")
     GiayTheThaoChiTiet findIdByIdGiayTheThaoMsSize(UUID id, UUID idMauSac, UUID idSize);
 
-    @Query("SELECT gttct FROM GiayTheThaoChiTiet gttct JOIN gttct.giayTheThao gtt WHERE gtt.tenGiayTheThao LIKE '%' || :ten || '%' ")
+    @Query("SELECT gttct FROM GiayTheThaoChiTiet gttct JOIN gttct.giayTheThao gtt WHERE gtt.tenGiayTheThao =:ten ")
     List<GiayTheThaoChiTiet> findAllByNameProduct(@Param("ten") String name);
 
 

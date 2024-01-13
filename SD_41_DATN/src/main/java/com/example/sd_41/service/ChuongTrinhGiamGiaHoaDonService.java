@@ -107,28 +107,7 @@ public class ChuongTrinhGiamGiaHoaDonService implements ChuongTrinhGiamGiaHoaDon
     }
 
 
-    @SneakyThrows
-    @Override
-    public void updateTrangThai() {
-        List<ChuongTrinhGiamGiaHoaDon> list = this.repo.findAll();
-        List<ChuongTrinhGiamGiaHoaDon> newList = new ArrayList<>();
 
-        LocalDate currentDate = LocalDate.now();
-        for (ChuongTrinhGiamGiaHoaDon gg : list) {
-            if(gg.getTrangThai()!=-1){
-                LocalDate date = LocalDate.parse(gg.getNgayKetThuc());
-                int comparasion = date.compareTo(currentDate);
-                System.out.println("Ten chuong trinh: "+gg.getTenChuongTrinh()+"Ngay ket thuc: " + date + ", Ngay hien tai: " + currentDate);
-                if (comparasion<0) {
-                    gg.setTrangThai(-1);
-                    System.out.println("Các trạng thái đã sửa: "+gg.getTenChuongTrinh());
-                    newList.add(gg);
-                }
-            }
-
-        }
-        this.repo.saveAll(newList);
-    }
 
 
     @Override
@@ -148,6 +127,39 @@ public class ChuongTrinhGiamGiaHoaDonService implements ChuongTrinhGiamGiaHoaDon
     }
 
 
+    @SneakyThrows
+    @Override
+    public void updateTrangThai() {
+        List<ChuongTrinhGiamGiaHoaDon> list = this.repo.findAll();
+        List<ChuongTrinhGiamGiaHoaDon> newList = new ArrayList<>();
+        List<ChuongTrinhGiamGiaHoaDon> listKichHoat = new ArrayList<>();
 
+        LocalDate currentDate = LocalDate.now();
+        for (ChuongTrinhGiamGiaHoaDon gg : list) {
+            if (gg.getTrangThai() != -1) {
+                LocalDate date = LocalDate.parse(gg.getNgayKetThuc());
+                int comparasion = date.compareTo(currentDate);
+                System.out.println("Ten chuong trinh: " + gg.getTenChuongTrinh() + "Ngay ket thuc: " + date
+                        + ", Ngay hien tai: " + currentDate);
+                if (comparasion < 0) {
+                    gg.setTrangThai(-1);
+                    System.out.println("Các trạng thái đã sửa: " + gg.getTenChuongTrinh());
+                    newList.add(gg);
+                }
+            }
+
+            if (gg.getTrangThai() == 0) {
+                LocalDate d = LocalDate.parse(gg.getNgayBatDau());
+                int comparasion2 = d.compareTo(currentDate);
+                if (comparasion2 <= 0) {
+                    gg.setTrangThai(1);
+                    listKichHoat.add(gg);
+                }
+            }
+
+        }
+        this.repo.saveAll(newList);
+        this.repo.saveAll(listKichHoat);
+    }
 
 }

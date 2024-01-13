@@ -1,6 +1,7 @@
 package com.example.sd_41.repository.ChuongTrinhGiamGia;
 
 import com.example.sd_41.model.ChuongTrinhGiamGiaGiayTheThao;
+import com.example.sd_41.model.GiayTheThao;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -24,6 +26,7 @@ public interface ChuongTrinhGiamGiaGiayTheThaoRepository extends JpaRepository<C
 
     @Query("select gg from ChuongTrinhGiamGiaGiayTheThao gg where gg.trangThai not in (select ctgg.trangThai from ChuongTrinhGiamGiaGiayTheThao ctgg where ctgg.trangThai=-1)")
     Page<ChuongTrinhGiamGiaGiayTheThao> filterByTTChuaHetHan(Pageable pageable);
+
 
 
 }
