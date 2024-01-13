@@ -726,7 +726,7 @@ public class TrangChuGiayTheThaoController {
             String ngayThanhToanToDate = ngayThanhToan.toString();
 
             hoaDon.setMaHoaDon("MaHD" + localTime.getHour() + localTime.getMinute() + localTime.getSecond());
-            
+
             hoaDon.setKhachHang(khachHang);
             hoaDon.setTrangThai(0);
             hoaDon.setNgayThanhToan(LocalDateTime.now());

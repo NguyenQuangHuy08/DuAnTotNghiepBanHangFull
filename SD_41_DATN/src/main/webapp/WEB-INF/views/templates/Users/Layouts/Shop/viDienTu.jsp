@@ -218,6 +218,9 @@
         } else if (parseFloat(soTienInput) < 50000) {
             document.getElementById("errorSoTien").innerHTML = "Số tiền phải lớn hơn 50,000 VNĐ !";
             event.preventDefault();
+        }else if (parseFloat(soTienInput) > 1000000) {
+            document.getElementById("errorSoTien").innerHTML = "Số tiền không được lớn hơn 1,000,000 VNĐ !";
+            event.preventDefault();
         }
     }
 
