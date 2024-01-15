@@ -573,17 +573,56 @@ public class TrangChuGiayTheThaoController {
                             int existingQuantity = Integer.parseInt(existingItem.getSoLuong());
                             int newQuantity = existingQuantity + Integer.parseInt(soLuong);
 
+                            System.out.println("Sôs lượng trong giỏ hàng "+ soLuong);
+
+                            if(newQuantity > Integer.parseInt(existingItem.getGiayTheThaoChiTiet().getSoLuong())){
+
+                                System.out.println("Set lại cho số lượng ");
+                                existingItem.setSoLuong(String.valueOf(existingItem.getGiayTheThaoChiTiet().getSoLuong()));
+                                System.out.println("Số lượng còn lại : "+ existingItem.getGiayTheThaoChiTiet().getSoLuong());
+
+                                int soLuongMax = Integer.parseInt(existingItem.getGiayTheThaoChiTiet().getSoLuong());
+
+                                existingItem.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(soLuongMax)));
+
+                                gioHangChiTietRepository.save(existingItem);
+
+                                return "redirect:/GiayTheThao/NguoiDung/addToCartSoLuongMin";
+
+                            }
+
+                            if(newQuantity < Integer.parseInt(existingItem.getGiayTheThaoChiTiet().getSoLuong())){
+
+                                System.out.println("Sản phẩm cộng dồn");
+                                int soLuongMaxCongDon = 5;
+                                existingItem.setSoLuong(String.valueOf(soLuongMaxCongDon));
+                                existingItem.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(soLuongMaxCongDon)));
+
+                                attributes.addFlashAttribute("soLuongMax", "Xin lỗi quý khách chỉ được thêm số lượng tối đa là 5 cho một sản phẩm !");
+                                System.out.println("Làm log thông báo");
+                                model.addAttribute("soLuongMaxModel", "Xin lỗi quý khách chỉ được thêm số lượng tối đa là 5 cho một sản phẩm !");
+                                gioHangChiTietRepository.save(existingItem);
+
+                                return "redirect:/GiayTheThao/NguoiDung/addToCartSoLuongMax";
+
+                            }
+
+
                             if (newQuantity > 5) {
 
                                 System.out.println("Sản phẩm cộng dồn");
                                 int soLuongMaxCongDon = 5;
                                 existingItem.setSoLuong(String.valueOf(soLuongMaxCongDon));
                                 existingItem.setDonGia(BigDecimal.valueOf(Integer.parseInt(giayTheThao.getGiaBan())).multiply(BigDecimal.valueOf(soLuongMaxCongDon)));
+
                                 attributes.addFlashAttribute("soLuongMax", "Xin lỗi quý khách chỉ được thêm số lượng tối đa là 5 cho một sản phẩm !");
+                                System.out.println("Làm log thông báo");
                                 model.addAttribute("soLuongMaxModel", "Xin lỗi quý khách chỉ được thêm số lượng tối đa là 5 cho một sản phẩm !");
                                 gioHangChiTietRepository.save(existingItem);
 
-                            } else {
+                            }
+
+                            else {
 
                                 //Dành cho sản phẩm chưa có trong giỏ hàng
                                 existingItem.setSoLuong(String.valueOf(newQuantity));
@@ -830,6 +869,23 @@ public class TrangChuGiayTheThaoController {
 
         //Trả về đường dẫn hiện swal
         return "/templates/Users/Layouts/Log/XoaGioHang";
+
+    }
+
+    //Todo code log thông báo cho giỏ hàng
+    @GetMapping("GiayTheThao/NguoiDung/addToCartSoLuongMax")
+    public String addToCartSoLuongMax() {
+
+        //Trả về đường dẫn hiện swal
+        return "/templates/Users/Layouts/Log/CongDonSoLuongMax";
+
+    }
+
+    @GetMapping("GiayTheThao/NguoiDung/addToCartSoLuongMin")
+    public String addToCartSoLuongMin() {
+
+        //Trả về đường dẫn hiện swal
+        return "/templates/Users/Layouts/Log/CongDonSoLuongMin";
 
     }
 

@@ -521,7 +521,6 @@ public class GiayTheThaoController {
 
                 giayTheThaoChiTiet.setSoLuong(String.valueOf(totalQuantity));
 
-
                 GiayTheThao giayTheThao = giayTheThaoRepository.findById(id).orElse(null);
 
                 if (giayTheThao == null) {
