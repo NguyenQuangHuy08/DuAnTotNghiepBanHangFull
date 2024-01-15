@@ -65,6 +65,7 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label >Form </label>
+                    <span style="color: red">*</span>
                     <select class="form-control" name="form.id">
                         <c:forEach items="${form}" var="form">
                             <option ${giayTheThao.form.id == form.id ? 'selected' :''} value="${form.id}">${form.tenForm}</option>
@@ -73,6 +74,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label >Công dụng</label>
+                    <span style="color: red">*</span>
                     <select  class="form-control" name="congDung.id">
                         <c:forEach items="${congDung}" var="congDung">
                             <option ${giayTheThao.congDung.id == congDung.id ? 'selected': ''}  value="${congDung.id}">${congDung.tenCongDung}</option>
@@ -81,6 +83,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label>Chất liệu </label>
+                    <span style="color: red">*</span>
                     <select  class="form-control" name="chatLieu.id">
                         <c:forEach items="${chatLieu}" var="chatLieu">
                             <option ${giayTheThao.chatLieu.id == chatLieu.id ? 'selected' : ''}  value="${chatLieu.id}">${chatLieu.tenChatLieu}</option>
@@ -92,6 +95,7 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label >Hướng dẫn bảo quản </label>
+                    <span style="color: red">*</span>
                     <select class="form-control" name="huongDanBaoQuan.id">
                         <c:forEach items="${huongDanBaoQuan}" var="huongDanBaoQuan">
                             <option ${giayTheThao.huongDanBaoQuan.id == huongDanBaoQuan.id ? 'selected' : ''} value="${huongDanBaoQuan.id}">${huongDanBaoQuan.tenHuongDanBaoQuan}</option>
@@ -100,6 +104,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label >Lót giầy</label>
+                    <span style="color: red">*</span>
                     <select  class="form-control" name="lotGiay.id">
                         <c:forEach items="${lotGiay}" var="lotGiay">
                             <option ${giayTheThao.lotGiay.id == lotGiay.id ? 'selected' : ''}  value="${lotGiay.id}">${lotGiay.tenLotGiay}</option>
@@ -108,6 +113,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label>Cổ giầy</label>
+                    <span style="color: red">*</span>
                     <select  class="form-control" name="coGiay.id">
                         <c:forEach items="${coGiay}" var="coGiay">
                             <option ${giayTheThao.coGiay.id == coGiay.id ? 'selected' : ''} value="${coGiay.id}">${coGiay.tenCoGiay}</option>
@@ -119,6 +125,7 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label >Đế giầy</label>
+                    <span style="color: red">*</span>
                     <select class="form-control" name="deGiay.id">
                         <c:forEach items="${deGiay}" var="deGiay">
                             <option ${giayTheThao.deGiay.id == deGiay.id ? 'selected' : ''} value="${deGiay.id}">${deGiay.tenDeGiay}</option>
@@ -127,6 +134,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label >Dây giày</label>
+                    <span style="color: red">*</span>
                     <select  class="form-control" name="dayGiay.id">
                         <c:forEach items="${dayGiay}" var="dayGiay">
                             <option ${giayTheThao.dayGiay.id == dayGiay.id ? 'selected' : ''} value="${dayGiay.id}">${dayGiay.tenDayGiay}</option>
@@ -135,6 +143,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label >Trọng lượng</label>
+                    <span style="color: red">*</span>
                     <select  class="form-control" name="trongLuong.id">
                         <c:forEach items="${trongLuong}" var="trongLuong">
                             <option ${giayTheThao.trongLuong.id == trongLuong.id ? 'selected' : ''} value="${trongLuong.id}">${trongLuong.tenTrongLuong}</option>
@@ -143,6 +152,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label>Thương hiệu </label>
+                    <span style="color: red">*</span>
                     <select  class="form-control" name="thuongHieu.id">
                         <c:forEach items="${thuongHieu}" var="thuongHieu">
                             <option ${giayTheThao.thuongHieu.id == thuongHieu.id ? 'selected' : ''} value="${thuongHieu.id}">${thuongHieu.tenThuongHieu}</option>
@@ -151,6 +161,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label>Kiểu buộc </label>
+                    <span style="color: red">*</span>
                     <select  class="form-control" name="kieuBuoc.id">
                         <c:forEach items="${kieuBuoc}" var="kieuBuoc">
                             <option ${giayTheThao.kieuBuoc.id == kieuBuoc.id ? 'selected' : ''} value="${kieuBuoc.id}">${kieuBuoc.tenKieuBuoc}</option>
@@ -159,6 +170,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label>Đinh tán giầy</label>
+                    <span style="color: red">*</span>
                     <select  class="form-control" name="dinhTanGiay.id">
                         <c:forEach items="${dinhTanGiay}" var="dinhTanGiay">
                             <option ${giayTheThao.dinhTanGiay.id == dinhTanGiay.id ? 'selected' : ''} value="${dinhTanGiay.id}">${dinhTanGiay.tenDinhTanGiay}</option>
@@ -170,6 +182,7 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>Tên giầy thể thao</label>
+                    <span style="color: red">*</span>
                     <input type="text" class="form-control"  placeholder="Tên giầy thể thao" name="tenGiayTheThao" value="${giayTheThao.tenGiayTheThao}">
                     <div class="er">
                         <label style="color: red">${erTenGiayTheThaoIsEmty}</label>
@@ -179,6 +192,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label>Giá bán : VNĐ</label>
+                    <span style="color: red">*</span>
                     <input id="giaBan" onblur="formatGiaBan()" type="text" class="form-control"  placeholder="Giá bán" name="giaBan" value="${giayTheThao.giaBan}">
                     <div class="er">
                         <label style="color: red">${erCheckGiaBanNumber}</label>
@@ -225,6 +239,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label >Màu Sắc</label>
+                    <span style="color: red">*</span>
                     <select  class="form-control" name="mauSac.id">
                         <c:forEach items="${mauSac}" var="mauSac">
                             <option ${giayTheThaoChiTiet.mauSac.id == mauSac.id?'selected':''} value="${mauSac.id}">${mauSac.tenMauSac}</option>
@@ -233,6 +248,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label >Size</label>
+                    <span style="color: red">*</span>
                     <select  class="form-control" name="size.id">
                         <c:forEach items="${size}" var="size">
                             <option ${giayTheThaoChiTiet.size.id==size.id ?'selected':''} value="${size.id}">${size.size}</option>
@@ -242,6 +258,7 @@
             </div>
             <div class="form-group">
                 <label >Số Lượng</label>
+                <span style="color: red">*</span>
                 <input type="text" class="form-control" name="soLuong" value="${giayTheThaoChiTiet.soLuong}">
                 <div class="er">
                     <label style="color: red">${erCheckSoLuongIsEmtry}</label>
@@ -292,6 +309,7 @@
     <%--Create form ảnh--%>
     <div class="container" style="margin-bottom: 40px">
         <h3 style="text-align: center; margin-top: 50px; margin-bottom: 40px; color: black">Thêm Ảnh</h3>
+        <span style="color: red">*</span>
         <form action="/GiayTheThao/createImage" enctype="multipart/form-data" method="POST" style="margin-bottom: 50px">
             <input type="text" class="form-control" hidden name="id" value="${giayTheThao.id}">
             <div class="mess">

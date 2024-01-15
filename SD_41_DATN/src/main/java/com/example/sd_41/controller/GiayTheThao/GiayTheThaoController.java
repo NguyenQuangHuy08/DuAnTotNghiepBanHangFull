@@ -366,7 +366,7 @@ public class GiayTheThaoController {
 
         }
 
-        giayTheThao.setTrangThai(0);//vẫn để là 0
+        giayTheThao.setTrangThai(1);
         giayTheThaoRepository.save(giayTheThao);
         attributes.addFlashAttribute("messDoneUpdate","Update dữ liệu thành công !");
         attributes.addFlashAttribute("messageDoneUpdateTrangThai", "Bạn cần tiếp tục tạo thêm thông tin để giầy thể thao được hoạt động !");

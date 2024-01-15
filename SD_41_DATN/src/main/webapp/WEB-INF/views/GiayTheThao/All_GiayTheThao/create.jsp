@@ -35,6 +35,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label >Form</label>
+                        <span style="color: red">*</span>
                         <select class="form-control" name="form.id">
                             <c:forEach items="${form}" var="form">
                                 <c:if test="${form.trangThai eq 1}">
@@ -45,6 +46,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label>Công dụng</label>
+                        <span style="color: red">*</span>
                         <select class="form-control" name="congDung.id">
                             <c:forEach items="${congDung}" var="congDung">
                                 <c:if test="${congDung.trangThai eq 1}">
@@ -55,6 +57,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label>Chất liệu</label>
+                        <span style="color: red">*</span>
                         <select  class="form-control" name="chatLieu.id">
                             <c:forEach items="${chatLieu}" var="chatLieu">
                                 <c:if test="${chatLieu.trangThai eq 1}">
@@ -68,6 +71,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label >Hướng dẫn bảo quản </label>
+                        <span style="color: red">*</span>
                         <select class="form-control" name="huongDanBaoQuan.id">
                             <c:forEach items="${huongDanBaoQuan}" var="huongDanBaoQuan">
                                 <c:if test="${huongDanBaoQuan.trangThai eq 1}">
@@ -78,6 +82,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label >Lót giầy</label>
+                        <span style="color: red">*</span>
                         <select  class="form-control" name="lotGiay.id">
                             <c:forEach items="${lotGiay}" var="lotGiay">
                                 <c:if test="${lotGiay.trangThai eq 1}">
@@ -88,6 +93,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label>Cổ giầy</label>
+                        <span style="color: red">*</span>
                         <select  class="form-control" name="coGiay.id">
                             <c:forEach items="${coGiay}" var="coGiay">
                                 <c:if test="${coGiay.trangThai eq 1}">
@@ -101,6 +107,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label >Đế giầy</label>
+                        <span style="color: red">*</span>
                         <select class="form-control" name="deGiay.id">
                             <c:forEach items="${deGiay}" var="deGiay">
                                 <c:if test="${deGiay.trangThai eq 1}">
@@ -111,6 +118,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label >Dây giày</label>
+                        <span style="color: red">*</span>
                         <select  class="form-control" name="dayGiay.id">
                             <c:forEach items="${dayGiay}" var="dayGiay">
                                 <c:if test="${dayGiay.trangThai eq 1}">
@@ -121,6 +129,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label >Trọng lượng</label>
+                        <span style="color: red">*</span>
                         <select  class="form-control" name="trongLuong.id">
                             <c:forEach items="${trongLuong}" var="trongLuong">
                                 <c:if test="${trongLuong.trangThai eq 1}">
@@ -131,6 +140,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label>Thương hiệu</label>
+                        <span style="color: red">*</span>
                         <select  class="form-control" name="thuongHieu.id">
                             <c:forEach items="${thuongHieu}" var="thuongHieu">
                                 <c:if test="${thuongHieu.trangThai eq 1}">
@@ -141,6 +151,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label>Kiểu buộc</label>
+                        <span style="color: red">*</span>
                         <select  class="form-control" name="kieuBuoc.id">
                             <c:forEach items="${kieuBuoc}" var="kieuBuoc">
                                 <c:if test="${kieuBuoc.trangThai eq 1}">
@@ -151,6 +162,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label>Đinh tán giầy</label>
+                        <span style="color: red">*</span>
                         <select  class="form-control" name="dinhTanGiay.id">
                             <c:forEach items="${dinhTanGiay}" var="dinhTanGiay">
                                 <c:if test="${dinhTanGiay.trangThai eq 1}">
@@ -163,7 +175,8 @@
 
                 <div class="form-row">
                     <div class="form-group col-md-4">
-                        <label>Tên giầy thể thao :</label>
+                        <label>Tên giầy thể thao</label>
+                        <span style="color: red">*</span>
                         <frm:input id="tenGiayTheThao" required="" type="text" class="form-control" path="tenGiayTheThao" cssStyle="" placeholder="Input text" value=""/>
                         <frm:errors path="tenGiayTheThao"></frm:errors>
                         <div class="er">
@@ -174,6 +187,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label>Giá bán VNĐ</label>
+                        <span style="color: red">*</span>
                         <frm:input id="giaBan"  required="" type="text" class="form-control" path="giaBan" cssStyle="" onblur="formatGiaBan()" placeholder="Input VNĐ" value=""/>
                         <frm:errors path="giaBan"></frm:errors>
                         <div class="er">
