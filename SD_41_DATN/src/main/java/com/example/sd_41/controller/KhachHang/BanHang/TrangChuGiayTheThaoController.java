@@ -631,7 +631,9 @@ public class TrangChuGiayTheThaoController {
 
                             }
 
-                        } else {
+                        }
+
+                        else {
 
                             // Sản phẩm chưa có trong giỏ hàng, thêm mới
                             GioHangChiTiet gioHangChiTiet = new GioHangChiTiet();
@@ -757,6 +759,7 @@ public class TrangChuGiayTheThaoController {
         if (chon == null || chon.isEmpty()) {
             attributes.addFlashAttribute("erCheckNun", "Xin lỗi hãy chọn ít nhất một sản phẩm để thanh toán !");
         } else {
+
             HoaDon hoaDon = new HoaDon();
 
             // Thêm vào Hóa đơn
@@ -776,6 +779,7 @@ public class TrangChuGiayTheThaoController {
             BigDecimal tongDonGiaHoaDon = BigDecimal.ZERO;
 
             for (String stt : chon) {
+
                 UUID selectedGiayChiTietId = idGiayChiTiet.get(Integer.parseInt(stt));
                 Optional<GiayTheThaoChiTiet> optionalGiayTheThaoChiTiet = giayTheThaoChiTietRepository.findById(selectedGiayChiTietId);
 
@@ -790,7 +794,17 @@ public class TrangChuGiayTheThaoController {
                             GioHangChiTiet gioHangChiTiet = optionalGioHangChiTiet.get();
 
                             if (gioHangChiTiet != null) {
+
                                 GiayTheThao giayTheThao = giayTheThaoChiTietNew.getGiayTheThao();
+
+                                if(Integer.parseInt(giayTheThaoChiTietNew.getSoLuong()) == 0){
+
+                                    System.out.println("Báo lỗi số lượng !");
+                                    attributes.addFlashAttribute("soLuongKhong","Xin lỗi số lượng không được là 0! vui lòng chọn sản phẩm khác");
+                                    return "redirect:/GiayTheThao/NguoiDung/soLuongMuaKhong";
+
+                                }
+
                                 String giaBanNew = giayTheThao.getGiaBan();
 
                                 List<ChuongTrinhGiamGiaChiTietGiayTheThao> listSale = chuongTrinhGiamGiaChiTietGiayTheThaoRepository.findByGiayTheThao_Id(giayTheThao.getId());
@@ -869,6 +883,15 @@ public class TrangChuGiayTheThaoController {
 
         //Trả về đường dẫn hiện swal
         return "/templates/Users/Layouts/Log/XoaGioHang";
+
+    }
+
+    //Todo code thông báo số lượng sản phẩm mua không được là 0
+    @GetMapping("GiayTheThao/NguoiDung/soLuongMuaKhong")
+    public String nguoiDungSoLuongMuaKhong() {
+
+        //Trả về đường dẫn hiện swal
+        return "/templates/Users/Layouts/Log/SoLuongMuaHangKhong";
 
     }
 

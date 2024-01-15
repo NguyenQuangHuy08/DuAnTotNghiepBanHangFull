@@ -21,6 +21,41 @@
         }
     </style>
 
+    <script>
+        // Đặt giá trị mặc định của ô nhập số lượng là 0 khi trang được tải
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     var quantityInputs = document.querySelectorAll('[name="soLuong"]');
+        //     quantityInputs.forEach(function (input) {
+        //         // Lấy giá trị số lượng hiện có trong kho từ attribute data-available-quantity
+        //         var availableQuantity = parseInt(input.getAttribute('data-available-quantity'), 10);
+        //
+        //         // Kiểm tra nếu số lượng trong kho là 0, đặt giá trị nhập vào là 0
+        //         if (availableQuantity === 0) {
+        //             input.value = 0;
+        //         }
+        //     });
+        // });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var quantityInputs = document.querySelectorAll('[name="soLuong"]');
+            quantityInputs.forEach(function (input) {
+                // Lấy giá trị số lượng hiện có trong kho từ attribute data-available-quantity
+                var availableQuantity = parseInt(input.getAttribute('data-available-quantity'), 10);
+
+                // Kiểm tra nếu số lượng trong kho là 0, đặt giá trị nhập vào là 0
+                if (availableQuantity === 0) {
+                    input.value = 0;
+                }
+            });
+        });
+
+
+    </script>
+
+
+
+
+
 </head>
 <body>
 <%--Header cho giỏ hàng --%>
@@ -35,7 +70,7 @@
      </h3>
 
 
-    <form action="${pageContext.request.contextPath}/GiayTheThao/nguoiDung/addHoaDon" method="post">
+    <form action="${pageContext.request.contextPath}/GiayTheThao/nguoiDung/addHoaDon" method="post" onsubmit="return validateQuantity()">
 
     <table style="border:1px solid #FAFAFA; width:1150px; margin-top: 40px">
         <thead>
@@ -64,6 +99,7 @@
 
                     </td>
                              <input type="hidden" name="idGiayChiTiet" value="${gioHangChiTiet.giayTheThaoChiTiet.id}">
+
                     <td style="padding-top: 20px; text-align: center; color: black">
                             ${gioHangChiTiet.giayTheThaoChiTiet.giayTheThao.tenGiayTheThao}
                     </td>
@@ -81,28 +117,33 @@
 
 
                     </td>
+
+
 <%--                    <td style="padding-top: 20px; text-align: center; color: black">--%>
-<%--                        <button type="submit" name="actions" value="giam">-</button>--%>
+<%--                        <button style="width: 30px" type="button" class="btn" onclick="updateQuantity('decrease', ${i.index})">-</button>--%>
 
-<%--                        <input style="width: 30px" name="soLuong" type="number" value="${gioHangChiTiet.soLuong}">--%>
+<%--                        <input id="soLuong-${i.index}" style="width: 45px" name="soLuong" type="number" value="${gioHangChiTiet.soLuong}">--%>
 
-<%--                        <button type="submit" name="actions" value="tang">+</button>--%>
-
+<%--                        <button style="width: 30px" type="button" class="btn" onclick="updateQuantity('increase', ${i.index})">+</button>--%>
 <%--                    </td>--%>
+
                     <td style="padding-top: 20px; text-align: center; color: black">
                         <button style="width: 30px" type="button" class="btn" onclick="updateQuantity('decrease', ${i.index})">-</button>
 
-                        <input id="soLuong-${i.index}" style="width: 45px" name="soLuong" type="number" value="${gioHangChiTiet.soLuong}">
+                        <input id="soLuong-${i.index}" style="width: 45px" name="soLuong" type="number"
+                               value="${gioHangChiTiet.soLuong}"
+                               onchange="validateAndSetQuantity(this, 5, ${gioHangChiTiet.giayTheThaoChiTiet.soLuong})"
+                               data-available-quantity="${gioHangChiTiet.giayTheThaoChiTiet.soLuong}">
+
 
                         <button style="width: 30px" type="button" class="btn" onclick="updateQuantity('increase', ${i.index})">+</button>
+
                     </td>
 
 
-<%--                    <td style="padding-top: 20px; text-align: center; color: black;margin-right:40px ">--%>
-
-<%--                            <fmt:formatNumber type="" value="${gioHangChiTiet.donGia}" pattern="#,##0.###" /> VNĐ--%>
-<%--                            <input type="hidden" name="donGia" value="${gioHangChiTiet.donGia}">--%>
-<%--                    </td>--%>
+                    <div class="thongBaoEr" style="margin-top: 10px">
+                        <!-- Your error messages -->
+                    </div>
 
 <%--                    Xóa riêng--%>
                         <td>
@@ -132,6 +173,86 @@
 
 </div>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<%----%>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<%----%>
+
+<%--<script>--%>
+<%--    function validateQuantity() {--%>
+<%--        // Get all quantity input elements--%>
+<%--        var quantityInputs = document.getElementsByName("soLuong");--%>
+
+<%--        // Check if any quantity is 0--%>
+<%--        for (var i = 0; i < quantityInputs.length; i++) {--%>
+<%--            if (parseInt(quantityInputs[i].value) === 0) {--%>
+<%--                // Display an error message--%>
+<%--                alert("Quantity must be greater than 0. Please update the quantity.");--%>
+
+<%--                // Prevent form submission--%>
+<%--                return false;--%>
+<%--            }--%>
+<%--        }--%>
+
+<%--        // Allow form submission if all quantities are greater than 0--%>
+<%--        return true;--%>
+<%--    }--%>
+<%--</script>--%>
+
+<%----%>
+
+
+<script>
+    function validateAndSetQuantity(input, maxLimit, availableQuantity) {
+        // Chuyển giá trị nhập vào thành số nguyên
+        var quantity = parseInt(input.value, 10);
+
+        // Kiểm tra nếu số lượng hiện có trong kho là ít hơn số lượng trong giỏ hàng
+        if (availableQuantity < quantity) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Cảnh báo',
+                text: 'Số lượng sản phẩm trong giỏ hàng của bạn đã được điều chỉnh do sản phẩm đã hết hàng.',
+            });
+            // Đặt giá trị nhập vào là số lượng hiện có trong kho
+            input.value = Math.max(availableQuantity, 0);
+
+        } else if (quantity <= 0 || availableQuantity <= 0) {
+            // Nếu số lượng là 0 hoặc âm, hoặc số lượng trong kho là 0, đặt giá trị nhập vào là 0
+            Swal.fire({
+                icon: 'error',
+                title: 'Xin lỗi khách hàng...',
+                text: 'Số lượng mua tối thiểu phải là lớn hơn 0!',
+            });
+
+            input.value = 0;
+
+        } else if (quantity < 1) {
+            // Kiểm tra nếu số lượng nhỏ hơn 1
+            Swal.fire({
+                icon: 'error',
+                title: 'Xin lỗi khách hàng...',
+                text: 'Số lượng mua tối thiểu phải là 1!',
+            });
+            // Đặt giá trị nhập vào là 1
+            input.value = 1;
+        } else if (quantity > maxLimit) {
+            // Kiểm tra nếu số lượng vượt quá giới hạn
+            Swal.fire({
+                icon: 'error',
+                title: 'Xin lỗi khách hàng...!',
+                text: 'Số lượng mua tối đa là ' + maxLimit + '!',
+            });
+            // Đặt giá trị nhập vào là giới hạn
+            input.value = maxLimit;
+        }
+    }
+
+</script>
+
+<%----%>
 
 <script>
 
@@ -173,54 +294,46 @@
 <%--Mã js cho số lượng tăng giảm--%>
 
 <script>
-
     function updateQuantity(operation, index) {
         var quantityInput = document.getElementById("soLuong-" + index);
         var currentQuantity = parseInt(quantityInput.value);
+        var availableQuantity = parseInt(quantityInput.getAttribute('data-available-quantity'));
 
         if (operation === "increase") {
             if (currentQuantity < 5) {
-
-                quantityInput.value = currentQuantity + 1;
-
+                if (currentQuantity + 1 > availableQuantity) {
+                    // Số lượng tăng lên vượt quá số lượng có trong kho
+                    Swal.fire({
+                        icon: 'error',
+                        title: '<span style="font-size: 17px; color: red">Xin lỗi khách hàng, số lượng sản phẩm hiện không đủ trong kho!</span>',
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+                } else {
+                    quantityInput.value = currentQuantity + 1;
+                }
             } else {
-
                 Swal.fire({
-
                     icon: 'success',
                     title: '<span style="font-size: 17px; color: red">Xin lỗi, chỉ được phép mua tối đa 5 sản phẩm.</span>',
-                    showConfirmButton: false, // Ẩn nút OK
-                    timer: 1500, // Thời gian hiển thị thông báo (miligiây)
-
+                    showConfirmButton: false,
+                    timer: 1500,
                 }).then(() => {
-
-                    // window.location.href = '/templates/Users/Layouts/Shop/gioHangView';
                     window.location.href = '/GiayTheThao/NguoiDung/ViewGioHang';
-
                 });
-
             }
         } else if (operation === "decrease") {
             if (currentQuantity > 1) {
-
                 quantityInput.value = currentQuantity - 1;
-
             } else {
-
                 Swal.fire({
-
                     icon: 'success',
                     title: '<span style="font-size: 17px; color: red">Xin lỗi số lượng của sản phẩm mua phải lớn hơn hoặc bằng 1!</span>',
-                    showConfirmButton: false, // Ẩn nút OK
-                    timer: 1500, // Thời gian hiển thị thông báo (miligiây)
-
+                    showConfirmButton: false,
+                    timer: 1500,
                 }).then(() => {
-
-                    // window.location.href = '/templates/Users/Layouts/Shop/gioHangView';
                     window.location.href = '/GiayTheThao/NguoiDung/ViewGioHang';
-
                 });
-
             }
         }
     }
