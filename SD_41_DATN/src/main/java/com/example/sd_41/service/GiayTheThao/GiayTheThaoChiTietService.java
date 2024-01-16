@@ -1,5 +1,6 @@
 package com.example.sd_41.service.GiayTheThao;
 
+import com.example.sd_41.model.GiayTheThao;
 import com.example.sd_41.model.GiayTheThaoChiTiet;
 import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoChiTietRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,14 @@ public class GiayTheThaoChiTietService {
         return repo.findAllByNameProduct(name);
     }
 
+    public GiayTheThaoChiTiet getByGttMsSize(UUID idGtt, UUID idMauSac, UUID idSize) {
 
-
+        return repo.findByGiayTheThaoAndSizeAndMauSac(idGtt, idSize, idMauSac);
+    }
+    public void saveAll(List<GiayTheThaoChiTiet> list) {
+        repo.saveAll(list);
+    }
+    public List<GiayTheThaoChiTiet> getAllByGiayTheThao(GiayTheThao gtt) {
+        return repo.findByGiayTheThao(gtt);
+    }
 }

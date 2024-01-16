@@ -2,8 +2,12 @@ package com.example.sd_41.controller.BanHangTaiQuay;
 
 import com.example.sd_41.model.*;
 import com.example.sd_41.service.GiayTheThao.GiayTheThaoChiTietService;
+import com.example.sd_41.service.GiayTheThao.GiayTheThaoService;
 import com.example.sd_41.service.HoaDon.HoaDonChiTietServie;
 import com.example.sd_41.service.HoaDon.HoaDonService;
+import com.example.sd_41.service.admin.MauSacService;
+import com.example.sd_41.service.admin.SizeService;
+import com.example.sd_41.service.ChuongTrinhGiamGiaChiTietGiayTheThaoService;
 import com.example.sd_41.service.KhachHangService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,27 +31,82 @@ public class BanHangTaiQuayAPIController {
     @Autowired
     private GiayTheThaoChiTietService gttctService;
 
+    @Autowired
+    private MauSacService msService;
+
+    @Autowired
+    private SizeService sizeService;
+
+    @Autowired
+    private GiayTheThaoService gttService;
+
+    @Autowired
+    private ChuongTrinhGiamGiaChiTietGiayTheThaoService ctggctService;
+
+    @GetMapping("/gtt")
+    private List<GiayTheThao> getAllGtt() {
+        return gttService.getAll();
+    }
+
+    @GetMapping("/gttct/mauSac/{idGtt}")
+    public List<MauSac> getAllMauSacByIdGtt(@PathVariable("idGtt") UUID idGtt) {
+        System.out.println(msService.getAllByIdGtt(idGtt).size());
+        return msService.getAllByIdGtt(idGtt);
+    }
+
+    @GetMapping("/gttct/size/{idGtt}")
+    public List<Size> getAllSizeByIdGtt(@PathVariable("idGtt") UUID idGtt) {
+
+        return sizeService.getAllByIdGtt(idGtt);
+    }
+
+    @PostMapping("/gttct/{idGtt}")
+    public GiayTheThaoChiTiet getGttctByGttAndMauSacAndSize(@PathVariable("idGtt") UUID idGtt,
+                                                            @RequestBody String[] mauSacAndSize) {
+        UUID idMs = UUID.fromString(mauSacAndSize[0]);
+        UUID idSize = UUID.fromString(mauSacAndSize[1]);
+
+        GiayTheThaoChiTiet gttct = gttctService.getByGttMsSize(idGtt, idMs, idSize);
+        if (gttct == null) {
+            GiayTheThaoChiTiet newGttct = new GiayTheThaoChiTiet();
+            newGttct.setSoLuong("0");
+            return newGttct;
+        }
+        return gttct;
+    }
+
+    @GetMapping("/gtt/checkCount")
+    public int checkCount() {
+        return gttService.countGttInCtgg();
+    }
+
+    @GetMapping("/ctggct/{idGtt}")
+    public ChuongTrinhGiamGiaChiTietGiayTheThao getCtggByIdGtt(@PathVariable("idGtt") UUID idGtt) {
+        GiayTheThao gtt = gttService.getOne(idGtt);
+        return ctggctService.getByGiayTheThao(gtt);
+    }
+
     @GetMapping("/gttct")
     private List<GiayTheThaoChiTiet> getAllGttct() {
         return gttctService.getAll();
     }
 
     @PostMapping("/gttct/search")
-    private List<GiayTheThaoChiTiet> searchByName(@RequestBody String[] name) {
-//        System.out.println("Name: " + name);
-        List<GiayTheThaoChiTiet> result = gttctService.searchByName(name[0]);
-//        System.out.println("GTTCT: "+result.get(0).getGiayTheThao(). getTenGiayTheThao());
+    private List<GiayTheThao> searchByName(@RequestBody String[] name) {
+        // System.out.println("Name: " + name);
+        List<GiayTheThao> result = gttService.findGiayTheThao(name[0]);
+        // System.out.println("GTTCT: "+result.get(0).getGiayTheThao().
+        // getTenGiayTheThao());
         return result;
     }
 
     @PostMapping("/kh/search")
     private List<KhachHang> searchByTen(@RequestBody String[] name) {
-//        System.out.println("Name: " + name);
+        // System.out.println("Name: " + name);
         List<KhachHang> result = khService.findKhachHang(name[0]);
-//        System.out.println(": "+result.get(0).getGiayTheThao().getTenGiayTheThao());
+        // System.out.println(": "+result.get(0).getGiayTheThao().getTenGiayTheThao());
         return result;
     }
-
 
     @GetMapping("/kh")
     public List<KhachHang> getAllKH() {
@@ -87,6 +146,7 @@ public class BanHangTaiQuayAPIController {
 
     @PostMapping("/hdct")
     public HoaDonChiTiet addHDCT(@RequestBody HoaDonChiTiet hdct) {
+
         return hoaDonChiTietservie.addHDCT(hdct);
     }
 
@@ -126,9 +186,9 @@ public class BanHangTaiQuayAPIController {
         return hdService.thanhToan(id);
     }
 
-@GetMapping("/hd/{id}")
-    public HoaDon Hd(@PathVariable("id") UUID id){
+    @GetMapping("/hd/{id}")
+    public HoaDon Hd(@PathVariable("id") UUID id) {
         return hdService.findId(id);
-}
+    }
 
 }

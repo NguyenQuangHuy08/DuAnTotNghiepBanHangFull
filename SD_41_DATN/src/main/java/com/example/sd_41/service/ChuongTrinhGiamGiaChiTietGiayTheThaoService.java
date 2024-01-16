@@ -76,6 +76,8 @@ public class ChuongTrinhGiamGiaChiTietGiayTheThaoService implements ChuongTrinhG
     }
 
 
-
+    public ChuongTrinhGiamGiaChiTietGiayTheThao getByGiayTheThao(GiayTheThao gtt) {
+        return repo.findByGiayTheThao(gtt);
+    }
 
 }

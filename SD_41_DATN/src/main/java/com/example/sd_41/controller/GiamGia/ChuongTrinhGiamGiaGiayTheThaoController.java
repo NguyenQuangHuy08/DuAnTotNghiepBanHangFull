@@ -3,8 +3,10 @@ package com.example.sd_41.controller.GiamGia;
 import com.example.sd_41.model.ChuongTrinhGiamGiaChiTietGiayTheThao;
 import com.example.sd_41.model.ChuongTrinhGiamGiaGiayTheThao;
 import com.example.sd_41.model.GiayTheThao;
+import com.example.sd_41.model.GiayTheThaoChiTiet;
 import com.example.sd_41.service.ChuongTrinhGiamGiaChiTietGiayTheThaoService;
 import com.example.sd_41.service.ChuongTrinhGiamGiaGiayTheThaoService;
+import com.example.sd_41.service.GiayTheThao.GiayTheThaoChiTietService;
 import com.example.sd_41.service.GiayTheThao.GiayTheThaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +34,8 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
 
     @Autowired
     private GiayTheThaoService service;
+    @Autowired
+    private GiayTheThaoChiTietService gttctService;
 
     private ChuongTrinhGiamGiaGiayTheThao ctggSP = new ChuongTrinhGiamGiaGiayTheThao();
 
@@ -164,6 +168,8 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
             Double giaBan = Double.parseDouble(product.getGiaBan());
             BigDecimal soTienDaGiam = BigDecimal
                     .valueOf(giaBan * ctggGiayTheThao.getPhanTramGiam() / 100);
+            product.setSoTienDaGiam(soTienDaGiam);
+            service.update(product);
             ChuongTrinhGiamGiaChiTietGiayTheThao ctggCTProduct = new ChuongTrinhGiamGiaChiTietGiayTheThao();
             ctggCTProduct.setChuongTrinhGiamGiaGiayTheThao(ctggGiayTheThao);
             ctggCTProduct.setGiayTheThao(product);
@@ -186,6 +192,8 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
             for (String str : list) {
                 UUID idProduct = UUID.fromString(str);
                 GiayTheThao product = this.service.getOne(idProduct);
+                product.setSoTienDaGiam(new BigDecimal(0));
+                service.update(product);
 
                 ChuongTrinhGiamGiaChiTietGiayTheThao ctgg = this.serviceCTSP.getByCTGGAndGTT(ctggGiayTheThao, product);
                 this.serviceCTSP.deleteById(ctgg.getId());
@@ -193,7 +201,9 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
 
         }
 
+
         return "giamGia/sanPham/detail";
+
     }
 
     @PostMapping("/importExcel")

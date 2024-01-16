@@ -1,5 +1,6 @@
 package com.example.sd_41.repository.SanPham.AllGiayTheThao;
 
+import com.example.sd_41.model.GiayTheThao;
 import com.example.sd_41.model.MauSac;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,4 +21,6 @@ public interface MauSacRepository extends JpaRepository<MauSac, UUID> {
 
     List<MauSac> findByTenMauSac(String tenMauSac);
 
+    @Query("select distinct gttct.mauSac from GiayTheThaoChiTiet gttct where gttct.giayTheThao =:gtt")
+    List<MauSac> findByGtt(GiayTheThao gtt);
 }

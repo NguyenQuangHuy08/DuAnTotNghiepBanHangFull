@@ -93,6 +93,7 @@
             background-color: red;
             color: white;
             box-shadow: -2px 2px 5px rgb(156, 156, 156);
+            text-align: center;
         }
         .attribute{
             display: flex;
@@ -120,6 +121,58 @@
 
 
 
+        }
+        #modal-detailProduct{
+            display: flex;
+        }
+        #detailProduct-img{
+            margin-right: 20px;
+            max-width: 250px;
+        }
+        #detailProduct-info{
+            width: 70%;
+            line-height: 40px;
+            font-weight: bolder;
+        }
+        #detailProduct-info>p>input{
+            line-height: 30px;
+
+        }
+        #detailProduct-name{
+            font-size: 30px;
+        }
+
+        .color, .sizeProduct{
+            border: 1px solid black;
+            background-color: #ffffff;
+            cursor: pointer;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            margin-right:5px;
+            margin-left: 5px;
+            border-radius: 2px;
+        }
+
+        #detailProduct-price{
+            color: red;
+            font-size: x-large;
+        }
+        #detailProduct-price>del{
+            color: black;
+            font-size: 15px;
+        }
+        #detailProduct-price>span{
+            font-size: smaller;
+            background-color: yellow;
+            color: red;
+        }
+        #inventory{
+            display: none;
+        }
+        .name_product{
+            max-width: 200px;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
@@ -279,6 +332,58 @@
                             </div>
                         </div>
                     </c:forEach> -->
+                    <!-- modal -->
+
+                </div>
+            </div>
+            <div
+                    class="modal fade"
+                    id="showDetailProduct"
+                    data-bs-backdrop="static"
+                    data-bs-keyboard="false"
+                    tabindex="-1"
+                    aria-labelledby="staticBackdropLabel"
+                    aria-hidden="true"
+            >
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                                Thông tin chi tiết giày thể thao
+                            </h1>
+                            <button
+                                    type="button"
+                                    class="btn-close"
+                                    id="close-detailProduct"
+                            ></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="modal-detailProduct">
+                                <div >
+                                    <img id="detailProduct-img" src="" alt="gift">
+                                </div>
+                                <div id="detailProduct-info">
+                                    <p id="detailProduct-name"></p>
+                                    <p>Giá bán: <span id="detailProduct-price" ></span></p>
+                                    <p id="inventory" >Số lượng tồn: <span id="inventoryNumber"></span></p>
+                                    <p id="detailProduct-color">Màu sắc: <span id="listMS"><span class="color">Vàng</span> <span class="color">Đỏ</span> <span class="color">Trắng</span></d></p>
+                                    <p id="detailProduct-size">Size: <span id="listSize"><span class="sizeProduct">38</span> <span class="sizeProduct">39</span> <span class="sizeProduct">40</span></span></p>
+                                    <p id="detailProduct-quantity">Số lượng <input id="quantityDetailProduct" type="number" oninput="validateQuantity(this)">
+                                        <span id="notification-detailProduct" style="color: #ff0000;font-weight: lighter;"></span></p>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="addProductToCart">
+                                Thêm
+                            </button>
+
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -315,6 +420,7 @@
                         data-bs-target="#staticBackdropCheck"
                         style="width: 100%;"
                 >Tạo mới hóa đơn</button>
+                <!-- modal -->
                 <div
                         class="modal fade"
                         id="staticBackdropCheck"
@@ -442,7 +548,13 @@
 <script src="../../../resources/js/BanHangTaiQuay.js"></script>
 <script>
 
-
+    var mauSac= '';
+    var kichCo = '';
+    var idProduct = '';
+    var nameProduct = '';
+    var idGttct = '';
+    var productPrice = '';
+    var quantityInstock = '';
 
 
     function start() {
@@ -544,7 +656,7 @@
     }
 
     function getAllProducts(callback) {
-        fetch("http://localhost:8080/api/gttct" )
+        fetch("http://localhost:8080/api/gtt" )
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
@@ -563,11 +675,16 @@
     function renderProducts(products) {
 
         var htmls = products.map((gtt) =>{
-            if(gtt.giayTheThao.tenGiayTheThao.length>20){
-                return `
+
+            var soTienDaGiam = gtt.soTienDaGiam + '';
+            if(!isNaN(soTienDaGiam)&&gtt.soTienDaGiam!=0){
+                var salePercent = '-'+(gtt.soTienDaGiam/gtt.giaBan)*100+'%';
+                var salePrice = gtt.giaBan-gtt.soTienDaGiam;
+                if(gtt.tenGiayTheThao.length>20){
+                    return `
                 <div class="card card-product" style="width: 9.8rem; ">
                             <img
-                                    src="/upload/`+gtt.giayTheThao.anhDau+`"
+                                    src="/upload/`+gtt.anhDau+`"
                                     class="card-img-top img-product-card"
                             />
 
@@ -576,27 +693,52 @@
                                     <a
                                             href="#"
                                             class="name-product"
-                                            onclick="addToCart(\``+gtt.id+`\`, \``+gtt.giayTheThao.tenGiayTheThao+`\`, \``+gtt.giayTheThao.giaBan+`\`, event)"
-                                    >`+gtt.giayTheThao.tenGiayTheThao+`</a
+                                            onclick="showDetailProduct(\``+gtt.id+`\`, \``+gtt.tenGiayTheThao+`\`, \``+gtt.giaBan+`\`, \``+gtt.anhDau+`\`, \``+gtt.soTienDaGiam+`\`, event)"
+                                    >`+gtt.tenGiayTheThao+`</a
                                     >
-                                    <span class="showOrno" onclick="showName(this, \``+gtt.giayTheThao.tenGiayTheThao+`\`)">Hiện</span>
+                                    <span class="showOrno" onclick="showName(this, \``+gtt.tenGiayTheThao+`\`)">Hiện</span>
                                 </p>
-                                <p class="attribute">
-                                    <span>Màu: `+gtt.mauSac.tenMauSac+`</span>
-                                    <span>Size: `+gtt.size.size+`</span>
-                                </p>
-                                <p class="card-text price-card-product">`+gtt.giayTheThao.giaBan+`</p>
+
+                                <p class="card-text price-card-product">`+salePrice+`</p>
                             </div>
-                            <div class="notification"><p style="text-align: center;">`+gtt.soLuong+`</p></div>
+                            <div class="notification">`+salePercent+`</div>
                         </div>
 
 
-          `;
+            `;
+                } else {
+                    return `
+                    <div class="card card-product" style="width: 9.8rem; ">
+                                <img
+                                        src="/upload/`+gtt.anhDau+`"
+                                        class="card-img-top img-product-card"
+                                />
+
+                                <div class="card-body product-card-body">
+                                    <p class="card-text">
+                                        <a
+                                                href="#"
+                                                class="name-product"
+                                                onclick="showDetailProduct(\``+gtt.id+`\`, \``+gtt.tenGiayTheThao+`\`, \``+gtt.giaBan+`\`, \``+gtt.anhDau+`\`, \``+gtt.soTienDaGiam+`\`, event)"
+                                        >`+gtt.tenGiayTheThao+`</a
+                                        >
+
+                                    </p>
+
+                                    <p class="card-text price-card-product">`+salePrice+`</p>
+                                </div>
+                            <div class="notification">`+salePercent+`</div>
+                            </div>
+
+
+            `;
+                }
             } else {
-                return `
+                if(gtt.tenGiayTheThao.length>20){
+                    return `
                 <div class="card card-product" style="width: 9.8rem; ">
                             <img
-                                    src="/upload/`+gtt.giayTheThao.anhDau+`"
+                                    src="/upload/`+gtt.anhDau+`"
                                     class="card-img-top img-product-card"
                             />
 
@@ -605,23 +747,46 @@
                                     <a
                                             href="#"
                                             class="name-product"
-                                            onclick="addToCart(\``+gtt.id+`\`, \``+gtt.giayTheThao.tenGiayTheThao+`\`, \``+gtt.giayTheThao.giaBan+`\`, event)"
-                                    >`+gtt.giayTheThao.tenGiayTheThao+`</a
+                                            onclick="showDetailProduct(\``+gtt.id+`\`, \``+gtt.tenGiayTheThao+`\`, \``+gtt.giaBan+`\`, \``+gtt.anhDau+`\`, \``+gtt.soTienDaGiam+`\`, event)"
+                                    >`+gtt.tenGiayTheThao+`</a
                                     >
+                                    <span class="showOrno" onclick="showName(this, \``+gtt.tenGiayTheThao+`\`)">Hiện</span>
+                                </p>
 
-                                </p>
-                                <p class="attribute">
-                                    <span>Màu: `+gtt.mauSac.tenMauSac+`</span>
-                                    <span>Size: `+gtt.size.size+`</span>
-                                </p>
-                                <p class="card-text price-card-product">`+gtt.giayTheThao.giaBan+`</p>
+                                <p class="card-text price-card-product">`+gtt.giaBan+`</p>
                             </div>
-                            <div class="notification"><p style="text-align: center;">`+gtt.soLuong+`</p></div>
                         </div>
 
 
           `;
+                } else {
+                    return `
+                <div class="card card-product" style="width: 9.8rem; ">
+                            <img
+                                    src="/upload/`+gtt.anhDau+`"
+                                    class="card-img-top img-product-card"
+                            />
+
+                            <div class="card-body product-card-body">
+                                <p class="card-text">
+                                    <a
+                                            href="#"
+                                            class="name-product"
+                                            onclick="showDetailProduct(\``+gtt.id+`\`, \``+gtt.tenGiayTheThao+`\`, \``+gtt.giaBan+`\`, \``+gtt.anhDau+`\`, \``+gtt.soTienDaGiam+`\`, event)"
+                                    >`+gtt.tenGiayTheThao+`</a
+                                    >
+
+                                </p>
+
+                                <p class="card-text price-card-product">`+gtt.giaBan+`</p>
+                            </div>
+                        </div>
+
+
+          `;
+                }
             }
+
 
         });
         var html = htmls.join("");
@@ -647,6 +812,240 @@
 
 
     }
+
+    function closeDetailProduct() {
+        document.getElementById("close-detailProduct").onclick = function() {
+            mauSac='';
+            idProduct='';
+            kichCo='';
+            document.getElementById("quantityDetailProduct").value="";
+            $('#showDetailProduct').modal('hide');
+        }
+    }
+    closeDetailProduct();
+
+    function validateQuantity(input) {
+        input.value = input.value.replace(/[^\d]+/g, "");
+        if(input.value>999){
+            document.getElementById('notification-detailProduct').innerText='Không nhập số lượng > 999';
+        } else {
+            document.getElementById('notification-detailProduct').innerText='';
+        }
+
+    }
+
+    function toggleColorAndSize() {
+        var colors = document.querySelectorAll('.color');
+        var sizes = document.querySelectorAll('.sizeProduct');
+
+
+
+        colors.forEach(function(color) {
+            color.onclick = function() {
+
+                colors.forEach(function(s) {
+                    s.style.backgroundColor = '#ffffff';
+                });
+
+                // Đổi màu nền của span được click
+                color.style.backgroundColor = 'rgb(79,214,115)';
+
+                mauSac = color.id;
+                console.log(kichCo,'-',mauSac,'-',idProduct);
+                if(kichCo != ''){
+                    changeInforProduct();
+                }
+            };
+        });
+
+        sizes.forEach(function(size) {
+            size.onclick = function() {
+
+                sizes.forEach(function(s) {
+                    s.style.backgroundColor = '#ffffff';
+                });
+
+                // Đổi màu nền của span được click
+                size.style.backgroundColor = 'rgb(79,214,115)';
+                kichCo = size.id;
+                console.log(kichCo,'-',mauSac,'-',idProduct);
+                if(mauSac != ''){
+
+                    changeInforProduct();
+                }
+            };
+        });
+    }
+
+    // function checkSale() {
+    //     fetch("http://localhost:8080/api/gttct/")
+    // }
+
+    function changeInforProduct() {
+
+        fetch("http://localhost:8080/api/gttct/"+idProduct, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify([mauSac, kichCo])
+        }).then(response=>{
+            if(!response.ok){
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+            .then(data=>{
+
+                var inventory = document.getElementById('inventory');
+                var inventoryNumber = document.getElementById('inventoryNumber');
+                inventory.style.display = 'block';
+                if(data.soLuong==0){
+                    idGttct='';
+                    inventoryInstock = 0;
+                    inventoryNumber.innerText=0;
+                } else {
+                    idGttct = data.id;
+                    inventoryInstock=data.soLuong;
+                    inventoryNumber.innerText=data.soLuong;
+                }
+
+            }).catch(error=>console.error("Error: ", error))
+
+    }
+
+    function getIdGttct(callback) {
+
+        fetch("http://localhost:8080/api/gttct/"+idProduct, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify([mauSac, kichCo])
+        }).then(response=>{
+            if(!response.ok){
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+            .then(callback).catch(error=>console.error("Error: ", error))
+
+    }
+
+
+    function showDetailProduct(id,ten, giaBan, anh, soTienDaGiam, event) {
+        event.preventDefault();
+        idProduct = id;
+        nameProduct = ten;
+console.log(anh);
+        if(mauSac==''||kichCo==''){
+            document.getElementById('inventory').style.display = 'none';
+        }
+        Promise.all([getAllMSByIdGtt(id), getAllSizeByIdGtt(id)])
+            .then(([ms, size])=>{
+
+                document.getElementById('detailProduct-name').innerText=ten;
+                if(!isNaN(soTienDaGiam)&&soTienDaGiam!=0){
+
+                    var price = parseInt(giaBan).toLocaleString("en-US") + 'đ';
+                    var priceSale = parseInt(giaBan) - parseInt(soTienDaGiam);
+                    var sale = priceSale.toLocaleString("en-US") + 'đ';
+                    var percent = parseInt(soTienDaGiam)/parseInt(giaBan)*100;
+                    productPrice = priceSale;
+                    document.getElementById('detailProduct-price').innerHTML= sale+`  <del >`+price+`</del>  <span>-`+percent+`%</span>`;
+                } else {
+                    productPrice = giaBan;
+                    document.getElementById('detailProduct-price').innerHTML= parseInt(giaBan).toLocaleString("en-US") + 'đ';
+
+                }
+
+                document.getElementById('detailProduct-img').src="/upload/"+anh;
+
+                var htmls1 = ms.map(mauSac=>{
+                    return `<span class="color" id='`+mauSac.id+`'>`+mauSac.tenMauSac+`</span>`;
+                })
+                var html1 = htmls1.join('');
+                document.getElementById('listMS').innerHTML = html1;
+                var htmls2 = size.map(s=>{
+                    return `<span class="sizeProduct" id='`+s.id+`'>`+s.size+`</span>`;
+                })
+                var html2 = htmls2.join('');
+                document.getElementById('listSize').innerHTML = html2;
+                toggleColorAndSize();
+                $('#showDetailProduct').modal('show');
+            }).catch(error=>{
+            console.error('Error: '+error);
+        })
+
+
+    }
+
+    function getAllMSByIdGtt(id) {
+        return fetch("http://localhost:8080/api/gttct/mauSac/"+id)
+            .then(response=>{
+                if(!response.ok){
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .catch(error=>{
+                console.error('Error: ', error);
+                return Promise.reject(error);
+            })
+    }
+
+
+    function getAllSizeByIdGtt(id) {
+        return fetch("http://localhost:8080/api/gttct/size/"+id)
+            .then(response=>{
+                if(!response.ok){
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            // .then(data=>console.log(data))
+            .catch(error=>{
+                console.error('Error: ', error);
+                return Promise.reject(error);
+            })
+    }
+
+    function addProductToCart(idGTTCT) {
+        var btnThem = document.getElementById('addProductToCart');
+        btnThem.addEventListener('click',()=>{
+            if(mauSac==''&&kichCo==''){
+                alert('Hãy chọn màu sắc và kích cỡ');
+
+            } else if(mauSac!=''&&kichCo==''){
+                alert('Hãy chọn kích cỡ');
+            } else if(mauSac==''&&kichCo!=''){
+                alert('Hãy chọn màu sắc');
+            } else{
+                getIdGttct(
+                    data=>{
+
+
+                        if(data.soLuong==0){
+                            idGttct='';
+                            inventoryInstock = 0;
+                        } else {
+                            idGttct = data.id;
+                            inventoryInstock=data.soLuong;
+                        }
+                        if(data.giayTheThao == null){
+                            addToCart(data.id, '', productPrice);
+                        }
+                        addToCart(data.id, data.giayTheThao.tenGiayTheThao, productPrice);
+                        document.getElementById("quantityDetailProduct").value="";
+                        $('#showDetailProduct').modal('hide');
+                    }
+                );
+
+            }
+
+        });
+    }
+    addProductToCart();
 
     function showName(params, name) {
         var values = params.innerText;
@@ -899,10 +1298,25 @@
 
 
 
-    function addToCart(idGTTCT,name, price, event) {
-        event.preventDefault();
+    function addToCart(idGTTCT,name, price) {
+
+        console.log(idGTTCT, 'idGTTCT');
+
         var idHD = localStorage.getItem("idHD");
         console.log(idHD);
+        var qty = document.querySelector("#quantityDetailProduct");
+        var quantity = '0';
+
+        if(qty.value==0||qty.value==''){
+            quantity = '1';
+        } else {
+            quantity = qty.value+'';
+        }
+
+        if(inventoryInstock==0){
+            alert("Sản phẩm này đã hết. Vui lòng chọn sản phẩm khác.");
+            return;
+        }
 
         if (idHD == null || idHD.length <= 0) {
             alert("Hãy chọn 1 hóa đơn");
@@ -914,7 +1328,8 @@
         var formData = {
             hoaDon : hd,
             giayTheThaoChiTiet: gttct,
-            donGia: price
+            donGia: price,
+            soLuong: quantity
         };
         fetch("http://localhost:8080/api/hdct", {
             method: 'POST',
@@ -941,17 +1356,20 @@
                         var tr = document.getElementById(id);
                         var inputElement = tr.querySelector(".qty");
                         if (inputElement) {
-                            inputElement.value = parseInt(inputElement.value)+1;
+                            inputElement.value = parseInt(inputElement.value)+parseInt(quantity);
                             updateTotal(inputElement);
                         } else {
                             console.error('Không tìm thấy ô input');
                         }
                     } else {
                         var table = document.querySelector("#cart-detail-product");
+
                         var newRow = document.createElement("tr");
                         newRow.id = data.id;
 
-                        newRow.innerHTML = `
+                        if(quantity)
+
+                            newRow.innerHTML = `
 
                               <td style="text-align: center">
                                 <i
@@ -976,7 +1394,7 @@
                                     class="qty"
                                     oninput="validateNumber(`+`\``+data.id+`\``+`,this)"
                                     onblur="validateQty(`+`\``+data.id+`\``+`,this)"
-                                    value="1"
+                                    value="`+data.soLuong+`"
                                   />
                                   <a class="btn btn-plus-qty" onclick="addQty(`+`\``+data.id+`\``+`,this)"
                                     ><i class="bi bi-plus-lg"></i
@@ -988,10 +1406,13 @@
                 `;
 
                         table.appendChild(newRow);
-                        truncatedText();
+                        // truncatedText();
                     }} else {
                     alert("Sản phẩm trong kho đã hết");
                     console.log(data);
+                    idProduct='';
+                    mauSac='';
+                    kichCo='';
                 }
 
 
