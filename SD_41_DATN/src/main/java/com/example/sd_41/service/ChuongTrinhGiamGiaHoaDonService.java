@@ -162,4 +162,7 @@ public class ChuongTrinhGiamGiaHoaDonService implements ChuongTrinhGiamGiaHoaDon
         this.repo.saveAll(listKichHoat);
     }
 
+    public List<ChuongTrinhGiamGiaHoaDon> getAllBySlTT(String sl, BigDecimal tt) {
+        return repo.findAllBySLTongTienAndTT(sl, tt);
+    }
 }

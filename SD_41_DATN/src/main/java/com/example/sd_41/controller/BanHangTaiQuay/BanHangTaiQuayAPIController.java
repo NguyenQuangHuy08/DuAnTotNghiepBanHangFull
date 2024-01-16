@@ -8,11 +8,14 @@ import com.example.sd_41.service.HoaDon.HoaDonService;
 import com.example.sd_41.service.admin.MauSacService;
 import com.example.sd_41.service.admin.SizeService;
 import com.example.sd_41.service.ChuongTrinhGiamGiaChiTietGiayTheThaoService;
+import com.example.sd_41.service.ChuongTrinhGiamGiaChiTietHoaDonService;
+import com.example.sd_41.service.ChuongTrinhGiamGiaHoaDonService;
 import com.example.sd_41.service.KhachHangService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,7 +44,13 @@ public class BanHangTaiQuayAPIController {
     private GiayTheThaoService gttService;
 
     @Autowired
+    private ChuongTrinhGiamGiaHoaDonService ctggHDService;
+
+    @Autowired
     private ChuongTrinhGiamGiaChiTietGiayTheThaoService ctggctService;
+
+    @Autowired
+    private ChuongTrinhGiamGiaChiTietHoaDonService ctggcthdService;
 
     @GetMapping("/gtt")
     private List<GiayTheThao> getAllGtt() {
@@ -182,8 +191,8 @@ public class BanHangTaiQuayAPIController {
     }
 
     @PostMapping("/hd/pay/{id}")
-    public String pay(@PathVariable("id") UUID id) {
-        return hdService.thanhToan(id);
+    public String pay(@PathVariable("id") UUID id, @RequestBody String[] tt) {
+        return hdService.thanhToan(id, tt);
     }
 
     @GetMapping("/hd/{id}")
@@ -191,4 +200,22 @@ public class BanHangTaiQuayAPIController {
         return hdService.findId(id);
     }
 
+    @PostMapping("/ctgg")
+    public List<ChuongTrinhGiamGiaHoaDon> getAllChuongTrinhGiamGiaHoaDon(@RequestBody String[] list) {
+        String sl = list[0];
+        BigDecimal tt = new BigDecimal(list[0]);
+        return ctggHDService.getAllBySlTT(sl, tt);
+    }
+
+    @GetMapping("/ctgg/{id}")
+    public ChuongTrinhGiamGiaHoaDon getCtggHDByID(@PathVariable("id") UUID id) {
+        return ctggHDService.getOne(id);
+    }
+
+    @PostMapping("/ctgg/create/{idHD}")
+    public ChuongTrinhGiamGiaChiTietHoaDon createCtgghd(@PathVariable("idHD") UUID idHD, @RequestBody String[] array) {
+        UUID idCtgghd = UUID.fromString(array[0]);
+        BigDecimal tt = new BigDecimal(array[1]);
+        return ctggcthdService.createCTGGChiTietHoaDon(idCtgghd, idHD, tt);
+    }
 }

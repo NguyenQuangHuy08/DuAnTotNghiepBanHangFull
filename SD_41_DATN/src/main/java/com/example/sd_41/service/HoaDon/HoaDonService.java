@@ -140,7 +140,7 @@ public class HoaDonService implements HoaDonServiceImpl{
     }
 
 
-    public String thanhToan(UUID id) {
+    public String thanhToan(UUID id, String[] tt) {
         HoaDon hd = hoaDonRepository.findById(id).get();
         List<HoaDonChiTiet> listHdct = hdctRepo.findAllByHoaDon(hd);
         GiayTheThaoChiTiet gttct = null;
@@ -160,7 +160,7 @@ public class HoaDonService implements HoaDonServiceImpl{
             }
             gttct.setSoLuong(String.valueOf(sl));
         }
-        BigDecimal thanhTien = new BigDecimal(sum);
+        BigDecimal thanhTien = new BigDecimal(tt[0]);
         hd.setThanhTien(thanhTien);
         hd.setNgayThanhToan(LocalDateTime.now());
         hd.setNgaySua(LocalDateTime.now());

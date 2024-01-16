@@ -43,6 +43,10 @@
             ::-webkit-scrollbar-thumb {
                 background: #888;
             }
+            #saleInvoice{
+                width: 80%;
+                margin: 0 auto;
+            }
         </style>
     </head>
 <body>
@@ -128,8 +132,20 @@
                         </tr>
                     </c:forEach>
                     <tr>
-                        <td colspan="6" ></td>
-                        <td></td>
+                        <td colspan="6" style="text-align: left;">Tổng tiền:</td>
+                        <td id="total">${tt}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" style="text-align: left;">Phần trăm giảm:</td>
+                        <td id="ptg">0%</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" style="text-align: left;">Số tiền giảm:</td>
+                        <td id="stg">0</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" style="text-align: left;">Tiền thanh toán:</td>
+                        <td id="ttt">${tt}</td>
                     </tr>
                 </c:if>
 
@@ -137,9 +153,26 @@
             </table>
 
         </div>
+        <div id="saleInvoice">
+            <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Chương trình giảm giá </label>
+                <div class="col-sm-10">
+                    <select class="form-select form-select" aria-label=".form-select example" id="ctggSelect"  onchange="showAlert()">
+                        <option selected>Chương trình giảm giá</option>
+                        <c:if test="${f:length(listCtgg)!=0}">
+                            <c:forEach items="${listCtgg}" var="ctgg" varStatus="status">
+                                <option value="${ctgg.id}" >${ctgg.tenChuongTrinh}</option>
+                            </c:forEach>
+
+                        </c:if>
+                    </select>
+                </div>
+            </div>
+
+        </div >
         <form>
             <div style="margin: 0 auto; width: 80%;">
-                <button class="btn btn-success" style="width:100%;" onclick="pay(`${id}`, event)">Thanh toán</button>
+                <button class="btn btn-success" style="width:100%;" id="pay" >Thanh toán</button>
             </div>
         </form>
         <div style="margin: 0 auto; width: 80%;">
@@ -198,14 +231,74 @@
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.6/dist/sweetalert2.all.min.js"></script>
 <script>
-    function pay(id, event) {
+    var totals = document.getElementById('total').innerText;
+    var totalSale = totals;
+    var idCTGGCTHD = '';
+    var url = new URL(window.location.href);
+    var pathName = url.pathname;
+    var idHD = pathName.split('/').pop();
+
+    function showAlert() {
+        var selectedValue = document.getElementById("ctggSelect").value;
+
+        var totalElement = document.getElementById('total');
+        var total = parseInt(totalElement.innerText);
+
+        var stgElement = document.getElementById('stg');
+
+        var tttElement = document.getElementById('ttt');
+
+        var ptgElement = document.getElementById('ptg');
+        if(selectedValue != 'Chương trình giảm giá'){
+            getCtggById(selectedValue, (data)=>{
+                idCTGGCTHD = data.id;
+                var phanTramGiam = parseInt(data.phanTramGiam);
+                var salePrice = totals-totals*phanTramGiam/100;
+                tttElement.innerText=salePrice;
+                stgElement.innerText=parseInt(totals)-salePrice;
+                ptgElement.innerText="-"+phanTramGiam+"%";
+                totalSale = salePrice;
+                totalElement.innerText = salePrice;
+            });
+        } else {
+            tttElement.innerText=0+"%";
+            tttElement.innerText=totals;
+            stgElement.innerText=0;
+            totalSale=totals;
+            totalElement.innerText = totals;
+        }
+
+    }
+
+    function getCtggById(id, callback) {
+        fetch("http://localhost:8080/api/ctgg/"+id)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(callback)
+            .catch(error => {console.error("Error: ", error);})
+    }
+
+    document.getElementById('pay').addEventListener('click', (event)=>{
         event.preventDefault();
+        pay(idHD)});
+
+    function pay(id) {
+        console.log('b');
+        console.log(totalSale);
+        if((totalSale<totals)){
+            console.log('a');
+            createCtggctHD(id, idCTGGCTHD, totals);
+        }
         fetch("http://localhost:8080/api/hd/pay/"+id, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({}),
+            body: JSON.stringify([totalSale]),
         })
             .then(response => {
                 if (!response.ok) {
@@ -218,6 +311,7 @@
 
 
                 if(datas=="Thanh toán thành công"){
+
                     printInvoice();
                     // window.location.href = "${pageContext.request.contextPath}/BanHangTaiQuay";
                     Swal.fire({
@@ -236,11 +330,38 @@
 
                 }
 
+                else {
+                    alert(datas);
+                }
+
             })
             .catch(error => {
                 console.error('Error during POST request:', error);
             });
+
     }
+
+    function createCtggctHD(id, idctgg, tt) {
+
+        fetch("http://localhost:8080/api/ctgg/create/"+id, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify([idCTGGCTHD, tt]),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data=>console.log('c'))
+            .catch(error => {
+                console.error('Error during POST request:', error);
+            });
+    }
+
     function printInvoice() {
         var element = document.getElementById('listSP');
         html2canvas(element).then(function(canvas){
