@@ -757,7 +757,9 @@ public class TrangChuGiayTheThaoController {
         KhachHang khachHang = khachHangRepository.findById(idKhachHang).orElse(null);
 
         if (chon == null || chon.isEmpty()) {
+
             attributes.addFlashAttribute("erCheckNun", "Xin lỗi hãy chọn ít nhất một sản phẩm để thanh toán !");
+
         } else {
 
             HoaDon hoaDon = new HoaDon();

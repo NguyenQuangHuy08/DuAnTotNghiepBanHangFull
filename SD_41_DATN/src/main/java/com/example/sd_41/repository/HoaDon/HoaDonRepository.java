@@ -1,5 +1,6 @@
 package com.example.sd_41.repository.HoaDon;
 
+import com.example.sd_41.model.GiaoDichViChiTiet;
 import com.example.sd_41.model.HoaDon;
 import org.hibernate.sql.ast.tree.expression.JdbcParameter;
 import org.springframework.data.domain.Page;
@@ -55,5 +56,10 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
     //Todo code thêm sản phẩm cho hóa đơn
     @Query("SELECT COALESCE(SUM(hdct.donGia), 0) FROM HoaDonChiTiet hdct WHERE hdct.hoaDon.id = :hoaDonId")
     BigDecimal calculateTotalDonGiaByHoaDonId(@Param("hoaDonId") UUID hoaDonId);
+
+
+    //Tìm kiếm theo mã
+    @Query("select hd from HoaDon hd where hd.maHoaDon = ?1")
+    HoaDon findByMa(String ma);
 
 }

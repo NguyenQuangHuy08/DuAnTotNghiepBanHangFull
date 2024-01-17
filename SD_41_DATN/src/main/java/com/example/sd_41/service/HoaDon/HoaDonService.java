@@ -37,7 +37,12 @@ public class HoaDonService implements HoaDonServiceImpl{
     @Autowired
     private GiayTheThaoChiTietRepository gttctRepo;
 
+    @Override
+    public HoaDon finByMa(String ma) {
 
+        return hoaDonRepository.findByMa(ma);
+
+    }
 
     @Override
     public Page<HoaDon> listHoaDonFindByKhachHangAndTrangThai(UUID idKhachHang, int trangThai, Integer pageNo, Integer size){
@@ -54,6 +59,7 @@ public class HoaDonService implements HoaDonServiceImpl{
         return optionalHoaDon.orElse(null);
 
     }
+
 
     //Todo code update cho hóa đơn khi bị hủy
     @Override
@@ -222,6 +228,8 @@ public class HoaDonService implements HoaDonServiceImpl{
             // Step 2: Xóa hóa đơn
             hoaDonRepository.deleteById(hoaDonId);
         }
+
+
 
 
 }

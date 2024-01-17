@@ -102,14 +102,14 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="/403">
+            <a class="nav-link" href="/thongKeChuanData">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>Charts</span></a>
+                <span>Thống kê</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/403">
+            <a class="nav-link" href="/BanHangTaiQuay">
                 <i class="fas fa-fw fa-table"></i>
-                <span>Tables</span></a>
+                <span>Bán háng tại quầy</span></a>
         </li>
     </ul>
     <!-- The end code nav -->

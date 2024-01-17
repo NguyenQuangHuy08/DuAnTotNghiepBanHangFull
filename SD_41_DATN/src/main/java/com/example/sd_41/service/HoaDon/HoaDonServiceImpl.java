@@ -17,4 +17,6 @@ public interface HoaDonServiceImpl {
 
     String tongSl(UUID id);
 
+    HoaDon finByMa(String ma);
+
 }
