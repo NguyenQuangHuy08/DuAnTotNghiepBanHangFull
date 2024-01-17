@@ -45,6 +45,10 @@ public class GiayTheThaoService implements GiayTheThaoImpl{
     }
 
 
-
-
+    public int countGttInCtgg() {
+        return this.giayTheThaoRepository.countGttInCtgg();
+    }
+    public void update(GiayTheThao gtt){
+        giayTheThaoRepository.save(gtt);
+    }
 }

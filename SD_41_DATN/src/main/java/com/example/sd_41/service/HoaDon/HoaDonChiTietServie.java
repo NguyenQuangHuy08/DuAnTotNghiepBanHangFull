@@ -72,7 +72,7 @@ public class HoaDonChiTietServie {
 
         if(check!=0) {
             HoaDonChiTiet newHDCT = repo.findByHoaDonAndGiayTheThaoChiTiet(hd, gttct);
-            int soLuong = Integer.parseInt(newHDCT.getSoLuong())+1;
+            int soLuong = Integer.parseInt(newHDCT.getSoLuong())+Integer.parseInt(hdct.getSoLuong());
             if((sl-soLuong)<0){
                 System.out.println("so luong sau khi tru: "+(soLuong-sl));
                 return null;
@@ -83,13 +83,13 @@ public class HoaDonChiTietServie {
             return newHDCT;
         }
 
-
-        if((sl-1)<0){
+        if((sl-Integer.parseInt(hdct.getSoLuong()))<0){
             System.out.println("So luong: " + (1-sl));
             return null;
-        }
 
-        hdct.setSoLuong("1");
+        }
+        System.out.println("So luongsssss: "+hdct.getSoLuong());
+        hdct.setSoLuong(hdct.getSoLuong());
         hdct.setGhiChu("N/A");
         hdct.setNgayTao(LocalDateTime.now());
         hdct.setNgaySua(LocalDateTime.now());
@@ -97,7 +97,6 @@ public class HoaDonChiTietServie {
         this.repo.save(hdct);
         return hdct;
     }
-
 
 
 

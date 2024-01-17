@@ -72,7 +72,7 @@
             <br>
             <div class="row">
                 <div class="col-6 label">
-                    <label class="label" style="color: black;font-weight: bold;font-size: 17px">Số lượng <span style="color: red">*</span></label>
+                    <label class="label" style="color: black;font-weight: bold;font-size: 17px">Số lượng sản phẩm <span style="color: red">*</span></label>
                     <sf:input
                             path="soLuongSanPham"
                             type="number"

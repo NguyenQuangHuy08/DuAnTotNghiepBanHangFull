@@ -95,6 +95,10 @@ public class GiayTheThao {
     @Column(name = "trangThai")
     private int trangThai;
 
+
+    @Column(name = "SoTienGiamGia")
+    private BigDecimal soTienDaGiam;
+
     //Todo join list Image
     @JsonIgnore
     @OneToMany(mappedBy = "giayTheThao", fetch = FetchType.EAGER)

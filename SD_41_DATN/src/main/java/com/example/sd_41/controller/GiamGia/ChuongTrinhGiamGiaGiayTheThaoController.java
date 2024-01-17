@@ -3,8 +3,10 @@ package com.example.sd_41.controller.GiamGia;
 import com.example.sd_41.model.ChuongTrinhGiamGiaChiTietGiayTheThao;
 import com.example.sd_41.model.ChuongTrinhGiamGiaGiayTheThao;
 import com.example.sd_41.model.GiayTheThao;
+import com.example.sd_41.model.GiayTheThaoChiTiet;
 import com.example.sd_41.service.ChuongTrinhGiamGiaChiTietGiayTheThaoService;
 import com.example.sd_41.service.ChuongTrinhGiamGiaGiayTheThaoService;
+import com.example.sd_41.service.GiayTheThao.GiayTheThaoChiTietService;
 import com.example.sd_41.service.GiayTheThao.GiayTheThaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +35,9 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
     @Autowired
     private GiayTheThaoService service;
 
+    @Autowired
+    private GiayTheThaoChiTietService gttctService;
+
     private ChuongTrinhGiamGiaGiayTheThao ctggSP = new ChuongTrinhGiamGiaGiayTheThao();
 
     @GetMapping("")
@@ -50,7 +55,7 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
 
     @GetMapping("search")
     public String searchSP(Model model, @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam("name") String name) {
+                           @RequestParam("name") String name) {
         Pageable pageable = PageRequest.of(page - 1, 10);
         model.addAttribute("list", this.serviceSP.search(pageable, name));
         model.addAttribute("read", "sanPham/search?name=" + name + "&");
@@ -62,9 +67,9 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
 
     @GetMapping("filter")
     public String filterHD(Model model, @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam("trangThai") int trangThai,
-            @RequestParam("ngayBatDau") String ngayBatDau,
-            @RequestParam("ngayKetThuc") String ngayKetThuc) {
+                           @RequestParam("trangThai") int trangThai,
+                           @RequestParam("ngayBatDau") String ngayBatDau,
+                           @RequestParam("ngayKetThuc") String ngayKetThuc) {
         Pageable pageable = PageRequest.of(page - 1, 10);
         model.addAttribute("list", this.serviceSP.filterByTrangThai(pageable, trangThai));
         // model.addAttribute("read", "hoaDon/search?name="+name+"&");
@@ -98,7 +103,7 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
 
     @PostMapping("updateForm")
     public String updateFormSP(@ModelAttribute("ctggSP") ChuongTrinhGiamGiaGiayTheThao gg,
-            @RequestParam("id") UUID id) {
+                               @RequestParam("id") UUID id) {
 
         this.serviceSP.update(gg, id);
         return "redirect:/chuongTrinhGiamGia/sanPham";
@@ -158,12 +163,16 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
         ChuongTrinhGiamGiaGiayTheThao ctggGiayTheThao = this.serviceSP.getOne(id);
         // List<GiayTheThao> listProducts = new ArrayList();
         System.out.println("Phần trăm giảm: " + ctggGiayTheThao.getPhanTramGiam());
+
         for (String str : list) {
             UUID idProduct = UUID.fromString(str);
             GiayTheThao product = this.service.getOne(idProduct);
+
             Double giaBan = Double.parseDouble(product.getGiaBan());
             BigDecimal soTienDaGiam = BigDecimal
                     .valueOf(giaBan * ctggGiayTheThao.getPhanTramGiam() / 100);
+            product.setSoTienDaGiam(soTienDaGiam);
+            service.update(product);
             ChuongTrinhGiamGiaChiTietGiayTheThao ctggCTProduct = new ChuongTrinhGiamGiaChiTietGiayTheThao();
             ctggCTProduct.setChuongTrinhGiamGiaGiayTheThao(ctggGiayTheThao);
             ctggCTProduct.setGiayTheThao(product);
@@ -173,7 +182,17 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
             ctggCTProduct.setNgaySua(LocalDate.now().toString());
             ctggCTProduct.setTrangThai(1);
             this.serviceCTSP.add(ctggCTProduct);
+
+            // List<GiayTheThaoChiTiet> listGttct = gttctService.getAllByGiayTheThao(product);
+            // for (GiayTheThaoChiTiet gttct : listGttct) {
+            //     GiayTheThaoChiTiet gttcts = gttct;
+
+            //     gttcts.setSoTienDaGiam(soTienDaGiam);
+            // }
+            // gttctService.saveAll(listGttct);
         }
+
+
 
         return "redirect:/chuongTrinhGiamGia/sanPham";
     }
@@ -186,12 +205,14 @@ public class ChuongTrinhGiamGiaGiayTheThaoController {
             for (String str : list) {
                 UUID idProduct = UUID.fromString(str);
                 GiayTheThao product = this.service.getOne(idProduct);
-
+                product.setSoTienDaGiam(new BigDecimal(0));
+                service.update(product);
                 ChuongTrinhGiamGiaChiTietGiayTheThao ctgg = this.serviceCTSP.getByCTGGAndGTT(ctggGiayTheThao, product);
                 this.serviceCTSP.deleteById(ctgg.getId());
             }
 
         }
+
 
         return "giamGia/sanPham/detail";
     }

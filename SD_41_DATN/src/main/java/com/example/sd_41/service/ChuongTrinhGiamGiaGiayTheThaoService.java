@@ -1,7 +1,11 @@
 package com.example.sd_41.service;
 
+import com.example.sd_41.model.ChuongTrinhGiamGiaChiTietGiayTheThao;
 import com.example.sd_41.model.ChuongTrinhGiamGiaGiayTheThao;
+import com.example.sd_41.model.GiayTheThao;
 import com.example.sd_41.repository.ChuongTrinhGiamGia.ChuongTrinhGiamGiaGiayTheThaoRepository;
+import com.example.sd_41.repository.SanPham.GiayTheThao.GiayTheThaoRepository;
+import com.example.sd_41.service.GiayTheThao.GiayTheThaoService;
 import com.example.sd_41.service.impl.ChuongTrinhGiamGiaGiayTheThaoImpl;
 import lombok.SneakyThrows;
 import org.apache.poi.ss.usermodel.Row;
@@ -16,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,17 +33,65 @@ public class ChuongTrinhGiamGiaGiayTheThaoService implements ChuongTrinhGiamGiaG
     @Autowired
     private ChuongTrinhGiamGiaGiayTheThaoRepository repo;
 
+    @Autowired
+    private GiayTheThaoRepository gttrepo;
+
+    @Autowired
+    private ChuongTrinhGiamGiaChiTietGiayTheThaoService ctggChiTiet;
+
     @Override
     public void add(ChuongTrinhGiamGiaGiayTheThao gg) {
         this.repo.save(gg);
     }
 
+    @Autowired
+    private ChuongTrinhGiamGiaChiTietGiayTheThaoService serviceCTSP;
+
     @Override
     public void update(ChuongTrinhGiamGiaGiayTheThao gg, UUID id) {
         gg.setId(id);
+
+        if (gg.getTrangThai() == -1) {
+            List<ChuongTrinhGiamGiaChiTietGiayTheThao> list = serviceCTSP.getAllByCTGG(gg);
+            List<ChuongTrinhGiamGiaChiTietGiayTheThao> list2 = new ArrayList<>();
+            for (ChuongTrinhGiamGiaChiTietGiayTheThao a : list) {
+                ChuongTrinhGiamGiaChiTietGiayTheThao ctggs = a;
+                ctggs.setTrangThai(-1);
+                list2.add(ctggs);
+
+            }
+            List<GiayTheThao> giayTheThaos = ctggChiTiet.getAllGiayTheThaoByChuongTrinhGiamGia(gg);
+            for (GiayTheThao gtt:giayTheThaos){
+                gtt.setSoTienDaGiam(new BigDecimal(0));
+                System.out.println(gtt.getSoTienDaGiam());
+            }
+            gttrepo.saveAll(giayTheThaos);
+            serviceCTSP.SaveAll(list2);
+        } else {
+            List<ChuongTrinhGiamGiaChiTietGiayTheThao> listCtgg = serviceCTSP.getAllByCTGG(gg);
+            List<ChuongTrinhGiamGiaChiTietGiayTheThao> listCtgg2 = new ArrayList<>();
+            for (ChuongTrinhGiamGiaChiTietGiayTheThao a : listCtgg) {
+                ChuongTrinhGiamGiaChiTietGiayTheThao ctggs = a;
+                ctggs.setTrangThai(1);
+                listCtgg2.add(ctggs);
+            }
+            serviceCTSP.SaveAll(listCtgg2);
+        }
+        List<ChuongTrinhGiamGiaChiTietGiayTheThao> list = serviceCTSP.getAllByCTGG(gg);
+        List<ChuongTrinhGiamGiaChiTietGiayTheThao> list2 = new ArrayList<>();
+        for (ChuongTrinhGiamGiaChiTietGiayTheThao a : list) {
+            ChuongTrinhGiamGiaChiTietGiayTheThao ctggs = a;
+            double giaBan = Double.parseDouble(ctggs.getGiayTheThao().getGiaBan());
+            double phanTramGiam = gg.getPhanTramGiam() / 100.0;
+
+            ctggs.setSoTienDaGiam(new BigDecimal( phanTramGiam * giaBan));
+            list2.add(ctggs);
+        }
+        serviceCTSP.SaveAll(list2);
+
+
         this.repo.save(gg);
     }
-
     @Override
     public void addAll(MultipartFile file) throws IOException {
         List<ChuongTrinhGiamGiaGiayTheThao> list = new ArrayList<>();

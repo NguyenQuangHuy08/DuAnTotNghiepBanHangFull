@@ -143,7 +143,7 @@
                     <tr>
                         <td>${status.index+1}</td>
                         <td style="text-align: left; max-width: 230px">
-                                ${gg.hd.kh.ten}
+                                ${gg.hd.khachHang.tenKhachHang}
                         </td>
                         <td>${gg.hd.user.tenUser}</td>
                         <td>${gg.soTienDaGiam}</td>
@@ -151,7 +151,7 @@
                         <td>${gg.hd.ngayTao}</td>
                         <td>${gg.hd.ngayThanhToan}</td>
                         <td>${gg.hd.ghiChu}</td>
-                        <td>${gg.hd.trangThai}</td>
+                        <td>${gg.hd.trangThai==4?"Đã Thanh Toán":"Chưa thanh toán"}</td>
                     </tr>
                 </c:forEach>
             </c:if>

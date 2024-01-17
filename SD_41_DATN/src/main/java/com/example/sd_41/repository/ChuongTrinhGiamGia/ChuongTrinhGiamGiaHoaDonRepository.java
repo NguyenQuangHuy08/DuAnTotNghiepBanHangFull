@@ -52,5 +52,6 @@ public interface ChuongTrinhGiamGiaHoaDonRepository extends JpaRepository<Chuong
     @Query("SELECT hd FROM ChuongTrinhGiamGiaHoaDon hd WHERE hd.soLuongSanPham <= ?1 and hd.soTienHoaDon <= ?2")
     List<ChuongTrinhGiamGiaHoaDon> findBySlandTt(String sl, BigDecimal tt);
 
-
+    @Query("Select hd from ChuongTrinhGiamGiaHoaDon hd where hd.soLuongSanPham <= :sl and hd.soTienHoaDon <= :tt and hd.trangThai != -1")
+    List<ChuongTrinhGiamGiaHoaDon> findAllBySLTongTienAndTT(@Param("sl") String soLuong, @Param("tt") BigDecimal tongTien);
 }

@@ -33,6 +33,8 @@ public interface GiayTheThaoRepository extends JpaRepository<GiayTheThao, UUID> 
             ")")
     List<GiayTheThao> getAllWithoutInCTGGCTSP();
 
+    @Query("select count(gtt) from GiayTheThao gtt where gtt in (select ctgg.giayTheThao from ChuongTrinhGiamGiaChiTietGiayTheThao ctgg where ctgg.trangThai !=-1)")
+    int countGttInCtgg();
 
 
 }
