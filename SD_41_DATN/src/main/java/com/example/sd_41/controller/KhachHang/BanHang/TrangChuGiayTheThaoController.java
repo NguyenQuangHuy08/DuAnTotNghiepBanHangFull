@@ -224,7 +224,7 @@ public class TrangChuGiayTheThaoController {
     public String showListViewGiayTheThao(Model model,
                                           HttpSession session,
                                           @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                                          @RequestParam(name = "pageSize", required = false, defaultValue = "9") Integer pageSize) {
+                                          @RequestParam(name = "pageSize", required = false, defaultValue = "8") Integer pageSize) {
 
         if (session.getAttribute("khachHangLog") != null) {
 

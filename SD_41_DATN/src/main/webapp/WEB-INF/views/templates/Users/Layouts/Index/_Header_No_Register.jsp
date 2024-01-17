@@ -75,15 +75,8 @@
                     <ul class="nav navbar-nav menu_nav ml-auto">
                         <li class="nav-item active"><a class="nav-link" href="/TrangChu/listGiayTheThao">Home</a></li>
                         <li class="nav-item submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                               aria-expanded="false">Shop</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" href="/TrangChu/listGiayTheThao">Shop Category</a></li>
-                                <li class="nav-item"><a class="nav-link" href="/TrangChu/listGiayTheThao/Details">Product Details</a></li>
-<%--                                <li class="nav-item"><a class="nav-link" href="checkout.html">Product Checkout</a></li>--%>
-<%--                                <li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>--%>
-<%--                                <li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>--%>
-                            </ul>
+                            <a href="/TrangChu/listGiayTheThao/Details" class="nav-link dropdown-toggle" data-toggle="" role="button" aria-haspopup="true"
+                               aria-expanded="true">Shop</a>
                         </li>
                         <li class="nav-item submenu dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
