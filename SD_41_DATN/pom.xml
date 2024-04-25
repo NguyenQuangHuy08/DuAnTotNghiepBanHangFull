@@ -194,8 +194,37 @@
             <version>2.16.1</version>
         </dependency>
 
+<!--        Cấu hình dependency redis by spring boot
+
+    la dang data base dung de luu du lieu duoi dang kye value
+
+-->
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>5.1.2</version>
+            <type>jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>3.2.0</version>
+        </dependency>
 
 
+            <!-- Thư viện Jedis cho Spring Data Redis -->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+            </dependency>
+
+            <!-- Spring Data Redis -->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-redis</artifactId>
+            </dependency>
 
     </dependencies>
 

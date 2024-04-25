@@ -41,7 +41,6 @@ public class UserController {
                 return true;//Email đã tồn tại
 
             }
-
         }
 
         return false;
